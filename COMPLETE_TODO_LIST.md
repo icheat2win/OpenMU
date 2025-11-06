@@ -2720,7 +2720,7 @@ _(All game logic items are critical or medium priority)_
 ---
 
 ### MISC-5: Item Skill Property Dual Purpose ??
-**Status:** ? TODO
+**Status:** ? TODO  
 **Priority:** ?? Low
 **Difficulty:** ??? Hard
 **File:** `src/DataModel/Configuration/Items/ItemDefinition.cs:110`
@@ -2728,10 +2728,41 @@ _(All game logic items are critical or medium priority)_
 
 **Issue:** Property used for two different purposes, should split
 
-**Action:**
-1. Create separate properties
-2. Migrate data
-3. Update usages
+**Analysis:**
+The `ItemDefinition.Skill` property serves two distinct purposes:
+1. **Learnable Skills** - Skills learned by consuming items (scrolls, orbs)
+   - Used in: LearnablesConsumeHandlerPlugIn.GetLearnableSkill
+   - Persisted to character's LearnedSkills collection
+   - Examples: Scroll of Teleport, Scroll of Fire Ball
+
+2. **Wearable Skills** - Skills granted while wearing items (wings, staffs, books)
+   - Used in: SkillList.Inventory_WearingItemsChangedAsync
+   - Temporary (removed when item unequipped)
+   - Examples: Wings (teleport), Summoner Books (curse skills)
+
+**Complexity:**
+- **143 usages** across codebase
+- Affects data model, game logic, persistence, initialization, tests
+- Generated EF code needs regeneration after schema change
+
+**Proposed Solution:**
+1. Add `LearnableSkill` property for scrolls/orbs (consumable learning)
+2. Add `WearableSkill` property for equipment bonuses
+3. Update SkillList to check both properties:
+   - `Inventory_WearingItemsChangedAsync` → use WearableSkill
+   - `AddLearnedSkillAsync` path → use LearnableSkill
+4. Update initialization:
+   - Scrolls.cs → set LearnableSkill
+   - Wings/equipment → set WearableSkill  
+5. Mark old `Skill` property as [Obsolete] for migration period
+6. Update all 143 usages systematically by category
+
+**Impact Areas:**
+- DataModel: ItemDefinition schema change
+- Persistence: EF model regeneration, BasicModel regeneration
+- GameLogic: SkillList, ItemExtensions, consume handlers
+- Initialization: All version initializers (075, 095d, SeasonSix)
+- Tests: MasterSystemTest, SkillListTest, TestHelper
 
 **Tell me:** `"Do task MISC-5"`
 
