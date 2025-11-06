@@ -2913,6 +2913,17 @@ This section documents the remaining TODO comments still present in the source c
    - **Impact**: Skills now correctly have +2 range ONLY when Dark Horse (item 13-4) is equipped in RightHandSlot
    - **Commit**: 57e4ce12 (2025-01-11)
 
+✅ ARCH-4. **Hit Chance Calculation Formula** (COMPLETED 2025-01-11)
+   - **Issue**: Server used ratio formula `1.0 - (defense/attack)` with 3% minimum, client uses subtraction `attackRate - defenseRate`
+   - **Client Discovery**: `ZzzInfomation.cpp:3723` shows `FinalAttackRating = AttackRating - SuccessfulBlocking` clamped to 0-100
+   - **Impact**: Major combat discrepancy affecting all attack success rates:
+     * High attack vs low defense: Server gave 40-90%, Client gives 100%
+     * Low attack vs high defense: Server gave 3% minimum, Client gives 0%
+     * Equal stats: Server gave 0%, Client gives 0% (both correct)
+   - **Files Modified**: AttackableExtensions.cs `GetHitChanceTo()` method
+   - **New Formula**: `(attackRate - defenseRate)` clamped 0-100, converted to 0.0-1.0 probability
+   - **Commit**: 071c21f1 (2025-01-11)
+
 ### Features & Game Logic (3 TODOs)
 6. `PlugInManager.cs:424` - Implement code signing for plugins
 ✅ 7. `DevilSquareContext.cs:41` - Consider adding money drops (CLARIFIED 2025-01-11 - intentionally disabled to match original)
@@ -2940,18 +2951,21 @@ This section documents the remaining TODO comments still present in the source c
 ## 📈 Final Status Report: 2025-01-11
 
 ### Achievement Summary
-✅ **85 of 105 tasks completed (81.0%)** + **4 bonus bug fixes**
+✅ **85 of 105 tasks completed (81.0%)** + **5 bonus bug fixes**
 - All 22 critical priority tasks: **COMPLETE** ✅
 - Cash Shop (11 tasks): **100% COMPLETE** ✓ Client Verified
 - Castle Siege (6 tasks): **100% COMPLETE** ✓ Client Verified  
 - Guild/Alliance (9 tasks): **100% COMPLETE** ✓ Client Verified
 - **NEW:** NPC instant death mechanics: **COMPLETE** ✓ Chaos Castle functional
 - **NEW:** Dark Horse skill range bonus: **COMPLETE** ✓ Client-verified fix
+- **NEW:** Hit chance calculation formula: **COMPLETE** ✓ Major combat bug fixed
 
 ### Code Audit Results
 - **9 active TODO comments** remaining in source code (down from 24)
 - **2 NotImplementedException removed** (SoccerBall, AttackableNpcBase)
-- **1 Client-informed bug fix**: Dark Horse +2 range now conditional (not universal)
+- **2 Client-informed bug fixes**: 
+  * Dark Horse +2 range now conditional (not universal)
+  * Hit chance formula now uses subtraction instead of ratio (major combat fix)
 - **Verified against client**: All major features have client packet support
 - **No breaking issues**: All remaining TODOs are enhancements or optimizations
 - **Architecture simplified**: Removed all Dapr/distributed infrastructure
@@ -2982,7 +2996,7 @@ This section documents the remaining TODO comments still present in the source c
 
 **Status**: Production-ready All-In-One deployment! 🚀
 
-*Last updated: 2025-01-11 19:30. Client-informed Dark Horse fix completed.*
+*Last updated: 2025-01-11 20:15. Client-informed hit chance formula fix completed (major combat bug).*
 
 ---
 
