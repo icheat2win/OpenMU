@@ -13,6 +13,118 @@ using MUnique.OpenMU.Pathfinding;
 /// <summary>
 /// Abstract packet handler for walk packets.
 /// </summary>
+/// <remarks>
+/// <para>
+/// This handler processes client movement requests. When a player clicks on the ground
+/// to move, the client sends a walk packet containing the current position and a series
+/// of directional steps to reach the target location. The server validates and executes
+/// the movement, notifying nearby players of position changes.
+/// </para>
+/// <para>
+/// <strong>Packet Structure (C3 [variable] 1C/D4/D3/1D):</strong>
+/// <list type="table">
+///   <listheader>
+///     <term>Offset</term>
+///     <term>Length</term>
+///     <term>Type</term>
+///     <term>Description</term>
+///   </listheader>
+///   <item>
+///     <term>0</term>
+///     <term>1</term>
+///     <term>byte</term>
+///     <term>Packet header (0xC3)</term>
+///   </item>
+///   <item>
+///     <term>1</term>
+///     <term>1</term>
+///     <term>byte</term>
+///     <term>Packet size (6 for rotation-only, 6+ for movement with steps)</term>
+///   </item>
+///   <item>
+///     <term>2</term>
+///     <term>1</term>
+///     <term>byte</term>
+///     <term>Packet type (0x1C, 0xD4, 0xD3, or 0x1D depending on version)</term>
+///   </item>
+///   <item>
+///     <term>3</term>
+///     <term>1</term>
+///     <term>byte</term>
+///     <term>Source X coordinate (current position)</term>
+///   </item>
+///   <item>
+///     <term>4</term>
+///     <term>1</term>
+///     <term>byte</term>
+///     <term>Source Y coordinate (current position)</term>
+///   </item>
+///   <item>
+///     <term>5</term>
+///     <term>1</term>
+///     <term>byte</term>
+///     <term>Target rotation (for rotation-only packet) or encoded path data</term>
+///   </item>
+///   <item>
+///     <term>6+</term>
+///     <term>N</term>
+///     <term>bytes</term>
+///     <term>Encoded directional steps (variable length, version-dependent)</term>
+///   </item>
+/// </list>
+/// </para>
+/// <para>
+/// <strong>Movement Types:</strong>
+/// <list type="bullet">
+///   <item><description><strong>Full Walk (Length > 6):</strong> Player moves from source to target following encoded path</description></item>
+///   <item><description><strong>Rotation Only (Length = 6):</strong> Player rotates in place without moving</description></item>
+/// </list>
+/// </para>
+/// <para>
+/// <strong>Directional Step Encoding:</strong>
+/// Steps are encoded as 4-bit values (2 steps per byte), where each direction is:
+/// <list type="bullet">
+///   <item><description>0 = South (Down)</description></item>
+///   <item><description>1 = SouthWest</description></item>
+///   <item><description>2 = West (Left)</description></item>
+///   <item><description>3 = NorthWest</description></item>
+///   <item><description>4 = North (Up)</description></item>
+///   <item><description>5 = NorthEast</description></item>
+///   <item><description>6 = East (Right)</description></item>
+///   <item><description>7 = SouthEast</description></item>
+/// </list>
+/// </para>
+/// <para>
+/// <strong>Validation and Error Conditions:</strong>
+/// <list type="bullet">
+///   <item><description>Packet must be at least 6 bytes</description></item>
+///   <item><description>Source coordinates must match or be near player's current position</description></item>
+///   <item><description>All target tiles in path must be walkable (not blocked by terrain or objects)</description></item>
+///   <item><description>Path must not exceed maximum walk distance in single packet</description></item>
+///   <item><description>Player must not be in restricted state (stunned, frozen, dead)</description></item>
+///   <item><description>Path must respect map boundaries</description></item>
+/// </list>
+/// </para>
+/// <para>
+/// <strong>Success Response:</strong> Player position is updated and movement animation plays.
+/// Nearby players receive position update packets showing the movement.
+/// </para>
+/// <para>
+/// <strong>Failure Response:</strong> If path is invalid, player position is corrected
+/// by sending current position back to client. Movement is rejected silently.
+/// </para>
+/// <para>
+/// <strong>Version Differences:</strong>
+/// <list type="bullet">
+///   <item><description>0x1C (Season 6+): Latest walk packet format with extended features</description></item>
+///   <item><description>0xD4 (0.97d): Intermediate version walk packet</description></item>
+///   <item><description>0xD3 (0.75): Legacy walk packet with different encoding</description></item>
+///   <item><description>0x1D: Alternative walk packet format</description></item>
+/// </list>
+/// Different handlers (CharacterWalkHandlerPlugIn, WalkHandlerPlugIn095, etc.) implement
+/// version-specific decoding logic while sharing this base validation and execution.
+/// </para>
+/// </remarks>
 internal abstract class CharacterWalkBaseHandlerPlugIn : IPacketHandlerPlugIn
 {
     /// <inheritdoc/>
