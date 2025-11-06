@@ -7,9 +7,10 @@
 
 ## ?? Project Progress & Stats
 
-**Current Progress:** 92/99 tasks = 92.9% complete
+**Current Progress:** 96/99 tasks = 96.9% complete
 
 **?? Recent Updates:** 
+- ? MISC-5: Item Skill property split into LearnableSkill and WearableSkill (completed 2025-11-06)
 - ? PERS-4: Configuration change mediator system verified (already implemented)
 - ? MISC-12: Map change protocol 075 failure handling implemented
 - ? Quest reward types verified (all 10 types implemented)
@@ -40,8 +41,8 @@
 | Admin Panel | 8 | 3 | 5 | 37.5% | ?? In Progress |
 | ~~Dapr/Infrastructure~~ | ~~7~~ | ~~2~~ | **REMOVED** | N/A | ?? **Obsolete** |
 | Items/Initialization | 15 | 12 | 3 | 80.0% | ?? Very Good |
-| Other (MISC) | 11 | 6 | 5 | 54.5% | ?? In Progress |
-| **TOTAL** | **99** | **95** | **4** | **95.9%** | ? **Excellent** |
+| Other (MISC) | 11 | 7 | 4 | 63.6% | ?? Very Good |
+| **TOTAL** | **99** | **96** | **3** | **96.9%** | ? **Excellent** |
 
 **Legend:** ? Client = Verified against MuMain client packet handlers
 **?? MILESTONE: ALL Critical Priority Tasks Complete!**
@@ -2720,51 +2721,43 @@ _(All game logic items are critical or medium priority)_
 ---
 
 ### MISC-5: Item Skill Property Dual Purpose ??
-**Status:** ? TODO  
+**Status:** ✅ DONE
 **Priority:** ?? Low
 **Difficulty:** ??? Hard
-**File:** `src/DataModel/Configuration/Items/ItemDefinition.cs:110`
-**Time:** 4 hours
+**File:** `src/DataModel/Configuration/Items/ItemDefinition.cs:119-138`
+**Time:** 4 hours (completed 2025-11-06)
 
 **Issue:** Property used for two different purposes, should split
 
-**Analysis:**
-The `ItemDefinition.Skill` property serves two distinct purposes:
-1. **Learnable Skills** - Skills learned by consuming items (scrolls, orbs)
-   - Used in: LearnablesConsumeHandlerPlugIn.GetLearnableSkill
-   - Persisted to character's LearnedSkills collection
-   - Examples: Scroll of Teleport, Scroll of Fire Ball
+**Solution Implemented:**
+1. Added `LearnableSkill` property for consumable items (scrolls, orbs) that permanently teach skills
+2. Added `WearableSkill` property for equipment that grants temporary skills while worn
+3. Marked original `Skill` property as [Obsolete] for backward compatibility
+4. Updated all 143 usages across the codebase:
+   - Scrolls and Orbs initialization: Use LearnableSkill (Version075, VersionSeasonSix)
+   - Pets and Shields initialization: Use WearableSkill (Version095d, VersionSeasonSix)
+   - SkillList: Check WearableSkill for equipment bonuses
+   - LearnablesConsumeHandlerPlugIn: Use LearnableSkill for learning
+   - SummoningOrbConsumeHandlerPlugIn: Use LearnableSkill with level-based skill number
+   - Item creation (quests, chat commands, crafting): Check both properties for HasSkill flag
+   - Test files: Updated to use WearableSkill for equipment tests
+5. Regenerated Entity Framework and BasicModel code to include new properties
+6. Fixed unrelated ItemDropValidationCleanupService missing using statement
 
-2. **Wearable Skills** - Skills granted while wearing items (wings, staffs, books)
-   - Used in: SkillList.Inventory_WearingItemsChangedAsync
-   - Temporary (removed when item unequipped)
-   - Examples: Wings (teleport), Summoner Books (curse skills)
+**Impact:**
+- Resolves dual-purpose confusion where one property served both consumable learning (permanent) and wearable bonuses (temporary)
+- Each purpose now has dedicated property with clear semantics and comprehensive XML documentation
+- Backward compatibility maintained through [Obsolete] attribute with helpful message
 
-**Complexity:**
-- **143 usages** across codebase
-- Affects data model, game logic, persistence, initialization, tests
-- Generated EF code needs regeneration after schema change
+**Files Changed (22 total):**
+- Core: ItemDefinition.cs (added 2 properties with full docs)
+- GameLogic: SkillList.cs, LearnablesConsumeHandlerPlugIn.cs, SummoningOrbConsumeHandlerPlugIn.cs, SimpleItemCraftingHandler.cs, ItemChatCommandPlugIn.cs, ItemDropValidationCleanupService.cs
+- Persistence: BasicModel/ItemDefinition.Generated.cs, EntityFramework/Model/ItemDefinition.Generated.cs
+- Initialization: Version075/Scrolls.cs, Version075/Orbs.cs, Version095d/Pets.cs, VersionSeasonSix/Scrolls.cs, VersionSeasonSix/Orbs.cs, VersionSeasonSix/Pets.cs, ArmorInitializerBase.cs, QuestDefinitionExtensions.cs, VersionSeasonSix/TestAccounts/Socket.cs
+- Tests: ItemRequirementCalculationTest.cs
+- Documentation: COMPLETE_TODO_LIST.md
 
-**Proposed Solution:**
-1. Add `LearnableSkill` property for scrolls/orbs (consumable learning)
-2. Add `WearableSkill` property for equipment bonuses
-3. Update SkillList to check both properties:
-   - `Inventory_WearingItemsChangedAsync` → use WearableSkill
-   - `AddLearnedSkillAsync` path → use LearnableSkill
-4. Update initialization:
-   - Scrolls.cs → set LearnableSkill
-   - Wings/equipment → set WearableSkill  
-5. Mark old `Skill` property as [Obsolete] for migration period
-6. Update all 143 usages systematically by category
-
-**Impact Areas:**
-- DataModel: ItemDefinition schema change
-- Persistence: EF model regeneration, BasicModel regeneration
-- GameLogic: SkillList, ItemExtensions, consume handlers
-- Initialization: All version initializers (075, 095d, SeasonSix)
-- Tests: MasterSystemTest, SkillListTest, TestHelper
-
-**Tell me:** `"Do task MISC-5"`
+**Commit:** 0e7900ce - "Complete MISC-5: Split ItemDefinition.Skill into LearnableSkill and WearableSkill properties"
 
 ---
 
