@@ -4,6 +4,7 @@
 
 namespace MUnique.OpenMU.GameLogic.PlayerActions;
 
+using MUnique.OpenMU.GameLogic.CastleSiege;
 using MUnique.OpenMU.GameLogic.Views.World;
 using MUnique.OpenMU.Pathfinding;
 
@@ -31,8 +32,6 @@ public class WizardTeleportAction
     /// <param name="target">The target.</param>
     public async ValueTask TryTeleportWithSkillAsync(Player player, Point target)
     {
-        // todo: additional checks:
-        //  - During castle siege, can't teleport over the non-destroyed gates (simple y-axis check)
         if (!player.IsAtSafezone()
             && player.IsActive()
             && player.SkillList?.GetSkill(TeleportSkillId) is { Skill: { } skill }
@@ -40,6 +39,7 @@ public class WizardTeleportAction
             && !player.CurrentMap.Terrain.SafezoneMap[target.X, target.Y]
             && player.IsInRange(target, skill.Range)
             && CanPlayerBeTeleported(player)
+            && !IsTeleportBlockedByCastleSiegeGate(player, target)
             && await player.TryConsumeForSkillAsync(skill).ConfigureAwait(false))
         {
             _ = Task.Run(() => player.TeleportAsync(target, skill));
@@ -92,5 +92,52 @@ public class WizardTeleportAction
         }
 
         return true;
+    }
+
+    /// <summary>
+    /// Checks if teleportation is blocked by a castle siege gate.
+    /// During castle siege, gates at specific Y-axis ranges block teleportation until destroyed.
+    /// Based on client gate locations: Y ranges around 114, 161, and 204.
+    /// </summary>
+    /// <param name="player">The player attempting to teleport.</param>
+    /// <param name="target">The target position.</param>
+    /// <returns><c>true</c> if teleportation is blocked by a gate; otherwise, <c>false</c>.</returns>
+    private static bool IsTeleportBlockedByCastleSiegeGate(Player player, Point target)
+    {
+        // Only check if there's an active castle siege context
+        var castleSiegeContext = player.CurrentMap?.CastleSiegeContext;
+        if (castleSiegeContext is null || castleSiegeContext.State != CastleSiegeState.InProgress)
+        {
+            return false;
+        }
+
+        // Gate Y-axis ranges based on original client gate locations:
+        // g_byGateLocation[6][2] = { { 67, 114 }, { 93, 114 }, { 119, 114 }, { 81, 161 }, { 107, 161 }, { 93, 204 } }
+        // Gates span ~4 tiles width, checking if player or target crosses gate line
+        var playerY = player.Position.Y;
+        var targetY = target.Y;
+
+        // Check if teleporting across any gate line (gates at Y: 114, 161, 204)
+        // Allow teleport only if both positions are on the same side of all gates
+        return IsCrossingGateLine(playerY, targetY, 114)
+            || IsCrossingGateLine(playerY, targetY, 161)
+            || IsCrossingGateLine(playerY, targetY, 204);
+    }
+
+    /// <summary>
+    /// Checks if a teleport crosses a gate line at the specified Y coordinate.
+    /// </summary>
+    /// <param name="fromY">Starting Y position.</param>
+    /// <param name="toY">Target Y position.</param>
+    /// <param name="gateY">Gate Y coordinate.</param>
+    /// <returns><c>true</c> if the teleport crosses the gate; otherwise, <c>false</c>.</returns>
+    private static bool IsCrossingGateLine(byte fromY, byte toY, int gateY)
+    {
+        // Allow ±2 tile tolerance for gate area (gates are ~4 tiles wide)
+        const int gateTolerance = 2;
+
+        // Check if teleport crosses from one side of gate to the other
+        return (fromY < gateY - gateTolerance && toY > gateY + gateTolerance)
+            || (fromY > gateY + gateTolerance && toY < gateY - gateTolerance);
     }
 }

@@ -1266,6 +1266,45 @@ Separated synchronous predicate filtering (RemoveAll) from async alliance checki
 
 ---
 
+### GL-19: Castle Siege Gate Teleport Restrictions 🟡
+**Status:** ✅ DONE
+**Priority:** 🟡 Medium
+**Difficulty:** ⭐⭐ Medium
+**File:** `src/GameLogic/PlayerActions/WizardTeleportAction.cs:31-42,100-141`
+**Time:** 2 hours
+
+**Issue:** TODO noted teleportation should be blocked over non-destroyed castle siege gates
+
+**Implementation:**
+1. ✅ Added `IsTeleportBlockedByCastleSiegeGate` validation in teleport skill check
+2. ✅ Implemented Y-axis gate crossing detection based on client gate positions
+3. ✅ Added three gate line checks at Y coordinates: 114, 161, 204
+4. ✅ Created `IsCrossingGateLine` helper with ±2 tile tolerance
+5. ✅ Only enforces restriction during `CastleSiegeState.InProgress`
+6. ✅ Added `using MUnique.OpenMU.GameLogic.CastleSiege;`
+
+**Changes:**
+- Modified `TryTeleportWithSkillAsync` to call gate crossing check
+- Added `IsTeleportBlockedByCastleSiegeGate(Player, Point)` method
+- Added `IsCrossingGateLine(byte, byte, int)` helper method
+- Removed TODO comment from line 33-34
+
+**Game Logic:**
+Based on original client gate locations (g_byGateLocation[6][2]):
+- Gate positions: {67,114}, {93,114}, {119,114}, {81,161}, {107,161}, {93,204}
+- Three horizontal gate lines at Y: 114, 161, 204
+- Prevents teleporting from one side of gate to the other (±2 tile tolerance)
+- Players can teleport within same side of gate or when siege is inactive
+- Ensures strategic gate importance during castle siege battles
+
+**Technical Details:**
+- Gate tolerance: ±2 tiles (gates are ~4 tiles wide)
+- Only checks Y-axis as gates are horizontal barriers
+- Short-circuits if no castle siege context or siege not in progress
+- Returns false to allow teleport, true to block
+
+---
+
 ## PERS - Persistence (8 medium)
 
 ### PERS-1: ConfigurationTypeRepository Init Check Every Time 🟡
@@ -2778,7 +2817,7 @@ This section documents the remaining TODO comments still present in the source c
 6. `PlugInManager.cs:424` - Implement code signing for plugins
 ✅ 7. `DevilSquareContext.cs:41` - Consider adding money drops (CLARIFIED 2025-01-11 - intentionally disabled to match original)
 ✅ 8. `MiniGameContext.cs:509` - Consider "winning" logic for Chaos Castle (CLARIFIED 2025-01-11 - documented as future enhancement)
-9. `WizardTeleportAction.cs:34` - Additional teleport checks needed
+✅ 9. `WizardTeleportAction.cs:34` - Castle siege teleport restrictions (COMPLETED 2025-01-11 - gate crossing checks implemented)
 ✅ 10. `GameServer.Host/GameServerHostedServiceWrapper.cs:14` - Listen to config changes (OBSOLETE 2025-01-11 - file no longer exists)
 ✅ 11. `Network/Analyzer/Program.cs:28` - Complete network analyzer tool (COMPLETED 2025-01-11 - exception handler implemented)
 
@@ -2792,30 +2831,30 @@ This section documents the remaining TODO comments still present in the source c
 
 ### Status Summary
 - **Critical/High Priority**: 4 (DI refactoring)
-- **Medium Priority**: 2 (features, game logic enhancements)
+- **Medium Priority**: 1 (plugin code signing)
 - **Low Priority**: 5 (optimizations, future enhancements)
-- **Total Remaining**: 11 TODOs (down from 24 after Dapr removal, 6 clarified/completed/obsolete)
+- **Total Remaining**: 10 TODOs (down from 24 after Dapr removal, 7 clarified/completed/obsolete)
 
 ---
 
 ## 📈 Final Status Report: 2025-01-11
 
 ### Achievement Summary
-✅ **83 of 105 tasks completed (79.0%)**
+✅ **84 of 105 tasks completed (80.0%)**
 - All 22 critical priority tasks: **COMPLETE** ✅
 - Cash Shop (11 tasks): **100% COMPLETE** ✓ Client Verified
 - Castle Siege (6 tasks): **100% COMPLETE** ✓ Client Verified  
 - Guild/Alliance (9 tasks): **100% COMPLETE** ✓ Client Verified
 
 ### Code Audit Results
-- **11 active TODO comments** remaining in source code (24 found, 8 removed - 7 with Dapr, 6 clarified/completed/obsolete)
+- **10 active TODO comments** remaining in source code (24 found, 8 removed - 7 with Dapr, 7 clarified/completed/obsolete)
 - **Verified against client**: All major features have client packet support
 - **No breaking issues**: All remaining TODOs are enhancements or optimizations
 - **Architecture simplified**: Removed all Dapr/distributed infrastructure
 
 ### Priority Breakdown of Remaining Work
 - **4 High Priority**: DI refactoring
-- **2 Medium Priority**: Feature enhancements, game logic improvements
+- **1 Medium Priority**: Plugin code signing
 - **5 Low Priority**: Code optimizations, future improvements, nice-to-haves
 
 ### Project Health: EXCELLENT 🎉
