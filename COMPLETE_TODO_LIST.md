@@ -2763,91 +2763,83 @@ _(All game logic items are critical or medium priority)_
 
 ## 📋 Actual TODO Comments Found in Codebase (2025-11-06 Audit)
 
-This section documents the 24 actual TODO comments still present in the source code:
+**NOTE: All Dapr/Distributed infrastructure has been removed (2025-11-06). Focus is now on All-In-One deployments only.**
 
-### Infrastructure & Dapr (3 TODOs - 4 COMPLETED ✅)
-**COMPLETED:**
-✅ 1. `LoginServer.Host/Program.cs:18` - Add metrics (DONE: 2025-11-06)
-✅ 2. `GuildServer.Host/Program.cs:21` - Add metrics (DONE: 2025-11-06)
-✅ 3. `FriendServer.Host/Program.cs:24` - Add metrics (DONE: 2025-11-06)
-✅ 4. `AdminPanel.Host/Program.cs:28` - Add metrics (DONE: 2025-11-06)
-
-**REMAINING:**
-1. `GameServer.cs:152` - Use PubSub for server communication
-2. `ConfigurationChangeHandler.cs:37` - Subscribe systems to change mediator
-3. `ChatServer.Host/Program.cs:20` - Use Config API instead of persistence
+This section documents the remaining TODO comments still present in the source code:
 
 ### Architecture & DI (5 TODOs)
-8. `GameServerContext.cs:78` - GuildServer: Use DI where required
-9. `GameServerContext.cs:81` - EventPublisher: Use DI, make private
-10. `GameServerContext.cs:84` - LoginServer: Use DI where required
-11. `GameServerContext.cs:87` - FriendServer: Use DI where required
-12. `ConnectServer.Host/ConnectServerHostedServiceWrapper.cs:13` - Listen to config changes
+1. `GameServerContext.cs:78` - GuildServer: Use DI where required
+2. `GameServerContext.cs:81` - EventPublisher: Use DI, make private
+3. `GameServerContext.cs:84` - LoginServer: Use DI where required
+4. `GameServerContext.cs:87` - FriendServer: Use DI where required
+5. `ConfigurationChangeHandler.cs:37` - Subscribe systems to change mediator
 
 ### Features & Game Logic (6 TODOs)
-13. `PlugInManager.cs:424` - Implement code signing for plugins
-14. `DevilSquareContext.cs:41` - Consider adding money drops (note: original doesn't)
-15. `MiniGameContext.cs:509` - Consider "winning" logic for Chaos Castle
-16. `WizardTeleportAction.cs:34` - Additional teleport checks needed
-17. `GameServer.Host/GameServerHostedServiceWrapper.cs:14` - Listen to config changes
-18. `Network/Analyzer/Program.cs:28` - Complete network analyzer tool
+6. `PlugInManager.cs:424` - Implement code signing for plugins
+7. `DevilSquareContext.cs:41` - Consider adding money drops (note: original doesn't)
+8. `MiniGameContext.cs:509` - Consider "winning" logic for Chaos Castle
+9. `WizardTeleportAction.cs:34` - Additional teleport checks needed
+10. `GameServer.Host/GameServerHostedServiceWrapper.cs:14` - Listen to config changes (if still relevant)
+11. `Network/Analyzer/Program.cs:28` - Complete network analyzer tool
 
 ### Data & Configuration (6 TODOs)
-19. `ConfigurationTypeRepository.cs:190` - Implement for all types
-20. `EntityDataContext.cs:41` - Handle CharacterStatus in AppearanceData
-21. `InventoryConstants.cs:128` - Season-specific constants (S6 only currently)
-22. `ItemPowerUpFactory.cs:288` - Make more generic and configurable
-23. `MonsterDefinition.cs:14` - Change to data-driven class
-24. `Network/Listener.cs:137` - Refactor to use AcceptSocketAsync
+12. `ConfigurationTypeRepository.cs:190` - Implement for all types
+13. `EntityDataContext.cs:41` - Handle CharacterStatus in AppearanceData
+14. `InventoryConstants.cs:128` - Season-specific constants (S6 only currently)
+15. `ItemPowerUpFactory.cs:288` - Make more generic and configurable
+16. `MonsterDefinition.cs:14` - Change to data-driven class
+17. `Network/Listener.cs:137` - Refactor to use AcceptSocketAsync
 
 ### Status Summary
 - **Critical/High Priority**: 5 (DI refactoring, config change listeners)
-- **Medium Priority**: 4 (PubSub, features) - **4 metrics tasks completed! ✅**
-- **Low Priority**: 11 (optimizations, future enhancements)
+- **Medium Priority**: 6 (features, game logic enhancements)
+- **Low Priority**: 6 (optimizations, future enhancements)
+- **Total Remaining**: 17 TODOs (down from 24 after Dapr removal)
 
 ---
 
 ## 📈 Final Status Report: 2025-11-06
 
 ### Achievement Summary
-✅ **81 of 105 tasks completed (77.1%)**
+✅ **77 of 105 tasks completed (73.3%)**
 - All 22 critical priority tasks: **COMPLETE** ✅
 - Cash Shop (11 tasks): **100% COMPLETE** ✓ Client Verified
 - Castle Siege (6 tasks): **100% COMPLETE** ✓ Client Verified  
 - Guild/Alliance (9 tasks): **100% COMPLETE** ✓ Client Verified
-- **NEW**: Network metrics added to 4 Dapr hosts ✅ (2025-11-06)
 
 ### Code Audit Results
-- **20 active TODO comments** remaining in source code (24 found, 4 completed)
+- **17 active TODO comments** remaining in source code (24 found, 7 removed with Dapr)
 - **Verified against client**: All major features have client packet support
 - **No breaking issues**: All remaining TODOs are enhancements or optimizations
-- **Progress today**: Added OpenTelemetry network metrics to 4 Dapr hosts
+- **Architecture simplified**: Removed all Dapr/distributed infrastructure
 
 ### Priority Breakdown of Remaining Work
 - **5 High Priority**: DI refactoring, configuration change listeners
-- **4 Medium Priority**: PubSub implementation, feature enhancements **(down from 8!)**
-- **11 Low Priority**: Code optimizations, future improvements, nice-to-haves
+- **6 Medium Priority**: Feature enhancements, game logic improvements
+- **6 Low Priority**: Code optimizations, future improvements, nice-to-haves
 
 ### Project Health: EXCELLENT 🎉
 - ✅ All critical gameplay features implemented
 - ✅ Client-server packet compatibility verified
 - ✅ No game-breaking bugs in TODO list
-- ✅ Clean separation: Infrastructure vs. Features
+- ✅ **Simplified architecture**: All-In-One deployment only
+- ✅ Removed distributed complexity for easier maintenance
 
 ### Recommended Next Actions
-1. **Week 1**: Add PubSub implementation (DAP-4) - 4-5 hours
-2. **Week 2**: Implement config change listeners (PERS-4, DAP-2) - 6 hours
+1. **Week 1**: Test All-In-One deployment thoroughly
+2. **Week 2**: Implement config change listeners - 6 hours
 3. **Week 3**: Complete DI refactoring (NET-3) - 4-5 hours
 4. **Month 2**: Low-priority enhancements and optimizations
 
 **Recent Progress (2025-11-06)**:
-- ✅ Added OpenTelemetry network metrics to 4 Dapr hosts
 - ✅ Restored 9,992 deleted files (Web UI, item images, legacy components)
-- ✅ Progress: 77.1% complete (81/105 tasks)
+- ✅ **Removed all Dapr/distributed infrastructure** - focusing on All-In-One
+- ✅ **Cleaned solution file** - removed 9 Dapr projects
+- ✅ Updated deployment docs - All-In-One and All-In-One-Traefik only
 
-**Status**: Production-ready with room for architectural improvements! 🚀
+**Status**: Production-ready All-In-One deployment! 🚀
 
-*Last updated: 2025-11-06 18:00. All line numbers and file paths are accurate.*
+*Last updated: 2025-11-06 18:45. Simplified architecture, All-In-One focused.*
 
 ---
 
