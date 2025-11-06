@@ -25,7 +25,7 @@ services.AddPeristenceProvider(true)
 builder.AddAdminPanel();
 
 var metricsRegistry = new MetricsRegistry();
-// todo: add some meaningful metrics
+metricsRegistry.AddNetworkMeters();
 builder.AddOpenTelemetryMetrics(metricsRegistry);
 
 var app = builder.BuildAndConfigure(true);

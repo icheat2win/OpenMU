@@ -2765,14 +2765,17 @@ _(All game logic items are critical or medium priority)_
 
 This section documents the 24 actual TODO comments still present in the source code:
 
-### Infrastructure & Dapr (7 TODOs)
+### Infrastructure & Dapr (3 TODOs - 4 COMPLETED ✅)
+**COMPLETED:**
+✅ 1. `LoginServer.Host/Program.cs:18` - Add metrics (DONE: 2025-11-06)
+✅ 2. `GuildServer.Host/Program.cs:21` - Add metrics (DONE: 2025-11-06)
+✅ 3. `FriendServer.Host/Program.cs:24` - Add metrics (DONE: 2025-11-06)
+✅ 4. `AdminPanel.Host/Program.cs:28` - Add metrics (DONE: 2025-11-06)
+
+**REMAINING:**
 1. `GameServer.cs:152` - Use PubSub for server communication
 2. `ConfigurationChangeHandler.cs:37` - Subscribe systems to change mediator
-3. `LoginServer.Host/Program.cs:18` - Add metrics
-4. `GuildServer.Host/Program.cs:21` - Add metrics
-5. `FriendServer.Host/Program.cs:24` - Add metrics
-6. `AdminPanel.Host/Program.cs:28` - Add metrics
-7. `ChatServer.Host/Program.cs:20` - Use Config API instead of persistence
+3. `ChatServer.Host/Program.cs:20` - Use Config API instead of persistence
 
 ### Architecture & DI (5 TODOs)
 8. `GameServerContext.cs:78` - GuildServer: Use DI where required
@@ -2799,7 +2802,7 @@ This section documents the 24 actual TODO comments still present in the source c
 
 ### Status Summary
 - **Critical/High Priority**: 5 (DI refactoring, config change listeners)
-- **Medium Priority**: 8 (PubSub, metrics, features)
+- **Medium Priority**: 4 (PubSub, features) - **4 metrics tasks completed! ✅**
 - **Low Priority**: 11 (optimizations, future enhancements)
 
 ---
@@ -2807,20 +2810,22 @@ This section documents the 24 actual TODO comments still present in the source c
 ## 📈 Final Status Report: 2025-11-06
 
 ### Achievement Summary
-✅ **77 of 105 tasks completed (73.3%)**
+✅ **81 of 105 tasks completed (77.1%)**
 - All 22 critical priority tasks: **COMPLETE** ✅
 - Cash Shop (11 tasks): **100% COMPLETE** ✓ Client Verified
 - Castle Siege (6 tasks): **100% COMPLETE** ✓ Client Verified  
 - Guild/Alliance (9 tasks): **100% COMPLETE** ✓ Client Verified
+- **NEW**: Network metrics added to 4 Dapr hosts ✅ (2025-11-06)
 
 ### Code Audit Results
-- **24 active TODO comments** found in source code
+- **20 active TODO comments** remaining in source code (24 found, 4 completed)
 - **Verified against client**: All major features have client packet support
 - **No breaking issues**: All remaining TODOs are enhancements or optimizations
+- **Progress today**: Added OpenTelemetry network metrics to 4 Dapr hosts
 
 ### Priority Breakdown of Remaining Work
 - **5 High Priority**: DI refactoring, configuration change listeners
-- **8 Medium Priority**: PubSub implementation, metrics, feature enhancements
+- **4 Medium Priority**: PubSub implementation, feature enhancements **(down from 8!)**
 - **11 Low Priority**: Code optimizations, future improvements, nice-to-haves
 
 ### Project Health: EXCELLENT 🎉

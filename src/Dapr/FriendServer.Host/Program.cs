@@ -21,7 +21,7 @@ services.AddSingleton<IChatRoomRequestPublisher, DirectChatRoomRequestPublisher>
     .AddPeristenceProvider();
 
 var metricsRegistry = new MetricsRegistry();
-// todo: add some meaningful metrics
+metricsRegistry.AddNetworkMeters();
 builder.AddOpenTelemetryMetrics(metricsRegistry);
 
 var app = builder.BuildAndConfigure();
