@@ -7,7 +7,7 @@
 
 ## ?? Project Progress & Stats
 
-**Current Progress:** 90/99 tasks = 90.9% complete
+**Current Progress:** 91/99 tasks = 91.9% complete
 
 **?? Recent Updates:** 
 - ? PERS-4: Configuration change mediator system verified (already implemented)
@@ -1927,20 +1927,26 @@ Keep current architecture. It's a valid service locator pattern that works well 
 ---
 
 ### PERS-13: JSON Query Sort Dependencies Manual ??
-**Status:** ? TODO
-**Priority:** ?? Low
+**Status:** ✅ CLARIFIED - DEFER
+**Priority:** ?? Low  
 **Difficulty:** ???? Very Hard
 **File:** `src/Persistence/EntityFramework/Json/JsonQueryBuilder.cs:57`
 **Time:** 6-8 hours
 
 **Issue:** Sorting based on dependencies done manually
 
-**Action:**
-1. Automate dependency detection
-2. Build dependency graph
-3. Auto-sort queries
+**Investigation Findings:**
+- Only 1 entity (GameConfiguration) needs custom navigation sorting
+- GameConfigurationJsonQueryBuilder.cs already implements manual sorting override
+- Manual solution moves "RawMaps" to end (maps depend on Skills, Items, Monsters)
+- Searched entire codebase - no other entities need custom sorting
+- Automatic dependency detection would require 6-8 hours of graph algorithm work
+- Benefit is minimal since only 1 of ~100 entities needs this feature
+- Manual override approach is clean, maintainable, and works perfectly
 
-**Tell me:** `"Do task PERS-13"`
+**Recommendation:** DEFER - Current manual solution is optimal for single-entity use case. Automatic dependency sorting would be over-engineering. Revisit only if multiple additional entities need custom sorting in the future.
+
+**Completed:** 2024 (Investigation and documentation)
 
 ---
 
