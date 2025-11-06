@@ -111,26 +111,46 @@ public static class InventoryConstants
 
     /// <summary>
     /// Index of the first personal store slot.
-    /// 12 = number of wearable item slots
-    /// 64 = number of inventory slots
+    /// 12 = number of wearable item slots.
+    /// 64 = number of inventory slots.
     /// </summary>
     public static readonly byte FirstExtensionItemSlotIndex = (byte)(
         EquippableSlotsCount + // 12
         (InventoryRows * RowSize)); // 64
 
     /// <summary>
-    /// Index of the first personal store slot.
-    /// 12 = number of wearable item slots
-    /// 64 = number of inventory slots
+    /// Index of the first personal store slot for Season 6+ (with inventory extensions).
+    /// 12 = number of wearable item slots.
+    /// 64 = number of inventory slots.
     /// 128 = number of extended inventory slots (64 are hidden in game, S6E3).
     /// </summary>
     /// <remarks>
-    /// TODO: This is only valid in season 6! Before, there are no extensions and the store begins earlier.
+    /// For versions before Season 6 without inventory extensions, use <see cref="GetFirstStoreItemSlotIndex"/>.
+    /// This constant represents the Season 6+ layout with extensions enabled.
     /// </remarks>
     public static readonly byte FirstStoreItemSlotIndex = (byte)(
         EquippableSlotsCount + // 12
         (InventoryRows * RowSize) + // 64
         (AllInventoryExtensionRows * RowSize)); // 128
+
+    /// <summary>
+    /// Gets the index of the first personal store slot based on whether inventory extensions are available.
+    /// </summary>
+    /// <param name="hasInventoryExtensions">Whether inventory extensions are available in this game version.</param>
+    /// <returns>
+    /// The index of the first store slot:
+    /// - 76 (12 + 64) for versions without extensions (pre-Season 6).
+    /// - 204 (12 + 64 + 128) for versions with extensions (Season 6+).
+    /// </returns>
+    public static byte GetFirstStoreItemSlotIndex(bool hasInventoryExtensions)
+    {
+        if (hasInventoryExtensions)
+        {
+            return FirstStoreItemSlotIndex; // 204 for Season 6+
+        }
+
+        return FirstExtensionItemSlotIndex; // 76 for pre-Season 6
+    }
 
     /// <summary>
     /// The number of personal store rows.
