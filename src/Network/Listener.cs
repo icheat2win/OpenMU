@@ -8,8 +8,8 @@ using System.IO.Pipelines;
 using System.Net;
 using System.Net.Sockets;
 using Microsoft.Extensions.Logging;
-using Pipelines.Sockets.Unofficial;
 using MUnique.OpenMU.PlugIns;
+using Pipelines.Sockets.Unofficial;
 
 /// <summary>
 /// A tcp listener which automatically creates instances of <see cref="Connection"/>s for accepted clients.
@@ -63,7 +63,7 @@ public class Listener
     {
         this._clientListener = new TcpListener(IPAddress.Any, this._port);
         this._clientListener.Start(backlog);
-        this._clientListener.BeginAcceptSocket(this.OnAccept, null);
+        _ = Task.Run(this.AcceptClientsAsync);
     }
 
     /// <summary>
@@ -100,12 +100,11 @@ public class Listener
         return new Connection(socketConnection, this.CreateDecryptor(socketConnection.Input), this.CreateEncryptor(socketConnection.Output), this._loggerFactory.CreateLogger<Connection>());
     }
 
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Usage", "VSTHRD100:Avoid async void methods", Justification = "Exceptions are catched.")]
-    private async void OnAccept(IAsyncResult result)
+    private async Task AcceptClientsAsync()
     {
-        try
+        while (this._clientListener?.Server.IsBound ?? false)
         {
-            Socket socket;
+            Socket? socket = null;
             try
             {
                 if (this._clientListener is null)
@@ -113,7 +112,7 @@ public class Listener
                     return;
                 }
 
-                socket = this._clientListener.EndAcceptSocket(result);
+                socket = await this._clientListener.AcceptSocketAsync().ConfigureAwait(false);
             }
             catch (ObjectDisposedException)
             {
@@ -128,16 +127,23 @@ public class Listener
             catch (Exception ex)
             {
                 this._logger.LogError(ex, "Error accepting the client socket");
-                return;
+                continue;
             }
 
-            // Accept the next client:
-            if (this._clientListener?.Server.IsBound ?? false)
+            if (socket is null)
             {
-                // todo: refactor to use AcceptSocketAsync
-                this._clientListener.BeginAcceptSocket(this.OnAccept, null);
+                continue;
             }
 
+            // Handle the client in a separate task to continue accepting new connections
+            _ = Task.Run(async () => await this.HandleClientAsync(socket).ConfigureAwait(false));
+        }
+    }
+
+    private async Task HandleClientAsync(Socket socket)
+    {
+        try
+        {
             ClientAcceptingEventArgs? cancel = null;
             if (this.ClientAccepting is { } clientAccepting)
             {
@@ -162,7 +168,7 @@ public class Listener
         }
         catch (Exception ex)
         {
-            this._logger.LogError(ex, "Unexpected error in OnAccept.");
+            this._logger.LogError(ex, "Unexpected error handling client connection.");
         }
     }
 }
