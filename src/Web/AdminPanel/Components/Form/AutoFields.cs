@@ -121,25 +121,63 @@ public class AutoFields : ComponentBase
     private ILogger<AutoFields> Logger { get; set; } = null!;
 
     /// <inheritdoc />
+#pragma warning disable BL0006 // Do not use RenderTree APIs - we need dynamic sequences for grouped fields
     protected override void BuildRenderTree(RenderTreeBuilder builder)
     {
         int i = 0;
-        foreach (var propertyInfo in this.Properties)
+        var propertiesByGroup = this.Properties
+            .GroupBy(p => p.GetCustomAttribute<DisplayAttribute>()?.GroupName ?? string.Empty)
+            .OrderBy(g => g.Key);
+
+        foreach (var group in propertiesByGroup)
         {
-            IComponentBuilder? componentBuilder = null;
-            try
+            if (!string.IsNullOrEmpty(group.Key))
             {
-                componentBuilder = Builders.FirstOrDefault(b => b.CanBuildComponent(propertyInfo));
-                if (componentBuilder != null)
+                // Render group container with collapsible section
+                i++;
+                builder.OpenElement(i, "details");
+                i++;
+                builder.AddAttribute(i, "class", "field-group");
+                i++;
+                builder.AddAttribute(i, "open", true); // Open by default
+
+                i++;
+                builder.OpenElement(i, "summary");
+                i++;
+                builder.AddAttribute(i, "class", "field-group-header");
+                i++;
+                builder.AddContent(i, group.Key);
+                builder.CloseElement(); // summary
+
+                i++;
+                builder.OpenElement(i, "div");
+                i++;
+                builder.AddAttribute(i, "class", "field-group-content");
+            }
+
+            foreach (var propertyInfo in group)
+            {
+                IComponentBuilder? componentBuilder = null;
+                try
                 {
-                    // TODO: Build something around groups (same DisplayAttribute.GroupName)
-                    i = componentBuilder.BuildComponent(this.Context.Model, propertyInfo, builder, i, this.NotificationService);
+                    componentBuilder = Builders.FirstOrDefault(b => b.CanBuildComponent(propertyInfo));
+                    if (componentBuilder != null)
+                    {
+                        i = componentBuilder.BuildComponent(this.Context.Model, propertyInfo, builder, i, this.NotificationService);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    this.Logger.LogError(ex, $"Error building component for property {this.Context.Model.GetType().Name}.{propertyInfo.Name} with component builder {componentBuilder}: {ex.Message}{Environment.NewLine}{ex.StackTrace}");
                 }
             }
-            catch (Exception ex)
+
+            if (!string.IsNullOrEmpty(group.Key))
             {
-                this.Logger.LogError(ex, $"Error building component for property {this.Context.Model.GetType().Name}.{propertyInfo.Name} with component builder {componentBuilder}: {ex.Message}{Environment.NewLine}{ex.StackTrace}");
+                builder.CloseElement(); // div.field-group-content
+                builder.CloseElement(); // details
             }
         }
     }
+#pragma warning restore BL0006
 }

@@ -11018,6 +11018,7 @@ mark {
   -webkit-transform: rotate(225deg);
 }
 
+
 .north {
   transform: rotate(270deg);
   -webkit-transform: rotate(270deg);
@@ -11027,3 +11028,31 @@ mark {
   transform: rotate(315deg);
   -webkit-transform: rotate(315deg);
 }
+
+/* Field Grouping Styles */
+.field-group {
+  margin: 1rem 0;
+  border: 1px solid #dee2e6;
+  border-radius: 0.25rem;
+  background-color: #f8f9fa;
+}
+
+.field-group-header {
+  padding: 0.75rem 1rem;
+  font-weight: 600;
+  font-size: 1.1rem;
+  cursor: pointer;
+  background-color: #e9ecef;
+  border-radius: 0.25rem 0.25rem 0 0;
+  user-select: none;
+}
+
+.field-group-header:hover {
+  background-color: #dde1e5;
+}
+
+.field-group-content {
+  padding: 1rem;
+  background-color: #ffffff;
+}
+
