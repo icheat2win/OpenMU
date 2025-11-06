@@ -1,4 +1,4 @@
-# OpenMU - Complete TODO & Issues List
+﻿# OpenMU - Complete TODO & Issues List
 
 **Last Updated:** 2025-11-06 (Dapr infrastructure removed, client verification complete)
 **Total Items:** 99 TODOs (6 Dapr tasks removed) + 60 NotImplemented = **159 Total Issues**
@@ -10,9 +10,9 @@
 **Current Progress:** 96.5/99 tasks = 97.5% complete (0.5 credit for MISC-7 partial)
 
 **?? Recent Updates:** 
-- ? MISC-7: ItemPowerUpFactory formulas documented (partial completion 2025-11-06)
-- ? Build fixed: AntiExploitItemDropPlugIn disabled (compilation errors removed 2025-11-06)
-- ? MISC-5: Item Skill property split into LearnableSkill and WearableSkill (completed 2025-11-06)
+-  MISC-7: ItemPowerUpFactory formulas documented (partial completion 2025-11-06)
+-  Build fixed: AntiExploitItemDropPlugIn disabled (compilation errors removed 2025-11-06)
+-  MISC-5: Item Skill property split into LearnableSkill and WearableSkill (completed 2025-11-06)
 - ? PERS-4: Configuration change mediator system verified (already implemented)
 - ? MISC-12: Map change protocol 075 failure handling implemented
 - ? Quest reward types verified (all 10 types implemented)
@@ -43,8 +43,8 @@
 | Admin Panel | 8 | 3 | 5 | 37.5% | ?? In Progress |
 | ~~Dapr/Infrastructure~~ | ~~7~~ | ~~2~~ | **REMOVED** | N/A | ?? **Obsolete** |
 | Items/Initialization | 15 | 12 | 3 | 80.0% | ?? Very Good |
-| Other (MISC) | 11 | 7 | 4 | 63.6% | ?? Very Good |
-| **TOTAL** | **99** | **96** | **3** | **96.9%** | ? **Excellent** |
+| Other (MISC) | 11 | 6 | 5 | 54.5% | ?? In Progress |
+| **TOTAL** | **99** | **88** | **11** | **88.9%** | ? **Excellent** |
 
 **Legend:** ? Client = Verified against MuMain client packet handlers
 **?? MILESTONE: ALL Critical Priority Tasks Complete!**
@@ -1727,7 +1727,7 @@ Keep current architecture. It's a valid service locator pattern that works well 
 ## ADM - Admin Panel (3 medium)
 
 ### ADM-1: AutoForm Instead of Specialized Components ??
-**Status:** ✅ DONE
+**Status:** ? TODO
 **Priority:** ?? Medium
 **Difficulty:** ???? Very Hard
 **File:** `src/Web/AdminPanel/Pages/EditAccount.razor.cs:54`
@@ -1735,50 +1735,17 @@ Keep current architecture. It's a valid service locator pattern that works well 
 
 **Issue:** Generic AutoForm used, should be specialized
 
-**Solution Implemented:**
-Created specialized form components for better UX when editing accounts and characters:
+**Action:**
+1. Create AccountEditForm component
+2. Better UX for account editing
+3. Custom validation
 
-**Components Created:**
-1. **AccountEdit.razor** (`src/Web/AdminPanel/Components/AccountEdit/`)
-   - Specialized form for editing Account entities
-   - Groups related fields (Cash Shop Balance, Security) using collapsible details
-   - Better labeling and help text (e.g., "Is template account" with description)
-   - Custom chat ban controls (clear ban button, quick 7-day ban button)
-   - InputText, InputSelect, InputDate, InputNumber, InputCheckbox with validation
-
-2. **CharacterEdit.razor** (`src/Web/AdminPanel/Components/CharacterEdit/`)
-   - Specialized form for editing Character entities
-   - Collapsible field groups:
-     - Experience & Level (Experience, Master Experience, Level/Master Up Points)
-     - Character State (Hero State, Status, Pose, PK Count)
-     - Fruit Points & Inventory (Fruit points, Inventory extensions with S6+ note)
-     - Personal Store (Store name, is open checkbox)
-   - Position X/Y in two-column layout
-   - Proper min/max values (e.g., CharacterSlot 0-4, Position 0-255)
-   - Enum dropdowns with all values for State, CharacterStatus, Pose
-
-**Updated Code:**
-- `EditAccount.razor.cs` - Added AccountEdit and CharacterEdit namespaces
-- `EditAccount.razor.cs` - Updated AddFormToRenderTree to use:
-  - `ItemEdit` for Item type (existing)
-  - `AccountEdit` for Account type (new)
-  - `CharacterEdit` for Character type (new)
-  - `AutoForm` for other types (fallback)
-
-**Benefits:**
-- Better UX with logical field grouping
-- Clearer labels and descriptions
-- Custom controls (e.g., chat ban quick actions)
-- Reduced clutter with collapsible sections
-- Type-safe component parameters
-- Follows same pattern as ItemEdit component
-
-**Tell me:** `"Do task ADM-1"` ✅ COMPLETED
+**Tell me:** `"Do task ADM-1"`
 
 ---
 
 ### ADM-2: Field Grouping Not Implemented ??
-**Status:** ✅ DONE
+**Status:** ? TODO
 **Priority:** ?? Medium
 **Difficulty:** ??? Hard
 **File:** `src/Web/AdminPanel/Components/Form/AutoFields.cs:135`
@@ -1786,73 +1753,30 @@ Created specialized form components for better UX when editing accounts and char
 
 **Issue:** Fields with same DisplayAttribute.GroupName not grouped
 
-**Implementation:**
-1. ✅ Modified BuildRenderTree to group properties by DisplayAttribute.GroupName
-2. ✅ Properties with same GroupName rendered inside collapsible `<details>` element
-3. ✅ Added `<summary>` header with group name for collapsible toggle
-4. ✅ Properties without GroupName (empty string) render ungrouped as before
-5. ✅ Added CSS styling for field groups:
-   - `.field-group` - Container with border and rounded corners
-   - `.field-group-header` - Summary element with hover effect
-   - `.field-group-content` - Content area with padding
-6. ✅ Groups are open by default (open attribute on details element)
-7. ✅ Suppressed BL0006 analyzer warnings (dynamic sequences required for grouped rendering)
+**Action:**
+1. Detect fields with same GroupName
+2. Create visual grouping
+3. Collapsible sections
 
-**Technical Details:**
-- Groups ordered alphabetically by GroupName
-- Empty GroupName = default group (no visual grouping)
-- HTML5 `<details>`/`<summary>` provides native collapsible functionality
-- No JavaScript required - pure HTML/CSS solution
-- Backward compatible - existing forms without GroupName work unchanged
-
-**Usage Example:**
-```csharp
-[Display(Name = "Player Name", GroupName = "Character Info")]
-public string Name { get; set; }
-
-[Display(Name = "Level", GroupName = "Character Info")]
-public int Level { get; set; }
-
-[Display(Name = "Gold", GroupName = "Inventory")]
-public long Money { get; set; }
-```
-
-**Completed:** 2024 (Field grouping with collapsible sections)
+**Tell me:** `"Do task ADM-2"`
 
 ---
 
 ### ADM-3: Map Component Incomplete ??
-**Status:** ✅ DONE
+**Status:** ? TODO
 **Priority:** ?? Medium
 **Difficulty:** ??? Hard
 **File:** `src/Web/Map/Components/Map.razor:15`
 **Time:** 4-5 hours
 
-**Issue:** Map component had TODO placeholder for selected object info display
+**Issue:** Map component has TODO placeholder
 
-**Solution Implemented:**
-The infrastructure for object selection was already in place but not wired up. Connected the existing TypeScript `WorldObjectPicker` callback to JavaScript to populate the selected info display.
+**Action:**
+1. Implement missing map features
+2. Review what's needed
+3. Complete implementation
 
-**Changes Made:**
-1. **src/Web/Map/wwwroot/js/map.js** - Added `onObjectSelected` callback function:
-   - Receives `objectData` from TypeScript WorldObjectPicker
-   - Populates `selected_info` div with object details (name, ID, position X/Y)
-   - Shows the div when an object is clicked (changes display from "none" to "block")
-   - Passed callback to MapApp constructor
-
-2. **src/Web/Map/Components/Map.razor** - Removed TODO comment:
-   - The HTML structure was already correct with `selected_info` div
-   - Starts hidden (`display: none`)
-   - JavaScript makes it visible when objects are clicked
-
-**Technical Details:**
-- `WorldObjectPicker.ts` already implemented raycasting click detection
-- `MapApp.ts` already accepted `onPickObjectHandler` parameter
-- Just needed to wire the JavaScript bridge between TypeScript and HTML
-- Object data includes: name, id, x position, y position
-- Works for players, NPCs, and other game objects on the live map
-
-**Tell me:** `"Do task ADM-3"` ✅ COMPLETED
+**Tell me:** `"Do task ADM-3"`
 
 ---
 
@@ -2006,26 +1930,20 @@ The infrastructure for object selection was already in place but not wired up. C
 ---
 
 ### PERS-13: JSON Query Sort Dependencies Manual ??
-**Status:** ✅ CLARIFIED - DEFER
-**Priority:** ?? Low  
+**Status:** ? TODO
+**Priority:** ?? Low
 **Difficulty:** ???? Very Hard
 **File:** `src/Persistence/EntityFramework/Json/JsonQueryBuilder.cs:57`
 **Time:** 6-8 hours
 
 **Issue:** Sorting based on dependencies done manually
 
-**Investigation Findings:**
-- Only 1 entity (GameConfiguration) needs custom navigation sorting
-- GameConfigurationJsonQueryBuilder.cs already implements manual sorting override
-- Manual solution moves "RawMaps" to end (maps depend on Skills, Items, Monsters)
-- Searched entire codebase - no other entities need custom sorting
-- Automatic dependency detection would require 6-8 hours of graph algorithm work
-- Benefit is minimal since only 1 of ~100 entities needs this feature
-- Manual override approach is clean, maintainable, and works perfectly
+**Action:**
+1. Automate dependency detection
+2. Build dependency graph
+3. Auto-sort queries
 
-**Recommendation:** DEFER - Current manual solution is optimal for single-entity use case. Automatic dependency sorting would be over-engineering. Revisit only if multiple additional entities need custom sorting in the future.
-
-**Completed:** 2024 (Investigation and documentation)
+**Tell me:** `"Do task PERS-13"`
 
 ---
 
@@ -2168,40 +2086,21 @@ The infrastructure for object selection was already in place but not wired up. C
 ## ITEM - Items/Initialization (9 low)
 
 ### ITEM-3: Item Set Groups Not Implemented ??
-**Status:** ✅ CLARIFIED - New Content (Not Missing Feature)
+**Status:** ? TODO
 **Priority:** ?? Low
 **Difficulty:** ???? Very Hard
 **File:** `src/Persistence/Initialization/Version075/GameConfigurationInitializer.cs:62`
 **Time:** 8-10 hours
 
-**Issue:** ItemSetGroups for set bonus not implemented in Version 0.75
+**Issue:** ItemSetGroups for set bonus not implemented
 
-**Investigation Results:**
-1. ✅ ItemSetGroup infrastructure EXISTS and is fully functional
-2. ✅ Ancient sets are fully implemented in VersionSeasonSix (AncientSets.cs)
-3. ✅ Version 0.75 = MU Online v0.75 (pre-Season 1, very early version)
-4. ✅ Ancient/Item sets were introduced in Season 3/4, NOT in v0.75
-5. ✅ No TODO comment exists in the actual Version075 code
-6. ✅ This would be implementing NEW CONTENT for an old version, not fixing missing features
+**Action:**
+1. Design set bonus system
+2. Create ItemSetGroup entities
+3. Implement bonus calculation
+4. Test set effects
 
-**Historical Context:**
-- Version 0.75: Basic items, no set bonuses
-- Season 3/4+: Ancient sets introduced
-- Season 6: Full ancient set system (already implemented in server)
-
-**Recommendation:**
-**DEFER as new content addition, not a bug fix.**
-
-If implementing for custom server features:
-1. Create AncientSets.cs in Version075/Items/
-2. Define which sets to include (historically inaccurate)
-3. Add initialization to GameConfigurationInitializer
-4. Configure appropriate bonuses for v0.75 power levels
-
-**Status Rationale:**
-This is not a missing feature - it's adding modern content to an old game version. Ancient sets didn't exist in the original v0.75 client. Implementation would be custom server content, not faithful recreation.
-
-**Completed:** 2024 (Investigation - Deferred as new content, not missing feature)
+**Tell me:** `"Do task ITEM-3"`
 
 ---
 
@@ -2341,7 +2240,7 @@ This is not a missing feature - it's adding modern content to an old game versio
 ---
 
 ### ITEM-10: Socket Items Not Implemented ??
-**Status:** ✅ CLARIFIED - Already Implemented
+**Status:** ? TODO
 **Priority:** ?? Low
 **Difficulty:** ???? Very Hard
 **Files:**
@@ -2351,43 +2250,13 @@ This is not a missing feature - it's adding modern content to an old game versio
 
 **Issue:** Socket items not yet implemented
 
-**Investigation Results:**
-1. ✅ Socket system IS fully implemented in SocketSystem.cs (740 lines)
-2. ✅ AddArmorSockets and AddWeaponSockets methods configure socket-capable items
-3. ✅ MaximumSockets property sets socket count (1-5 sockets)
-4. ✅ Socket options configured: Fire, Lightning, Ice, Water, Earth, Wind
-5. ✅ Bonus options implemented for weapons and armor
-6. ✅ Lines 225 and 241 say "item not yet implemented" - these are NULL checks
-7. ✅ Comments protect against items not in configuration, NOT about socket system
-8. ✅ NO TODO comments exist in SocketSystem.cs
+**Action:**
+1. Design socket item system
+2. Create socket item definitions
+3. Implement socket mechanics
+4. Test socketing
 
-**Code Analysis:**
-```csharp
-// Line 237-244: This is a NULL GUARD, not a TODO
-private void AddWeaponSockets(byte group, short number, int socketCount)
-{
-    var item = this.GameConfiguration.Items.FirstOrDefault(...);
-    if (item is null)
-    {
-        // item not yet implemented  <- Guard for missing items
-        return;  <- Safely skip if item doesn't exist
-    }
-    item.MaximumSockets = socketCount;  <- Socket system works fine
-}
-```
-
-**What's Actually Implemented:**
-- ✅ Socket slot system (1-5 sockets per item)
-- ✅ Socket seed spheres (Fire, Lightning, Ice, Water, Earth, Wind)
-- ✅ Socket bonus calculation
-- ✅ Socket options for 100+ weapons and armor pieces
-- ✅ Element-specific bonuses
-- ✅ Staff/stick special handling
-
-**Status Rationale:**
-Socket system is complete and working. The "item not yet implemented" comments are defensive programming - they prevent crashes if an item definition is missing from the configuration. This is NOT about the socket feature being incomplete.
-
-**Completed:** 2024 (Investigation - Socket system fully implemented)
+**Tell me:** `"Do task ITEM-10"`
 
 ---
 
@@ -2531,7 +2400,7 @@ This feature was **never implemented in the original game client**. The TODO rep
 ---
 
 ### ADM-6: Map Terrain Controller Expensive Operation ??
-**Status:** ✅ DONE
+**Status:** ? TODO
 **Priority:** ?? Low
 **Difficulty:** ??? Hard
 **File:** `src/Web/Map/Map/TerrainController.cs:49`
@@ -2539,33 +2408,17 @@ This feature was **never implemented in the original game client**. The TODO rep
 
 **Issue:** Creates ObservableGameServerAdapter which is expensive
 
-**Solution Implemented:**
-1. ✅ Eliminated ObservableGameServerAdapter creation entirely
-2. ✅ Access GameContext.GetMapsAsync() directly via IGameServerContextProvider
-3. ✅ Find target map by GUID without initializing all map adapters
-4. ✅ Created lightweight SimpleGameMapInfo class implementing IGameMapInfo
-5. ✅ SimpleGameMapInfo only provides MapNumber and TerrainData properties
-6. ✅ GetTerrainStream() extension method uses cached terrain (by MapNumber)
+**Action:**
+1. Find alternative approach
+2. Cache adapter instances
+3. Optimize creation
 
-**Performance Impact:**
-- **Before:** Created ObservableGameServerAdapter + initialized all GameMapInfoAdapters + subscribed to all map events
-- **After:** Direct map access + minimal wrapper object with 2 properties
-- **Benefit:** Eliminated ~95% of object creation and event subscription overhead
-- **Cache:** Terrain rendering is already cached by MapNumber in GameMapInfoExtensions
-
-**Implementation Details:**
-- Removed ObservableGameServerAdapter usage from TerrainAsync endpoint
-- Added private SimpleGameMapInfo nested class with minimal IGameMapInfo implementation
-- SimpleGameMapInfo stub properties: Id, MapName, Players, PlayerCount (unused for terrain)
-- PropertyChanged event stub (required by interface, never raised)
-- Direct access to server.Context.GetMapsAsync() instead of adapter initialization
-
-**Completed:** 2024 (Performance optimization)
+**Tell me:** `"Do task ADM-6"`
 
 ---
 
 ### ADM-7: Plugin Code Signing Not Implemented ??
-**Status:** ✅ BLOCKED (Feature Disabled)
+**Status:** ? TODO
 **Priority:** ?? Low
 **Difficulty:** ???? Very Hard
 **File:** `src/PlugIns/PlugInManager.cs:424`
@@ -2573,33 +2426,13 @@ This feature was **never implemented in the original game client**. The TODO rep
 
 **Issue:** Code signing for plugins not implemented
 
-**Investigation Results:**
-1. ✅ Custom plugin compilation feature exists (line 479-488: CompileCustomPlugInAssembly)
-2. ✅ Feature is intentionally DISABLED - compilation code is commented out (line 425-426)
-3. ✅ TODO comment says "if we really need this feature" - indicating it's optional
-4. ✅ CustomPlugInSource property exists in data model and admin panel
-5. ✅ No active usage - dynamic compilation is not enabled in production
+**Action:**
+1. Design code signing system
+2. Implement signature verification
+3. Add certificate management
+4. Test with signed plugins
 
-**Security Analysis:**
-- Custom plugin compilation allows arbitrary C# code execution (major security risk)
-- Code signing would verify plugin authenticity before compilation
-- However, the entire feature is disabled, so signing is not currently needed
-- External plugins (ExternalAssemblyName) use file-based loading (different security model)
-
-**Recommendation:** 
-**DEFER until custom plugin compilation feature is re-enabled.**
-
-IF re-enabling custom plugins, implement:
-1. Certificate-based code signing (X.509 certificates)
-2. Signature verification before compilation
-3. Certificate revocation checking (CRL/OCSP)
-4. Secure key management (Azure Key Vault or HSM)
-5. Signing during plugin build/publication process
-
-**Status Rationale:** 
-This is a security feature for a disabled functionality. Implementing code signing for commented-out code would be premature. Mark as BLOCKED pending decision to re-enable custom plugin compilation.
-
-**Completed:** 2024 (Investigation - Feature disabled, no action required)
+**Tell me:** `"Do task ADM-7"`
 
 ---
 
@@ -2723,48 +2556,25 @@ _(All game logic items are critical or medium priority)_
 ---
 
 ### MISC-5: Item Skill Property Dual Purpose ??
-**Status:** ✅ DONE
+**Status:** ? TODO
 **Priority:** ?? Low
 **Difficulty:** ??? Hard
-**File:** `src/DataModel/Configuration/Items/ItemDefinition.cs:119-138`
-**Time:** 4 hours (completed 2025-11-06)
+**File:** `src/DataModel/Configuration/Items/ItemDefinition.cs:110`
+**Time:** 4 hours
 
 **Issue:** Property used for two different purposes, should split
 
-**Solution Implemented:**
-1. Added `LearnableSkill` property for consumable items (scrolls, orbs) that permanently teach skills
-2. Added `WearableSkill` property for equipment that grants temporary skills while worn
-3. Marked original `Skill` property as [Obsolete] for backward compatibility
-4. Updated all 143 usages across the codebase:
-   - Scrolls and Orbs initialization: Use LearnableSkill (Version075, VersionSeasonSix)
-   - Pets and Shields initialization: Use WearableSkill (Version095d, VersionSeasonSix)
-   - SkillList: Check WearableSkill for equipment bonuses
-   - LearnablesConsumeHandlerPlugIn: Use LearnableSkill for learning
-   - SummoningOrbConsumeHandlerPlugIn: Use LearnableSkill with level-based skill number
-   - Item creation (quests, chat commands, crafting): Check both properties for HasSkill flag
-   - Test files: Updated to use WearableSkill for equipment tests
-5. Regenerated Entity Framework and BasicModel code to include new properties
-6. Fixed unrelated ItemDropValidationCleanupService missing using statement
+**Action:**
+1. Create separate properties
+2. Migrate data
+3. Update usages
 
-**Impact:**
-- Resolves dual-purpose confusion where one property served both consumable learning (permanent) and wearable bonuses (temporary)
-- Each purpose now has dedicated property with clear semantics and comprehensive XML documentation
-- Backward compatibility maintained through [Obsolete] attribute with helpful message
-
-**Files Changed (22 total):**
-- Core: ItemDefinition.cs (added 2 properties with full docs)
-- GameLogic: SkillList.cs, LearnablesConsumeHandlerPlugIn.cs, SummoningOrbConsumeHandlerPlugIn.cs, SimpleItemCraftingHandler.cs, ItemChatCommandPlugIn.cs, ItemDropValidationCleanupService.cs
-- Persistence: BasicModel/ItemDefinition.Generated.cs, EntityFramework/Model/ItemDefinition.Generated.cs
-- Initialization: Version075/Scrolls.cs, Version075/Orbs.cs, Version095d/Pets.cs, VersionSeasonSix/Scrolls.cs, VersionSeasonSix/Orbs.cs, VersionSeasonSix/Pets.cs, ArmorInitializerBase.cs, QuestDefinitionExtensions.cs, VersionSeasonSix/TestAccounts/Socket.cs
-- Tests: ItemRequirementCalculationTest.cs
-- Documentation: COMPLETE_TODO_LIST.md
-
-**Commit:** 0e7900ce - "Complete MISC-5: Split ItemDefinition.Skill into LearnableSkill and WearableSkill properties"
+**Tell me:** `"Do task MISC-5"`
 
 ---
 
 ### MISC-6: Inventory Extension Constants Season-Specific ??
-**Status:** ✅ DONE
+**Status:** ? TODO
 **Priority:** ?? Low
 **Difficulty:** ??? Hard
 **File:** `src/DataModel/InventoryConstants.cs:128`
@@ -2772,157 +2582,35 @@ _(All game logic items are critical or medium priority)_
 
 **Issue:** Constants only valid for Season 6
 
-**Solution Implemented:**
-Added `GetFirstStoreItemSlotIndex(bool hasInventoryExtensions)` method to calculate the correct store slot index based on whether inventory extensions are available:
+**Action:**
+1. Make season-specific
+2. Add configuration
+3. Support other seasons
 
-**Changes Made:**
-1. **Updated FirstStoreItemSlotIndex documentation** - Clarified it's for Season 6+ with extensions
-2. **Added GetFirstStoreItemSlotIndex method** - Returns:
-   - 76 (12 + 64) for pre-Season 6 versions without extensions
-   - 204 (12 + 64 + 128) for Season 6+ versions with extensions
-3. **Preserved backward compatibility** - Existing constant remains for Season 6+
-4. **Clear documentation** - Added XML docs explaining when to use each approach
-
-**Implementation:**
-```csharp
-/// <summary>
-/// Gets the index of the first personal store slot based on whether inventory extensions are available.
-/// </summary>
-/// <param name="hasInventoryExtensions">Whether inventory extensions are available in this game version.</param>
-/// <returns>
-/// The index of the first store slot:
-/// - 76 (12 + 64) for versions without extensions (pre-Season 6).
-/// - 204 (12 + 64 + 128) for versions with extensions (Season 6+).
-/// </returns>
-public static byte GetFirstStoreItemSlotIndex(bool hasInventoryExtensions)
-{
-    if (hasInventoryExtensions)
-    {
-        return FirstStoreItemSlotIndex; // 204 for Season 6+
-    }
-
-    return FirstExtensionItemSlotIndex; // 76 for pre-Season 6
-}
-```
-
-**Usage:**
-For code that needs to support multiple game versions:
-```csharp
-// Use the dynamic method
-var storeStartIndex = InventoryConstants.GetFirstStoreItemSlotIndex(
-    character.InventoryExtensions > 0);
-
-// For Season 6+ only (existing code)
-var storeStartIndex = InventoryConstants.FirstStoreItemSlotIndex;
-```
-
-**Note:** Current usages in ShopStorage, MoveItemAction, BuyRequestAction, etc. use the constant (Season 6+ only). Future enhancement would be to update these to use the dynamic method for multi-version support.
-
-**Tell me:** `"Do task MISC-6"` ✅ COMPLETED
-
+**Tell me:** `"Do task MISC-6"`
 
 ---
 
 ### MISC-7: Item Power Up Factory Not Generic ??
-**Status:** ? PARTIAL (Documentation Complete, Full Refactoring Deferred)
+**Status:**  PARTIAL (Documentation Complete, Full Refactoring Deferred)
 **Priority:** ?? Low
 **Difficulty:** ???? Very Hard
-**File:** `src/GameLogic/ItemPowerUpFactory.cs:288`
 **Time:** 6-8 hours (2 hours completed 2025-11-06)
+**Time:** 6-8 hours
 
-**Issue:** Should be more generic and configurable
 
 **Partial Solution Implemented (2025-11-06):**
-1. ? Added comprehensive XML documentation to CreateExcellentAndAncientBasePowerUpWrappers method
-2. ? Documented all 13 formula patterns in method remarks section
-3. ? Fixed obsolete ItemDefinition.Skill reference (line 256) - changed to WearableSkill for Dinorant exception
-4. ? Build verified successfully
-5. ? **Note:** Full data-driven formula system deferred - requires data model changes, EF regeneration, initialization migration (6-8 hour task)
+1.  Added comprehensive XML documentation to CreateExcellentAndAncientBasePowerUpWrappers method
+2.  Documented all 13 formula patterns in method remarks section
+3.  Fixed obsolete ItemDefinition.Skill reference (line 256) - changed to WearableSkill for Dinorant exception
+4.  Build verified successfully
+5.  **Note:** Full data-driven formula system deferred - requires data model changes, EF regeneration, initialization migration (6-8 hour task)
+**Issue:** Should be more generic and configurable
 
-**Current Implementation:**
-The `CreateExcellentAndAncientBasePowerUpWrappers` method (line 289-406) contains hardcoded formulas for calculating excellent and ancient item bonuses, now fully documented:
-
-**Hardcoded Formulas:**
-1. **Defense Items:**
-   - Excellent: `(baseDefense * 12 / baseDropLevel) + (baseDropLevel / 5) + 4`
-   - Ancient: `2 + ((baseDefense + additionalDefense) * 3 / ancientDropLevel) + (ancientDropLevel / 30)`
-
-2. **Shields:**
-   - Excellent Rate: `(baseDefenseRate * 25 / baseDropLevel) + 5`
-   - Ancient Defense: `2 + ((baseDefense + level) * 20 / ancientDropLevel)`
-
-3. **Physical Weapons:**
-   - Excellent Damage: `((minPhysDmg * 25) / baseDropLevel) + 5`
-   - Ancient Damage: `5 + (ancientDropLevel / 40)`
-
-4. **Wizardry Weapons (Staff/Scepter/Book):**
-   - Excellent Rise: `(((staffRise * 2 * 25) / baseDropLevel) + 5) / 2`
-   - Ancient Rise: `(2 + (ancientDropLevel / 60)) / 2`
-
-5. **Ancient Jewelry:**
-   - Element resistance to damage: `+5` (fixed)
-
-**Problems:**
-- Formulas embedded in code, not data-driven
-- Cannot be modified without code changes
-- No support for custom item types or bonus systems
-- Difficult to balance or adjust for different game versions
-- Cannot add new formula types without code modification
-
-**Proposed Solution:**
-
-1. **Create PowerUpFormulaDefinition data model:**
-```csharp
-public class PowerUpFormulaDefinition
-{
-    public string Name { get; set; }
-    public ItemQualityType AppliesTo { get; set; } // Excellent, Ancient, etc.
-    public string Formula { get; set; } // Mathematical expression
-    public AttributeDefinition TargetAttribute { get; set; }
-    public ItemTypeFilter ItemTypeFilter { get; set; } // Defense, Weapon, etc.
-}
-```
-
-2. **Add formula configuration to GameConfiguration:**
-```csharp
-public virtual ICollection<PowerUpFormulaDefinition> ItemPowerUpFormulas { get; set; }
-```
-
-3. **Create formula parser/evaluator:**
-   - Support variables: `baseValue`, `dropLevel`, `ancientDropLevel`, `itemLevel`
-   - Support operators: `+`, `-`, `*`, `/`, parentheses
-   - Use existing expression evaluation library or implement simple parser
-
-4. **Refactor ItemPowerUpFactory:**
-   - Replace hardcoded formulas with configuration lookup
-   - Evaluate formulas at runtime using configured definitions
-   - Maintain backward compatibility with fallback to hardcoded values
-
-5. **Migrate existing formulas to initialization:**
-   - Update version initializers (075, 095d, SeasonSix)
-   - Create PowerUpFormulaDefinition instances for each hardcoded formula
-   - Associate formulas with item types and quality levels
-
-**Impact Areas:**
-- GameLogic: ItemPowerUpFactory refactoring
-- DataModel: New PowerUpFormulaDefinition class
-- Persistence: EF model generation, migration
-- Initialization: Formula definitions for all versions
-- Tests: PowerUpFactoryTest updates
-
-**Benefits:**
-- Data-driven bonus calculations
-- Easy balance adjustments without code changes
-- Support for custom item types and formulas
-- Version-specific formula configurations
-- More flexible power-up system
-
-**Complexity:** 6-8 hours
-- Design and implement formula definition model: 2h
-- Create expression evaluator: 2h
-- Refactor ItemPowerUpFactory: 2h
-- Migrate formulas to initialization: 1-2h
-- Testing and validation: 1-2h
+**Action:**
+1. Design generic power-up system
+2. Make configurable
+3. Support custom power-ups
 
 **Tell me:** `"Do task MISC-7"`
 
@@ -3232,7 +2920,7 @@ This section documents the remaining TODO comments still present in the source c
 ## ?? Final Status Report: 2025-01-11
 
 ### Achievement Summary
-? **88 of 99 active tasks completed (95.9%)** + **5 bonus bug fixes**
+? **88 of 99 active tasks completed (88.9%)** + **5 bonus bug fixes**
 - All 22 critical priority tasks: **COMPLETE** ?
 - All Game Logic tasks: **100% COMPLETE** ?
 - Cash Shop (11 tasks): **100% COMPLETE** ? Client Verified
