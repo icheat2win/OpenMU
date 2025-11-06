@@ -77,9 +77,15 @@ public sealed class SoccerBall : NonPlayerCharacter, IAttackable, IMovable
     }
 
     /// <inheritdoc />
+    /// <remarks>
+    /// Soccer balls cannot be killed as they are indestructible game objects.
+    /// This method is implemented for interface compliance but performs no action.
+    /// </remarks>
     public ValueTask KillInstantlyAsync()
     {
-        throw new NotImplementedException();
+        // Soccer balls are indestructible game objects and cannot be killed.
+        // They only move when attacked but never die or disappear.
+        return ValueTask.CompletedTask;
     }
 
     /// <inheritdoc />

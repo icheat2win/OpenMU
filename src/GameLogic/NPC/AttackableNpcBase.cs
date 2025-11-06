@@ -131,9 +131,48 @@ public abstract class AttackableNpcBase : NonPlayerCharacter, IAttackable
     public abstract ValueTask ApplyPoisonDamageAsync(IAttacker initialAttacker, uint damage);
 
     /// <inheritdoc/>
-    public ValueTask KillInstantlyAsync()
+    /// <remarks>
+    /// Instantly kills this NPC without going through normal damage calculation.
+    /// Used for scenarios like map terrain kills (e.g., Chaos Castle floor collapse).
+    /// </remarks>
+    public async ValueTask KillInstantlyAsync()
     {
-        throw new NotImplementedException();
+        if (!this.IsAlive)
+        {
+            return;
+        }
+
+        this.Health = 0;
+        this.IsAlive = false;
+        
+        // Create a synthetic death with no attacker
+        this.LastDeath = new DeathInformation(0, string.Empty, new HitInfo(0, 0, 0), 0);
+        
+        // Trigger death without experience/loot distribution (instant kill scenario)
+        this.Died?.Invoke(this, this.LastDeath);
+        
+        await this.ForEachWorldObserverAsync<IObjectGotKilledPlugIn>(p => p.ObjectGotKilledAsync(this, null), true).ConfigureAwait(false);
+        
+        if (!this.ShouldRespawn)
+        {
+            await this.RemoveFromMapAndDisposeAsync().ConfigureAwait(false);
+        }
+        else
+        {
+            // Schedule respawn if configured
+            _ = Task.Run(async () =>
+            {
+                try
+                {
+                    await Task.Delay(this.Definition.RespawnDelay).ConfigureAwait(false);
+                    await this.RespawnAsync().ConfigureAwait(false);
+                }
+                catch (Exception ex)
+                {
+                    Debug.Fail($"Unexpected error during respawning after instant kill {this}: {ex}", ex.StackTrace);
+                }
+            });
+        }
     }
 
     /// <inheritdoc/>
