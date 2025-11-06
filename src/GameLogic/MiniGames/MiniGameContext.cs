@@ -506,7 +506,8 @@ public class MiniGameContext : AsyncDisposable, IEventStateProvider
                 entry.MiniGame = this.Definition;
                 entry.Timestamp = timestamp;
 
-                // todo: Consider "winning", too. E.g. in Chaos Castle a player which died last, might not be the winner, but is saved with rank 1.
+                // Future enhancement: Track "winning" status separately from rank.
+                // Example: In Chaos Castle, the last player alive gets rank 1, but may not be the winner.
             }
 
             await context.SaveChangesAsync().ConfigureAwait(false);

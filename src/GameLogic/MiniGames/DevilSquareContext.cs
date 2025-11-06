@@ -38,7 +38,7 @@ public sealed class DevilSquareContext : MiniGameContext
         {
             state.AddScore(this.Definition.GameLevel);
 
-            // todo add money? -> in the original servers, in DS drops no money!
+            // Note: Money drops are intentionally disabled in Devil Square to match original game behavior
         }
     }
 
