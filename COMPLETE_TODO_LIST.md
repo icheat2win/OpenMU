@@ -2898,6 +2898,21 @@ This section documents the remaining TODO comments still present in the source c
 4. `GameServerContext.cs:87` - FriendServer: Use DI where required
 ✅ 5. `ConfigurationChangeHandler.cs:37` - Subscribe systems to change mediator (CLARIFIED 2025-01-11 - pattern is intentional, documented)
 
+### Bug Fixes & Client-Informed Improvements (1 TODO)
+✅ ARCH-3. **Dark Horse Skill Range Bonus** (COMPLETED 2025-01-11)
+   - **Issue**: Skill range +2 bonus was hardcoded universally instead of only applying with Dark Horse pet
+   - **Client Discovery**: `SkillManager.cpp:103` shows `if (c->Helper.Type == MODEL_DARK_HORSE_ITEM) { Distance += 2; }`
+   - **Files Modified**: 7 skill files + ItemExtensions.cs
+     * Added `GetEffectiveSkillRange(Player, Skill)` extension method
+     * TargetedSkillDefaultPlugin.cs - general targeted skills
+     * SoulBarrierStrengSkillAction.cs - soul barrier skills
+     * AreaSkillAttackAction.cs - area/AOE skills
+     * WizardTeleportAction.cs - teleport and teleport ally
+     * ForceSkillAction.cs - Force Wave skill
+     * NovaSkillStartPlugin.cs - Nova skill
+   - **Impact**: Skills now correctly have +2 range ONLY when Dark Horse (item 13-4) is equipped in RightHandSlot
+   - **Commit**: 57e4ce12 (2025-01-11)
+
 ### Features & Game Logic (3 TODOs)
 6. `PlugInManager.cs:424` - Implement code signing for plugins
 ✅ 7. `DevilSquareContext.cs:41` - Consider adding money drops (CLARIFIED 2025-01-11 - intentionally disabled to match original)
@@ -2925,16 +2940,18 @@ This section documents the remaining TODO comments still present in the source c
 ## 📈 Final Status Report: 2025-01-11
 
 ### Achievement Summary
-✅ **85 of 105 tasks completed (81.0%)** + **3 bonus bug fixes**
+✅ **85 of 105 tasks completed (81.0%)** + **4 bonus bug fixes**
 - All 22 critical priority tasks: **COMPLETE** ✅
 - Cash Shop (11 tasks): **100% COMPLETE** ✓ Client Verified
 - Castle Siege (6 tasks): **100% COMPLETE** ✓ Client Verified  
 - Guild/Alliance (9 tasks): **100% COMPLETE** ✓ Client Verified
 - **NEW:** NPC instant death mechanics: **COMPLETE** ✓ Chaos Castle functional
+- **NEW:** Dark Horse skill range bonus: **COMPLETE** ✓ Client-verified fix
 
 ### Code Audit Results
 - **9 active TODO comments** remaining in source code (down from 24)
 - **2 NotImplementedException removed** (SoccerBall, AttackableNpcBase)
+- **1 Client-informed bug fix**: Dark Horse +2 range now conditional (not universal)
 - **Verified against client**: All major features have client packet support
 - **No breaking issues**: All remaining TODOs are enhancements or optimizations
 - **Architecture simplified**: Removed all Dapr/distributed infrastructure
@@ -2965,7 +2982,7 @@ This section documents the remaining TODO comments still present in the source c
 
 **Status**: Production-ready All-In-One deployment! 🚀
 
-*Last updated: 2025-11-06 18:45. Simplified architecture, All-In-One focused.*
+*Last updated: 2025-01-11 19:30. Client-informed Dark Horse fix completed.*
 
 ---
 
