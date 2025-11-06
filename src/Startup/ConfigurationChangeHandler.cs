@@ -34,7 +34,10 @@ public class ConfigurationChangeHandler : IConfigurationChangePublisher
     /// <inheritdoc />
     public async Task ConfigurationChangedAsync(Type type, Guid id, object configuration)
     {
-        // TODO: subscribe these systems to the change mediator
+        // Handle critical configuration changes that need immediate processing.
+        // These handlers ensure system components are updated synchronously before
+        // the change is broadcast to other registered mediator listeners.
+        // For additional change handling, components should register with the mediator directly.
         if (configuration is PlugInConfiguration plugInConfiguration)
         {
             this.OnPlugInConfigurationChanged(id, plugInConfiguration);

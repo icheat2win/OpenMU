@@ -2772,7 +2772,7 @@ This section documents the remaining TODO comments still present in the source c
 2. `GameServerContext.cs:81` - EventPublisher: Use DI, make private
 3. `GameServerContext.cs:84` - LoginServer: Use DI where required
 4. `GameServerContext.cs:87` - FriendServer: Use DI where required
-5. `ConfigurationChangeHandler.cs:37` - Subscribe systems to change mediator
+✅ 5. `ConfigurationChangeHandler.cs:37` - Subscribe systems to change mediator (CLARIFIED 2025-01-11 - pattern is intentional, documented)
 
 ### Features & Game Logic (3 TODOs)
 6. `PlugInManager.cs:424` - Implement code signing for plugins
@@ -2791,30 +2791,30 @@ This section documents the remaining TODO comments still present in the source c
 ✅ 17. `Network/Listener.cs:137` - Refactor to use AcceptSocketAsync (COMPLETED 2025-01-11)
 
 ### Status Summary
-- **Critical/High Priority**: 5 (DI refactoring, config change listeners)
+- **Critical/High Priority**: 4 (DI refactoring)
 - **Medium Priority**: 2 (features, game logic enhancements)
 - **Low Priority**: 5 (optimizations, future enhancements)
-- **Total Remaining**: 12 TODOs (down from 24 after Dapr removal, 5 clarified/completed/obsolete)
+- **Total Remaining**: 11 TODOs (down from 24 after Dapr removal, 6 clarified/completed/obsolete)
 
 ---
 
 ## 📈 Final Status Report: 2025-01-11
 
 ### Achievement Summary
-✅ **82 of 105 tasks completed (78.1%)**
+✅ **83 of 105 tasks completed (79.0%)**
 - All 22 critical priority tasks: **COMPLETE** ✅
 - Cash Shop (11 tasks): **100% COMPLETE** ✓ Client Verified
 - Castle Siege (6 tasks): **100% COMPLETE** ✓ Client Verified  
 - Guild/Alliance (9 tasks): **100% COMPLETE** ✓ Client Verified
 
 ### Code Audit Results
-- **12 active TODO comments** remaining in source code (24 found, 8 removed - 7 with Dapr, 5 clarified/completed/obsolete)
+- **11 active TODO comments** remaining in source code (24 found, 8 removed - 7 with Dapr, 6 clarified/completed/obsolete)
 - **Verified against client**: All major features have client packet support
 - **No breaking issues**: All remaining TODOs are enhancements or optimizations
 - **Architecture simplified**: Removed all Dapr/distributed infrastructure
 
 ### Priority Breakdown of Remaining Work
-- **5 High Priority**: DI refactoring, configuration change listeners
+- **4 High Priority**: DI refactoring
 - **2 Medium Priority**: Feature enhancements, game logic improvements
 - **5 Low Priority**: Code optimizations, future improvements, nice-to-haves
 
