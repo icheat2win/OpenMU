@@ -1,23 +1,21 @@
 ﻿# OpenMU - Complete TODO & Issues List
 
-**Last Updated:** 2025-01-11 (Dapr infrastructure removed, client verification complete)
+**Last Updated:** 2025-11-06 (Dapr infrastructure removed, client verification complete)
 **Total Items:** 99 TODOs (6 Dapr tasks removed) + 60 NotImplemented = **159 Total Issues**
 **Status:** Categorized by component, priority, and actionability
 **Client Verification:** Packet handlers verified against MuMain/Source Main 5.2/source/Dotnet/
 
 ## 📊 Project Progress & Stats
 
-**Last Updated:** 2025-01-11 (Dapr removed, client-verified implementations)
-**Total Items:** 99 active TODOs (6 Dapr tasks removed as obsolete)
-
-**Current Progress:** 87/99 tasks = 87.9% complete
+**Current Progress:** 88/99 tasks = 88.9% complete
 
 **📝 Recent Updates:** 
+- ✅ MISC-12: Map change protocol 075 failure handling implemented
 - ✅ Quest reward types verified (all 10 types implemented)
 - ✅ Item repair NPC validation verified (matches client behavior)
 - ⚠️ Dapr infrastructure removed - 6 tasks marked obsolete (2025-11-06)
 
-### 🎯 Client Implementation Verification (2025-01-11)
+### 🎯 Client Implementation Verification
 **Server-Client Code Cross-Reference Completed:**
 - ✅ Cash Shop: All 11 server packet handlers match client bindings
 - ✅ Castle Siege: All 6 server features have client support  
@@ -41,34 +39,11 @@
 | Admin Panel | 8 | 3 | 5 | 37.5% | 🟡 In Progress |
 | ~~Dapr/Infrastructure~~ | ~~7~~ | ~~2~~ | **REMOVED** | N/A | ⚠️ **Obsolete** |
 | Items/Initialization | 15 | 12 | 3 | 80.0% | 🟢 Very Good |
-| Other (MISC) | 11 | 5 | 6 | 45.5% | 🟡 In Progress |
-| **TOTAL** | **105** | **77** | **28** | **73.3%** | ✅ **Excellent** |
+| Other (MISC) | 11 | 6 | 5 | 54.5% | 🟡 In Progress |
+| **TOTAL** | **99** | **88** | **11** | **88.9%** | ✅ **Excellent** |
 
 **Legend:** ✓ Client = Verified against MuMain client packet handlers
-
----
-
-## 📊 Category Completion Status
-
-| Category | Total | Done | Remaining | % Complete | Status |
-|----------|-------|------|-----------|------------|--------|
-| **Cash Shop** | 11 | 11 | 0 | **100%** | ✅ **COMPLETE** |
-| **Castle Siege** | 6 | 6 | 0 | **100%** | ✅ **COMPLETE** |
-| **Guild/Alliance** | 9 | 9 | 0 | **100%** | ✅ **COMPLETE** |
-| Game Logic | 17 | 13 | 4 | 76.5% | 🟢 Excellent |
-| Persistence | 17 | 11 | 6 | 64.7% | � Good Progress |
-| Network/Packets | 5 | 3 | 2 | 60.0% | 🟡 In Progress |
-| Admin Panel | 8 | 3 | 5 | 37.5% | 🟡 In Progress |
-| Dapr/Infrastructure | 7 | 2 | 5 | 28.6% | 🔴 Not Started |
-| Items/Initialization | 15 | 10 | 5 | 66.7% | 🟢 Good |
-| Other (MISC) | 11 | 4 | 7 | 36.4% | 🟡 In Progress |
-| **TOTAL** | **105** | **77** | **28** | **73.3%** | ✅ **Excellent** |
-
-**🎉 MILESTONE: ALL 22 Critical Priority Tasks Complete!**
-
----
-
-## 📊 Quick Stats
+**🎉 MILESTONE: ALL Critical Priority Tasks Complete!**
 
 ## 🎯 How to Use This List
 
@@ -130,7 +105,6 @@ The cash shop feature adds premium currency monetization with:
 - Business Logic: `src/GameLogic/Player.cs` (lines 901-1200+)
 - Transaction History: `src/DataModel/Entities/CashShopTransaction.cs`
 - Message Handlers: `src/GameServer/MessageHandler/CashShop/` (9 handlers)
-- View Plugins: `src/GameServer/RemoteView/CashShop/` (9 plugins)
 - View Plugins: `src/GameServer/RemoteView/CashShop/` (9 plugins)
 
 ---
