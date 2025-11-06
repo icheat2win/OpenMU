@@ -443,7 +443,7 @@ internal abstract class AccountInitializerBase : InitializerBase
         pet.Definition = this.GameConfiguration.Items.First(def => def.Group == 13 && def.Number == itemNumber);
         pet.Durability = 255;
         pet.ItemSlot = itemSlot;
-        if (pet.Definition?.Skill != null)
+        if (pet.Definition?.WearableSkill != null)
         {
             pet.HasSkill = true;
         }

@@ -272,7 +272,7 @@ internal abstract class AccountInitializerBase : InitializerBase
 
         if (this.AddAllSkills)
         {
-            var weaponSkills = this.GameConfiguration.Items.Where(i => i.Skill is not null && i.ItemSlot is not null).Select(i => i.Skill!).Distinct().ToHashSet();
+            var weaponSkills = this.GameConfiguration.Items.Where(i => i.WearableSkill is not null && i.ItemSlot is not null).Select(i => i.WearableSkill!).Distinct().ToHashSet();
             var availableSkills = this.GameConfiguration.Skills.Where(s => s.QualifiedCharacters.Contains(character.CharacterClass)
                                                                            && s.Number != (short)SkillNumber.NovaStart
                                                                            && s.Number < 300 // no master skills
@@ -647,7 +647,7 @@ internal abstract class AccountInitializerBase : InitializerBase
         pet.Definition = this.GameConfiguration.Items.First(def => def.Group == 13 && def.Number == itemNumber);
         pet.Durability = 255;
         pet.ItemSlot = itemSlot;
-        if (pet.Definition?.Skill != null)
+        if (pet.Definition?.WearableSkill != null)
         {
             pet.HasSkill = true;
         }
@@ -685,7 +685,7 @@ internal abstract class AccountInitializerBase : InitializerBase
         ancient.Durability = ancient.Definition.Durability;
         ancient.ItemSlot = itemSlot;
         ancient.Level = level;
-        ancient.HasSkill = ancient.Definition.Skill is { };
+        ancient.HasSkill = ancient.Definition.WearableSkill is { } || ancient.Definition.LearnableSkill is { };
         var optionLink = this.Context.CreateNew<ItemOptionLink>();
         optionLink.ItemOption = ancient.Definition.PossibleItemOptions.SelectMany(o => o.PossibleOptions)
             .First(o => o.OptionType == ItemOptionTypes.Option);

@@ -524,7 +524,7 @@ public class ItemPriceCalculator
                 price = price * 80 / 100;
             }
 
-            if (item.HasSkill && !WorthlessSkills.Contains(definition.Skill?.Number ?? 0))
+            if (item.HasSkill && !WorthlessSkills.Contains((definition.WearableSkill?.Number ?? definition.LearnableSkill?.Number) ?? 0))
             {
                 price += (long)(price * 1.5);
             }

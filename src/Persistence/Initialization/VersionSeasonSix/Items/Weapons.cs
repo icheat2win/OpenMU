@@ -331,7 +331,7 @@ internal class Weapons : InitializerBase
         if (skillNumber > 0)
         {
             var itemSkill = this.GameConfiguration.Skills.First(s => s.Number == skillNumber);
-            item.Skill = itemSkill;
+            item.WearableSkill = itemSkill;
         }
 
         item.Durability = durability;

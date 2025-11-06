@@ -59,7 +59,7 @@ public class ChaosWeaponAndFirstWingsCrafting : SimpleItemCraftingHandler
     {
         if (Rand.NextRandomBool((successRate / 5) + 6)
             && !resultItem.HasSkill
-            && resultItem.Definition!.Skill is { })
+            && (resultItem.Definition!.WearableSkill is { } || resultItem.Definition!.LearnableSkill is { }))
         {
             resultItem.HasSkill = true;
         }

@@ -36,7 +36,7 @@ public class ItemConsumeAction
         var consumeHandler = player.GameContext.PlugInManager.GetStrategy<ItemIdentifier, IItemConsumeHandlerPlugIn>(new ItemIdentifier(item.Definition.Number, item.Definition.Group))
                       ?? player.GameContext.PlugInManager.GetStrategy<ItemIdentifier, IItemConsumeHandlerPlugIn>(new ItemIdentifier(null, item.Definition.Group));
 
-        if (consumeHandler is null && item.Definition.Skill is { } && !item.IsWearable())
+        if (consumeHandler is null && item.Definition.LearnableSkill is { } && !item.IsWearable())
         {
             consumeHandler = player.GameContext.PlugInManager.GetStrategy<ItemIdentifier, IItemConsumeHandlerPlugIn>(ItemConstants.AllScrolls);
         }

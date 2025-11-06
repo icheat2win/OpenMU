@@ -59,7 +59,7 @@ public class SkillListTest
         item.Durability = 1;
         await player.Inventory!.AddItemAsync(0, item).ConfigureAwait(false);
         var skillList = new SkillList(player);
-        Assert.That(await skillList.RemoveItemSkillAsync(item.Definition!.Skill!.Number.ToUnsigned()).ConfigureAwait(false), Is.True);
+        Assert.That(await skillList.RemoveItemSkillAsync(item.Definition!.WearableSkill!.Number.ToUnsigned()).ConfigureAwait(false), Is.True);
         Assert.That(skillList.ContainsSkill(QualifiedItemSkillId), Is.False);
     }
 
@@ -86,7 +86,7 @@ public class SkillListTest
             skillDefinition.Object.QualifiedCharacters.Add(qualifiedClass);
         }
 
-        itemDefinition.Object.Skill = skillDefinition.Object;
+        itemDefinition.Object.WearableSkill = skillDefinition.Object;
         itemDefinition.Object.Height = 1;
         itemDefinition.Object.Width = 1;
         itemDefinition.Setup(d => d.BasePowerUpAttributes).Returns(new List<ItemBasePowerUpDefinition>());

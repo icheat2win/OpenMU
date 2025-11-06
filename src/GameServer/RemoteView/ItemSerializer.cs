@@ -57,7 +57,7 @@ public class ItemSerializer : IItemSerializer
 
             // A dinorant can normally have up to 2 options, all being coded in the item option level.
             // A one-option dino has level = 1, 2, or 4; a two-option has level = 3, 5, or 6.
-            if (item.Definition.Skill?.Number == 49)
+            if (item.Definition.WearableSkill?.Number == 49)
             {
                 item.ItemOptions.Where(o => o.ItemOption?.OptionType == ItemOptionTypes.Option && o != itemOption)
                     .ForEach(o => optionLevel |= o.Level);
@@ -180,7 +180,7 @@ public class ItemSerializer : IItemSerializer
             return;
         }
 
-        if (item.Definition!.Skill is null)
+        if (item.Definition!.WearableSkill is null && item.Definition!.LearnableSkill is null)
         {
             throw new ArgumentException($"The skill flag was set, but a skill is not defined for the specified item ({item.Definition.Number}, {item.Definition.Group})");
         }
