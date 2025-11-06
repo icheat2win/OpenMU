@@ -78,7 +78,7 @@ public class GameServerContext : GameContext, IGameServerContext
     public IGuildServer GuildServer { get; } // TODO: Use DI where this is required
 
     /// <inheritdoc/>
-    public IEventPublisher EventPublisher { get; } // TODO: Use DI where this is required, make this private
+    public IEventPublisher EventPublisher { get; }
 
     /// <inheritdoc/>
     public ILoginServer LoginServer { get; } // TODO: Use DI where this is required

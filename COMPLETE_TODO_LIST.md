@@ -1305,6 +1305,46 @@ Based on original client gate locations (g_byGateLocation[6][2]):
 
 ---
 
+### ARCH-1: EventPublisher Dependency Injection Refactoring 🔴
+**Status:** ✅ DONE
+**Priority:** 🔴 High
+**Difficulty:** ⭐⭐ Medium
+**Files:** 
+- `src/GameLogic/PlayerActions/Chat/ChatMessageGuildProcessor.cs:1-39`
+- `src/GameLogic/PlayerActions/Chat/ChatMessageAction.cs:36`
+- `src/GameServer/GameServerContext.cs:81`
+**Time:** 1 hour
+
+**Issue:** TODO noted EventPublisher should use DI where required and be made private
+
+**Implementation:**
+1. ✅ Added IEventPublisher constructor parameter to ChatMessageGuildProcessor
+2. ✅ Updated ChatMessageAction to pass eventPublisher to guild processor
+3. ✅ Removed unsafe cast from `(sender.GameContext as IGameServerContext)?.EventPublisher`
+4. ✅ Added `using MUnique.OpenMU.Interfaces;` to guild processor
+5. ✅ Removed TODO comment from GameServerContext
+6. ✅ EventPublisher remains public in IGameServerContext interface (required by contract)
+
+**Changes:**
+- ChatMessageGuildProcessor now receives IEventPublisher via constructor injection
+- Eliminated runtime cast and null-checking for EventPublisher access
+- Both ChatMessageGuildProcessor and ChatMessageAllianceProcessor now use same DI pattern
+- Improved type safety and testability
+
+**Architectural Notes:**
+- EventPublisher must remain public as it's part of IGameServerContext interface contract
+- Legitimate remaining uses: GameServerContext internal, ChatMessageBaseHandlerPlugIn, LoginAction
+- These usages are acceptable as they're within the GameServer assembly boundary
+- Further privatization would require breaking the interface contract
+
+**Benefits:**
+- ✅ Improved dependency injection consistency
+- ✅ Eliminated unsafe casts and runtime type checks
+- ✅ Enhanced testability of chat message processors
+- ✅ Clearer dependency graph
+
+---
+
 ## PERS - Persistence (8 medium)
 
 ### PERS-1: ConfigurationTypeRepository Init Check Every Time 🟡
@@ -2808,7 +2848,7 @@ This section documents the remaining TODO comments still present in the source c
 
 ### Architecture & DI (5 TODOs)
 1. `GameServerContext.cs:78` - GuildServer: Use DI where required
-2. `GameServerContext.cs:81` - EventPublisher: Use DI, make private
+✅ 2. `GameServerContext.cs:81` - EventPublisher DI refactoring (COMPLETED 2025-01-11 - injected into chat processors)
 3. `GameServerContext.cs:84` - LoginServer: Use DI where required
 4. `GameServerContext.cs:87` - FriendServer: Use DI where required
 ✅ 5. `ConfigurationChangeHandler.cs:37` - Subscribe systems to change mediator (CLARIFIED 2025-01-11 - pattern is intentional, documented)
@@ -2830,30 +2870,30 @@ This section documents the remaining TODO comments still present in the source c
 ✅ 17. `Network/Listener.cs:137` - Refactor to use AcceptSocketAsync (COMPLETED 2025-01-11)
 
 ### Status Summary
-- **Critical/High Priority**: 4 (DI refactoring)
+- **Critical/High Priority**: 3 (DI refactoring for Guild/Login/Friend servers)
 - **Medium Priority**: 1 (plugin code signing)
 - **Low Priority**: 5 (optimizations, future enhancements)
-- **Total Remaining**: 10 TODOs (down from 24 after Dapr removal, 7 clarified/completed/obsolete)
+- **Total Remaining**: 9 TODOs (down from 24 after Dapr removal, 8 clarified/completed/obsolete)
 
 ---
 
 ## 📈 Final Status Report: 2025-01-11
 
 ### Achievement Summary
-✅ **84 of 105 tasks completed (80.0%)**
+✅ **85 of 105 tasks completed (81.0%)**
 - All 22 critical priority tasks: **COMPLETE** ✅
 - Cash Shop (11 tasks): **100% COMPLETE** ✓ Client Verified
 - Castle Siege (6 tasks): **100% COMPLETE** ✓ Client Verified  
 - Guild/Alliance (9 tasks): **100% COMPLETE** ✓ Client Verified
 
 ### Code Audit Results
-- **10 active TODO comments** remaining in source code (24 found, 8 removed - 7 with Dapr, 7 clarified/completed/obsolete)
+- **9 active TODO comments** remaining in source code (24 found, 8 removed - 7 with Dapr, 8 clarified/completed/obsolete)
 - **Verified against client**: All major features have client packet support
 - **No breaking issues**: All remaining TODOs are enhancements or optimizations
 - **Architecture simplified**: Removed all Dapr/distributed infrastructure
 
 ### Priority Breakdown of Remaining Work
-- **4 High Priority**: DI refactoring
+- **3 High Priority**: DI refactoring (GuildServer, LoginServer, FriendServer)
 - **1 Medium Priority**: Plugin code signing
 - **5 Low Priority**: Code optimizations, future improvements, nice-to-haves
 

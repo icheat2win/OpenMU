@@ -37,7 +37,7 @@ public class ChatMessageAction
             { ChatMessageType.Whisper, new ChatMessageWhisperProcessor() },
             { ChatMessageType.Party, new ChatMessagePartyProcessor() },
             { ChatMessageType.Alliance, new ChatMessageAllianceProcessor(eventPublisher) },
-            { ChatMessageType.Guild, new ChatMessageGuildProcessor() },
+            { ChatMessageType.Guild, new ChatMessageGuildProcessor(eventPublisher) },
             { ChatMessageType.GlobalNotification, new ChatMessageGlobalNotificationProcessor() },
             { ChatMessageType.Normal, new ChatMessageNormalProcessor() },
         };

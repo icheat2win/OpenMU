@@ -6,12 +6,24 @@ namespace MUnique.OpenMU.GameLogic.PlayerActions.Chat;
 
 using System.ComponentModel;
 using MUnique.OpenMU.GameLogic.PlugIns;
+using MUnique.OpenMU.Interfaces;
 
 /// <summary>
 /// A chat message processor which sends the message to the guild.
 /// </summary>
 public class ChatMessageGuildProcessor : BannableChatMessageBaseProcessor
 {
+    private readonly IEventPublisher _eventPublisher;
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="ChatMessageGuildProcessor"/> class.
+    /// </summary>
+    /// <param name="eventPublisher">The event publisher.</param>
+    public ChatMessageGuildProcessor(IEventPublisher eventPublisher)
+    {
+        this._eventPublisher = eventPublisher ?? throw new ArgumentNullException(nameof(eventPublisher));
+    }
+
     /// <inheritdoc />
     public override async ValueTask SubclassProcessMessageAsync(Player sender, (string Message, string PlayerName) content)
     {
@@ -22,11 +34,11 @@ public class ChatMessageGuildProcessor : BannableChatMessageBaseProcessor
             return;
         }
 
-        if (!(sender.GuildStatus != null && (sender.GameContext as IGameServerContext)?.EventPublisher is { } publisher))
+        if (sender.GuildStatus is null)
         {
             return;
         }
 
-        await publisher.GuildMessageAsync(sender.GuildStatus.GuildId, sender.SelectedCharacter!.Name, content.Message).ConfigureAwait(false);
+        await this._eventPublisher.GuildMessageAsync(sender.GuildStatus.GuildId, sender.SelectedCharacter!.Name, content.Message).ConfigureAwait(false);
     }
 }
