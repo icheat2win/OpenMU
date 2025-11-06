@@ -27,6 +27,17 @@ public class MapChangePlugIn075 : IMapChangePlugIn
     /// <inheritdoc/>
     public async ValueTask MapChangeAsync()
     {
+        await this.SendMessageAsync(true).ConfigureAwait(false);
+    }
+
+    /// <inheritdoc/>
+    public ValueTask MapChangeFailedAsync()
+    {
+        return this.SendMessageAsync(false);
+    }
+
+    private async ValueTask SendMessageAsync(bool isMapChange)
+    {
         if (this._player.SelectedCharacter?.CurrentMap is null)
         {
             return;
@@ -35,13 +46,6 @@ public class MapChangePlugIn075 : IMapChangePlugIn
         var mapNumber = (byte)this._player.SelectedCharacter.CurrentMap.Number;
         var position = this._player.IsWalking ? this._player.WalkTarget : this._player.Position;
 
-        await this._player.Connection.SendMapChanged075Async(mapNumber, position.X, position.Y, this._player.Rotation.ToPacketByte()).ConfigureAwait(false);
-    }
-
-    /// <inheritdoc/>
-    public ValueTask MapChangeFailedAsync()
-    {
-        // not implemented?
-        return ValueTask.CompletedTask;
+        await this._player.Connection.SendMapChanged075Async(mapNumber, position.X, position.Y, this._player.Rotation.ToPacketByte(), isMapChange).ConfigureAwait(false);
     }
 }
