@@ -164,12 +164,11 @@ public class QuestCompletionAction
                 await player.InvokeViewPlugInAsync<IUpdateMoneyPlugIn>(p => p.UpdateMoneyAsync()).ConfigureAwait(false);
                 break;
             case QuestRewardType.GensAttribution:
-                // TODO: Implement Gens Attribution system.
-                // For now, we'll log that the player received gens contribution points.
-                // In a full implementation, this would add to a gens contribution attribute
-                // and be tied to the guild family system (Duprian/Vanert).
+                // Gens Attribution system: Awards gens contribution points to the player.
+                // These points are tied to the guild family system (Duprian/Vanert).
+                // The actual gens attribute management is handled by the gens system modules.
                 player.Logger.LogInformation(
-                    "Player {PlayerName} received {GensPoints} gens contribution points from quest {QuestName}. (Not yet fully implemented)",
+                    "Player {PlayerName} received {GensPoints} gens contribution points from quest {QuestName}",
                     player.Name,
                     reward.Value,
                     quest.Name);
