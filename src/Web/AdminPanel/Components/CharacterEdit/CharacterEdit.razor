@@ -1,0 +1,206 @@
+@using System.ComponentModel.DataAnnotations
+@using MUnique.OpenMU.DataModel.Entities
+@using MUnique.OpenMU.DataModel.Configuration
+
+<PageTitle>Edit Character: @Character.Name</PageTitle>
+<EditForm Model="Character" OnValidSubmit="OnValidSubmit">
+    <DataAnnotationsValidator />
+    
+    <div class="form-group">
+        <label>Character Name</label>
+        <InputText @bind-Value="@Character.Name" class="form-control" />
+        <ValidationMessage For="@(() => Character.Name)" />
+    </div>
+
+    <div class="form-group">
+        <label>Character Class</label>
+        <LookupField @bind-Value="@Character.CharacterClass" />
+        <ValidationMessage For="@(() => Character.CharacterClass)" />
+    </div>
+
+    <div class="form-group">
+        <label>Character Slot</label>
+        <InputNumber @bind-Value="@Character.CharacterSlot" class="form-control" min="0" max="4" />
+        <ValidationMessage For="@(() => Character.CharacterSlot)" />
+    </div>
+
+    <div class="form-group">
+        <label>Current Map</label>
+        <LookupField @bind-Value="@Character.CurrentMap" />
+        <ValidationMessage For="@(() => Character.CurrentMap)" />
+    </div>
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="form-group">
+                <label>Position X</label>
+                <InputNumber @bind-Value="@Character.PositionX" class="form-control" min="0" max="255" />
+                <ValidationMessage For="@(() => Character.PositionX)" />
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                <label>Position Y</label>
+                <InputNumber @bind-Value="@Character.PositionY" class="form-control" min="0" max="255" />
+                <ValidationMessage For="@(() => Character.PositionY)" />
+            </div>
+        </div>
+    </div>
+
+    <details class="field-group" open>
+        <summary class="field-group-header">Experience & Level</summary>
+        <div class="field-group-content">
+            <div class="form-group">
+                <label>Experience</label>
+                <InputNumber @bind-Value="@Character.Experience" class="form-control" min="0" />
+                <ValidationMessage For="@(() => Character.Experience)" />
+            </div>
+
+            <div class="form-group">
+                <label>Master Experience</label>
+                <InputNumber @bind-Value="@Character.MasterExperience" class="form-control" min="0" />
+                <ValidationMessage For="@(() => Character.MasterExperience)" />
+            </div>
+
+            <div class="form-group">
+                <label>Level Up Points</label>
+                <InputNumber @bind-Value="@Character.LevelUpPoints" class="form-control" min="0" />
+                <ValidationMessage For="@(() => Character.LevelUpPoints)" />
+            </div>
+
+            <div class="form-group">
+                <label>Master Level Up Points</label>
+                <InputNumber @bind-Value="@Character.MasterLevelUpPoints" class="form-control" min="0" />
+                <ValidationMessage For="@(() => Character.MasterLevelUpPoints)" />
+            </div>
+        </div>
+    </details>
+
+    <details class="field-group">
+        <summary class="field-group-header">Character State</summary>
+        <div class="field-group-content">
+            <div class="form-group">
+                <label>Hero State</label>
+                <InputSelect @bind-Value="@Character.State" class="form-control">
+                    @foreach (var state in Enum.GetValues<HeroState>())
+                    {
+                        <option value="@state">@state</option>
+                    }
+                </InputSelect>
+                <ValidationMessage For="@(() => Character.State)" />
+            </div>
+
+            <div class="form-group">
+                <label>State Remaining Seconds</label>
+                <InputNumber @bind-Value="@Character.StateRemainingSeconds" class="form-control" min="0" />
+                <ValidationMessage For="@(() => Character.StateRemainingSeconds)" />
+            </div>
+
+            <div class="form-group">
+                <label>Character Status</label>
+                <InputSelect @bind-Value="@Character.CharacterStatus" class="form-control">
+                    @foreach (var status in Enum.GetValues<CharacterStatus>())
+                    {
+                        <option value="@status">@status</option>
+                    }
+                </InputSelect>
+                <ValidationMessage For="@(() => Character.CharacterStatus)" />
+            </div>
+
+            <div class="form-group">
+                <label>Pose</label>
+                <InputSelect @bind-Value="@Character.Pose" class="form-control">
+                    @foreach (var pose in Enum.GetValues<CharacterPose>())
+                    {
+                        <option value="@pose">@pose</option>
+                    }
+                </InputSelect>
+                <ValidationMessage For="@(() => Character.Pose)" />
+            </div>
+
+            <div class="form-group">
+                <label>Player Kill Count</label>
+                <InputNumber @bind-Value="@Character.PlayerKillCount" class="form-control" min="0" />
+                <ValidationMessage For="@(() => Character.PlayerKillCount)" />
+            </div>
+        </div>
+    </details>
+
+    <details class="field-group">
+        <summary class="field-group-header">Fruit Points & Inventory</summary>
+        <div class="field-group-content">
+            <div class="form-group">
+                <label>Used Fruit Points</label>
+                <InputNumber @bind-Value="@Character.UsedFruitPoints" class="form-control" min="0" />
+                <ValidationMessage For="@(() => Character.UsedFruitPoints)" />
+            </div>
+
+            <div class="form-group">
+                <label>Used Negative Fruit Points</label>
+                <InputNumber @bind-Value="@Character.UsedNegFruitPoints" class="form-control" min="0" />
+                <ValidationMessage For="@(() => Character.UsedNegFruitPoints)" />
+            </div>
+
+            <div class="form-group">
+                <label>Inventory Extensions</label>
+                <InputNumber @bind-Value="@Character.InventoryExtensions" class="form-control" min="0" max="4" />
+                <small class="form-text text-muted">Season 6+ feature (0-4 extensions)</small>
+                <ValidationMessage For="@(() => Character.InventoryExtensions)" />
+            </div>
+        </div>
+    </details>
+
+    <details class="field-group">
+        <summary class="field-group-header">Personal Store</summary>
+        <div class="field-group-content">
+            <div class="form-group">
+                <label>Store Name</label>
+                <InputText @bind-Value="@Character.StoreName" class="form-control" />
+                <ValidationMessage For="@(() => Character.StoreName)" />
+            </div>
+
+            <div class="form-group">
+                <label>
+                    <InputCheckbox @bind-Value="@Character.IsStoreOpened" />
+                    Store is Open
+                </label>
+            </div>
+        </div>
+    </details>
+
+    <div class="form-group">
+        <label>Create Date</label>
+        <InputDate @bind-Value="@Character.CreateDate" class="form-control" />
+        <ValidationMessage For="@(() => Character.CreateDate)" />
+    </div>
+
+    <ValidationSummary />
+    <div class="mt-3">
+        <button type="submit" class="btn btn-primary">Save</button>
+        @if (OnCancel.HasDelegate)
+        {
+            <button type="button" class="btn btn-secondary" @onclick="OnCancel">Cancel</button>
+        }
+    </div>
+</EditForm>
+
+@code {
+    /// <summary>
+    /// Gets or sets the character being edited.
+    /// </summary>
+    [Parameter]
+    [Required]
+    public Character Character { get; set; } = null!;
+
+    /// <summary>
+    /// Gets or sets the <see cref="EditForm.OnValidSubmit"/> event callback.
+    /// </summary>
+    [Parameter]
+    public EventCallback OnValidSubmit { get; set; }
+
+    /// <summary>
+    /// Gets or sets the task which should be executed when the cancel button gets clicked.
+    /// </summary>
+    [Parameter]
+    public EventCallback OnCancel { get; set; }
+}

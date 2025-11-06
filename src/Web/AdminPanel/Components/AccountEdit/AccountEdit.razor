@@ -1,0 +1,142 @@
+@using System.ComponentModel.DataAnnotations
+@using MUnique.OpenMU.DataModel.Entities
+
+<PageTitle>Edit Account: @Account.LoginName</PageTitle>
+<EditForm Model="Account" OnValidSubmit="OnValidSubmit">
+    <DataAnnotationsValidator />
+    
+    <div class="form-group">
+        <label>Login Name</label>
+        <InputText @bind-Value="@Account.LoginName" class="form-control" maxlength="10" />
+        <ValidationMessage For="@(() => Account.LoginName)" />
+    </div>
+
+    <div class="form-group">
+        <label>E-Mail</label>
+        <InputText @bind-Value="@Account.EMail" class="form-control" type="email" />
+        <ValidationMessage For="@(() => Account.EMail)" />
+    </div>
+
+    <div class="form-group">
+        <label>State</label>
+        <InputSelect @bind-Value="@Account.State" class="form-control">
+            @foreach (var state in Enum.GetValues<AccountState>())
+            {
+                <option value="@state">@state</option>
+            }
+        </InputSelect>
+        <ValidationMessage For="@(() => Account.State)" />
+    </div>
+
+    <div class="form-group">
+        <label>Registration Date</label>
+        <InputDate @bind-Value="@Account.RegistrationDate" class="form-control" />
+        <ValidationMessage For="@(() => Account.RegistrationDate)" />
+    </div>
+
+    <div class="form-group">
+        <label>Time Zone (UTC offset)</label>
+        <InputNumber @bind-Value="@Account.TimeZone" class="form-control" />
+        <ValidationMessage For="@(() => Account.TimeZone)" />
+    </div>
+
+    <div class="form-group">
+        <label>
+            <InputCheckbox @bind-Value="@Account.IsVaultExtended" />
+            Vault Extended
+        </label>
+    </div>
+
+    <div class="form-group">
+        <label>
+            <InputCheckbox @bind-Value="@Account.IsTemplate" />
+            Is Template Account (read-only, multi-login for testing)
+        </label>
+    </div>
+
+    <details class="field-group">
+        <summary class="field-group-header">Cash Shop Balance</summary>
+        <div class="field-group-content">
+            <div class="form-group">
+                <label>WCoin C (Cash Coins)</label>
+                <InputNumber @bind-Value="@Account.WCoinC" class="form-control" min="0" />
+                <ValidationMessage For="@(() => Account.WCoinC)" />
+            </div>
+
+            <div class="form-group">
+                <label>WCoin P (Prepaid Coins)</label>
+                <InputNumber @bind-Value="@Account.WCoinP" class="form-control" min="0" />
+                <ValidationMessage For="@(() => Account.WCoinP)" />
+            </div>
+
+            <div class="form-group">
+                <label>Goblin Points</label>
+                <InputNumber @bind-Value="@Account.GoblinPoints" class="form-control" min="0" />
+                <ValidationMessage For="@(() => Account.GoblinPoints)" />
+            </div>
+        </div>
+    </details>
+
+    <details class="field-group">
+        <summary class="field-group-header">Security</summary>
+        <div class="field-group-content">
+            <div class="form-group">
+                <label>Security Code</label>
+                <InputText @bind-Value="@Account.SecurityCode" class="form-control" maxlength="10" />
+                <small class="form-text text-muted">Used for character deletion and guild operations</small>
+                <ValidationMessage For="@(() => Account.SecurityCode)" />
+            </div>
+
+            <div class="form-group">
+                <label>Vault Password</label>
+                <InputText @bind-Value="@Account.VaultPassword" class="form-control" />
+                <ValidationMessage For="@(() => Account.VaultPassword)" />
+            </div>
+
+            <div class="form-group">
+                <label>Chat Ban Until</label>
+                @if (Account.ChatBanUntil.HasValue)
+                {
+                    <InputDate @bind-Value="@Account.ChatBanUntil" class="form-control" />
+                    <button type="button" class="btn btn-sm btn-secondary mt-1" @onclick="@(() => Account.ChatBanUntil = null)">Clear Ban</button>
+                }
+                else
+                {
+                    <div class="form-control-plaintext">No active chat ban</div>
+                    <button type="button" class="btn btn-sm btn-warning mt-1" @onclick="@(() => Account.ChatBanUntil = DateTime.UtcNow.AddDays(7))">Ban for 7 days</button>
+                }
+                <ValidationMessage For="@(() => Account.ChatBanUntil)" />
+            </div>
+        </div>
+    </details>
+
+    <ValidationSummary />
+    <div class="mt-3">
+        <button type="submit" class="btn btn-primary">Save</button>
+        @if (OnCancel.HasDelegate)
+        {
+            <button type="button" class="btn btn-secondary" @onclick="OnCancel">Cancel</button>
+        }
+    </div>
+</EditForm>
+
+@code {
+    /// <summary>
+    /// Gets or sets the account being edited.
+    /// </summary>
+    [Parameter]
+    [Required]
+    public Account Account { get; set; } = null!;
+
+    /// <summary>
+    /// Gets or sets the <see cref="EditForm.OnValidSubmit"/> event callback.
+    /// </summary>
+    [Parameter]
+    public EventCallback OnValidSubmit { get; set; }
+
+    /// <summary>
+    /// Gets or sets the task which should be executed when the cancel button gets clicked.
+    /// </summary>
+    [Parameter]
+    public EventCallback OnCancel { get; set; }
+}

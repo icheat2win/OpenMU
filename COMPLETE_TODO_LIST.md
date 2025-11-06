@@ -1724,7 +1724,7 @@ Keep current architecture. It's a valid service locator pattern that works well 
 ## ADM - Admin Panel (3 medium)
 
 ### ADM-1: AutoForm Instead of Specialized Components ??
-**Status:** ? TODO
+**Status:** ✅ DONE
 **Priority:** ?? Medium
 **Difficulty:** ???? Very Hard
 **File:** `src/Web/AdminPanel/Pages/EditAccount.razor.cs:54`
@@ -1732,12 +1732,45 @@ Keep current architecture. It's a valid service locator pattern that works well 
 
 **Issue:** Generic AutoForm used, should be specialized
 
-**Action:**
-1. Create AccountEditForm component
-2. Better UX for account editing
-3. Custom validation
+**Solution Implemented:**
+Created specialized form components for better UX when editing accounts and characters:
 
-**Tell me:** `"Do task ADM-1"`
+**Components Created:**
+1. **AccountEdit.razor** (`src/Web/AdminPanel/Components/AccountEdit/`)
+   - Specialized form for editing Account entities
+   - Groups related fields (Cash Shop Balance, Security) using collapsible details
+   - Better labeling and help text (e.g., "Is template account" with description)
+   - Custom chat ban controls (clear ban button, quick 7-day ban button)
+   - InputText, InputSelect, InputDate, InputNumber, InputCheckbox with validation
+
+2. **CharacterEdit.razor** (`src/Web/AdminPanel/Components/CharacterEdit/`)
+   - Specialized form for editing Character entities
+   - Collapsible field groups:
+     - Experience & Level (Experience, Master Experience, Level/Master Up Points)
+     - Character State (Hero State, Status, Pose, PK Count)
+     - Fruit Points & Inventory (Fruit points, Inventory extensions with S6+ note)
+     - Personal Store (Store name, is open checkbox)
+   - Position X/Y in two-column layout
+   - Proper min/max values (e.g., CharacterSlot 0-4, Position 0-255)
+   - Enum dropdowns with all values for State, CharacterStatus, Pose
+
+**Updated Code:**
+- `EditAccount.razor.cs` - Added AccountEdit and CharacterEdit namespaces
+- `EditAccount.razor.cs` - Updated AddFormToRenderTree to use:
+  - `ItemEdit` for Item type (existing)
+  - `AccountEdit` for Account type (new)
+  - `CharacterEdit` for Character type (new)
+  - `AutoForm` for other types (fallback)
+
+**Benefits:**
+- Better UX with logical field grouping
+- Clearer labels and descriptions
+- Custom controls (e.g., chat ban quick actions)
+- Reduced clutter with collapsible sections
+- Type-safe component parameters
+- Follows same pattern as ItemEdit component
+
+**Tell me:** `"Do task ADM-1"` ✅ COMPLETED
 
 ---
 
