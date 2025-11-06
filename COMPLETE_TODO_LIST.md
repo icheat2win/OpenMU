@@ -2837,10 +2837,90 @@ var storeStartIndex = InventoryConstants.FirstStoreItemSlotIndex;
 
 **Issue:** Should be more generic and configurable
 
-**Action:**
-1. Design generic power-up system
-2. Make configurable
-3. Support custom power-ups
+**Current Implementation:**
+The `CreateExcellentAndAncientBasePowerUpWrappers` method (line 289-406) contains hardcoded formulas for calculating excellent and ancient item bonuses:
+
+**Hardcoded Formulas:**
+1. **Defense Items:**
+   - Excellent: `(baseDefense * 12 / baseDropLevel) + (baseDropLevel / 5) + 4`
+   - Ancient: `2 + ((baseDefense + additionalDefense) * 3 / ancientDropLevel) + (ancientDropLevel / 30)`
+
+2. **Shields:**
+   - Excellent Rate: `(baseDefenseRate * 25 / baseDropLevel) + 5`
+   - Ancient Defense: `2 + ((baseDefense + level) * 20 / ancientDropLevel)`
+
+3. **Physical Weapons:**
+   - Excellent Damage: `((minPhysDmg * 25) / baseDropLevel) + 5`
+   - Ancient Damage: `5 + (ancientDropLevel / 40)`
+
+4. **Wizardry Weapons (Staff/Scepter/Book):**
+   - Excellent Rise: `(((staffRise * 2 * 25) / baseDropLevel) + 5) / 2`
+   - Ancient Rise: `(2 + (ancientDropLevel / 60)) / 2`
+
+5. **Ancient Jewelry:**
+   - Element resistance to damage: `+5` (fixed)
+
+**Problems:**
+- Formulas embedded in code, not data-driven
+- Cannot be modified without code changes
+- No support for custom item types or bonus systems
+- Difficult to balance or adjust for different game versions
+- Cannot add new formula types without code modification
+
+**Proposed Solution:**
+
+1. **Create PowerUpFormulaDefinition data model:**
+```csharp
+public class PowerUpFormulaDefinition
+{
+    public string Name { get; set; }
+    public ItemQualityType AppliesTo { get; set; } // Excellent, Ancient, etc.
+    public string Formula { get; set; } // Mathematical expression
+    public AttributeDefinition TargetAttribute { get; set; }
+    public ItemTypeFilter ItemTypeFilter { get; set; } // Defense, Weapon, etc.
+}
+```
+
+2. **Add formula configuration to GameConfiguration:**
+```csharp
+public virtual ICollection<PowerUpFormulaDefinition> ItemPowerUpFormulas { get; set; }
+```
+
+3. **Create formula parser/evaluator:**
+   - Support variables: `baseValue`, `dropLevel`, `ancientDropLevel`, `itemLevel`
+   - Support operators: `+`, `-`, `*`, `/`, parentheses
+   - Use existing expression evaluation library or implement simple parser
+
+4. **Refactor ItemPowerUpFactory:**
+   - Replace hardcoded formulas with configuration lookup
+   - Evaluate formulas at runtime using configured definitions
+   - Maintain backward compatibility with fallback to hardcoded values
+
+5. **Migrate existing formulas to initialization:**
+   - Update version initializers (075, 095d, SeasonSix)
+   - Create PowerUpFormulaDefinition instances for each hardcoded formula
+   - Associate formulas with item types and quality levels
+
+**Impact Areas:**
+- GameLogic: ItemPowerUpFactory refactoring
+- DataModel: New PowerUpFormulaDefinition class
+- Persistence: EF model generation, migration
+- Initialization: Formula definitions for all versions
+- Tests: PowerUpFactoryTest updates
+
+**Benefits:**
+- Data-driven bonus calculations
+- Easy balance adjustments without code changes
+- Support for custom item types and formulas
+- Version-specific formula configurations
+- More flexible power-up system
+
+**Complexity:** 6-8 hours
+- Design and implement formula definition model: 2h
+- Create expression evaluator: 2h
+- Refactor ItemPowerUpFactory: 2h
+- Migrate formulas to initialization: 1-2h
+- Testing and validation: 1-2h
 
 **Tell me:** `"Do task MISC-7"`
 
