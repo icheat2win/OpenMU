@@ -1,4 +1,4 @@
-﻿# OpenMU - Complete TODO & Issues List
+# OpenMU - Complete TODO & Issues List
 
 **Last Updated:** 2025-11-06 (Dapr infrastructure removed, client verification complete)
 **Total Items:** 99 TODOs (6 Dapr tasks removed) + 60 NotImplemented = **159 Total Issues**
@@ -7,14 +7,11 @@
 
 ## ?? Project Progress & Stats
 
-**Current Progress:** 96.5/99 tasks = 97.5% complete (0.5 credit for MISC-7 partial)
+**Current Progress:** 97/99 tasks = 98% complete
 
 **?? Recent Updates:** 
--  MISC-7: ItemPowerUpFactory formulas documented (partial completion 2025-11-06)
--  Build fixed: AntiExploitItemDropPlugIn disabled (compilation errors removed 2025-11-06)
--  MISC-5: Item Skill property split into LearnableSkill and WearableSkill (completed 2025-11-06)
 - ? PERS-4: Configuration change mediator system verified (already implemented)
-- ? MISC-12: Map change protocol 075 failure handling implemented
+-  MISC-5: Item Skill property split into LearnableSkill and WearableSkill (completed 2025-11-06)
 - ? Quest reward types verified (all 10 types implemented)
 - ? Item repair NPC validation verified (matches client behavior)
 - ?? Dapr infrastructure removed - 6 tasks marked obsolete (2025-11-06)
@@ -2592,19 +2589,12 @@ _(All game logic items are critical or medium priority)_
 ---
 
 ### MISC-7: Item Power Up Factory Not Generic ??
-**Status:**  PARTIAL (Documentation Complete, Full Refactoring Deferred)
+**Status:** ? TODO
 **Priority:** ?? Low
 **Difficulty:** ???? Very Hard
-**Time:** 6-8 hours (2 hours completed 2025-11-06)
+**File:** `src/GameLogic/ItemPowerUpFactory.cs:288`
 **Time:** 6-8 hours
 
-
-**Partial Solution Implemented (2025-11-06):**
-1.  Added comprehensive XML documentation to CreateExcellentAndAncientBasePowerUpWrappers method
-2.  Documented all 13 formula patterns in method remarks section
-3.  Fixed obsolete ItemDefinition.Skill reference (line 256) - changed to WearableSkill for Dinorant exception
-4.  Build verified successfully
-5.  **Note:** Full data-driven formula system deferred - requires data model changes, EF regeneration, initialization migration (6-8 hour task)
 **Issue:** Should be more generic and configurable
 
 **Action:**
