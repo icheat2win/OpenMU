@@ -25,6 +25,13 @@ internal static class Program
 
     private static void OnUnhandledException(object sender, UnhandledExceptionEventArgs e)
     {
-        // todo
+        var exception = e.ExceptionObject as Exception;
+        var message = exception?.ToString() ?? e.ExceptionObject?.ToString() ?? "Unknown error";
+        
+        MessageBox.Show(
+            $"An unhandled exception occurred:\n\n{message}",
+            "Network Analyzer - Fatal Error",
+            MessageBoxButtons.OK,
+            MessageBoxIcon.Error);
     }
 }
