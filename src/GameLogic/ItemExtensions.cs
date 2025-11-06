@@ -428,6 +428,30 @@ public static class ItemExtensions
         return item.Definition?.CalculateDropLevel(item.IsAncient(), item.IsExcellent(), item.Level) ?? 0;
     }
 
+    /// <summary>
+    /// Gets the effective skill range for a player, accounting for Dark Horse bonus.
+    /// </summary>
+    /// <param name="player">The player.</param>
+    /// <param name="skill">The skill.</param>
+    /// <returns>The effective range (skill.Range + 2 if Dark Horse is equipped, otherwise skill.Range).</returns>
+    /// <remarks>
+    /// Based on client code: if (c->Helper.Type == MODEL_DARK_HORSE_ITEM) { Distance += 2; }
+    /// Dark Horse item: Group 13, Number 4.
+    /// </remarks>
+    public static byte GetEffectiveSkillRange(this Player player, Skill skill)
+    {
+        const byte darkHorseNumber = 4;
+        var equippedPet = player.Inventory?.GetItem(InventoryConstants.RightHandSlot);
+        
+        if (equippedPet?.IsTrainablePet() == true && equippedPet.Definition?.Number == darkHorseNumber)
+        {
+            // Dark Horse grants +2 range bonus
+            return (byte)(skill.Range + 2);
+        }
+
+        return (byte)skill.Range;
+    }
+
     private static int CalculateRequirement(this Item item, int requirementValue, int multiplier)
     {
         if (requirementValue == 0)

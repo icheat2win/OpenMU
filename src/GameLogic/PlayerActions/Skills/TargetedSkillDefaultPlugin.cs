@@ -88,7 +88,7 @@ public class TargetedSkillDefaultPlugin : TargetedSkillPluginBase
             return;
         }
 
-        if (!player.IsInRange(target.Position, skill.Range + 2))
+        if (!player.IsInRange(target.Position, player.GetEffectiveSkillRange(skill)))
         {
             // target position might be out of sync so we send the current coordinates to the client again.
             if (!(target is ISupportWalk { IsWalking: true }))

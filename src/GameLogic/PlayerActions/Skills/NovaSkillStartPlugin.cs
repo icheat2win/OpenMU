@@ -180,7 +180,7 @@ public class NovaSkillStartPlugin : TargetedSkillPluginBase
         }
 
         var targets = player.CurrentMap!
-            .GetAttackablesInRange(player.Position, skill.Range)
+            .GetAttackablesInRange(player.Position, player.GetEffectiveSkillRange(skill))
             .Where(a => a.IsAlive)
             .Where(a => a is not Monster || FilterMonster((Monster)a))
             .Where(a => a is not Player || FilterPlayer((Player)a));

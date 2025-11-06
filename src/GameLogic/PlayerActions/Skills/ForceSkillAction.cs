@@ -49,7 +49,7 @@ public class ForceSkillAction : TargetedSkillDefaultPlugin
         }
 
         var targetsInRange = player.CurrentMap?
-                    .GetAttackablesInRange(player.Position, skill.Range + 4)
+                    .GetAttackablesInRange(player.Position, player.GetEffectiveSkillRange(skill) + 4)
                     .Where(a => a != player)
                     .Where(a => !a.IsAtSafezone()).ToList()
             ?? [];

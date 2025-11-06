@@ -37,7 +37,7 @@ public class WizardTeleportAction
             && player.SkillList?.GetSkill(TeleportSkillId) is { Skill: { } skill }
             && player.CurrentMap!.Terrain.WalkMap[target.X, target.Y]
             && !player.CurrentMap.Terrain.SafezoneMap[target.X, target.Y]
-            && player.IsInRange(target, skill.Range)
+            && player.IsInRange(target, player.GetEffectiveSkillRange(skill))
             && CanPlayerBeTeleported(player)
             && !IsTeleportBlockedByCastleSiegeGate(player, target)
             && await player.TryConsumeForSkillAsync(skill).ConfigureAwait(false))
@@ -68,7 +68,7 @@ public class WizardTeleportAction
             && targetPlayer.Party == player.Party
             && targetPlayer.IsActive()
             && CanPlayerBeTeleported(targetPlayer)
-            && targetPlayer.IsInRange(target, skill.Range + 1)
+            && targetPlayer.IsInRange(target, player.GetEffectiveSkillRange(skill))
             && await player.TryConsumeForSkillAsync(skill).ConfigureAwait(false))
         {
             _ = Task.Run(() => targetPlayer.TeleportAsync(target, skill));
