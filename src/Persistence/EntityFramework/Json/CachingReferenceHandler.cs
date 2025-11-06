@@ -14,6 +14,26 @@ using MUnique.OpenMU.Persistence.Json;
 /// </summary>
 public class CachingReferenceHandler : ReferenceHandler, IIdReferenceHandler
 {
+    private readonly ConfigurationIdReferenceResolver? _configResolver;
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="CachingReferenceHandler"/> class.
+    /// Uses the singleton instance of <see cref="ConfigurationIdReferenceResolver"/> for backward compatibility.
+    /// </summary>
+    public CachingReferenceHandler()
+        : this(null)
+    {
+    }
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="CachingReferenceHandler"/> class.
+    /// </summary>
+    /// <param name="configResolver">The configuration resolver. If null, uses the singleton instance.</param>
+    public CachingReferenceHandler(ConfigurationIdReferenceResolver? configResolver)
+    {
+        this._configResolver = configResolver;
+    }
+
     /// <summary>
     /// Gets the currently used resolver.
     /// </summary>
@@ -22,6 +42,7 @@ public class CachingReferenceHandler : ReferenceHandler, IIdReferenceHandler
     /// <inheritdoc />
     public override ReferenceResolver CreateResolver()
     {
-        return this.Current ??= new MultipleSourceReferenceResolver(new IdReferenceResolver(), ConfigurationIdReferenceResolver.Instance);
+        var resolver = this._configResolver ?? ConfigurationIdReferenceResolver.Instance;
+        return this.Current ??= new MultipleSourceReferenceResolver(new IdReferenceResolver(), resolver);
     }
 }

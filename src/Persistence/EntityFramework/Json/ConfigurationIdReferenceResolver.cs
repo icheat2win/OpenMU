@@ -11,8 +11,11 @@ using MUnique.OpenMU.Persistence.EntityFramework.Model;
 /// A reference resolver which resolves them by looking at the objects occurring in the <see cref="GameConfiguration" />.
 /// The cache is maintained by instances of the <see cref="ConfigurationTypeRepository{T}" />.
 /// </summary>
-/// <remarks>TODO: I don't like it as a singleton, but I keep it until I find a cleaner solution.</remarks>
-internal class ConfigurationIdReferenceResolver : ReferenceResolver
+/// <remarks>
+/// This class can be used as a singleton via <see cref="Instance"/> for backward compatibility,
+/// or instantiated directly for dependency injection scenarios.
+/// </remarks>
+public class ConfigurationIdReferenceResolver : ReferenceResolver
 {
     /// <summary>
     /// The singleton instance.
@@ -24,13 +27,16 @@ internal class ConfigurationIdReferenceResolver : ReferenceResolver
     /// <summary>
     /// Initializes a new instance of the <see cref="ConfigurationIdReferenceResolver"/> class.
     /// </summary>
-    protected ConfigurationIdReferenceResolver()
+    public ConfigurationIdReferenceResolver()
     {
     }
 
     /// <summary>
     /// Gets the singleton instance.
     /// </summary>
+    /// <remarks>
+    /// Provided for backward compatibility. New code should use constructor injection.
+    /// </remarks>
     public static ConfigurationIdReferenceResolver Instance => InstanceValue;
 
     /// <inheritdoc />
