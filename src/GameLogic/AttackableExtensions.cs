@@ -559,13 +559,22 @@ public static class AttackableExtensions
             attackRate = attacker.Attributes[Stats.AttackRatePvm];
         }
 
-        float hitChance = 0.03f;
-        if (defenseRate < attackRate)
+        // Client formula: FinalAttackRating = AttackRating - DefenseRating
+        // Clamped to 0-100, then used as percentage (rand() % 100 < FinalAttackRating)
+        var hitRating = attackRate - defenseRate;
+        
+        // Clamp to 0-100 range
+        if (hitRating < 0)
         {
-            hitChance = 1.0f - (defenseRate / attackRate);
+            hitRating = 0;
+        }
+        else if (hitRating > 100)
+        {
+            hitRating = 100;
         }
 
-        return hitChance;
+        // Convert to 0.0-1.0 probability for server's random logic
+        return hitRating / 100.0f;
     }
 
     private static AttributeDefinition GetDefenseAttribute(this IAttackable defender, IAttacker attacker)
