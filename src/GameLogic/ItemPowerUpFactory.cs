@@ -253,7 +253,7 @@ public class ItemPowerUpFactory : IItemPowerUpFactory
             var level = option.LevelType == LevelType.ItemLevel ? item.Level : optionLink.Level;
 
             var optionOfLevel = option.LevelDependentOptions?.FirstOrDefault(l => l.Level == level);
-            if (optionOfLevel is null && level > 1 && item.Definition!.Skill?.Number != 49) // Dinorant options are an exception
+            if (optionOfLevel is null && level > 1 && item.Definition!.WearableSkill?.Number != 49) // Dinorant options are an exception
             {
                 this._logger.LogWarning("Item {item} (id {itemId}) has IncreasableItemOption ({option}, id {optionId}) with level {level}, but no definition in LevelDependentOptions.", item, item.GetId(), option, option.GetId(), level);
                 continue;
@@ -285,7 +285,22 @@ public class ItemPowerUpFactory : IItemPowerUpFactory
         }
     }
 
-    // TODO: Make this more generic and configurable?
+    /// <summary>
+    /// Creates power-up wrappers for excellent and ancient item bonuses.
+    /// These bonuses are calculated dynamically based on item properties and drop levels.
+    /// </summary>
+    /// <param name="item">The item to create power-ups for.</param>
+    /// <param name="attributeHolder">The attribute system to bind the power-ups to.</param>
+    /// <returns>Power-up wrappers for excellent and ancient bonuses.</returns>
+    /// <remarks>
+    /// Formula patterns:
+    /// - Excellent Defense: (baseDefense * 12 / dropLevel) + (dropLevel / 5) + 4.
+    /// - Ancient Defense: 2 + ((baseDefense + exBonus) * 3 / ancDropLevel) + (ancDropLevel / 30).
+    /// - Excellent Physical Weapon: (minDmg * 25 / dropLevel) + 5.
+    /// - Ancient Physical Weapon: 5 + (ancDropLevel / 40).
+    /// - Excellent Wizardry: ((staffRise * 2 * 25 / dropLevel) + 5) / 2.
+    /// - Ancient Wizardry: (2 + (ancDropLevel / 60)) / 2.
+    /// </remarks>
     private IEnumerable<PowerUpWrapper> CreateExcellentAndAncientBasePowerUpWrappers(Item item, AttributeSystem attributeHolder)
     {
         var itemIsExcellent = item.IsExcellent();
