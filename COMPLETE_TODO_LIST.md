@@ -1819,20 +1819,37 @@ public long Money { get; set; }
 ---
 
 ### ADM-3: Map Component Incomplete ??
-**Status:** ? TODO
+**Status:** ✅ DONE
 **Priority:** ?? Medium
 **Difficulty:** ??? Hard
 **File:** `src/Web/Map/Components/Map.razor:15`
 **Time:** 4-5 hours
 
-**Issue:** Map component has TODO placeholder
+**Issue:** Map component had TODO placeholder for selected object info display
 
-**Action:**
-1. Implement missing map features
-2. Review what's needed
-3. Complete implementation
+**Solution Implemented:**
+The infrastructure for object selection was already in place but not wired up. Connected the existing TypeScript `WorldObjectPicker` callback to JavaScript to populate the selected info display.
 
-**Tell me:** `"Do task ADM-3"`
+**Changes Made:**
+1. **src/Web/Map/wwwroot/js/map.js** - Added `onObjectSelected` callback function:
+   - Receives `objectData` from TypeScript WorldObjectPicker
+   - Populates `selected_info` div with object details (name, ID, position X/Y)
+   - Shows the div when an object is clicked (changes display from "none" to "block")
+   - Passed callback to MapApp constructor
+
+2. **src/Web/Map/Components/Map.razor** - Removed TODO comment:
+   - The HTML structure was already correct with `selected_info` div
+   - Starts hidden (`display: none`)
+   - JavaScript makes it visible when objects are clicked
+
+**Technical Details:**
+- `WorldObjectPicker.ts` already implemented raycasting click detection
+- `MapApp.ts` already accepted `onPickObjectHandler` parameter
+- Just needed to wire the JavaScript bridge between TypeScript and HTML
+- Object data includes: name, id, x position, y position
+- Works for players, NPCs, and other game objects on the live map
+
+**Tell me:** `"Do task ADM-3"` ✅ COMPLETED
 
 ---
 
