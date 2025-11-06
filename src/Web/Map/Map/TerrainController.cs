@@ -46,23 +46,57 @@ public class TerrainController : Controller
             return this.NotFound();
         }
 
-        // TODO: Do this without creating an ObservableGameServerAdapter, because that's a very expensive operation.
-        using var gameServer = new ObservableGameServerAdapter(server.Context);
-        await gameServer.InitializeAsync().ConfigureAwait(false);
-        var map = gameServer.Maps.FirstOrDefault(m => m.Id == mapId);
-        if (map is null)
+        // Get maps directly from context - much more efficient than creating ObservableGameServerAdapter
+        var maps = await server.Context.GetMapsAsync().ConfigureAwait(false);
+        var gameMap = maps.FirstOrDefault(m => m.Id == mapId);
+        
+        if (gameMap is null)
         {
             this._logger.LogWarning($"requested map not available. map id: {mapId}");
             return this.NotFound();
         }
 
+        // Create lightweight map info wrapper just for terrain rendering
+        var mapInfo = new SimpleGameMapInfo(gameMap.Definition.Number, gameMap.Definition.TerrainData);
+
         this.Response.ContentType = "image/png";
-        await using var terrainStream = map.GetTerrainStream();
+        await using var terrainStream = mapInfo.GetTerrainStream();
 
         // we need to set the length before writing the data into the body,
         // otherwise it gets "chunked".
         this.Response.ContentLength = terrainStream.Length;
         await terrainStream.CopyToAsync(this.Response.Body).ConfigureAwait(false);
         return this.Ok();
+    }
+
+    /// <summary>
+    /// Lightweight implementation of <see cref="IGameMapInfo"/> for terrain rendering only.
+    /// Avoids the expensive ObservableGameServerAdapter creation.
+    /// </summary>
+    private sealed class SimpleGameMapInfo : IGameMapInfo
+    {
+        public SimpleGameMapInfo(short mapNumber, byte[]? terrainData)
+        {
+            this.MapNumber = mapNumber;
+            this.TerrainData = terrainData;
+        }
+
+        public event System.ComponentModel.PropertyChangedEventHandler? PropertyChanged
+        {
+            add { }
+            remove { }
+        }
+
+        public Guid Id => Guid.Empty;
+
+        public short MapNumber { get; }
+
+        public string MapName => string.Empty;
+
+        public byte[]? TerrainData { get; }
+
+        public IList<IPlayerInfo> Players => Array.Empty<IPlayerInfo>();
+
+        public int PlayerCount => 0;
     }
 }
