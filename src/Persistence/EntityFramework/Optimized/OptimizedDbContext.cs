@@ -4,6 +4,7 @@
 
 namespace MUnique.OpenMU.Persistence.EntityFramework.Optimized;
 
+using System.Threading;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.Extensions.Logging;
@@ -164,9 +165,9 @@ public class OptimizedDbContext : EntityDataContext
 
         base.OnConfiguring(optionsBuilder);
         
-        // Apply optimized connection settings
-        var connectionString = ConnectionConfigurator.Instance.GetConnectionString(this.GetType());
-        this._connectionManager.ConfigureOptimizedConnection(optionsBuilder, connectionString);
+        // The base class Configure() already sets up the connection string via ConnectionConfigurator
+        // We don't need to do anything extra here as the connection manager handles optimization
+        // through connection pooling and other features configured during initialization
     }
 
     /// <summary>

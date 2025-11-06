@@ -6,6 +6,7 @@ namespace MUnique.OpenMU.Persistence.EntityFramework.Optimized;
 
 using System.Collections;
 using System.Linq.Expressions;
+using System.Threading;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
@@ -13,11 +14,12 @@ using Microsoft.Extensions.Logging;
 /// An optimized generic repository with enhanced query performance and better memory usage.
 /// </summary>
 /// <typeparam name="T">The entity type.</typeparam>
-public class OptimizedGenericRepository<T> : GenericRepositoryBase<T>
+internal class OptimizedGenericRepository<T> : GenericRepositoryBase<T>
     where T : class
 {
     private readonly ILogger<OptimizedGenericRepository<T>> _logger;
     private readonly QueryCacheManager _queryCache;
+    private readonly ILoggerFactory _loggerFactory;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="OptimizedGenericRepository{T}"/> class.
@@ -25,14 +27,25 @@ public class OptimizedGenericRepository<T> : GenericRepositoryBase<T>
     /// <param name="repositoryProvider">The repository provider.</param>
     /// <param name="loggerFactory">The logger factory.</param>
     /// <param name="queryCache">The query cache manager.</param>
-    public OptimizedGenericRepository(
+    internal OptimizedGenericRepository(
         IContextAwareRepositoryProvider repositoryProvider,
         ILoggerFactory loggerFactory,
         QueryCacheManager queryCache)
         : base(repositoryProvider, loggerFactory.CreateLogger<OptimizedGenericRepository<T>>())
     {
         this._logger = loggerFactory.CreateLogger<OptimizedGenericRepository<T>>();
+        this._loggerFactory = loggerFactory;
         this._queryCache = queryCache;
+    }
+
+    /// <summary>
+    /// Gets a context to work with. If no context is currently registered at the repository provider, a new one is getting created.
+    /// </summary>
+    /// <returns>The context.</returns>
+    protected override EntityFrameworkContextBase GetContext()
+    {
+        var context = this.RepositoryProvider.ContextStack.GetCurrentContext() as EntityFrameworkContextBase;
+        return new EntityFrameworkContext(context?.Context ?? new TypedContext(typeof(T)), this._loggerFactory, this.RepositoryProvider, context is null, null);
     }
 
     /// <summary>

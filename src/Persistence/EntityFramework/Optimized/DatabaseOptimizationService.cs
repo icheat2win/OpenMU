@@ -4,6 +4,7 @@
 
 namespace MUnique.OpenMU.Persistence.EntityFramework.Optimized;
 
+using System.Threading;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
@@ -76,7 +77,7 @@ public class DatabaseOptimizationService : BackgroundService
     /// Gets comprehensive database performance metrics.
     /// </summary>
     /// <returns>Database optimization metrics.</returns>
-    public DatabaseOptimizationMetrics GetOptimizationMetrics()
+    internal DatabaseOptimizationMetrics GetOptimizationMetrics()
     {
         var cacheStats = this._queryCache.GetStatistics();
         var connectionMetrics = this._connectionManager.GetMetrics();
@@ -261,7 +262,7 @@ public class DatabaseOptimizationService : BackgroundService
 /// <summary>
 /// Comprehensive database optimization metrics.
 /// </summary>
-public class DatabaseOptimizationMetrics
+internal class DatabaseOptimizationMetrics
 {
     /// <summary>
     /// Gets or sets the cache statistics.

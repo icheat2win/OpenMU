@@ -5,7 +5,9 @@
 namespace MUnique.OpenMU.Persistence.EntityFramework.Optimized;
 
 using System.Collections.Concurrent;
+using System.Data.Common;
 using System.Diagnostics;
+using System.Threading;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.Extensions.Logging;
@@ -108,7 +110,7 @@ public class DatabasePerformanceMonitor : IDbCommandInterceptor, IDisposable
     /// Gets the current performance metrics.
     /// </summary>
     /// <returns>Current performance metrics.</returns>
-    public DatabasePerformanceMetrics GetMetrics()
+    internal DatabasePerformanceMetrics GetMetrics()
     {
         var recentMetrics = this._queryMetrics.ToArray().TakeLast(100).ToArray();
         
@@ -319,7 +321,7 @@ public class DatabasePerformanceMonitor : IDbCommandInterceptor, IDisposable
 /// <summary>
 /// Metrics for a single query execution.
 /// </summary>
-public class QueryMetrics
+internal class QueryMetrics
 {
     /// <summary>
     /// Gets or sets when the query was executed.
@@ -345,7 +347,7 @@ public class QueryMetrics
 /// <summary>
 /// Overall database performance metrics.
 /// </summary>
-public class DatabasePerformanceMetrics
+internal class DatabasePerformanceMetrics
 {
     /// <summary>
     /// Gets or sets the total number of queries executed.
@@ -365,12 +367,12 @@ public class DatabasePerformanceMetrics
     /// <summary>
     /// Gets or sets the top slow queries.
     /// </summary>
-    public List<QueryMetrics> TopSlowQueries { get; set; } = new();
+    public System.Collections.Generic.List<QueryMetrics> TopSlowQueries { get; set; } = new();
 
     /// <summary>
     /// Gets or sets the most frequently executed queries.
     /// </summary>
-    public List<QueryFrequency> MostFrequentQueries { get; set; } = new();
+    public System.Collections.Generic.List<QueryFrequency> MostFrequentQueries { get; set; } = new();
 
     /// <summary>
     /// Gets the slow query percentage.
@@ -381,7 +383,7 @@ public class DatabasePerformanceMetrics
 /// <summary>
 /// Information about query frequency.
 /// </summary>
-public class QueryFrequency
+internal class QueryFrequency
 {
     /// <summary>
     /// Gets or sets the query pattern.

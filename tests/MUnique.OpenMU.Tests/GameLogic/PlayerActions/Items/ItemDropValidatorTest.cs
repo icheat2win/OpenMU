@@ -4,6 +4,7 @@
 
 namespace MUnique.OpenMU.Tests.GameLogic.PlayerActions.Items;
 
+using MUnique.OpenMU.DataModel.Entities;
 using MUnique.OpenMU.GameLogic;
 using MUnique.OpenMU.GameLogic.PlayerActions.Items;
 using MUnique.OpenMU.Pathfinding;

@@ -45,6 +45,7 @@ public class EntityDataContext : ExtendedTypeContext
         modelBuilder.Entity<ConnectServerDefinition>();
         modelBuilder.Entity<ChatServerDefinition>();
         modelBuilder.Entity<MiniGameRankingEntry>();
+        modelBuilder.Entity<CashShopCategory>();
         modelBuilder.Entity<GameServerDefinition>(entity =>
         {
             entity.Property(e => e.PvpEnabled).HasDefaultValue(true);

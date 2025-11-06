@@ -6,6 +6,7 @@ namespace MUnique.OpenMU.Persistence.EntityFramework.Optimized;
 
 using System.Collections.Concurrent;
 using System.Data.Common;
+using System.Threading;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Npgsql;

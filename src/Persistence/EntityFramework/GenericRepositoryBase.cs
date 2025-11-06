@@ -76,8 +76,21 @@ internal abstract class GenericRepositoryBase<T> : IRepository<T>, ILoadByProper
         using var context = this.GetContext();
         var result = await context.Context.Set<T>().ToListAsync(cancellationToken).ConfigureAwait(false);
         await this.LoadDependentDataAsync(result, context.Context, cancellationToken).ConfigureAwait(false);
-        var newItems = context.Context.ChangeTracker.Entries<T>().Where(e => e.State == EntityState.Added).Select(e => e.Entity);
-        result.AddRange(newItems);
+        
+        // Temporarily disable automatic change detection to avoid InvalidOperationException
+        // when duplicate IDs exist during initialization (e.g., items being created with same GUIDs)
+        var autoDetectChangesEnabled = context.Context.ChangeTracker.AutoDetectChangesEnabled;
+        try
+        {
+            context.Context.ChangeTracker.AutoDetectChangesEnabled = false;
+            var newItems = context.Context.ChangeTracker.Entries<T>().Where(e => e.State == EntityState.Added).Select(e => e.Entity);
+            result.AddRange(newItems);
+        }
+        finally
+        {
+            context.Context.ChangeTracker.AutoDetectChangesEnabled = autoDetectChangesEnabled;
+        }
+        
         return result;
     }
 

@@ -5,6 +5,7 @@
 namespace MUnique.OpenMU.Persistence.EntityFramework.Optimized;
 
 using System.Collections.Concurrent;
+using System.Threading;
 using Microsoft.Extensions.Logging;
 
 /// <summary>

@@ -286,11 +286,11 @@ public class GuildServer : IGuildServer
         else
         {
             // Requesting guild is already in an alliance, use its alliance master
-            allianceMaster = requestingContainer.Guild.AllianceGuild;
+            allianceMaster = (Guild)requestingContainer.Guild.AllianceGuild;
         }
 
         // Check alliance size limit (1 master + max 3 members = 4 total)
-        var currentAllianceSize = this._guildDictionary.Values.Count(g => g.Guild.AllianceGuild?.Id == allianceMaster.Id || g.Guild.Id == allianceMaster.Id);
+        var currentAllianceSize = this._guildDictionary.Values.Count(g => (g.Guild.AllianceGuild as Guild)?.Id == allianceMaster.Id || g.Guild.Id == allianceMaster.Id);
         if (currentAllianceSize >= 4)
         {
             this._logger.LogWarning($"Alliance is full. Master: {allianceMaster.Name}");
@@ -318,7 +318,7 @@ public class GuildServer : IGuildServer
         {
             // Guild is not in an alliance, but check if it's a master with members
             var membersInAlliance = this._guildDictionary.Values
-                .Where(g => g.Guild.AllianceGuild?.Id == guildContainer.Guild.Id)
+                .Where(g => (g.Guild.AllianceGuild as Guild)?.Id == guildContainer.Guild.Id)
                 .ToList();
 
             if (membersInAlliance.Any())
@@ -352,11 +352,11 @@ public class GuildServer : IGuildServer
             return ImmutableList<uint>.Empty;
         }
 
-        var allianceMasterId = guildContainer.Guild.AllianceGuild?.Id ?? guildContainer.Guild.Id;
+        var allianceMasterId = (guildContainer.Guild.AllianceGuild as Guild)?.Id ?? guildContainer.Guild.Id;
 
         // Get all guilds in the same alliance (including the master)
         var allianceGuilds = this._guildDictionary
-            .Where(kvp => kvp.Value.Guild.Id == allianceMasterId || kvp.Value.Guild.AllianceGuild?.Id == allianceMasterId)
+            .Where(kvp => kvp.Value.Guild.Id == allianceMasterId || (kvp.Value.Guild.AllianceGuild as Guild)?.Id == allianceMasterId)
             .Select(kvp => kvp.Key)
             .ToImmutableList();
 
@@ -374,13 +374,13 @@ public class GuildServer : IGuildServer
         if (guildContainer.Guild.AllianceGuild is not null)
         {
             // This guild is a member, find the master's short ID
-            var masterId = guildContainer.Guild.AllianceGuild.Id;
+            var masterId = ((Guild)guildContainer.Guild.AllianceGuild).Id;
             var masterContainer = this._guildDictionary.FirstOrDefault(kvp => kvp.Value.Guild.Id == masterId);
             return masterContainer.Key;
         }
 
         // Check if this guild is itself a master
-        var hasMembers = this._guildDictionary.Values.Any(g => g.Guild.AllianceGuild?.Id == guildContainer.Guild.Id);
+        var hasMembers = this._guildDictionary.Values.Any(g => (g.Guild.AllianceGuild as Guild)?.Id == guildContainer.Guild.Id);
         return hasMembers ? guildId : 0;
     }
 
@@ -408,7 +408,7 @@ public class GuildServer : IGuildServer
         }
 
         // Check if hostility already exists
-        if (requestingContainer.Guild.Hostility?.Id == targetContainer.Guild.Id)
+        if ((requestingContainer.Guild.Hostility as Guild)?.Id == targetContainer.Guild.Id)
         {
             return true; // Already hostile
         }
@@ -439,7 +439,7 @@ public class GuildServer : IGuildServer
         }
 
         // Find the hostile guild and remove bidirectional hostility
-        var hostileGuildId = guildContainer.Guild.Hostility.Id;
+        var hostileGuildId = ((Guild)guildContainer.Guild.Hostility).Id;
         var hostileContainer = this._guildDictionary.Values.FirstOrDefault(g => g.Guild.Id == hostileGuildId);
 
         guildContainer.Guild.Hostility = null;
@@ -479,7 +479,7 @@ public class GuildServer : IGuildServer
         uint? hostileGuildId = null;
         if (guildContainer.Guild.Hostility is not null)
         {
-            var hostileGuild = this._guildDictionary.Values.FirstOrDefault(g => g.Guild.Id == guildContainer.Guild.Hostility.Id);
+            var hostileGuild = this._guildDictionary.Values.FirstOrDefault(g => g.Guild.Id == ((Guild)guildContainer.Guild.Hostility).Id);
             hostileGuildId = hostileGuild?.Id;
         }
 

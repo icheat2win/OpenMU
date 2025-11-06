@@ -118,7 +118,7 @@ public class Misc : InitializerBase
     {
         var itemDefinition = this.Context.CreateNew<ItemDefinition>();
         itemDefinition.Name = "Sign of Lord";
-        itemDefinition.Number = 18;
+        itemDefinition.Number = 91;
         itemDefinition.Group = 14;
         itemDefinition.DropLevel = 0;
         itemDefinition.DropsFromMonsters = false;

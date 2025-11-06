@@ -65,7 +65,7 @@ public static class DatabaseOptimizationExtensions
     /// <typeparam name="T">The entity type.</typeparam>
     /// <param name="serviceProvider">The service provider.</param>
     /// <returns>An optimized repository instance.</returns>
-    public static OptimizedGenericRepository<T> GetOptimizedRepository<T>(this IServiceProvider serviceProvider)
+    public static IRepository<T> GetOptimizedRepository<T>(this IServiceProvider serviceProvider)
         where T : class
     {
         var factory = serviceProvider.GetRequiredService<IOptimizedRepositoryFactory>();
@@ -83,7 +83,7 @@ public interface IOptimizedRepositoryFactory
     /// </summary>
     /// <typeparam name="T">The entity type.</typeparam>
     /// <returns>An optimized repository instance.</returns>
-    OptimizedGenericRepository<T> CreateRepository<T>()
+    IRepository<T> CreateRepository<T>()
         where T : class;
 }
 
@@ -113,7 +113,7 @@ public class OptimizedRepositoryFactory : IOptimizedRepositoryFactory
     }
 
     /// <inheritdoc />
-    public OptimizedGenericRepository<T> CreateRepository<T>()
+    public IRepository<T> CreateRepository<T>()
         where T : class
     {
         // Create a context-aware repository provider (simplified for example)
@@ -144,7 +144,12 @@ public class OptimizedRepositoryProvider : IContextAwareRepositoryProvider
     }
 
     /// <inheritdoc />
-    public IContextStack ContextStack { get; }
+    IContextStack IContextStackProvider.ContextStack => this.ContextStack;
+
+    /// <summary>
+    /// Gets the context stack.
+    /// </summary>
+    internal IContextStack ContextStack { get; }
 
     /// <inheritdoc />
     public IRepository<T>? GetRepository<T>() where T : class
@@ -181,7 +186,7 @@ public static class DatabaseOptimizationMonitoringExtensions
     /// </summary>
     /// <param name="serviceProvider">The service provider.</param>
     /// <returns>Current optimization metrics.</returns>
-    public static DatabaseOptimizationMetrics GetDatabaseOptimizationMetrics(this IServiceProvider serviceProvider)
+    internal static DatabaseOptimizationMetrics GetDatabaseOptimizationMetrics(this IServiceProvider serviceProvider)
     {
         var optimizationService = serviceProvider.GetRequiredService<DatabaseOptimizationService>();
         return optimizationService.GetOptimizationMetrics();
@@ -213,7 +218,7 @@ public static class DatabaseOptimizationMonitoringExtensions
     /// </summary>
     /// <param name="serviceProvider">The service provider.</param>
     /// <returns>Current performance metrics.</returns>
-    public static DatabasePerformanceMetrics GetDatabasePerformanceMetrics(this IServiceProvider serviceProvider)
+    internal static DatabasePerformanceMetrics GetDatabasePerformanceMetrics(this IServiceProvider serviceProvider)
     {
         var performanceMonitor = serviceProvider.GetRequiredService<DatabasePerformanceMonitor>();
         return performanceMonitor.GetMetrics();
