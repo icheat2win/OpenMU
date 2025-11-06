@@ -25,8 +25,6 @@ public class GameServer : IGameServer
     public GameServer(DaprClient daprClient, int serverId)
     {
         this.Id = serverId;
-        this.MaximumConnections = 1000;
-        this.CurrentConnections = 0;
 
         this._client = daprClient;
         this._targetAppId = $"gameServer{serverId}";
@@ -59,10 +57,10 @@ public class GameServer : IGameServer
     public ServerState ServerState => this._client.InvokeMethodAsync<ServerState>(this._targetAppId, nameof(this.ServerState)).WaitAndUnwrapException();
 
     /// <inheritdoc />
-    public int MaximumConnections { get; } // TODO
+    public int MaximumConnections => this._client.InvokeMethodAsync<int>(this._targetAppId, nameof(this.MaximumConnections)).WaitAndUnwrapException();
 
     /// <inheritdoc />
-    public int CurrentConnections { get; } // TODO
+    public int CurrentConnections => this._client.InvokeMethodAsync<int>(this._targetAppId, nameof(this.CurrentConnections)).WaitAndUnwrapException();
 
     /// <inheritdoc />
     public async ValueTask StartAsync()
