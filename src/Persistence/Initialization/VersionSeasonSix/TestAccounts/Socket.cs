@@ -134,7 +134,7 @@ internal class Socket : AccountInitializerBase
         item.Durability = item.Definition.Durability;
         item.ItemSlot = itemSlot;
         item.Level = 13;
-        item.HasSkill = item.Definition.Skill != null;
+        item.HasSkill = item.Definition.WearableSkill != null || item.Definition.LearnableSkill != null;
         item.SocketCount = item.Definition.MaximumSockets;
         var slot = 0;
         foreach (var socketOption in socketSlots)

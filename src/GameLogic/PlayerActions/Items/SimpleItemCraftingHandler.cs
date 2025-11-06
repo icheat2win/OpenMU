@@ -200,7 +200,7 @@ public class SimpleItemCraftingHandler : BaseItemCraftingHandler
                 link.ItemOption = optionDefinition.PossibleOptions
                     .Except(resultItem.ItemOptions.Select(io => io.ItemOption)).SelectRandom();
                 resultItem.ItemOptions.Add(link);
-                if (resultItem.Definition.Skill != null)
+                if (resultItem.Definition.WearableSkill != null || resultItem.Definition.LearnableSkill != null)
                 {
                     // Excellent items always have skill.
                     resultItem.HasSkill = true;
@@ -247,7 +247,7 @@ public class SimpleItemCraftingHandler : BaseItemCraftingHandler
     {
         if (this._settings.ResultItemSkillChance > 0 && Rand.NextRandomBool(this._settings.ResultItemSkillChance)
             && !resultItem.HasSkill
-            && resultItem.Definition!.Skill is { })
+            && (resultItem.Definition!.WearableSkill is not null || resultItem.Definition!.LearnableSkill is not null))
         {
             resultItem.HasSkill = true;
         }

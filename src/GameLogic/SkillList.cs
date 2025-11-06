@@ -49,8 +49,8 @@ public sealed class SkillList : ISkillList, IDisposable
         this._itemSkills = new List<SkillEntry>();
         this._player.Inventory.EquippedItems
             .Where(item => item.HasSkill)
-            .Where(item => (item.Definition ?? throw Error.NotInitializedProperty(item, nameof(item.Definition))).Skill != null)
-            .ForEach(item => this.AddItemSkillAsync(item.Definition!.Skill!).AsTask().WaitAndUnwrapException());
+            .Where(item => (item.Definition ?? throw Error.NotInitializedProperty(item, nameof(item.Definition))).WearableSkill != null)
+            .ForEach(item => this.AddItemSkillAsync(item.Definition!.WearableSkill!).AsTask().WaitAndUnwrapException());
         this._player.Inventory.EquippedItemsChanged += this.Inventory_WearingItemsChangedAsync;
         foreach (var skill in this._learnedSkills.Where(s => s.Skill!.SkillType == SkillType.PassiveBoost))
         {
@@ -184,7 +184,7 @@ public sealed class SkillList : ISkillList, IDisposable
     private async ValueTask Inventory_WearingItemsChangedAsync(ItemEventArgs eventArgs)
     {
         var item = eventArgs.Item;
-        if (!item.HasSkill || item.Definition?.Skill is null)
+        if (!item.HasSkill || item.Definition?.WearableSkill is null)
         {
             return;
         }
@@ -192,11 +192,11 @@ public sealed class SkillList : ISkillList, IDisposable
         var inventory = this._player.Inventory;
         if (inventory!.EquippedItems.Contains(item))
         {
-            await this.AddItemSkillAsync(item.Definition.Skill).ConfigureAwait(false);
+            await this.AddItemSkillAsync(item.Definition.WearableSkill).ConfigureAwait(false);
         }
         else
         {
-            await this.RemoveItemSkillAsync(item.Definition.Skill.Number.ToUnsigned()).ConfigureAwait(false);
+            await this.RemoveItemSkillAsync(item.Definition.WearableSkill.Number.ToUnsigned()).ConfigureAwait(false);
         }
     }
 

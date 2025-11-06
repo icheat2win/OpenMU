@@ -157,7 +157,7 @@ public class ItemRequirementCalculationTest
         var item = new Item();
         item.Level = itemLevel;
         item.Definition = new ItemDefinition();
-        item.Definition.Skill = new Skill();
+        item.Definition.WearableSkill = new Skill();
         item.Definition.DropLevel = 59;
         item.Definition.Group = 5;
         item.Definition.ItemSlot = new ItemSlotType();

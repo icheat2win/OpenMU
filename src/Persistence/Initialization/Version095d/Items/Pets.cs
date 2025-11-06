@@ -53,7 +53,7 @@ public class Pets : InitializerBase
         pet.ItemSlot = this.GameConfiguration.ItemSlotTypes.First(st => st.ItemSlots.Contains(8));
         if (skillNumber > 0)
         {
-            pet.Skill = this.GameConfiguration.Skills.First(skill => skill.Number == (short)skillNumber);
+            pet.WearableSkill = this.GameConfiguration.Skills.First(skill => skill.Number == (short)skillNumber);
         }
 
         this.GameConfiguration.DetermineCharacterClasses(CharacterClasses.FairyElf | CharacterClasses.DarkKnight | CharacterClasses.DarkWizard | CharacterClasses.MagicGladiator)

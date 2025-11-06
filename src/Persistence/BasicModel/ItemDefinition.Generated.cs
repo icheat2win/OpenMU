@@ -205,6 +205,42 @@ public partial class ItemDefinition : MUnique.OpenMU.DataModel.Configuration.Ite
         set => base.Skill = value;
     }
 
+    /// <summary>
+    /// Gets the raw object of <see cref="LearnableSkill" />.
+    /// </summary>
+    [System.Text.Json.Serialization.JsonPropertyName("learnableSkill")]
+    public Skill RawLearnableSkill
+    {
+        get => base.LearnableSkill as Skill;
+        set => base.LearnableSkill = value;
+    }
+
+    /// <inheritdoc/>
+    [System.Text.Json.Serialization.JsonIgnore]
+    public override MUnique.OpenMU.DataModel.Configuration.Skill LearnableSkill
+    {
+        get => base.LearnableSkill;
+        set => base.LearnableSkill = value;
+    }
+
+    /// <summary>
+    /// Gets the raw object of <see cref="WearableSkill" />.
+    /// </summary>
+    [System.Text.Json.Serialization.JsonPropertyName("wearableSkill")]
+    public Skill RawWearableSkill
+    {
+        get => base.WearableSkill as Skill;
+        set => base.WearableSkill = value;
+    }
+
+    /// <inheritdoc/>
+    [System.Text.Json.Serialization.JsonIgnore]
+    public override MUnique.OpenMU.DataModel.Configuration.Skill WearableSkill
+    {
+        get => base.WearableSkill;
+        set => base.WearableSkill = value;
+    }
+
     /// <inheritdoc />
     public override MUnique.OpenMU.DataModel.Configuration.Items.ItemDefinition Clone(MUnique.OpenMU.DataModel.Configuration.GameConfiguration gameConfiguration)
     {

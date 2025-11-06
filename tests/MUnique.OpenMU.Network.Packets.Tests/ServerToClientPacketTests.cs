@@ -357,6 +357,118 @@ public class PacketStructureTests
     }
 
     /// <summary>
+    /// Tests the packet size calculation for UpdateRotation.
+    /// </summary>
+    [Test]
+    public void UpdateRotation_PacketSizeValidation()
+    {
+        // Fixed-length packet validation
+        const int expectedLength = 5;
+        var actualLength = UpdateRotationRef.Length;
+        
+        Assert.That(actualLength, Is.EqualTo(expectedLength), 
+            "Packet length mismatch: declared length does not match calculated size");
+        
+        // Validate field 'Rotation' boundary
+        Assert.That(4 + 1, Is.LessThanOrEqualTo(expectedLength), 
+            "Field 'Rotation' exceeds packet boundary");
+    }
+
+    /// <summary>
+    /// Tests the packet size calculation for CastleSiegeRegistrationResult.
+    /// </summary>
+    [Test]
+    public void CastleSiegeRegistrationResult_PacketSizeValidation()
+    {
+        // Fixed-length packet validation
+        const int expectedLength = 5;
+        var actualLength = CastleSiegeRegistrationResultRef.Length;
+        
+        Assert.That(actualLength, Is.EqualTo(expectedLength), 
+            "Packet length mismatch: declared length does not match calculated size");
+        
+        // Validate field 'Result' boundary
+        Assert.That(4 + 1, Is.LessThanOrEqualTo(expectedLength), 
+            "Field 'Result' exceeds packet boundary");
+    }
+
+    /// <summary>
+    /// Tests the packet size calculation for CastleSiegeRegistrationState.
+    /// </summary>
+    [Test]
+    public void CastleSiegeRegistrationState_PacketSizeValidation()
+    {
+        // Fixed-length packet validation
+        const int expectedLength = 9;
+        var actualLength = CastleSiegeRegistrationStateRef.Length;
+        
+        Assert.That(actualLength, Is.EqualTo(expectedLength), 
+            "Packet length mismatch: declared length does not match calculated size");
+        
+        // Validate field 'IsRegistered' boundary
+        Assert.That(4 + 1, Is.LessThanOrEqualTo(expectedLength), 
+            "Field 'IsRegistered' exceeds packet boundary");
+        
+        // Validate field 'TotalMarksSubmitted' boundary
+        Assert.That(5 + 4, Is.LessThanOrEqualTo(expectedLength), 
+            "Field 'TotalMarksSubmitted' exceeds packet boundary");
+    }
+
+    /// <summary>
+    /// Tests the packet size calculation for CastleSiegeStatus.
+    /// </summary>
+    [Test]
+    public void CastleSiegeStatus_PacketSizeValidation()
+    {
+        // Fixed-length packet validation
+        const int expectedLength = 14;
+        var actualLength = CastleSiegeStatusRef.Length;
+        
+        Assert.That(actualLength, Is.EqualTo(expectedLength), 
+            "Packet length mismatch: declared length does not match calculated size");
+        
+        // Validate field 'OwnerGuildName' boundary
+        Assert.That(4 + 8, Is.LessThanOrEqualTo(expectedLength), 
+            "Field 'OwnerGuildName' exceeds packet boundary");
+        
+        // Validate field 'State' boundary
+        Assert.That(12 + 1, Is.LessThanOrEqualTo(expectedLength), 
+            "Field 'State' exceeds packet boundary");
+    }
+
+    /// <summary>
+    /// Tests the packet size calculation for CastleSiegeMarkSubmitted.
+    /// </summary>
+    [Test]
+    public void CastleSiegeMarkSubmitted_PacketSizeValidation()
+    {
+        // Fixed-length packet validation
+        const int expectedLength = 7;
+        var actualLength = CastleSiegeMarkSubmittedRef.Length;
+        
+        Assert.That(actualLength, Is.EqualTo(expectedLength), 
+            "Packet length mismatch: declared length does not match calculated size");
+        
+        // Validate field 'TotalMarksSubmitted' boundary
+        Assert.That(4 + 4, Is.LessThanOrEqualTo(expectedLength), 
+            "Field 'TotalMarksSubmitted' exceeds packet boundary");
+    }
+
+    /// <summary>
+    /// Tests the packet size calculation for CastleSiegeRegisteredGuilds.
+    /// </summary>
+    [Test]
+    public void CastleSiegeRegisteredGuilds_PacketSizeValidation()
+    {
+        // Basic packet validation
+        // Validate header type and field boundaries
+        
+        // Field 'GuildCount' starts at index 4 with size 1
+        Assert.That(4, Is.GreaterThanOrEqualTo(0), 
+            "Field 'GuildCount' has invalid negative index");
+    }
+
+    /// <summary>
     /// Tests the packet size calculation for AddCharacterToScopeExtended.
     /// </summary>
     [Test]
@@ -6496,5 +6608,55 @@ public class PacketStructureTests
         // Validate field 'Result' boundary
         Assert.That(4 + 1, Is.LessThanOrEqualTo(expectedLength), 
             "Field 'Result' exceeds packet boundary");
+    }
+
+    /// <summary>
+    /// Tests the packet size calculation for AllianceJoinRequest.
+    /// </summary>
+    [Test]
+    public void AllianceJoinRequest_PacketSizeValidation()
+    {
+        // Fixed-length packet validation
+        const int expectedLength = 11;
+        var actualLength = AllianceJoinRequestRef.Length;
+        
+        Assert.That(actualLength, Is.EqualTo(expectedLength), 
+            "Packet length mismatch: declared length does not match calculated size");
+        
+        // Validate field 'RequesterGuildName' boundary
+        Assert.That(3 + 8, Is.LessThanOrEqualTo(expectedLength), 
+            "Field 'RequesterGuildName' exceeds packet boundary");
+    }
+
+    /// <summary>
+    /// Tests the packet size calculation for AllianceJoinResponse.
+    /// </summary>
+    [Test]
+    public void AllianceJoinResponse_PacketSizeValidation()
+    {
+        // Fixed-length packet validation
+        const int expectedLength = 4;
+        var actualLength = AllianceJoinResponseRef.Length;
+        
+        Assert.That(actualLength, Is.EqualTo(expectedLength), 
+            "Packet length mismatch: declared length does not match calculated size");
+        
+        // Validate field 'Result' boundary
+        Assert.That(3 + 1, Is.LessThanOrEqualTo(expectedLength), 
+            "Field 'Result' exceeds packet boundary");
+    }
+
+    /// <summary>
+    /// Tests the packet size calculation for AllianceList.
+    /// </summary>
+    [Test]
+    public void AllianceList_PacketSizeValidation()
+    {
+        // Basic packet validation
+        // Validate header type and field boundaries
+        
+        // Field 'GuildCount' starts at index 4 with size 1
+        Assert.That(4, Is.GreaterThanOrEqualTo(0), 
+            "Field 'GuildCount' has invalid negative index");
     }
 }

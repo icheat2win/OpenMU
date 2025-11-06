@@ -68,7 +68,7 @@ public class Orbs : InitializerBase
         this.GameConfiguration.Items.Add(orb);
         orb.Group = 12;
         orb.Number = number;
-        orb.Skill = this.GameConfiguration.Skills.First(skill => skill.Number == (short)skillNumber);
+        orb.LearnableSkill = this.GameConfiguration.Skills.First(skill => skill.Number == (short)skillNumber);
         orb.Width = 1;
         orb.Height = height;
         orb.Name = name;

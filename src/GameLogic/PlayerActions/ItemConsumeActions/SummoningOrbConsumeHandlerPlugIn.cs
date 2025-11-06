@@ -1,4 +1,4 @@
-﻿// <copyright file="SummoningOrbConsumeHandlerPlugIn.cs" company="MUnique">
+// <copyright file="SummoningOrbConsumeHandlerPlugIn.cs" company="MUnique">
 // Licensed under the MIT License. See LICENSE file in the project root for full license information.
 // </copyright>
 
@@ -12,7 +12,7 @@ using MUnique.OpenMU.PlugIns;
 /// The summoning orb consume handler.
 /// There is only one "Orb" item definition which allows to learn different skills, depending on the item level.
 /// This consume handler determines the skill by adding the item level to the skill number
-/// of the <see cref="ItemDefinition.Skill"/>.
+/// of the <see cref="ItemDefinition.LearnableSkill"/>.
 /// </summary>
 [Guid("71C8E542-4868-487E-BC92-0B7CC7CAEC8B")]
 [PlugIn(nameof(SummoningOrbConsumeHandlerPlugIn), "Plugin which handles the summoning orb consumption.")]
@@ -31,9 +31,9 @@ public class SummoningOrbConsumeHandlerPlugIn : LearnablesConsumeHandlerPlugIn
     /// </returns>
     protected override Skill GetLearnableSkill(Item item, GameConfiguration gameConfiguration)
     {
-        item.ThrowNotInitializedProperty(item.Definition?.Skill is null, "Definition.Skill");
+        item.ThrowNotInitializedProperty(item.Definition?.LearnableSkill is null, "Definition.Skill");
 
-        var baseSkillNumber = item.Definition.Skill.Number;
+        var baseSkillNumber = item.Definition.LearnableSkill.Number;
         var targetSkillNumber = baseSkillNumber + item.Level;
         return gameConfiguration.Skills.First(s => s.Number == targetSkillNumber);
     }

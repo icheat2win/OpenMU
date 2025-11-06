@@ -51,6 +51,6 @@ public class LearnablesConsumeHandlerPlugIn : BaseConsumeHandlerPlugIn
     /// <returns>The skill to learn.</returns>
     protected virtual Skill? GetLearnableSkill(Item item, GameConfiguration gameConfiguration)
     {
-        return item.Definition?.Skill;
+        return item.Definition?.LearnableSkill;
     }
 }

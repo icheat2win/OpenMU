@@ -114,7 +114,7 @@ public abstract class ArmorInitializerBase : InitializerBase
         var shield = this.CreateArmor(number, slot, width, height, name, dropLevel, 0, durability, levelRequirement, strengthRequirement, agilityRequirement, energyRequirement, vitalityRequirement, leadershipRequirement, darkWizardClassLevel, darkKnightClassLevel, elfClassLevel, magicGladiatorClassLevel, darkLordClassLevel, summonerClassLevel, ragefighterClassLevel, true);
         if (skill != 0)
         {
-            shield.Skill = this.GameConfiguration.Skills.First(s => s.Number == skill);
+            shield.WearableSkill = this.GameConfiguration.Skills.First(s => s.Number == skill);
         }
 
         if (defense > 0)

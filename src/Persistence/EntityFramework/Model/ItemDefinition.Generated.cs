@@ -138,6 +138,58 @@ internal partial class ItemDefinition : MUnique.OpenMU.DataModel.Configuration.I
         }
     }
 
+    /// <summary>
+    /// Gets or sets the identifier of <see cref="LearnableSkill"/>.
+    /// </summary>
+    public Guid? LearnableSkillId { get; set; }
+
+    /// <summary>
+    /// Gets the raw object of <see cref="LearnableSkill" />.
+    /// </summary>
+    [ForeignKey(nameof(LearnableSkillId))]
+    public Skill RawLearnableSkill
+    {
+        get => base.LearnableSkill as Skill;
+        set => base.LearnableSkill = value;
+    }
+
+    /// <inheritdoc/>
+    [NotMapped]
+    public override MUnique.OpenMU.DataModel.Configuration.Skill LearnableSkill
+    {
+        get => base.LearnableSkill;set
+        {
+            base.LearnableSkill = value;
+            this.LearnableSkillId = this.RawLearnableSkill?.Id;
+        }
+    }
+
+    /// <summary>
+    /// Gets or sets the identifier of <see cref="WearableSkill"/>.
+    /// </summary>
+    public Guid? WearableSkillId { get; set; }
+
+    /// <summary>
+    /// Gets the raw object of <see cref="WearableSkill" />.
+    /// </summary>
+    [ForeignKey(nameof(WearableSkillId))]
+    public Skill RawWearableSkill
+    {
+        get => base.WearableSkill as Skill;
+        set => base.WearableSkill = value;
+    }
+
+    /// <inheritdoc/>
+    [NotMapped]
+    public override MUnique.OpenMU.DataModel.Configuration.Skill WearableSkill
+    {
+        get => base.WearableSkill;set
+        {
+            base.WearableSkill = value;
+            this.WearableSkillId = this.RawWearableSkill?.Id;
+        }
+    }
+
     /// <inheritdoc />
     public override MUnique.OpenMU.DataModel.Configuration.Items.ItemDefinition Clone(MUnique.OpenMU.DataModel.Configuration.GameConfiguration gameConfiguration)
     {

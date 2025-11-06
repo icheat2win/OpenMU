@@ -45,7 +45,7 @@ public class ItemChatCommandPlugIn : ChatCommandPlugInBase<ItemChatCommandArgs>
         var item = new TemporaryItem();
         item.Definition = GetItemDefinition(gameMaster, arguments);
         item.Durability = item.IsStackable() ? 1 : item.Definition.Durability;
-        item.HasSkill = item.Definition.Skill != null && arguments.Skill;
+        item.HasSkill = (item.Definition.WearableSkill != null || item.Definition.LearnableSkill != null) && arguments.Skill;
         item.Level = GetItemLevel(item.Definition, arguments);
         item.SocketCount = item.Definition.MaximumSockets;
 
@@ -83,7 +83,7 @@ public class ItemChatCommandPlugIn : ChatCommandPlugInBase<ItemChatCommandArgs>
                 .Where(o => o.OptionType == ItemOptionTypes.Option);
             IncreasableItemOption itemOption;
 
-            if (item.Definition.Skill?.Number == 49) // Dinorant
+            if (item.Definition.WearableSkill?.Number == 49) // Dinorant
             {
                 if ((arguments.Opt & 1) > 0)
                 {
@@ -150,7 +150,7 @@ public class ItemChatCommandPlugIn : ChatCommandPlugInBase<ItemChatCommandArgs>
             }
 
             // every excellent item has skill (if is in item definition)
-            item.HasSkill = appliedOptions > default(ushort) && item.Definition.Skill != null;
+            item.HasSkill = appliedOptions > default(ushort) && (item.Definition.WearableSkill != null || item.Definition.LearnableSkill != null);
         }
     }
 

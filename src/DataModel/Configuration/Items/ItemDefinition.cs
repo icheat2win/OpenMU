@@ -115,9 +115,31 @@ public partial class ItemDefinition
 
     /// <summary>
     /// Gets or sets the skill which this items adds to the skill list while wearing or which can be learned by consuming this item.
-    /// TODO: Split these two usages into different properties?.
     /// </summary>
+    /// <remarks>
+    /// This property serves dual purposes and should be replaced by <see cref="LearnableSkill"/> or <see cref="WearableSkill"/>.
+    /// Kept for backward compatibility. Will be removed in a future version.
+    /// </remarks>
+    [Obsolete("Use LearnableSkill for consumable learning items (scrolls/orbs) or WearableSkill for equipment bonuses.")]
     public virtual Skill? Skill { get; set; }
+
+    /// <summary>
+    /// Gets or sets the skill which can be learned by consuming this item (e.g., scrolls, skill orbs).
+    /// </summary>
+    /// <remarks>
+    /// This skill is permanently added to the character's learned skills when the item is consumed.
+    /// Used for items like "Scroll of Teleport" or "Orb of Twisting Slash".
+    /// </remarks>
+    public virtual Skill? LearnableSkill { get; set; }
+
+    /// <summary>
+    /// Gets or sets the skill which is temporarily added to the skill list while this item is equipped.
+    /// </summary>
+    /// <remarks>
+    /// This skill is only available while the item is worn and is removed when unequipped.
+    /// Used for equipment like wings (teleport), summoner books (curse skills), etc.
+    /// </remarks>
+    public virtual Skill? WearableSkill { get; set; }
 
     /// <summary>
     /// Gets or sets the character classes which are qualified to wear this Item.

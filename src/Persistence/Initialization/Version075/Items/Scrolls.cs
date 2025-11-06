@@ -60,7 +60,7 @@ public class Scrolls : InitializerBase
         this.GameConfiguration.Items.Add(scroll);
         scroll.Group = 15;
         scroll.Number = number;
-        scroll.Skill = this.GameConfiguration.Skills.First(skill => skill.Number == skillNumber);
+        scroll.LearnableSkill = this.GameConfiguration.Skills.First(skill => skill.Number == skillNumber);
         scroll.Width = 1;
         scroll.Height = 2;
         scroll.Name = name;
