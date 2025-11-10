@@ -6,6 +6,7 @@ namespace MUnique.OpenMU.PlugIns;
 
 using System.Collections.Concurrent;
 using System.ComponentModel.Design;
+using System.IO;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Text.Json.Serialization;
@@ -25,6 +26,7 @@ public class PlugInManager
     private readonly IDictionary<Guid, Type> _knownPlugIns = new ConcurrentDictionary<Guid, Type>();
     private readonly ConcurrentDictionary<Type, ISet<Type>> _knownPlugInsPerInterfaceType = new ();
     private readonly ConcurrentDictionary<Guid, Type> _activePlugIns = new ();
+    private readonly PlugInSignatureVerifier? _signatureVerifier;
     private object? _lastCreatedPlugIn;
 
     /// <summary>
@@ -33,7 +35,9 @@ public class PlugInManager
     /// <param name="configurations">The configurations.</param>
     /// <param name="loggerFactory">The logger factory.</param>
     /// <param name="serviceProvider">The service provider.</param>
-    public PlugInManager(ICollection<PlugInConfiguration>? configurations, ILoggerFactory loggerFactory, IServiceProvider? serviceProvider, ReferenceHandler? customConfigReferenceHandler)
+    /// <param name="customConfigReferenceHandler">Optional custom JSON reference handler for plugin configurations.</param>
+    /// <param name="signatureVerifier">Optional signature verifier for plugin assemblies.</param>
+    public PlugInManager(ICollection<PlugInConfiguration>? configurations, ILoggerFactory loggerFactory, IServiceProvider? serviceProvider, ReferenceHandler? customConfigReferenceHandler, PlugInSignatureVerifier? signatureVerifier = null)
     {
         _ = typeof(Nito.AsyncEx.AsyncReaderWriterLock); // Ensure Nito.AsyncEx.Coordination is loaded so it will be available in proxy generation.
 
@@ -43,6 +47,7 @@ public class PlugInManager
         this._serviceContainer.AddService(typeof(ILoggerFactory), loggerFactory);
 
         this.CustomConfigReferenceHandler = customConfigReferenceHandler;
+        this._signatureVerifier = signatureVerifier;
 
         if (configurations is not null)
         {
@@ -409,7 +414,22 @@ public class PlugInManager
 
                 try
                 {
-                    var assembly = Assembly.LoadFile("plugins\\" + configuration.ExternalAssemblyName);
+                    var assemblyPath = Path.Combine("plugins", configuration.ExternalAssemblyName);
+
+                    // Verify assembly signature if verifier is configured
+                    if (this._signatureVerifier != null)
+                    {
+                        var verificationResult = this._signatureVerifier.VerifyAssembly(assemblyPath);
+                        if (!verificationResult.IsValid)
+                        {
+                            this._logger.LogError($"Plugin assembly {configuration.ExternalAssemblyName} failed signature verification: {verificationResult.Message}");
+                            return;
+                        }
+
+                        this._logger.LogDebug($"Plugin assembly {configuration.ExternalAssemblyName} signature verified: {verificationResult.Message}");
+                    }
+
+                    var assembly = Assembly.LoadFile(assemblyPath);
                     this.DiscoverAndRegisterPlugIns(assembly);
                 }
                 catch (Exception e)
@@ -421,9 +441,24 @@ public class PlugInManager
             else if (!string.IsNullOrEmpty(configuration.CustomPlugInSource))
             {
                 this._logger.LogWarning($"Custom plugin source found at plugin configuration: {configuration}");
-                /* TODO: Implement code signing, if we really need this feature.
-                Assembly customPlugInAssembly = this.CompileCustomPlugInAssembly(configuration);
-                this.DiscoverAndRegisterPlugIns(customPlugInAssembly);*/
+
+                // Uncommented with signature verification requirement
+                if (this._signatureVerifier == null)
+                {
+                    this._logger.LogError("Custom plugin compilation requires signature verification to be enabled. Configure PlugInSignatureVerifier.");
+                    return;
+                }
+
+                try
+                {
+                    Assembly customPlugInAssembly = this.CompileCustomPlugInAssembly(configuration);
+                    this.DiscoverAndRegisterPlugIns(customPlugInAssembly);
+                }
+                catch (Exception e)
+                {
+                    this._logger.LogError($"Error while compiling custom plugin for {configuration.TypeId}.", e);
+                    return;
+                }
             }
             else
             {
