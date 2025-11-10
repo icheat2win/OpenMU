@@ -1,0 +1,3 @@
+﻿$env:PGPASSWORD='admin'
+& 'C:\Program Files\PostgreSQL\17\bin\psql.exe' -U postgres -d openmu -c 'CREATE TABLE IF NOT EXISTS config.""CashShopCategory"" (""Id"" uuid NOT NULL PRIMARY KEY, ""Name"" text NULL, ""Description"" text NULL, ""NormalShopItemSold"" boolean NOT NULL, ""GameConfigurationId"" uuid NULL, CONSTRAINT ""FK_CashShopCategory_GameConfiguration_GameConfigurationId"" FOREIGN KEY (""GameConfigurationId"") REFERENCES config.""GameConfiguration""(""Id"") ON DELETE CASCADE);'
+& 'C:\Program Files\PostgreSQL\17\bin\psql.exe' -U postgres -d openmu -c 'CREATE INDEX IF NOT EXISTS ""IX_CashShopCategory_GameConfigurationId"" ON config.""CashShopCategory"" (""GameConfigurationId"");'
