@@ -13,7 +13,7 @@ services:
       - openmu-startup
 
   openmu-startup:
-    image: munique/openmu
+    image: mcr.microsoft.com/dotnet/aspnet:9.0-alpine
     container_name: openmu-startup
     ports:
       - "8080"
@@ -31,12 +31,14 @@ services:
       ASPNETCORE_URLS: http://+:8080
     working_dir: /app/
     volumes:
+      - ./app:/app:ro
       - ./.htpasswd:/etc/nginx/.htpasswd
+    command: ["dotnet", "MUnique.OpenMU.Startup.dll", "-autostart"]
     depends_on:
       - database
 
   database:
-    image: postgres
+    image: postgres:16-alpine
     container_name: database
     environment:
       POSTGRES_PASSWORD: admin
