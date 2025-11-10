@@ -47,17 +47,124 @@ public class JsonQueryBuilder
     }
 
     /// <summary>
-    /// Gets the navigations of the entity type.
+    /// Gets the navigations of the entity type, automatically sorted by dependencies.
     /// </summary>
     /// <param name="entityType">Type of the entity.</param>
-    /// <returns>The navigations of the entity type.</returns>
+    /// <returns>The navigations of the entity type, sorted so that dependencies come before dependents.</returns>
     /// <remarks>
-    /// Can be overwritten to apply sorting.
-    /// TODO: Can sorting based on dependencies be done automatically?.
+    /// Navigations are automatically sorted using topological sort based on foreign key relationships.
+    /// This ensures that entities are serialized in the correct order for deserialization.
+    /// Can be overwritten to apply custom sorting if needed.
     /// </remarks>
     protected virtual IEnumerable<INavigation> GetNavigations(IEntityType entityType)
     {
-        return entityType.GetNavigations();
+        var navigations = entityType.GetNavigations().ToList();
+        if (navigations.Count <= 1)
+        {
+            return navigations;
+        }
+
+        try
+        {
+            return this.SortNavigationsByDependencies(navigations);
+        }
+        catch (InvalidOperationException)
+        {
+            // If circular dependencies detected, return original order
+            return navigations;
+        }
+    }
+
+    /// <summary>
+    /// Sorts navigations using topological sort based on foreign key dependencies.
+    /// </summary>
+    /// <param name="navigations">The navigations to sort.</param>
+    /// <returns>Sorted navigations with dependencies before dependents.</returns>
+    private IEnumerable<INavigation> SortNavigationsByDependencies(IList<INavigation> navigations)
+    {
+        var navigationMap = navigations.ToDictionary(n => n.Name);
+        var dependencies = new Dictionary<string, HashSet<string>>();
+        var inDegree = new Dictionary<string, int>();
+
+        // Initialize dependency tracking
+        foreach (var nav in navigations)
+        {
+            dependencies[nav.Name] = new HashSet<string>();
+            inDegree[nav.Name] = 0;
+        }
+
+        // Build dependency graph by analyzing foreign keys
+        foreach (var nav in navigations)
+        {
+            var targetType = nav.TargetEntityType;
+
+            // Check if the target entity has foreign keys pointing to other navigations
+            foreach (var foreignKey in targetType.GetForeignKeys())
+            {
+                var principalType = foreignKey.PrincipalEntityType;
+
+                // Find if this principal type is referenced by another navigation in our list
+                foreach (var otherNav in navigations)
+                {
+                    if (otherNav.Name == nav.Name)
+                    {
+                        continue;
+                    }
+
+                    // If the other navigation's target is the principal type,
+                    // then current nav depends on other nav
+                    if (otherNav.TargetEntityType == principalType ||
+                        otherNav.TargetEntityType.ClrType == principalType.ClrType)
+                    {
+                        if (dependencies[nav.Name].Add(otherNav.Name))
+                        {
+                            inDegree[nav.Name]++;
+                        }
+                    }
+                }
+            }
+        }
+
+        // Topological sort using Kahn's algorithm
+        var result = new List<INavigation>();
+        var queue = new Queue<string>();
+
+        // Start with navigations that have no dependencies
+        foreach (var nav in navigations)
+        {
+            if (inDegree[nav.Name] == 0)
+            {
+                queue.Enqueue(nav.Name);
+            }
+        }
+
+        while (queue.Count > 0)
+        {
+            var current = queue.Dequeue();
+            result.Add(navigationMap[current]);
+
+            // Reduce in-degree for all navigations that depend on current
+            foreach (var nav in navigations)
+            {
+                if (dependencies[nav.Name].Contains(current))
+                {
+                    inDegree[nav.Name]--;
+                    if (inDegree[nav.Name] == 0)
+                    {
+                        queue.Enqueue(nav.Name);
+                    }
+                }
+            }
+        }
+
+        // Check for circular dependencies
+        if (result.Count != navigations.Count)
+        {
+            // Circular dependency detected, throw exception to use fallback
+            throw new InvalidOperationException($"Circular dependency detected in navigation properties for {navigations[0].DeclaringEntityType.Name}");
+        }
+
+        return result;
     }
 
     private void AppendLine(StringBuilder stringBuilder, string text, int indentLevel)
@@ -165,7 +272,7 @@ public class JsonQueryBuilder
     private void AddCollection(INavigation navigation, IEntityType entityType, StringBuilder stringBuilder, string parentAlias, int indentLevel)
     {
         var keyProperty = navigation.ForeignKey.Properties[0];
-        var navigationType = keyProperty.DeclaringEntityType;
+        var navigationType = (IEntityType)keyProperty.DeclaringType;
 #pragma warning disable EF1001 // Internal EF Core API usage.
         if (navigationType.FindDeclaredPrimaryKey() is not { } primaryKey)
         {
