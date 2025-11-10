@@ -94,11 +94,16 @@ public static class WebApplicationExtensions
         }
 
         app.UseStaticFiles();
-        app.UseStaticFiles(new StaticFileOptions
+        
+        var logsPath = Path.Combine(Directory.GetCurrentDirectory(), "logs");
+        if (Directory.Exists(logsPath))
         {
-            FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), "logs")),
-            RequestPath = "/logs",
-        });
+            app.UseStaticFiles(new StaticFileOptions
+            {
+                FileProvider = new PhysicalFileProvider(logsPath),
+                RequestPath = "/logs",
+            });
+        }
 
         app.UseRouting();
         app.MapBlazorHub();

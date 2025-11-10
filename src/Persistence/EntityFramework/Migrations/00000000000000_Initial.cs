@@ -1678,6 +1678,7 @@ namespace MUnique.OpenMU.Persistence.EntityFramework.Migrations
                     ConsumeEffectId = table.Column<Guid>(type: "uuid", nullable: true),
                     SkillId = table.Column<Guid>(type: "uuid", nullable: true),
                     GameConfigurationId = table.Column<Guid>(type: "uuid", nullable: true),
+                    ItemGroupId = table.Column<Guid>(type: "uuid", nullable: true),
                     Number = table.Column<short>(type: "smallint", nullable: false),
                     Width = table.Column<byte>(type: "smallint", nullable: false),
                     Height = table.Column<byte>(type: "smallint", nullable: false),
@@ -1701,6 +1702,12 @@ namespace MUnique.OpenMU.Persistence.EntityFramework.Migrations
                         column: x => x.GameConfigurationId,
                         principalSchema: "config",
                         principalTable: "GameConfiguration",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_ItemDefinition_ItemGroupDefinition_ItemGroupId",
+                        column: x => x.ItemGroupId,
+                        principalSchema: "config",
+                        principalTable: "ItemGroupDefinition",
                         principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_ItemDefinition_ItemSlotType_ItemSlotId",
@@ -3135,6 +3142,12 @@ namespace MUnique.OpenMU.Persistence.EntityFramework.Migrations
                 schema: "config",
                 table: "ItemDefinition",
                 column: "SkillId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ItemDefinition_ItemGroupId",
+                schema: "config",
+                table: "ItemDefinition",
+                column: "ItemGroupId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_ItemDefinitionCharacterClass_CharacterClassId",
