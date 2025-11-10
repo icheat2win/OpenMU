@@ -9,6 +9,7 @@ services:
     volumes:
       - ./nginx/nginx.dev.conf:/etc/nginx/nginx.conf:ro
       - ./.htpasswd:/etc/nginx/.htpasswd
+      - ./logs:/logs:ro
     depends_on:
       - openmu-startup
 
@@ -16,26 +17,31 @@ services:
     image: mcr.microsoft.com/dotnet/aspnet:9.0-alpine
     container_name: openmu-startup
     ports:
-      - "8080"
-      - "45901:55901"
-      - "45902:55902"
-      - "45903:55903"
-      - "45904:55904"
-      - "45905:55905"
-      - "45906:55906"
-      - "34405:44405"
-      - "34406:44406"
-      - "45980:55980"
+      - "8081:8080"
+      - "50001:55901"
+      - "50002:55902"
+      - "50003:55903"
+      - "50004:55904"
+      - "50005:55905"
+      - "50006:55906"
+      - "50401:44405"
+      - "50402:44406"
+      - "50980:55980"
     environment:
       DB_HOST: database
       ASPNETCORE_URLS: http://+:8080
+      ASPNETCORE_ENVIRONMENT: Development
+      RESOLVE_IP: "127.0.0.1"
+      LOGS_PATH: "/logs"
     working_dir: /app/
     volumes:
       - ./app:/app:ro
       - ./.htpasswd:/etc/nginx/.htpasswd
-    command: ["dotnet", "MUnique.OpenMU.Startup.dll", "-autostart"]
+      - ./logs:/logs
+    command: ["dotnet", "MUnique.OpenMU.Startup.dll", "-autostart", "-adminpanel", "-resolveIP:127.0.0.1"]
     depends_on:
-      - database
+      database:
+        condition: service_healthy
 
   database:
     image: postgres:16-alpine
@@ -48,6 +54,11 @@ services:
       - "5432"
     volumes:
       - dbdata:/var/lib/postgresql/data #store data on volume
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
 
 volumes:
   dbdata:

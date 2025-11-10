@@ -4,53 +4,374 @@
 
 <PageTitle>OpenMU: Log Files</PageTitle>
 <Breadcrumb IsFirstFromRoot="true" Caption="Log Files"/>
-<div>
-    <table>
-        <thead>
-        <tr>
-            <th>File name</th>
-            <th>Last update</th>
-            <th>Size</th>
-        </tr>
-        </thead>
-        <tbody>
-        @foreach (var entry in this._files.OrderByDescending(f => f.LastWriteTime))
-        {
-            <tr>
-                <td>
-                    <a href="logs/@entry.Name">@entry.Name</a>
-                </td>
-                <td>@entry.LastWriteTime</td>
-                <td>@FormatFileSize(entry.Length)</td>
-            </tr>
+
+<style>
+    .log-files-container {
+        padding: 20px;
+        max-width: 1400px;
+    }
+    
+    .log-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+        flex-wrap: wrap;
+        gap: 15px;
+    }
+    
+    .search-box {
+        flex: 1;
+        min-width: 300px;
+        max-width: 500px;
+    }
+    
+    .search-box input {
+        width: 100%;
+        padding: 10px 15px;
+        border: 1px solid #ddd;
+        border-radius: 6px;
+        font-size: 14px;
+        transition: border-color 0.3s;
+    }
+    
+    .search-box input:focus {
+        outline: none;
+        border-color: #007bff;
+        box-shadow: 0 0 0 3px rgba(0,123,255,0.1);
+    }
+    
+    .log-stats {
+        display: flex;
+        gap: 20px;
+        font-size: 14px;
+        color: #666;
+    }
+    
+    .stat-item {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+    }
+    
+    .stat-value {
+        font-weight: 600;
+        color: #333;
+    }
+    
+    .log-table {
+        width: 100%;
+        background: white;
+        border-radius: 8px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        overflow: hidden;
+    }
+    
+    .log-table table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+    
+    .log-table thead {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+    }
+    
+    .log-table th {
+        padding: 15px;
+        text-align: left;
+        font-weight: 600;
+        cursor: pointer;
+        user-select: none;
+        position: relative;
+        transition: background 0.2s;
+    }
+    
+    .log-table th:hover {
+        background: rgba(255,255,255,0.1);
+    }
+    
+    .log-table th.sortable::after {
+        content: '⇅';
+        position: absolute;
+        right: 10px;
+        opacity: 0.5;
+        font-size: 12px;
+    }
+    
+    .log-table th.sorted-asc::after {
+        content: '↑';
+        opacity: 1;
+    }
+    
+    .log-table th.sorted-desc::after {
+        content: '↓';
+        opacity: 1;
+    }
+    
+    .log-table tbody tr {
+        border-bottom: 1px solid #f0f0f0;
+        transition: background 0.2s;
+    }
+    
+    .log-table tbody tr:hover {
+        background: #f8f9fa;
+    }
+    
+    .log-table td {
+        padding: 15px;
+    }
+    
+    .file-link {
+        color: #007bff;
+        text-decoration: none;
+        font-weight: 500;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        transition: color 0.2s;
+    }
+    
+    .file-link:hover {
+        color: #0056b3;
+        text-decoration: underline;
+    }
+    
+    .file-icon {
+        width: 20px;
+        height: 20px;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        border-radius: 4px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-size: 12px;
+        font-weight: bold;
+    }
+    
+    .file-size {
+        color: #666;
+        font-family: 'Consolas', 'Monaco', monospace;
+    }
+    
+    .file-date {
+        color: #666;
+    }
+    
+    .file-age {
+        display: inline-block;
+        padding: 4px 10px;
+        border-radius: 12px;
+        font-size: 12px;
+        font-weight: 500;
+        margin-left: 10px;
+    }
+    
+    .age-recent {
+        background: #d4edda;
+        color: #155724;
+    }
+    
+    .age-today {
+        background: #cce5ff;
+        color: #004085;
+    }
+    
+    .age-old {
+        background: #fff3cd;
+        color: #856404;
+    }
+    
+    .no-results {
+        text-align: center;
+        padding: 60px 20px;
+        color: #999;
+        font-size: 16px;
+    }
+    
+    .no-results-icon {
+        font-size: 48px;
+        margin-bottom: 15px;
+    }
+    
+    @@media (max-width: 768px) {
+        .log-header {
+            flex-direction: column;
+            align-items: stretch;
         }
-        </tbody>
-    </table>
+        
+        .search-box {
+            max-width: 100%;
+        }
+        
+        .log-stats {
+            justify-content: space-around;
+        }
+        
+        .log-table td, .log-table th {
+            padding: 10px;
+            font-size: 13px;
+        }
+    }
+</style>
+
+<div class="log-files-container">
+    <div class="log-header">
+        <div class="search-box">
+            <input type="text" 
+                   placeholder="🔍 Search log files..." 
+                   @bind="@_searchTerm" 
+                   @bind:event="oninput" />
+        </div>
+        <div class="log-stats">
+            <div class="stat-item">
+                <span>📁 Files:</span>
+                <span class="stat-value">@FilteredFiles.Count()</span>
+            </div>
+            <div class="stat-item">
+                <span>💾 Total Size:</span>
+                <span class="stat-value">@FormatFileSize(_files.Sum(f => f.Length))</span>
+            </div>
+        </div>
+    </div>
+    
+    <div class="log-table">
+        @if (FilteredFiles.Any())
+        {
+            <table>
+                <thead>
+                <tr>
+                    <th class="sortable @GetSortClass("name")" @onclick='() => SortBy("name")'>
+                        File Name
+                    </th>
+                    <th class="sortable @GetSortClass("date")" @onclick='() => SortBy("date")'>
+                        Last Modified
+                    </th>
+                    <th class="sortable @GetSortClass("size")" @onclick='() => SortBy("size")'>
+                        Size
+                    </th>
+                </tr>
+                </thead>
+                <tbody>
+                @foreach (var entry in FilteredFiles)
+                {
+                    <tr>
+                        <td>
+                            <a href="logs/@entry.Name" class="file-link" target="_blank">
+                                <span class="file-icon">📄</span>
+                                @entry.Name
+                            </a>
+                        </td>
+                        <td class="file-date">
+                            @entry.LastWriteTime.ToString("yyyy-MM-dd HH:mm:ss")
+                            <span class="file-age @GetAgeClass(entry.LastWriteTime)">
+                                @GetRelativeTime(entry.LastWriteTime)
+                            </span>
+                        </td>
+                        <td class="file-size">
+                            @FormatFileSize(entry.Length)
+                        </td>
+                    </tr>
+                }
+                </tbody>
+            </table>
+        }
+        else
+        {
+            <div class="no-results">
+                <div class="no-results-icon">🔍</div>
+                <div>No log files found matching "@_searchTerm"</div>
+            </div>
+        }
+    </div>
 </div>
 
 @code {
     private readonly List<FileInfo> _files = new ();
+    private string _searchTerm = string.Empty;
+    private string _sortColumn = "date";
+    private bool _sortAscending = false;
 
     /// <summary>
     /// Initializes a new instance of class <see cref="LogFiles"/>.
     /// </summary>
     public LogFiles()
     {
-        var files = Directory.GetFiles(Path.Combine(Directory.GetCurrentDirectory(), "logs"));
-        foreach (var filePath in files)
+        var logsPath = Environment.GetEnvironmentVariable("LOGS_PATH") ?? Path.Combine(Directory.GetCurrentDirectory(), "logs");
+        try
         {
-            this._files.Add(new FileInfo(filePath));
+            var files = Directory.GetFiles(logsPath);
+            foreach (var filePath in files)
+            {
+                this._files.Add(new FileInfo(filePath));
+            }
         }
+        catch (DirectoryNotFoundException)
+        {
+            // Logs directory doesn't exist yet
+        }
+    }
+
+    private IEnumerable<FileInfo> FilteredFiles
+    {
+        get
+        {
+            var filtered = string.IsNullOrWhiteSpace(_searchTerm) 
+                ? _files 
+                : _files.Where(f => f.Name.Contains(_searchTerm, StringComparison.OrdinalIgnoreCase));
+
+            return _sortColumn switch
+            {
+                "name" => _sortAscending ? filtered.OrderBy(f => f.Name) : filtered.OrderByDescending(f => f.Name),
+                "size" => _sortAscending ? filtered.OrderBy(f => f.Length) : filtered.OrderByDescending(f => f.Length),
+                _ => _sortAscending ? filtered.OrderBy(f => f.LastWriteTime) : filtered.OrderByDescending(f => f.LastWriteTime)
+            };
+        }
+    }
+
+    private void SortBy(string column)
+    {
+        if (_sortColumn == column)
+        {
+            _sortAscending = !_sortAscending;
+        }
+        else
+        {
+            _sortColumn = column;
+            _sortAscending = false;
+        }
+    }
+
+    private string GetSortClass(string column)
+    {
+        if (_sortColumn != column) return "sortable";
+        return _sortAscending ? "sortable sorted-asc" : "sortable sorted-desc";
+    }
+
+    private string GetAgeClass(DateTime lastWrite)
+    {
+        var age = DateTime.Now - lastWrite;
+        if (age.TotalHours < 1) return "age-recent";
+        if (age.TotalHours < 24) return "age-today";
+        return "age-old";
+    }
+
+    private string GetRelativeTime(DateTime lastWrite)
+    {
+        var age = DateTime.Now - lastWrite;
+        if (age.TotalMinutes < 1) return "just now";
+        if (age.TotalMinutes < 60) return $"{(int)age.TotalMinutes}m ago";
+        if (age.TotalHours < 24) return $"{(int)age.TotalHours}h ago";
+        if (age.TotalDays < 7) return $"{(int)age.TotalDays}d ago";
+        return lastWrite.ToString("MMM dd");
     }
 
     private string FormatFileSize(long size)
     {
-        return size switch
-        {
-            (< 1024 << 10)  => $"{Math.Round(size / 1024D, 2)} KiB",
-            (< 1024 << 20) => $"{Math.Round(size * 1D / (1024 << 10), 2)} MiB",
-            (< 1024L << 30) => $"{Math.Round(size * 1D / (1024L << 20), 2)} GiB",
-            _ => $"{size} bytes"
-            };
+        if (size < 1024) return $"{size} B";
+        if (size < 1024 * 1024) return $"{Math.Round(size / 1024D, 2)} KB";
+        if (size < 1024L * 1024 * 1024) return $"{Math.Round(size / (1024D * 1024), 2)} MB";
+        return $"{Math.Round(size / (1024D * 1024 * 1024), 2)} GB";
     }
 }

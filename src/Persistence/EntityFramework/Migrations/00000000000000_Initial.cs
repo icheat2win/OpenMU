@@ -1669,6 +1669,28 @@ namespace MUnique.OpenMU.Persistence.EntityFramework.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "ItemGroupDefinition",
+                schema: "config",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    GameConfigurationId = table.Column<Guid>(type: "uuid", nullable: true),
+                    Name = table.Column<string>(type: "text", nullable: false),
+                    Description = table.Column<string>(type: "text", nullable: false),
+                    Number = table.Column<byte>(type: "smallint", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ItemGroupDefinition", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_ItemGroupDefinition_GameConfiguration_GameConfigurationId",
+                        column: x => x.GameConfigurationId,
+                        principalSchema: "config",
+                        principalTable: "GameConfiguration",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
                 name: "ItemDefinition",
                 schema: "config",
                 columns: table => new
@@ -3118,6 +3140,12 @@ namespace MUnique.OpenMU.Persistence.EntityFramework.Migrations
                 schema: "config",
                 table: "ItemCraftingResultItem",
                 column: "SimpleCraftingSettingsId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ItemGroupDefinition_GameConfigurationId",
+                schema: "config",
+                table: "ItemGroupDefinition",
+                column: "GameConfigurationId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_ItemDefinition_ConsumeEffectId",
