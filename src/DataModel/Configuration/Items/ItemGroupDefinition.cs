@@ -39,8 +39,7 @@ public partial class ItemGroupDefinition
     /// <summary>
     /// Gets or sets the game configuration this item group belongs to.
     /// </summary>
-    [Required]
-    public virtual GameConfiguration GameConfiguration { get; set; } = null!;
+    public virtual GameConfiguration? GameConfiguration { get; set; }
 
     /// <inheritdoc />
     public override string ToString()
