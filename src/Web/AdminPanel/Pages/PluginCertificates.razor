@@ -1,0 +1,380 @@
+@page "/plugin-certificates"
+@using MUnique.OpenMU.PlugIns
+@using System.Security.Cryptography.X509Certificates
+@using System.IO
+@using Microsoft.Extensions.Logging
+@using Microsoft.AspNetCore.Components.Forms
+@inject ILoggerFactory LoggerFactory
+
+<PageTitle>Plugin Certificate Management</PageTitle>
+<Breadcrumb IsFirstFromRoot="true" Caption="Plugin Certificates"/>
+<h1>Plugin Certificate Management</h1>
+
+<div class="container-fluid">
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="alert alert-info">
+                <h5><span class="oi oi-info" aria-hidden="true"></span> Certificate Management</h5>
+                <p>
+                    Manage trusted certificates for plugin code signing verification. 
+                    Only plugins signed with certificates in this list will be allowed to load (when verification is enabled).
+                </p>
+                <p>
+                    <strong>Supported formats:</strong> .cer, .crt, .pem, .pfx
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Certificate Section -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5>Add Trusted Certificate</h5>
+                </div>
+                <div class="card-body">
+                    <div class="mb-3">
+                        <label class="form-label">Upload Certificate File</label>
+                        <Microsoft.AspNetCore.Components.Forms.InputFile OnChange="@HandleFileSelected" class="form-control" accept=".cer,.crt,.pem,.pfx" />
+                        @if (!string.IsNullOrEmpty(_uploadMessage))
+                        {
+                            <div class="alert @(_uploadSuccess ? "alert-success" : "alert-danger") mt-2">
+                                @_uploadMessage
+                            </div>
+                        }
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label class="form-label">Or specify certificate file path on server</label>
+                        <div class="input-group">
+                            <input type="text" class="form-control" @bind="_certificatePath" placeholder="/path/to/certificate.cer" />
+                            <button class="btn btn-primary" @onclick="AddCertificateFromPath">
+                                <span class="oi oi-plus" aria-hidden="true"></span> Add from Path
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Or add certificate by thumbprint (SHA-1)</label>
+                        <div class="input-group">
+                            <input type="text" class="form-control" @bind="_thumbprint" placeholder="A1B2C3D4E5F6..." />
+                            <button class="btn btn-primary" @onclick="AddCertificateByThumbprint">
+                                <span class="oi oi-plus" aria-hidden="true"></span> Add Thumbprint
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Trusted Certificates List -->
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0">Trusted Certificates (@_certificateManager.TrustedThumbprints.Count)</h5>
+                    <div>
+                        <button class="btn btn-sm btn-success" @onclick="SaveConfiguration">
+                            <span class="oi oi-data-transfer-download" aria-hidden="true"></span> Save to Config
+                        </button>
+                        <button class="btn btn-sm btn-warning" @onclick="LoadConfiguration">
+                            <span class="oi oi-data-transfer-upload" aria-hidden="true"></span> Load from Config
+                        </button>
+                        <button class="btn btn-sm btn-danger" @onclick="ClearAllCertificates">
+                            <span class="oi oi-trash" aria-hidden="true"></span> Clear All
+                        </button>
+                    </div>
+                </div>
+                <div class="card-body">
+                    @if (_certificateManager.TrustedThumbprints.Count == 0)
+                    {
+                        <div class="alert alert-warning">
+                            No trusted certificates configured. Plugins will load without signature verification.
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="table-responsive">
+                            <table class="table table-striped table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Thumbprint</th>
+                                        <th>Status</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var thumbprint in _certificateManager.TrustedThumbprints)
+                                    {
+                                        <tr>
+                                            <td>
+                                                <code class="text-break">@thumbprint</code>
+                                            </td>
+                                            <td>
+                                                <span class="badge bg-success">
+                                                    <span class="oi oi-check" aria-hidden="true"></span> Trusted
+                                                </span>
+                                            </td>
+                                            <td>
+                                                <button class="btn btn-sm btn-danger" @onclick="() => RemoveCertificate(thumbprint)">
+                                                    <span class="oi oi-trash" aria-hidden="true"></span> Remove
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Test Certificate Verification -->
+    <div class="row mt-4">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5>Test Certificate Verification</h5>
+                </div>
+                <div class="card-body">
+                    <div class="mb-3">
+                        <label class="form-label">Plugin Assembly Path</label>
+                        <div class="input-group">
+                            <input type="text" class="form-control" @bind="_testAssemblyPath" placeholder="plugins/MyPlugin.dll" />
+                            <button class="btn btn-primary" @onclick="TestVerification">
+                                <span class="oi oi-task" aria-hidden="true"></span> Test Verification
+                            </button>
+                        </div>
+                    </div>
+
+                    @if (!string.IsNullOrEmpty(_testResult))
+                    {
+                        <div class="alert @(_testSuccess ? "alert-success" : "alert-danger")">
+                            <h6>Verification Result:</h6>
+                            <pre class="mb-0">@_testResult</pre>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    private PlugInCertificateManager _certificateManager = null!;
+    private PlugInSignatureVerifier _verifier = null!;
+    
+    private string _certificatePath = string.Empty;
+    private string _thumbprint = string.Empty;
+    private string _uploadMessage = string.Empty;
+    private bool _uploadSuccess;
+    
+    private string _testAssemblyPath = string.Empty;
+    private string _testResult = string.Empty;
+    private bool _testSuccess;
+
+    private const string ConfigPath = "plugin-certificates.txt";
+
+    protected override void OnInitialized()
+    {
+        var logger = LoggerFactory.CreateLogger<PlugInCertificateManager>();
+        _certificateManager = new PlugInCertificateManager(logger);
+        
+        var verifierLogger = LoggerFactory.CreateLogger<PlugInSignatureVerifier>();
+        _verifier = new PlugInSignatureVerifier(verifierLogger, false, _certificateManager.TrustedThumbprints);
+        
+        // Try to load existing configuration
+        if (File.Exists(ConfigPath))
+        {
+            try
+            {
+                _certificateManager.LoadTrustedCertificatesFromConfig(ConfigPath);
+            }
+            catch (Exception ex)
+            {
+                _uploadMessage = $"Failed to load configuration: {ex.Message}";
+                _uploadSuccess = false;
+            }
+        }
+    }
+
+    private async Task HandleFileSelected(InputFileChangeEventArgs e)
+    {
+        _uploadMessage = string.Empty;
+        
+        try
+        {
+            var file = e.File;
+            if (file.Size > 10 * 1024 * 1024) // 10 MB limit
+            {
+                _uploadMessage = "File too large. Maximum size is 10 MB.";
+                _uploadSuccess = false;
+                return;
+            }
+
+            // Create temp directory if it doesn't exist
+            var tempDir = Path.Combine(Path.GetTempPath(), "openmu-certs");
+            Directory.CreateDirectory(tempDir);
+            
+            var tempPath = Path.Combine(tempDir, file.Name);
+            
+            // Save uploaded file to temp location
+            await using var fileStream = new FileStream(tempPath, FileMode.Create);
+            await file.OpenReadStream(10 * 1024 * 1024).CopyToAsync(fileStream);
+            fileStream.Close();
+
+            // Load the certificate
+            var thumbprint = _certificateManager.AddTrustedCertificateFromFile(tempPath);
+            
+            _uploadMessage = $"Certificate added successfully! Thumbprint: {thumbprint}";
+            _uploadSuccess = true;
+            
+            // Clean up temp file
+            File.Delete(tempPath);
+        }
+        catch (Exception ex)
+        {
+            _uploadMessage = $"Error: {ex.Message}";
+            _uploadSuccess = false;
+        }
+    }
+
+    private void AddCertificateFromPath()
+    {
+        _uploadMessage = string.Empty;
+        
+        try
+        {
+            if (string.IsNullOrWhiteSpace(_certificatePath))
+            {
+                _uploadMessage = "Please specify a certificate file path.";
+                _uploadSuccess = false;
+                return;
+            }
+
+            var thumbprint = _certificateManager.AddTrustedCertificateFromFile(_certificatePath);
+            _uploadMessage = $"Certificate added successfully! Thumbprint: {thumbprint}";
+            _uploadSuccess = true;
+            _certificatePath = string.Empty;
+        }
+        catch (Exception ex)
+        {
+            _uploadMessage = $"Error: {ex.Message}";
+            _uploadSuccess = false;
+        }
+    }
+
+    private void AddCertificateByThumbprint()
+    {
+        _uploadMessage = string.Empty;
+        
+        try
+        {
+            if (string.IsNullOrWhiteSpace(_thumbprint))
+            {
+                _uploadMessage = "Please enter a certificate thumbprint.";
+                _uploadSuccess = false;
+                return;
+            }
+
+            var added = _certificateManager.AddTrustedCertificate(_thumbprint);
+            if (added)
+            {
+                _uploadMessage = $"Thumbprint added successfully: {_thumbprint}";
+                _uploadSuccess = true;
+                _thumbprint = string.Empty;
+            }
+            else
+            {
+                _uploadMessage = "Thumbprint was already in the trusted list.";
+                _uploadSuccess = false;
+            }
+        }
+        catch (Exception ex)
+        {
+            _uploadMessage = $"Error: {ex.Message}";
+            _uploadSuccess = false;
+        }
+    }
+
+    private void RemoveCertificate(string thumbprint)
+    {
+        try
+        {
+            _certificateManager.RemoveTrustedCertificate(thumbprint);
+            _uploadMessage = $"Certificate removed: {thumbprint}";
+            _uploadSuccess = true;
+            StateHasChanged();
+        }
+        catch (Exception ex)
+        {
+            _uploadMessage = $"Error removing certificate: {ex.Message}";
+            _uploadSuccess = false;
+        }
+    }
+
+    private void ClearAllCertificates()
+    {
+        _certificateManager.ClearTrustedCertificates();
+        _uploadMessage = "All certificates cleared.";
+        _uploadSuccess = true;
+    }
+
+    private void SaveConfiguration()
+    {
+        try
+        {
+            _certificateManager.SaveTrustedCertificatesToConfig(ConfigPath);
+            _uploadMessage = $"Configuration saved to {ConfigPath}";
+            _uploadSuccess = true;
+        }
+        catch (Exception ex)
+        {
+            _uploadMessage = $"Error saving configuration: {ex.Message}";
+            _uploadSuccess = false;
+        }
+    }
+
+    private void LoadConfiguration()
+    {
+        try
+        {
+            var count = _certificateManager.LoadTrustedCertificatesFromConfig(ConfigPath);
+            _uploadMessage = $"Loaded {count} certificates from {ConfigPath}";
+            _uploadSuccess = true;
+        }
+        catch (Exception ex)
+        {
+            _uploadMessage = $"Error loading configuration: {ex.Message}";
+            _uploadSuccess = false;
+        }
+    }
+
+    private void TestVerification()
+    {
+        _testResult = string.Empty;
+        
+        try
+        {
+            if (string.IsNullOrWhiteSpace(_testAssemblyPath))
+            {
+                _testResult = "Please specify an assembly path to test.";
+                _testSuccess = false;
+                return;
+            }
+
+            var result = _verifier.VerifyAssembly(_testAssemblyPath);
+            _testResult = $"Valid: {result.IsValid}\nMessage: {result.Message}";
+            _testSuccess = result.IsValid;
+        }
+        catch (Exception ex)
+        {
+            _testResult = $"Error during verification: {ex.Message}";
+            _testSuccess = false;
+        }
+    }
+}
