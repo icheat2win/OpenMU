@@ -284,8 +284,20 @@ internal sealed class Program : IDisposable
                 var dataSource = new GameConfigurationDataSource(
                     provider.GetService<ILogger<GameConfigurationDataSource>>()!,
                     persistenceContextProvider!);
-                var configId = persistenceContextProvider!.CreateNewConfigurationContext().GetDefaultGameConfigurationIdAsync(default).AsTask().WaitAndUnwrapException();
-                dataSource.GetOwnerAsync(configId!.Value).AsTask().WaitAndUnwrapException();
+                try
+                {
+                    var configId = persistenceContextProvider!.CreateNewConfigurationContext().GetDefaultGameConfigurationIdAsync(default).AsTask().WaitAndUnwrapException();
+                    if (configId.HasValue)
+                    {
+                        dataSource.GetOwnerAsync(configId.Value).AsTask().WaitAndUnwrapException();
+                    }
+                }
+                catch (Exception ex) when (ex.Message.Contains("does not exist") || ex.InnerException?.Message.Contains("does not exist") == true)
+                {
+                    // Database doesn't exist yet, will be initialized later
+                    this._logger.Debug(ex, "Could not load default game configuration during reference handler setup.");
+                }
+
                 var referenceHandler = new ByDataSourceReferenceHandler(dataSource);
                 return referenceHandler;
             })
@@ -331,45 +343,71 @@ internal sealed class Program : IDisposable
     private ICollection<PlugInConfiguration> PlugInConfigurationsFactory(IServiceProvider serviceProvider)
     {
         var persistenceContextProvider = serviceProvider.GetService<IPersistenceContextProvider>() ?? throw new Exception($"{nameof(IPersistenceContextProvider)} not registered.");
-        using var context = persistenceContextProvider.CreateNewTypedContext(typeof(PlugInConfiguration), false);
-
-        var configs = context.GetAsync<PlugInConfiguration>().AsTask().WaitAndUnwrapException().ToList();
-
-        var referenceHandler = new ByDataSourceReferenceHandler(
-            new GameConfigurationDataSource(serviceProvider.GetService<ILogger<GameConfigurationDataSource>>()!, persistenceContextProvider));
-
-        // We check if we miss any plugin configurations in the database. If we do, we try to add them.
-        var pluginManager = new PlugInManager(null, serviceProvider.GetService<ILoggerFactory>()!, serviceProvider, referenceHandler);
-        pluginManager.DiscoverAndRegisterPlugIns();
-
-        var typesWithCustomConfig = pluginManager.KnownPlugInTypes.Where(t => t.GetInterfaces().Contains(typeof(ISupportDefaultCustomConfiguration))).ToDictionary(t => t.GUID, t => t);
-
-        using var notificationSuspension = context.SuspendChangeNotifications();
-        var typesWithMissingCustomConfigs = configs.Where(c => string.IsNullOrWhiteSpace(c.CustomConfiguration) && typesWithCustomConfig.ContainsKey(c.TypeId)).ToList();
-        if (typesWithMissingCustomConfigs.Any())
+        
+        try
         {
-            typesWithMissingCustomConfigs.ForEach(c => this.CreateDefaultPlugInConfiguration(typesWithCustomConfig[c.TypeId]!, c, referenceHandler));
+            using var context = persistenceContextProvider.CreateNewTypedContext(typeof(PlugInConfiguration), false);
+
+            var configs = context.GetAsync<PlugInConfiguration>().AsTask().WaitAndUnwrapException().ToList();
+
+            var referenceHandler = new ByDataSourceReferenceHandler(
+                new GameConfigurationDataSource(serviceProvider.GetService<ILogger<GameConfigurationDataSource>>()!, persistenceContextProvider));
+
+            // We check if we miss any plugin configurations in the database. If we do, we try to add them.
+            var pluginManager = new PlugInManager(null, serviceProvider.GetService<ILoggerFactory>()!, serviceProvider, referenceHandler);
+            pluginManager.DiscoverAndRegisterPlugIns();
+
+            var typesWithCustomConfig = pluginManager.KnownPlugInTypes.Where(t => t.GetInterfaces().Contains(typeof(ISupportDefaultCustomConfiguration))).ToDictionary(t => t.GUID, t => t);
+
+            using var notificationSuspension = context.SuspendChangeNotifications();
+            var typesWithMissingCustomConfigs = configs.Where(c => string.IsNullOrWhiteSpace(c.CustomConfiguration) && typesWithCustomConfig.ContainsKey(c.TypeId)).ToList();
+            if (typesWithMissingCustomConfigs.Any())
+            {
+                typesWithMissingCustomConfigs.ForEach(c => this.CreateDefaultPlugInConfiguration(typesWithCustomConfig[c.TypeId]!, c, referenceHandler));
+                _ = context.SaveChangesAsync().AsTask().WaitAndUnwrapException();
+            }
+
+            var typesWithMissingConfigs = pluginManager.KnownPlugInTypes.Where(t => configs.All(c => c.TypeId != t.GUID)).ToList();
+            if (!typesWithMissingConfigs.Any())
+            {
+                return configs;
+            }
+
+            configs.AddRange(this.CreateMissingPlugInConfigurations(typesWithMissingConfigs, persistenceContextProvider, referenceHandler));
             _ = context.SaveChangesAsync().AsTask().WaitAndUnwrapException();
-        }
-
-        var typesWithMissingConfigs = pluginManager.KnownPlugInTypes.Where(t => configs.All(c => c.TypeId != t.GUID)).ToList();
-        if (!typesWithMissingConfigs.Any())
-        {
             return configs;
         }
-
-        configs.AddRange(this.CreateMissingPlugInConfigurations(typesWithMissingConfigs, persistenceContextProvider, referenceHandler));
-        _ = context.SaveChangesAsync().AsTask().WaitAndUnwrapException();
-        return configs;
+        catch (Exception ex) when (ex.Message.Contains("does not exist") || ex.InnerException?.Message.Contains("does not exist") == true)
+        {
+            // Database doesn't exist yet or is being initialized, return empty list
+            // Plugin configurations will be created during database initialization
+            this._logger.Debug(ex, "Could not load plugin configurations from database, it may not be initialized yet. Returning empty list.");
+            return new List<PlugInConfiguration>();
+        }
     }
 
     private IEnumerable<PlugInConfiguration> CreateMissingPlugInConfigurations(IEnumerable<Type> plugInTypes, IPersistenceContextProvider persistenceContextProvider, ReferenceHandler referenceHandler)
     {
-        GameConfiguration gameConfiguration;
+        GameConfiguration? gameConfiguration = null;
 
-        using (var context = persistenceContextProvider.CreateNewContext())
+        try
         {
-            gameConfiguration = context.GetAsync<GameConfiguration>().AsTask().WaitAndUnwrapException().First();
+            using (var context = persistenceContextProvider.CreateNewContext())
+            {
+                gameConfiguration = context.GetAsync<GameConfiguration>().AsTask().WaitAndUnwrapException().FirstOrDefault();
+            }
+        }
+        catch (Exception ex) when (ex.Message.Contains("does not exist") || ex.InnerException?.Message.Contains("does not exist") == true)
+        {
+            // Database doesn't exist yet, plugin configurations will be created during initialization
+            this._logger.Debug(ex, "Could not load game configuration from database during plugin configuration creation.");
+            yield break;
+        }
+
+        if (gameConfiguration == null)
+        {
+            // No game configuration exists yet
+            yield break;
         }
 
         using var saveContext = persistenceContextProvider.CreateNewContext(gameConfiguration);
