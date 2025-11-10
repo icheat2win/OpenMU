@@ -23,6 +23,21 @@
 - **Admin Panel:** Improved from 37.5% → 87.5% (7/8 tasks)
 - **MISC Category:** Improved from 54.5% → 63.6% (7/11 tasks)
 
+### Documentation Enhancement
+All 6 remaining tasks now have comprehensive implementation plans:
+- **PERS-13**: Auto-sort JSON dependencies (6-8h) - EF Core analysis, topological sort
+- **ADM-7**: Plugin code signing (10-15h) - Certificate management, signature verification
+- **ITEM-3**: Item set bonuses (8-10h) - Dragon Set, Dark Phoenix Set, etc.
+- **ITEM-10**: Socket system (10-15h) - Season 6+ gems and socket mechanics
+- **MISC-1**: MonsterType refactoring (10-15h) - Data-driven monster behaviors
+- **MISC-4**: ItemGroup refactoring (10-15h) - Type-safe item groups
+
+Each task includes:
+- Current implementation analysis
+- Detailed step-by-step requirements
+- File impact assessment
+- Clear explanation of why it's low priority
+
 ---
 
 ## 📊 Executive Summary
