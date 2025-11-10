@@ -83,6 +83,12 @@ public partial class ItemDefinition
     public byte Group { get; set; }
 
     /// <summary>
+    /// Gets or sets the item group definition this item belongs to.
+    /// Provides categorical information about the item type (weapon, armor, consumable, etc.).
+    /// </summary>
+    public virtual ItemGroupDefinition? ItemGroup { get; set; }
+
+    /// <summary>
     /// Gets or sets the value which defines the worth of an item in zen currency.
     /// </summary>
     public int Value { get; set; }

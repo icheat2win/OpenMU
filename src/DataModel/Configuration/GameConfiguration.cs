@@ -183,6 +183,13 @@ public partial class GameConfiguration
     public virtual ICollection<ItemDefinition> Items { get; protected set; } = null!;
 
     /// <summary>
+    /// Gets or sets the item group definitions.
+    /// Defines the categories that items are organized into (weapons, armor, consumables, etc.).
+    /// </summary>
+    [MemberOfAggregate]
+    public virtual ICollection<ItemGroupDefinition> ItemGroups { get; protected set; } = null!;
+
+    /// <summary>
     /// Gets or sets the item level bonus tables.
     /// </summary>
     [MemberOfAggregate]
