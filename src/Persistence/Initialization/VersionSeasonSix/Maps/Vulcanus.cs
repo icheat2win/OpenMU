@@ -1,4 +1,4 @@
-﻿// <copyright file="Vulcanus.cs" company="MUnique">
+// <copyright file="Vulcanus.cs" company="MUnique">
 // Licensed under the MIT License. See LICENSE file in the project root for full license information.
 // </copyright>
 
@@ -308,6 +308,7 @@ internal class Vulcanus : BaseMapInitializer
         {
             var monster = this.Context.CreateNew<MonsterDefinition>();
             this.GameConfiguration.Monsters.Add(monster);
+            monster.AsNormalMonster(this.GameConfiguration);
             monster.Number = 480;
             monster.Designation = "Zombie Fighter";
             monster.MoveRange = 3;
@@ -339,6 +340,7 @@ internal class Vulcanus : BaseMapInitializer
         {
             var monster = this.Context.CreateNew<MonsterDefinition>();
             this.GameConfiguration.Monsters.Add(monster);
+            monster.AsNormalMonster(this.GameConfiguration);
             monster.Number = 481;
             monster.Designation = "Zombie Fighter";
             monster.MoveRange = 3;
@@ -370,6 +372,7 @@ internal class Vulcanus : BaseMapInitializer
         {
             var monster = this.Context.CreateNew<MonsterDefinition>();
             this.GameConfiguration.Monsters.Add(monster);
+            monster.AsNormalMonster(this.GameConfiguration);
             monster.Number = 482;
             monster.Designation = "Resurrected Gladiator";
             monster.MoveRange = 3;
@@ -401,6 +404,7 @@ internal class Vulcanus : BaseMapInitializer
         {
             var monster = this.Context.CreateNew<MonsterDefinition>();
             this.GameConfiguration.Monsters.Add(monster);
+            monster.AsNormalMonster(this.GameConfiguration);
             monster.Number = 483;
             monster.Designation = "Resurrected Gladiator";
             monster.MoveRange = 3;
@@ -432,6 +436,7 @@ internal class Vulcanus : BaseMapInitializer
         {
             var monster = this.Context.CreateNew<MonsterDefinition>();
             this.GameConfiguration.Monsters.Add(monster);
+            monster.AsNormalMonster(this.GameConfiguration);
             monster.Number = 484;
             monster.Designation = "Ash Slaughterer";
             monster.MoveRange = 3;
@@ -463,6 +468,7 @@ internal class Vulcanus : BaseMapInitializer
         {
             var monster = this.Context.CreateNew<MonsterDefinition>();
             this.GameConfiguration.Monsters.Add(monster);
+            monster.AsNormalMonster(this.GameConfiguration);
             monster.Number = 485;
             monster.Designation = "Ash Slaughterer";
             monster.MoveRange = 3;
@@ -494,6 +500,7 @@ internal class Vulcanus : BaseMapInitializer
         {
             var monster = this.Context.CreateNew<MonsterDefinition>();
             this.GameConfiguration.Monsters.Add(monster);
+            monster.AsNormalMonster(this.GameConfiguration);
             monster.Number = 486;
             monster.Designation = "Blood Assassin";
             monster.MoveRange = 3;
@@ -525,6 +532,7 @@ internal class Vulcanus : BaseMapInitializer
         {
             var monster = this.Context.CreateNew<MonsterDefinition>();
             this.GameConfiguration.Monsters.Add(monster);
+            monster.AsNormalMonster(this.GameConfiguration);
             monster.Number = 487;
             monster.Designation = "Cruel Blood Assassin";
             monster.MoveRange = 3;
@@ -556,6 +564,7 @@ internal class Vulcanus : BaseMapInitializer
         {
             var monster = this.Context.CreateNew<MonsterDefinition>();
             this.GameConfiguration.Monsters.Add(monster);
+            monster.AsNormalMonster(this.GameConfiguration);
             monster.Number = 488;
             monster.Designation = "Cruel Blood Assassin";
             monster.MoveRange = 3;
@@ -587,6 +596,7 @@ internal class Vulcanus : BaseMapInitializer
         {
             var monster = this.Context.CreateNew<MonsterDefinition>();
             this.GameConfiguration.Monsters.Add(monster);
+            monster.AsNormalMonster(this.GameConfiguration);
             monster.Number = 489;
             monster.Designation = "Burning Lava Giant";
             monster.MoveRange = 3;
@@ -618,6 +628,7 @@ internal class Vulcanus : BaseMapInitializer
         {
             var monster = this.Context.CreateNew<MonsterDefinition>();
             this.GameConfiguration.Monsters.Add(monster);
+            monster.AsNormalMonster(this.GameConfiguration);
             monster.Number = 490;
             monster.Designation = "Ruthless Lava Giant";
             monster.MoveRange = 3;
@@ -649,6 +660,7 @@ internal class Vulcanus : BaseMapInitializer
         {
             var monster = this.Context.CreateNew<MonsterDefinition>();
             this.GameConfiguration.Monsters.Add(monster);
+            monster.AsNormalMonster(this.GameConfiguration);
             monster.Number = 491;
             monster.Designation = "Ruthless Lava Giant";
             monster.MoveRange = 3;

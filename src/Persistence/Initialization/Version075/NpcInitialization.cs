@@ -1,4 +1,4 @@
-﻿// <copyright file="NpcInitialization.cs" company="MUnique">
+// <copyright file="NpcInitialization.cs" company="MUnique">
 // Licensed under the MIT License. See LICENSE file in the project root for full license information.
 // </copyright>
 
@@ -49,7 +49,8 @@ internal partial class NpcInitialization : InitializerBase
             def.NpcWindow = NpcWindow.ChaosMachine;
             def.ObjectKind = NpcObjectKind.PassiveNpc;
             def.SetGuid(def.Number);
-            this.GameConfiguration.Monsters.Add(def);
+            def.AssignMonsterTypeByNpcWindow(this.GameConfiguration);
+ this.GameConfiguration.Monsters.Add(def);
         }
 
         {
@@ -58,7 +59,8 @@ internal partial class NpcInitialization : InitializerBase
             def.Designation = "Arena Guard";
             def.ObjectKind = NpcObjectKind.PassiveNpc;
             def.SetGuid(def.Number);
-            this.GameConfiguration.Monsters.Add(def);
+            def.AssignMonsterTypeByNpcWindow(this.GameConfiguration);
+ this.GameConfiguration.Monsters.Add(def);
         }
 
         {
@@ -68,7 +70,8 @@ internal partial class NpcInitialization : InitializerBase
             def.NpcWindow = NpcWindow.VaultStorage;
             def.ObjectKind = NpcObjectKind.PassiveNpc;
             def.SetGuid(def.Number);
-            this.GameConfiguration.Monsters.Add(def);
+            def.AssignMonsterTypeByNpcWindow(this.GameConfiguration);
+ this.GameConfiguration.Monsters.Add(def);
         }
 
         {
@@ -78,7 +81,8 @@ internal partial class NpcInitialization : InitializerBase
             def.NpcWindow = NpcWindow.GuildMaster;
             def.ObjectKind = NpcObjectKind.PassiveNpc;
             def.SetGuid(def.Number);
-            this.GameConfiguration.Monsters.Add(def);
+            def.AssignMonsterTypeByNpcWindow(this.GameConfiguration);
+ this.GameConfiguration.Monsters.Add(def);
         }
 
         {
@@ -89,7 +93,8 @@ internal partial class NpcInitialization : InitializerBase
             def.ObjectKind = NpcObjectKind.PassiveNpc;
             def.MerchantStore = this.CreateElfLalaStore(def.Number);
             def.SetGuid(def.Number);
-            this.GameConfiguration.Monsters.Add(def);
+            def.AssignMonsterTypeByNpcWindow(this.GameConfiguration);
+ this.GameConfiguration.Monsters.Add(def);
         }
 
         {
@@ -100,7 +105,8 @@ internal partial class NpcInitialization : InitializerBase
             def.ObjectKind = NpcObjectKind.PassiveNpc;
             def.MerchantStore = this.CreateEoTheCraftsmanStore(def.Number);
             def.SetGuid(def.Number);
-            this.GameConfiguration.Monsters.Add(def);
+            def.AssignMonsterTypeByNpcWindow(this.GameConfiguration);
+ this.GameConfiguration.Monsters.Add(def);
         }
 
         {
@@ -111,7 +117,8 @@ internal partial class NpcInitialization : InitializerBase
             def.ObjectKind = NpcObjectKind.PassiveNpc;
             def.MerchantStore = this.CreateCarenTheBarmaidStore(def.Number);
             def.SetGuid(def.Number);
-            this.GameConfiguration.Monsters.Add(def);
+            def.AssignMonsterTypeByNpcWindow(this.GameConfiguration);
+ this.GameConfiguration.Monsters.Add(def);
         }
 
         {
@@ -122,7 +129,8 @@ internal partial class NpcInitialization : InitializerBase
             def.ObjectKind = NpcObjectKind.PassiveNpc;
             def.MerchantStore = this.CreateIzabelTheWizardStore(def.Number);
             def.SetGuid(def.Number);
-            this.GameConfiguration.Monsters.Add(def);
+            def.AssignMonsterTypeByNpcWindow(this.GameConfiguration);
+ this.GameConfiguration.Monsters.Add(def);
         }
 
         {
@@ -133,7 +141,8 @@ internal partial class NpcInitialization : InitializerBase
             def.ObjectKind = NpcObjectKind.PassiveNpc;
             def.MerchantStore = this.CreateZiennaStore(def.Number);
             def.SetGuid(def.Number);
-            this.GameConfiguration.Monsters.Add(def);
+            def.AssignMonsterTypeByNpcWindow(this.GameConfiguration);
+ this.GameConfiguration.Monsters.Add(def);
         }
 
         {
@@ -162,7 +171,8 @@ internal partial class NpcInitialization : InitializerBase
             };
             def.AddAttributes(attributes, this.Context, this.GameConfiguration);
             def.SetGuid(def.Number);
-            this.GameConfiguration.Monsters.Add(def);
+            def.AssignMonsterTypeByNpcWindow(this.GameConfiguration);
+ this.GameConfiguration.Monsters.Add(def);
         }
 
         {
@@ -173,7 +183,8 @@ internal partial class NpcInitialization : InitializerBase
             def.ObjectKind = NpcObjectKind.PassiveNpc;
             def.MerchantStore = this.CreateWanderingMerchant(def.Number);
             def.SetGuid(def.Number);
-            this.GameConfiguration.Monsters.Add(def);
+            def.AssignMonsterTypeByNpcWindow(this.GameConfiguration);
+ this.GameConfiguration.Monsters.Add(def);
         }
 
         {
@@ -202,7 +213,8 @@ internal partial class NpcInitialization : InitializerBase
             };
             def.AddAttributes(attributes, this.Context, this.GameConfiguration);
             def.SetGuid(def.Number);
-            this.GameConfiguration.Monsters.Add(def);
+            def.AssignMonsterTypeByNpcWindow(this.GameConfiguration);
+ this.GameConfiguration.Monsters.Add(def);
         }
 
         {
@@ -213,7 +225,8 @@ internal partial class NpcInitialization : InitializerBase
             def.ObjectKind = NpcObjectKind.PassiveNpc;
             def.MerchantStore = this.CreateWanderingMerchant(def.Number);
             def.SetGuid(def.Number);
-            this.GameConfiguration.Monsters.Add(def);
+            def.AssignMonsterTypeByNpcWindow(this.GameConfiguration);
+ this.GameConfiguration.Monsters.Add(def);
         }
 
         {
@@ -224,7 +237,8 @@ internal partial class NpcInitialization : InitializerBase
             def.ObjectKind = NpcObjectKind.PassiveNpc;
             def.MerchantStore = this.CreateHanzoTheBlacksmith(def.Number);
             def.SetGuid(def.Number);
-            this.GameConfiguration.Monsters.Add(def);
+            def.AssignMonsterTypeByNpcWindow(this.GameConfiguration);
+ this.GameConfiguration.Monsters.Add(def);
         }
 
         {
@@ -235,7 +249,8 @@ internal partial class NpcInitialization : InitializerBase
             def.ObjectKind = NpcObjectKind.PassiveNpc;
             def.MerchantStore = this.CreatePotionGirlItemStorage(def.Number);
             def.SetGuid(def.Number);
-            this.GameConfiguration.Monsters.Add(def);
+            def.AssignMonsterTypeByNpcWindow(this.GameConfiguration);
+ this.GameConfiguration.Monsters.Add(def);
         }
 
         {
@@ -246,7 +261,8 @@ internal partial class NpcInitialization : InitializerBase
             def.ObjectKind = NpcObjectKind.PassiveNpc;
             def.MerchantStore = this.CreatePasiTheMageStore(def.Number);
             def.SetGuid(def.Number);
-            this.GameConfiguration.Monsters.Add(def);
+            def.AssignMonsterTypeByNpcWindow(this.GameConfiguration);
+ this.GameConfiguration.Monsters.Add(def);
         }
 
         {
@@ -257,7 +273,8 @@ internal partial class NpcInitialization : InitializerBase
             def.ObjectKind = NpcObjectKind.PassiveNpc;
             def.MerchantStore = this.CreateLumenTheBarmaidStore(def.Number);
             def.SetGuid(def.Number);
-            this.GameConfiguration.Monsters.Add(def);
+            def.AssignMonsterTypeByNpcWindow(this.GameConfiguration);
+ this.GameConfiguration.Monsters.Add(def);
         }
 
         {
@@ -266,7 +283,8 @@ internal partial class NpcInitialization : InitializerBase
             def.Designation = "Soccerball";
             def.ObjectKind = NpcObjectKind.SoccerBall;
             def.SetGuid(def.Number);
-            this.GameConfiguration.Monsters.Add(def);
+            def.AssignMonsterTypeByNpcWindow(this.GameConfiguration);
+ this.GameConfiguration.Monsters.Add(def);
         }
     }
 }

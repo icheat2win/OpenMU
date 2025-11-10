@@ -1,4 +1,4 @@
-﻿// <copyright file="Karutan1.cs" company="MUnique">
+// <copyright file="Karutan1.cs" company="MUnique">
 // Licensed under the MIT License. See LICENSE file in the project root for full license information.
 // </copyright>
 
@@ -183,6 +183,7 @@ internal class Karutan1 : BaseMapInitializer
         {
             var monster = this.Context.CreateNew<MonsterDefinition>();
             this.GameConfiguration.Monsters.Add(monster);
+            monster.AsNormalMonster(this.GameConfiguration);
             monster.Number = 569;
             monster.Designation = "Venomous Chain Scorpion";
             monster.MoveRange = 6;
@@ -214,6 +215,7 @@ internal class Karutan1 : BaseMapInitializer
         {
             var monster = this.Context.CreateNew<MonsterDefinition>();
             this.GameConfiguration.Monsters.Add(monster);
+            monster.AsNormalMonster(this.GameConfiguration);
             monster.Number = 570;
             monster.Designation = "Bone Scorpion";
             monster.MoveRange = 6;
@@ -245,6 +247,7 @@ internal class Karutan1 : BaseMapInitializer
         {
             var monster = this.Context.CreateNew<MonsterDefinition>();
             this.GameConfiguration.Monsters.Add(monster);
+            monster.AsNormalMonster(this.GameConfiguration);
             monster.Number = 571;
             monster.Designation = "Orcus";
             monster.MoveRange = 6;
@@ -276,6 +279,7 @@ internal class Karutan1 : BaseMapInitializer
         {
             var monster = this.Context.CreateNew<MonsterDefinition>();
             this.GameConfiguration.Monsters.Add(monster);
+            monster.AsNormalMonster(this.GameConfiguration);
             monster.Number = 573;
             monster.Designation = "Crypta";
             monster.MoveRange = 6;
@@ -307,6 +311,7 @@ internal class Karutan1 : BaseMapInitializer
         {
             var monster = this.Context.CreateNew<MonsterDefinition>();
             this.GameConfiguration.Monsters.Add(monster);
+            monster.AsNormalMonster(this.GameConfiguration);
             monster.Number = 574;
             monster.Designation = "Crypos";
             monster.MoveRange = 6;

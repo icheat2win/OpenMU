@@ -1,4 +1,4 @@
-﻿// <copyright file="InvasionMobsInitialization.cs" company="MUnique">
+// <copyright file="InvasionMobsInitialization.cs" company="MUnique">
 // Licensed under the MIT License. See LICENSE file in the project root for full license information.
 // </copyright>
 
@@ -31,6 +31,7 @@ internal class InvasionMobsInitialization : Version095d.InvasionMobsInitializati
 
         {
             var monster = this.Context.CreateNew<MonsterDefinition>();
+            monster.AsEventMonster(this.GameConfiguration);
             this.GameConfiguration.Monsters.Add(monster);
             monster.Number = 78;
             monster.Designation = "Golden Goblin";
@@ -63,6 +64,7 @@ internal class InvasionMobsInitialization : Version095d.InvasionMobsInitializati
 
         {
             var monster = this.Context.CreateNew<MonsterDefinition>();
+            monster.AsEventMonster(this.GameConfiguration);
             this.GameConfiguration.Monsters.Add(monster);
             monster.Number = 79;
             monster.Designation = "Golden Dragon";
@@ -96,6 +98,7 @@ internal class InvasionMobsInitialization : Version095d.InvasionMobsInitializati
 
         {
             var monster = this.Context.CreateNew<MonsterDefinition>();
+            monster.AsEventMonster(this.GameConfiguration);
             this.GameConfiguration.Monsters.Add(monster);
             monster.Number = 81;
             monster.Designation = "Golden Vepar";
@@ -125,6 +128,7 @@ internal class InvasionMobsInitialization : Version095d.InvasionMobsInitializati
 
         {
             var monster = this.Context.CreateNew<MonsterDefinition>();
+            monster.AsEventMonster(this.GameConfiguration);
             this.GameConfiguration.Monsters.Add(monster);
             monster.Number = 80;
             monster.Designation = "Golden Lizard King";
@@ -158,6 +162,7 @@ internal class InvasionMobsInitialization : Version095d.InvasionMobsInitializati
 
         {
             var monster = this.Context.CreateNew<MonsterDefinition>();
+            monster.AsEventMonster(this.GameConfiguration);
             this.GameConfiguration.Monsters.Add(monster);
             monster.Number = 83;
             monster.Designation = "Golden Wheel";
@@ -189,6 +194,7 @@ internal class InvasionMobsInitialization : Version095d.InvasionMobsInitializati
 
         {
             var monster = this.Context.CreateNew<MonsterDefinition>();
+            monster.AsEventMonster(this.GameConfiguration);
             this.GameConfiguration.Monsters.Add(monster);
             monster.Number = 82;
             monster.Designation = "Golden Tantallos";
@@ -225,6 +231,7 @@ internal class InvasionMobsInitialization : Version095d.InvasionMobsInitializati
     {
         {
             var monster = this.Context.CreateNew<MonsterDefinition>();
+            monster.AsEventMonster(this.GameConfiguration);
             this.GameConfiguration.Monsters.Add(monster);
             monster.Number = 44;
             monster.Designation = "Red Dragon";

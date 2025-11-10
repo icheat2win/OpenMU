@@ -1,4 +1,4 @@
-﻿// <copyright file="RaklionBoss.cs" company="MUnique">
+// <copyright file="RaklionBoss.cs" company="MUnique">
 // Licensed under the MIT License. See LICENSE file in the project root for full license information.
 // </copyright>
 
@@ -93,6 +93,7 @@ internal class RaklionBoss : BaseMapInitializer
         {
             var monster = this.Context.CreateNew<MonsterDefinition>();
             this.GameConfiguration.Monsters.Add(monster);
+            monster.AsNormalMonster(this.GameConfiguration);
             monster.Number = 459;
             monster.Designation = "Selupan";
             monster.MoveRange = 3;
@@ -124,6 +125,7 @@ internal class RaklionBoss : BaseMapInitializer
         {
             var monster = this.Context.CreateNew<MonsterDefinition>();
             this.GameConfiguration.Monsters.Add(monster);
+            monster.AsNormalMonster(this.GameConfiguration);
             monster.Number = 460;
             monster.Designation = "Spider Eggs 1";
             monster.MoveRange = 3;
@@ -155,6 +157,7 @@ internal class RaklionBoss : BaseMapInitializer
         {
             var monster = this.Context.CreateNew<MonsterDefinition>();
             this.GameConfiguration.Monsters.Add(monster);
+            monster.AsNormalMonster(this.GameConfiguration);
             monster.Number = 461;
             monster.Designation = "Spider Eggs 2";
             monster.MoveRange = 3;
@@ -186,6 +189,7 @@ internal class RaklionBoss : BaseMapInitializer
         {
             var monster = this.Context.CreateNew<MonsterDefinition>();
             this.GameConfiguration.Monsters.Add(monster);
+            monster.AsNormalMonster(this.GameConfiguration);
             monster.Number = 462;
             monster.Designation = "Spider Eggs 3";
             monster.MoveRange = 3;

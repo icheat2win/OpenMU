@@ -1,4 +1,4 @@
-﻿// <copyright file="Elvenland.cs" company="MUnique">
+// <copyright file="Elvenland.cs" company="MUnique">
 // Licensed under the MIT License. See LICENSE file in the project root for full license information.
 // </copyright>
 
@@ -76,6 +76,7 @@ internal class Elvenland : BaseMapInitializer
         {
             var monster = this.Context.CreateNew<MonsterDefinition>();
             this.GameConfiguration.Monsters.Add(monster);
+            monster.AsNormalMonster(this.GameConfiguration);
             monster.Number = 418;
             monster.Designation = "Strange Rabbit";
             monster.MoveRange = 3;
@@ -104,6 +105,7 @@ internal class Elvenland : BaseMapInitializer
         {
             var monster = this.Context.CreateNew<MonsterDefinition>();
             this.GameConfiguration.Monsters.Add(monster);
+            monster.AsNormalMonster(this.GameConfiguration);
             monster.Number = 419;
             monster.Designation = "Polluted Butterfly";
             monster.MoveRange = 3;
@@ -132,6 +134,7 @@ internal class Elvenland : BaseMapInitializer
         {
             var monster = this.Context.CreateNew<MonsterDefinition>();
             this.GameConfiguration.Monsters.Add(monster);
+            monster.AsNormalMonster(this.GameConfiguration);
             monster.Number = 420;
             monster.Designation = "Hideous Rabbit";
             monster.MoveRange = 3;
@@ -160,6 +163,7 @@ internal class Elvenland : BaseMapInitializer
         {
             var monster = this.Context.CreateNew<MonsterDefinition>();
             this.GameConfiguration.Monsters.Add(monster);
+            monster.AsNormalMonster(this.GameConfiguration);
             monster.Number = 421;
             monster.Designation = "Werewolf";
             monster.MoveRange = 2;
@@ -188,6 +192,7 @@ internal class Elvenland : BaseMapInitializer
         {
             var monster = this.Context.CreateNew<MonsterDefinition>();
             this.GameConfiguration.Monsters.Add(monster);
+            monster.AsNormalMonster(this.GameConfiguration);
             monster.Number = 422;
             monster.Designation = "Cursed Lich";
             monster.MoveRange = 3;
@@ -221,6 +226,7 @@ internal class Elvenland : BaseMapInitializer
         {
             var monster = this.Context.CreateNew<MonsterDefinition>();
             this.GameConfiguration.Monsters.Add(monster);
+            monster.AsNormalMonster(this.GameConfiguration);
             monster.Number = 423;
             monster.Designation = "Totem Golem";
             monster.MoveRange = 3;
@@ -249,6 +255,7 @@ internal class Elvenland : BaseMapInitializer
         {
             var monster = this.Context.CreateNew<MonsterDefinition>();
             this.GameConfiguration.Monsters.Add(monster);
+            monster.AsNormalMonster(this.GameConfiguration);
             monster.Number = 424;
             monster.Designation = "Grizzly";
             monster.MoveRange = 2;
@@ -278,6 +285,7 @@ internal class Elvenland : BaseMapInitializer
         {
             var monster = this.Context.CreateNew<MonsterDefinition>();
             this.GameConfiguration.Monsters.Add(monster);
+            monster.AsNormalMonster(this.GameConfiguration);
             monster.Number = 425;
             monster.Designation = "Captain Grizzly";
             monster.MoveRange = 2;

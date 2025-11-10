@@ -1,4 +1,4 @@
-﻿// <copyright file="Kalima3.cs" company="MUnique">
+// <copyright file="Kalima3.cs" company="MUnique">
 // Licensed under the MIT License. See LICENSE file in the project root for full license information.
 // </copyright>
 
@@ -112,6 +112,7 @@ internal class Kalima3 : KalimaBase
         {
             var monster = this.Context.CreateNew<MonsterDefinition>();
             this.GameConfiguration.Monsters.Add(monster);
+            monster.AsNormalMonster(this.GameConfiguration);
             monster.Number = 182;
             monster.Designation = "Death Angel 3";
             monster.MoveRange = 3;
@@ -145,6 +146,7 @@ internal class Kalima3 : KalimaBase
         {
             var monster = this.Context.CreateNew<MonsterDefinition>();
             this.GameConfiguration.Monsters.Add(monster);
+            monster.AsNormalMonster(this.GameConfiguration);
             monster.Number = 183;
             monster.Designation = "Death Centurion 3";
             monster.MoveRange = 3;
@@ -178,6 +180,7 @@ internal class Kalima3 : KalimaBase
         {
             var monster = this.Context.CreateNew<MonsterDefinition>();
             this.GameConfiguration.Monsters.Add(monster);
+            monster.AsNormalMonster(this.GameConfiguration);
             monster.Number = 184;
             monster.Designation = "Blood Soldier 3";
             monster.MoveRange = 3;
@@ -211,6 +214,7 @@ internal class Kalima3 : KalimaBase
         {
             var monster = this.Context.CreateNew<MonsterDefinition>();
             this.GameConfiguration.Monsters.Add(monster);
+            monster.AsNormalMonster(this.GameConfiguration);
             monster.Number = 185;
             monster.Designation = "Aegis 3";
             monster.MoveRange = 3;
@@ -244,6 +248,7 @@ internal class Kalima3 : KalimaBase
         {
             var monster = this.Context.CreateNew<MonsterDefinition>();
             this.GameConfiguration.Monsters.Add(monster);
+            monster.AsNormalMonster(this.GameConfiguration);
             monster.Number = 186;
             monster.Designation = "Rogue Centurion 3";
             monster.MoveRange = 3;
@@ -277,6 +282,7 @@ internal class Kalima3 : KalimaBase
         {
             var monster = this.Context.CreateNew<MonsterDefinition>();
             this.GameConfiguration.Monsters.Add(monster);
+            monster.AsNormalMonster(this.GameConfiguration);
             monster.Number = 187;
             monster.Designation = "Necron 3";
             monster.MoveRange = 3;
@@ -310,6 +316,7 @@ internal class Kalima3 : KalimaBase
         {
             var monster = this.Context.CreateNew<MonsterDefinition>();
             this.GameConfiguration.Monsters.Add(monster);
+            monster.AsNormalMonster(this.GameConfiguration);
             monster.Number = 188;
             monster.Designation = "Schriker 3";
             monster.MoveRange = 3;
@@ -343,6 +350,7 @@ internal class Kalima3 : KalimaBase
         {
             var monster = this.Context.CreateNew<MonsterDefinition>();
             this.GameConfiguration.Monsters.Add(monster);
+            monster.AsNormalMonster(this.GameConfiguration);
             monster.Number = 189;
             monster.Designation = "Illusion of Kundun 3";
             monster.MoveRange = 3;

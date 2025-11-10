@@ -1,4 +1,4 @@
-﻿// <copyright file="Lorencia.cs" company="MUnique">
+// <copyright file="Lorencia.cs" company="MUnique">
 // Licensed under the MIT License. See LICENSE file in the project root for full license information.
 // </copyright>
 
@@ -79,6 +79,7 @@ internal class Lorencia : BaseMapInitializer
         {
             var bullFighter = this.Context.CreateNew<MonsterDefinition>();
             this.GameConfiguration.Monsters.Add(bullFighter);
+            bullFighter.AsNormalMonster(this.GameConfiguration);
             bullFighter.Number = 0;
             bullFighter.Designation = "Bull Fighter";
             bullFighter.MoveRange = 3;
@@ -105,6 +106,7 @@ internal class Lorencia : BaseMapInitializer
         {
             var hound = this.Context.CreateNew<MonsterDefinition>();
             this.GameConfiguration.Monsters.Add(hound);
+            hound.AsNormalMonster(this.GameConfiguration);
             hound.Number = 1;
             hound.Designation = "Hound";
             var attributes = new Dictionary<AttributeDefinition, float>
@@ -131,6 +133,7 @@ internal class Lorencia : BaseMapInitializer
         {
             var budgeDragon = this.Context.CreateNew<MonsterDefinition>();
             this.GameConfiguration.Monsters.Add(budgeDragon);
+            budgeDragon.AsNormalMonster(this.GameConfiguration);
             budgeDragon.Number = 2;
             budgeDragon.Designation = "Budge Dragon";
             var attributes = new Dictionary<AttributeDefinition, float>
@@ -157,6 +160,7 @@ internal class Lorencia : BaseMapInitializer
         {
             var spider = this.Context.CreateNew<MonsterDefinition>();
             this.GameConfiguration.Monsters.Add(spider);
+            spider.AsNormalMonster(this.GameConfiguration);
             spider.Number = 3;
             spider.Designation = "Spider";
             var attributes = new Dictionary<AttributeDefinition, float>
@@ -183,6 +187,7 @@ internal class Lorencia : BaseMapInitializer
         {
             var eliteBullFighter = this.Context.CreateNew<MonsterDefinition>();
             this.GameConfiguration.Monsters.Add(eliteBullFighter);
+            eliteBullFighter.AsNormalMonster(this.GameConfiguration);
             eliteBullFighter.Number = 4;
             eliteBullFighter.Designation = "Elite Bull Fighter";
             var attributes = new Dictionary<AttributeDefinition, float>
@@ -209,6 +214,7 @@ internal class Lorencia : BaseMapInitializer
         {
             var lich = this.Context.CreateNew<MonsterDefinition>();
             this.GameConfiguration.Monsters.Add(lich);
+            lich.AsNormalMonster(this.GameConfiguration);
             lich.Number = 6;
             lich.Designation = "Lich";
             var attributes = new Dictionary<AttributeDefinition, float>
@@ -237,6 +243,7 @@ internal class Lorencia : BaseMapInitializer
         {
             var giant = this.Context.CreateNew<MonsterDefinition>();
             this.GameConfiguration.Monsters.Add(giant);
+            giant.AsNormalMonster(this.GameConfiguration);
             giant.Number = 7;
             giant.Designation = "Giant";
             var attributes = new Dictionary<AttributeDefinition, float>
@@ -263,6 +270,7 @@ internal class Lorencia : BaseMapInitializer
         {
             var skeleton = this.Context.CreateNew<MonsterDefinition>();
             this.GameConfiguration.Monsters.Add(skeleton);
+            skeleton.AsNormalMonster(this.GameConfiguration);
             skeleton.Number = 14;
             skeleton.Designation = "Skeleton Warrior";
             var attributes = new Dictionary<AttributeDefinition, float>

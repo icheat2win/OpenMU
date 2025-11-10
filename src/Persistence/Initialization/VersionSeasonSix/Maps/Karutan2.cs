@@ -1,4 +1,4 @@
-﻿// <copyright file="Karutan2.cs" company="MUnique">
+// <copyright file="Karutan2.cs" company="MUnique">
 // Licensed under the MIT License. See LICENSE file in the project root for full license information.
 // </copyright>
 
@@ -189,6 +189,7 @@ internal class Karutan2 : BaseMapInitializer
         {
             var monster = this.Context.CreateNew<MonsterDefinition>();
             this.GameConfiguration.Monsters.Add(monster);
+            monster.AsNormalMonster(this.GameConfiguration);
             monster.Number = 572;
             monster.Designation = "Gollock";
             monster.MoveRange = 6;
@@ -221,6 +222,7 @@ internal class Karutan2 : BaseMapInitializer
         {
             var monster = this.Context.CreateNew<MonsterDefinition>();
             this.GameConfiguration.Monsters.Add(monster);
+            monster.AsNormalMonster(this.GameConfiguration);
             monster.Number = 575;
             monster.Designation = "Condra";
             monster.MoveRange = 6;
@@ -253,6 +255,7 @@ internal class Karutan2 : BaseMapInitializer
         {
             var monster = this.Context.CreateNew<MonsterDefinition>();
             this.GameConfiguration.Monsters.Add(monster);
+            monster.AsNormalMonster(this.GameConfiguration);
             monster.Number = 576;
             monster.Designation = "Narcondra";
             monster.MoveRange = 6;

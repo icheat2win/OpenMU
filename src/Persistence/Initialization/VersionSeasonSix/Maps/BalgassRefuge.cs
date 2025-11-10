@@ -1,4 +1,4 @@
-﻿// <copyright file="BalgassRefuge.cs" company="MUnique">
+// <copyright file="BalgassRefuge.cs" company="MUnique">
 // Licensed under the MIT License. See LICENSE file in the project root for full license information.
 // </copyright>
 
@@ -61,6 +61,7 @@ internal class BalgassRefuge : BaseMapInitializer
         {
             var monster = this.Context.CreateNew<MonsterDefinition>();
             this.GameConfiguration.Monsters.Add(monster);
+            monster.AsNormalMonster(this.GameConfiguration);
             monster.Number = 412;
             monster.Designation = "Dark Elf (Trainee Soldier)";
             monster.MoveRange = 6;

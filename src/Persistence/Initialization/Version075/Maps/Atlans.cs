@@ -1,4 +1,4 @@
-﻿// <copyright file="Atlans.cs" company="MUnique">
+// <copyright file="Atlans.cs" company="MUnique">
 // Licensed under the MIT License. See LICENSE file in the project root for full license information.
 // </copyright>
 
@@ -394,6 +394,7 @@ internal class Atlans : BaseMapInitializer
         {
             var monster = this.Context.CreateNew<MonsterDefinition>();
             this.GameConfiguration.Monsters.Add(monster);
+            monster.AsNormalMonster(this.GameConfiguration);
             monster.Number = 45;
             monster.Designation = "Bahamut";
             monster.MoveRange = 2;
@@ -426,6 +427,7 @@ internal class Atlans : BaseMapInitializer
         {
             var monster = this.Context.CreateNew<MonsterDefinition>();
             this.GameConfiguration.Monsters.Add(monster);
+            monster.AsNormalMonster(this.GameConfiguration);
             monster.Number = 46;
             monster.Designation = "Vepar";
             monster.MoveRange = 3;
@@ -459,6 +461,7 @@ internal class Atlans : BaseMapInitializer
         {
             var monster = this.Context.CreateNew<MonsterDefinition>();
             this.GameConfiguration.Monsters.Add(monster);
+            monster.AsNormalMonster(this.GameConfiguration);
             monster.Number = 47;
             monster.Designation = "Valkyrie";
             monster.MoveRange = 3;
@@ -491,6 +494,7 @@ internal class Atlans : BaseMapInitializer
         {
             var monster = this.Context.CreateNew<MonsterDefinition>();
             this.GameConfiguration.Monsters.Add(monster);
+            monster.AsNormalMonster(this.GameConfiguration);
             monster.Number = 48;
             monster.Designation = "Lizard King";
             monster.MoveRange = 3;
@@ -524,6 +528,7 @@ internal class Atlans : BaseMapInitializer
         {
             var monster = this.Context.CreateNew<MonsterDefinition>();
             this.GameConfiguration.Monsters.Add(monster);
+            monster.AsNormalMonster(this.GameConfiguration);
             monster.Number = 49;
             monster.Designation = "Hydra";
             monster.MoveRange = 3;
@@ -557,6 +562,7 @@ internal class Atlans : BaseMapInitializer
         {
             var monster = this.Context.CreateNew<MonsterDefinition>();
             this.GameConfiguration.Monsters.Add(monster);
+            monster.AsNormalMonster(this.GameConfiguration);
             monster.Number = 50;
             monster.Designation = "Sea Worm";
             monster.MoveRange = 3;
@@ -589,6 +595,7 @@ internal class Atlans : BaseMapInitializer
         {
             var monster = this.Context.CreateNew<MonsterDefinition>();
             this.GameConfiguration.Monsters.Add(monster);
+            monster.AsNormalMonster(this.GameConfiguration);
             monster.Number = 51;
             monster.Designation = "Great Bahamut";
             monster.MoveRange = 3;
@@ -621,6 +628,7 @@ internal class Atlans : BaseMapInitializer
         {
             var monster = this.Context.CreateNew<MonsterDefinition>();
             this.GameConfiguration.Monsters.Add(monster);
+            monster.AsNormalMonster(this.GameConfiguration);
             monster.Number = 52;
             monster.Designation = "Silver Valkyrie";
             monster.MoveRange = 3;

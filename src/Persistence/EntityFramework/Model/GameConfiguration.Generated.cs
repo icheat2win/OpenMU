@@ -155,6 +155,15 @@ internal partial class GameConfiguration : MUnique.OpenMU.DataModel.Configuratio
     public override ICollection<MUnique.OpenMU.DataModel.Configuration.MonsterDefinition> Monsters => base.Monsters ??= new CollectionAdapter<MUnique.OpenMU.DataModel.Configuration.MonsterDefinition, MonsterDefinition>(this.RawMonsters);
 
     /// <summary>
+    /// Gets the raw collection of <see cref="MonsterTypes" />.
+    /// </summary>
+    public ICollection<MonsterTypeDefinition> RawMonsterTypes { get; } = new EntityFramework.List<MonsterTypeDefinition>();
+    
+    /// <inheritdoc/>
+    [NotMapped]
+    public override ICollection<MUnique.OpenMU.DataModel.Configuration.MonsterTypeDefinition> MonsterTypes => base.MonsterTypes ??= new CollectionAdapter<MUnique.OpenMU.DataModel.Configuration.MonsterTypeDefinition, MonsterTypeDefinition>(this.RawMonsterTypes);
+
+    /// <summary>
     /// Gets the raw collection of <see cref="Attributes" />.
     /// </summary>
     public ICollection<AttributeDefinition> RawAttributes { get; } = new EntityFramework.List<AttributeDefinition>();

@@ -1,4 +1,4 @@
-﻿// <copyright file="LandOfTrials.cs" company="MUnique">
+// <copyright file="LandOfTrials.cs" company="MUnique">
 // Licensed under the MIT License. See LICENSE file in the project root for full license information.
 // </copyright>
 
@@ -256,6 +256,7 @@ internal class LandOfTrials : BaseMapInitializer
         {
             var monster = this.Context.CreateNew<MonsterDefinition>();
             this.GameConfiguration.Monsters.Add(monster);
+            monster.AsNormalMonster(this.GameConfiguration);
             monster.Number = 290;
             monster.Designation = "Lizard Warrior";
             monster.MoveRange = 3;
@@ -288,6 +289,7 @@ internal class LandOfTrials : BaseMapInitializer
         {
             var monster = this.Context.CreateNew<MonsterDefinition>();
             this.GameConfiguration.Monsters.Add(monster);
+            monster.AsNormalMonster(this.GameConfiguration);
             monster.Number = 291;
             monster.Designation = "Fire Golem";
             monster.MoveRange = 3;
@@ -320,6 +322,7 @@ internal class LandOfTrials : BaseMapInitializer
         {
             var monster = this.Context.CreateNew<MonsterDefinition>();
             this.GameConfiguration.Monsters.Add(monster);
+            monster.AsNormalMonster(this.GameConfiguration);
             monster.Number = 292;
             monster.Designation = "Queen Bee";
             monster.MoveRange = 3;
@@ -353,6 +356,7 @@ internal class LandOfTrials : BaseMapInitializer
         {
             var monster = this.Context.CreateNew<MonsterDefinition>();
             this.GameConfiguration.Monsters.Add(monster);
+            monster.AsNormalMonster(this.GameConfiguration);
             monster.Number = 293;
             monster.Designation = "Poison Golem";
             monster.MoveRange = 3;
@@ -386,6 +390,7 @@ internal class LandOfTrials : BaseMapInitializer
         {
             var monster = this.Context.CreateNew<MonsterDefinition>();
             this.GameConfiguration.Monsters.Add(monster);
+            monster.AsNormalMonster(this.GameConfiguration);
             monster.Number = 294;
             monster.Designation = "Axe Warrior";
             monster.MoveRange = 3;
@@ -418,6 +423,7 @@ internal class LandOfTrials : BaseMapInitializer
         {
             var monster = this.Context.CreateNew<MonsterDefinition>();
             this.GameConfiguration.Monsters.Add(monster);
+            monster.AsNormalMonster(this.GameConfiguration);
             monster.Number = 295;
             monster.Designation = "Erohim";
             monster.MoveRange = 3;

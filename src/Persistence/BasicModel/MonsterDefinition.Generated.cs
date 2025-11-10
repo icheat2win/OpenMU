@@ -128,6 +128,24 @@ public partial class MonsterDefinition : MUnique.OpenMU.DataModel.Configuration.
     }
 
     /// <summary>
+    /// Gets the raw object of <see cref="MonsterType" />.
+    /// </summary>
+    [System.Text.Json.Serialization.JsonPropertyName("monsterType")]
+    public MonsterTypeDefinition RawMonsterType
+    {
+        get => base.MonsterType as MonsterTypeDefinition;
+        set => base.MonsterType = value;
+    }
+
+    /// <inheritdoc/>
+    [System.Text.Json.Serialization.JsonIgnore]
+    public override MUnique.OpenMU.DataModel.Configuration.MonsterTypeDefinition MonsterType
+    {
+        get => base.MonsterType;
+        set => base.MonsterType = value;
+    }
+
+    /// <summary>
     /// Gets the raw object of <see cref="MerchantStore" />.
     /// </summary>
     [System.Text.Json.Serialization.JsonPropertyName("merchantStore")]

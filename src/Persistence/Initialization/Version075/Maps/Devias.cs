@@ -1,4 +1,4 @@
-﻿// <copyright file="Devias.cs" company="MUnique">
+// <copyright file="Devias.cs" company="MUnique">
 // Licensed under the MIT License. See LICENSE file in the project root for full license information.
 // </copyright>
 
@@ -75,6 +75,7 @@ internal class Devias : BaseMapInitializer
         {
             var monster = this.Context.CreateNew<MonsterDefinition>();
             this.GameConfiguration.Monsters.Add(monster);
+            monster.AsNormalMonster(this.GameConfiguration);
             monster.Number = 19;
             monster.Designation = "Yeti";
             monster.MoveRange = 2;
@@ -105,6 +106,7 @@ internal class Devias : BaseMapInitializer
         {
             var monster = this.Context.CreateNew<MonsterDefinition>();
             this.GameConfiguration.Monsters.Add(monster);
+            monster.AsNormalMonster(this.GameConfiguration);
             monster.Number = 20;
             monster.Designation = "Elite Yeti";
             monster.MoveRange = 3;
@@ -137,6 +139,7 @@ internal class Devias : BaseMapInitializer
         {
             var monster = this.Context.CreateNew<MonsterDefinition>();
             this.GameConfiguration.Monsters.Add(monster);
+            monster.AsNormalMonster(this.GameConfiguration);
             monster.Number = 21;
             monster.Designation = "Assassin";
             monster.MoveRange = 2;
@@ -165,6 +168,7 @@ internal class Devias : BaseMapInitializer
         {
             var monster = this.Context.CreateNew<MonsterDefinition>();
             this.GameConfiguration.Monsters.Add(monster);
+            monster.AsNormalMonster(this.GameConfiguration);
             monster.Number = 22;
             monster.Designation = "Ice Monster";
             monster.MoveRange = 2;
@@ -195,6 +199,7 @@ internal class Devias : BaseMapInitializer
         {
             var monster = this.Context.CreateNew<MonsterDefinition>();
             this.GameConfiguration.Monsters.Add(monster);
+            monster.AsNormalMonster(this.GameConfiguration);
             monster.Number = 23;
             monster.Designation = "Hommerd";
             monster.MoveRange = 3;
@@ -224,6 +229,7 @@ internal class Devias : BaseMapInitializer
         {
             var monster = this.Context.CreateNew<MonsterDefinition>();
             this.GameConfiguration.Monsters.Add(monster);
+            monster.AsNormalMonster(this.GameConfiguration);
             monster.Number = 24;
             monster.Designation = "Worm";
             monster.MoveRange = 3;
@@ -253,6 +259,7 @@ internal class Devias : BaseMapInitializer
         {
             var monster = this.Context.CreateNew<MonsterDefinition>();
             this.GameConfiguration.Monsters.Add(monster);
+            monster.AsNormalMonster(this.GameConfiguration);
             monster.Number = 25;
             monster.Designation = "Ice Queen";
             monster.MoveRange = 3;

@@ -1,4 +1,4 @@
-﻿// <copyright file="KanturuRuins.cs" company="MUnique">
+// <copyright file="KanturuRuins.cs" company="MUnique">
 // Licensed under the MIT License. See LICENSE file in the project root for full license information.
 // </copyright>
 
@@ -271,6 +271,7 @@ internal class KanturuRuins : BaseMapInitializer
         {
             var monster = this.Context.CreateNew<MonsterDefinition>();
             this.GameConfiguration.Monsters.Add(monster);
+            monster.AsNormalMonster(this.GameConfiguration);
             monster.Number = 350;
             monster.Designation = "Berserker";
             monster.MoveRange = 3;
@@ -303,6 +304,7 @@ internal class KanturuRuins : BaseMapInitializer
         {
             var monster = this.Context.CreateNew<MonsterDefinition>();
             this.GameConfiguration.Monsters.Add(monster);
+            monster.AsNormalMonster(this.GameConfiguration);
             monster.Number = 351;
             monster.Designation = "Splinter Wolf";
             monster.MoveRange = 3;
@@ -335,6 +337,7 @@ internal class KanturuRuins : BaseMapInitializer
         {
             var monster = this.Context.CreateNew<MonsterDefinition>();
             this.GameConfiguration.Monsters.Add(monster);
+            monster.AsNormalMonster(this.GameConfiguration);
             monster.Number = 352;
             monster.Designation = "Iron Rider";
             monster.MoveRange = 3;
@@ -367,6 +370,7 @@ internal class KanturuRuins : BaseMapInitializer
         {
             var monster = this.Context.CreateNew<MonsterDefinition>();
             this.GameConfiguration.Monsters.Add(monster);
+            monster.AsNormalMonster(this.GameConfiguration);
             monster.Number = 353;
             monster.Designation = "Satyros";
             monster.MoveRange = 3;
@@ -399,6 +403,7 @@ internal class KanturuRuins : BaseMapInitializer
         {
             var monster = this.Context.CreateNew<MonsterDefinition>();
             this.GameConfiguration.Monsters.Add(monster);
+            monster.AsNormalMonster(this.GameConfiguration);
             monster.Number = 354;
             monster.Designation = "Blade Hunter";
             monster.MoveRange = 3;
@@ -431,6 +436,7 @@ internal class KanturuRuins : BaseMapInitializer
         {
             var monster = this.Context.CreateNew<MonsterDefinition>();
             this.GameConfiguration.Monsters.Add(monster);
+            monster.AsNormalMonster(this.GameConfiguration);
             monster.Number = 355;
             monster.Designation = "Kentauros";
             monster.MoveRange = 3;
@@ -463,6 +469,7 @@ internal class KanturuRuins : BaseMapInitializer
         {
             var monster = this.Context.CreateNew<MonsterDefinition>();
             this.GameConfiguration.Monsters.Add(monster);
+            monster.AsNormalMonster(this.GameConfiguration);
             monster.Number = 356;
             monster.Designation = "Gigantis";
             monster.MoveRange = 3;
@@ -495,6 +502,7 @@ internal class KanturuRuins : BaseMapInitializer
         {
             var monster = this.Context.CreateNew<MonsterDefinition>();
             this.GameConfiguration.Monsters.Add(monster);
+            monster.AsNormalMonster(this.GameConfiguration);
             monster.Number = 357;
             monster.Designation = "Genocider";
             monster.MoveRange = 3;
@@ -527,6 +535,7 @@ internal class KanturuRuins : BaseMapInitializer
         {
             var monster = this.Context.CreateNew<MonsterDefinition>();
             this.GameConfiguration.Monsters.Add(monster);
+            monster.AsNormalMonster(this.GameConfiguration);
             monster.Number = 553;
             monster.Designation = "Berserker Warrior";
             monster.MoveRange = 3;
@@ -559,6 +568,7 @@ internal class KanturuRuins : BaseMapInitializer
         {
             var monster = this.Context.CreateNew<MonsterDefinition>();
             this.GameConfiguration.Monsters.Add(monster);
+            monster.AsNormalMonster(this.GameConfiguration);
             monster.Number = 554;
             monster.Designation = "Kentauros Warrior";
             monster.MoveRange = 3;
@@ -591,6 +601,7 @@ internal class KanturuRuins : BaseMapInitializer
         {
             var monster = this.Context.CreateNew<MonsterDefinition>();
             this.GameConfiguration.Monsters.Add(monster);
+            monster.AsNormalMonster(this.GameConfiguration);
             monster.Number = 555;
             monster.Designation = "Gigantis Warrior";
             monster.MoveRange = 3;
@@ -623,6 +634,7 @@ internal class KanturuRuins : BaseMapInitializer
         {
             var monster = this.Context.CreateNew<MonsterDefinition>();
             this.GameConfiguration.Monsters.Add(monster);
+            monster.AsNormalMonster(this.GameConfiguration);
             monster.Number = 556;
             monster.Designation = "Genocider Warrior";
             monster.MoveRange = 3;

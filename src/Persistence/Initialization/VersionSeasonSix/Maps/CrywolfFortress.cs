@@ -1,4 +1,4 @@
-﻿// <copyright file="CrywolfFortress.cs" company="MUnique">
+// <copyright file="CrywolfFortress.cs" company="MUnique">
 // Licensed under the MIT License. See LICENSE file in the project root for full license information.
 // </copyright>
 
@@ -250,6 +250,7 @@ internal class CrywolfFortress : BaseMapInitializer
         {
             var monster = this.Context.CreateNew<MonsterDefinition>();
             this.GameConfiguration.Monsters.Add(monster);
+            monster.AsNormalMonster(this.GameConfiguration);
             monster.Number = 204;
             monster.Designation = "Wolf Status";
             var attributes = new Dictionary<AttributeDefinition, float>
@@ -270,6 +271,7 @@ internal class CrywolfFortress : BaseMapInitializer
         {
             var monster = this.Context.CreateNew<MonsterDefinition>();
             this.GameConfiguration.Monsters.Add(monster);
+            monster.AsNormalMonster(this.GameConfiguration);
             monster.Number = 205;
             monster.Designation = "Wolf Altar1";
             var attributes = new Dictionary<AttributeDefinition, float>
@@ -290,6 +292,7 @@ internal class CrywolfFortress : BaseMapInitializer
         {
             var monster = this.Context.CreateNew<MonsterDefinition>();
             this.GameConfiguration.Monsters.Add(monster);
+            monster.AsNormalMonster(this.GameConfiguration);
             monster.Number = 206;
             monster.Designation = "Wolf Altar2";
             var attributes = new Dictionary<AttributeDefinition, float>
@@ -310,6 +313,7 @@ internal class CrywolfFortress : BaseMapInitializer
         {
             var monster = this.Context.CreateNew<MonsterDefinition>();
             this.GameConfiguration.Monsters.Add(monster);
+            monster.AsNormalMonster(this.GameConfiguration);
             monster.Number = 207;
             monster.Designation = "Wolf Altar3";
             var attributes = new Dictionary<AttributeDefinition, float>
@@ -330,6 +334,7 @@ internal class CrywolfFortress : BaseMapInitializer
         {
             var monster = this.Context.CreateNew<MonsterDefinition>();
             this.GameConfiguration.Monsters.Add(monster);
+            monster.AsNormalMonster(this.GameConfiguration);
             monster.Number = 208;
             monster.Designation = "Wolf Altar4";
             var attributes = new Dictionary<AttributeDefinition, float>
@@ -350,6 +355,7 @@ internal class CrywolfFortress : BaseMapInitializer
         {
             var monster = this.Context.CreateNew<MonsterDefinition>();
             this.GameConfiguration.Monsters.Add(monster);
+            monster.AsNormalMonster(this.GameConfiguration);
             monster.Number = 209;
             monster.Designation = "Wolf Altar5";
             var attributes = new Dictionary<AttributeDefinition, float>
@@ -370,6 +376,7 @@ internal class CrywolfFortress : BaseMapInitializer
         {
             var monster = this.Context.CreateNew<MonsterDefinition>();
             this.GameConfiguration.Monsters.Add(monster);
+            monster.AsNormalMonster(this.GameConfiguration);
             monster.Number = 310;
             monster.Designation = "Hammer Scout";
             monster.MoveRange = 6;
@@ -401,6 +408,7 @@ internal class CrywolfFortress : BaseMapInitializer
         {
             var monster = this.Context.CreateNew<MonsterDefinition>();
             this.GameConfiguration.Monsters.Add(monster);
+            monster.AsNormalMonster(this.GameConfiguration);
             monster.Number = 311;
             monster.Designation = "Lance Scout";
             monster.MoveRange = 6;
@@ -432,6 +440,7 @@ internal class CrywolfFortress : BaseMapInitializer
         {
             var monster = this.Context.CreateNew<MonsterDefinition>();
             this.GameConfiguration.Monsters.Add(monster);
+            monster.AsNormalMonster(this.GameConfiguration);
             monster.Number = 312;
             monster.Designation = "Bow Scout";
             monster.MoveRange = 6;
@@ -463,6 +472,7 @@ internal class CrywolfFortress : BaseMapInitializer
         {
             var monster = this.Context.CreateNew<MonsterDefinition>();
             this.GameConfiguration.Monsters.Add(monster);
+            monster.AsNormalMonster(this.GameConfiguration);
             monster.Number = 313;
             monster.Designation = "Werewolf";
             monster.MoveRange = 6;
@@ -494,6 +504,7 @@ internal class CrywolfFortress : BaseMapInitializer
         {
             var monster = this.Context.CreateNew<MonsterDefinition>();
             this.GameConfiguration.Monsters.Add(monster);
+            monster.AsNormalMonster(this.GameConfiguration);
             monster.Number = 314;
             monster.Designation = "Scout(Hero)";
             monster.MoveRange = 6;
@@ -525,6 +536,7 @@ internal class CrywolfFortress : BaseMapInitializer
         {
             var monster = this.Context.CreateNew<MonsterDefinition>();
             this.GameConfiguration.Monsters.Add(monster);
+            monster.AsNormalMonster(this.GameConfiguration);
             monster.Number = 315;
             monster.Designation = "Werewolf(Hero)";
             monster.MoveRange = 6;
@@ -556,6 +568,7 @@ internal class CrywolfFortress : BaseMapInitializer
         {
             var monster = this.Context.CreateNew<MonsterDefinition>();
             this.GameConfiguration.Monsters.Add(monster);
+            monster.AsNormalMonster(this.GameConfiguration);
             monster.Number = 316;
             monster.Designation = "Balram";
             monster.MoveRange = 6;
@@ -587,6 +600,7 @@ internal class CrywolfFortress : BaseMapInitializer
         {
             var monster = this.Context.CreateNew<MonsterDefinition>();
             this.GameConfiguration.Monsters.Add(monster);
+            monster.AsNormalMonster(this.GameConfiguration);
             monster.Number = 317;
             monster.Designation = "Soram";
             monster.MoveRange = 6;

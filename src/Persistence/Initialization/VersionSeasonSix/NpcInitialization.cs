@@ -1,4 +1,4 @@
-﻿// <copyright file="NpcInitialization.cs" company="MUnique">
+// <copyright file="NpcInitialization.cs" company="MUnique">
 // Licensed under the MIT License. See LICENSE file in the project root for full license information.
 // </copyright>
 
@@ -850,7 +850,8 @@ internal partial class NpcInitialization : Version095d.NpcInitialization
             };
             def.AddAttributes(attributes, this.Context, this.GameConfiguration);
             def.SetGuid(def.Number);
-            this.GameConfiguration.Monsters.Add(def);
+            def.AssignMonsterTypeByNpcWindow(this.GameConfiguration);
+ this.GameConfiguration.Monsters.Add(def);
         }
 
         {
@@ -865,7 +866,8 @@ internal partial class NpcInitialization : Version095d.NpcInitialization
             };
             def.AddAttributes(attributes, this.Context, this.GameConfiguration);
             def.SetGuid(def.Number);
-            this.GameConfiguration.Monsters.Add(def);
+            def.AssignMonsterTypeByNpcWindow(this.GameConfiguration);
+ this.GameConfiguration.Monsters.Add(def);
             var questItemDrop = this.Context.CreateNew<DropItemGroup>();
             questItemDrop.SetGuid(132);
             questItemDrop.Chance = 1;
@@ -887,7 +889,8 @@ internal partial class NpcInitialization : Version095d.NpcInitialization
             };
             def.AddAttributes(attributes, this.Context, this.GameConfiguration);
             def.SetGuid(def.Number);
-            this.GameConfiguration.Monsters.Add(def);
+            def.AssignMonsterTypeByNpcWindow(this.GameConfiguration);
+ this.GameConfiguration.Monsters.Add(def);
         }
 
         {
@@ -901,7 +904,8 @@ internal partial class NpcInitialization : Version095d.NpcInitialization
             };
             def.AddAttributes(attributes, this.Context, this.GameConfiguration);
             def.SetGuid(def.Number);
-            this.GameConfiguration.Monsters.Add(def);
+            def.AssignMonsterTypeByNpcWindow(this.GameConfiguration);
+ this.GameConfiguration.Monsters.Add(def);
         }
 
         {
@@ -910,7 +914,8 @@ internal partial class NpcInitialization : Version095d.NpcInitialization
             def.Designation = "David";
             def.ObjectKind = NpcObjectKind.PassiveNpc;
             def.SetGuid(def.Number);
-            this.GameConfiguration.Monsters.Add(def);
+            def.AssignMonsterTypeByNpcWindow(this.GameConfiguration);
+ this.GameConfiguration.Monsters.Add(def);
         }
 
         {
@@ -921,7 +926,8 @@ internal partial class NpcInitialization : Version095d.NpcInitialization
             def.NpcWindow = NpcWindow.Merchant;
             def.ObjectKind = NpcObjectKind.PassiveNpc;
             def.SetGuid(def.Number);
-            this.GameConfiguration.Monsters.Add(def);
+            def.AssignMonsterTypeByNpcWindow(this.GameConfiguration);
+ this.GameConfiguration.Monsters.Add(def);
         }
 
         {
@@ -942,7 +948,8 @@ internal partial class NpcInitialization : Version095d.NpcInitialization
             def.NpcWindow = NpcWindow.Merchant;
             def.ObjectKind = NpcObjectKind.PassiveNpc;
             def.SetGuid(def.Number);
-            this.GameConfiguration.Monsters.Add(def);
+            def.AssignMonsterTypeByNpcWindow(this.GameConfiguration);
+ this.GameConfiguration.Monsters.Add(def);
         }
 
         {
@@ -951,7 +958,8 @@ internal partial class NpcInitialization : Version095d.NpcInitialization
             def.Designation = "Jeweler Raul";
             def.ObjectKind = NpcObjectKind.PassiveNpc;
             def.SetGuid(def.Number);
-            this.GameConfiguration.Monsters.Add(def);
+            def.AssignMonsterTypeByNpcWindow(this.GameConfiguration);
+ this.GameConfiguration.Monsters.Add(def);
         }
 
         {
@@ -961,7 +969,8 @@ internal partial class NpcInitialization : Version095d.NpcInitialization
             def.NpcWindow = NpcWindow.Merchant;
             def.ObjectKind = NpcObjectKind.PassiveNpc;
             def.SetGuid(def.Number);
-            this.GameConfiguration.Monsters.Add(def);
+            def.AssignMonsterTypeByNpcWindow(this.GameConfiguration);
+ this.GameConfiguration.Monsters.Add(def);
         }
 
         {
@@ -971,7 +980,8 @@ internal partial class NpcInitialization : Version095d.NpcInitialization
             def.NpcWindow = NpcWindow.NpcDialog;
             def.ObjectKind = NpcObjectKind.PassiveNpc;
             def.SetGuid(def.Number);
-            this.GameConfiguration.Monsters.Add(def);
+            def.AssignMonsterTypeByNpcWindow(this.GameConfiguration);
+ this.GameConfiguration.Monsters.Add(def);
         }
 
         {
@@ -980,7 +990,8 @@ internal partial class NpcInitialization : Version095d.NpcInitialization
             def.Designation = "Cursed Statue";
             def.ObjectKind = NpcObjectKind.Statue;
             def.SetGuid(def.Number);
-            this.GameConfiguration.Monsters.Add(def);
+            def.AssignMonsterTypeByNpcWindow(this.GameConfiguration);
+ this.GameConfiguration.Monsters.Add(def);
         }
 
         {
@@ -989,7 +1000,8 @@ internal partial class NpcInitialization : Version095d.NpcInitialization
             def.Designation = "Captured Stone Statue (1)";
             def.ObjectKind = NpcObjectKind.Statue;
             def.SetGuid(def.Number);
-            this.GameConfiguration.Monsters.Add(def);
+            def.AssignMonsterTypeByNpcWindow(this.GameConfiguration);
+ this.GameConfiguration.Monsters.Add(def);
         }
 
         {
@@ -998,7 +1010,8 @@ internal partial class NpcInitialization : Version095d.NpcInitialization
             def.Designation = "Captured Stone Statue (2)";
             def.ObjectKind = NpcObjectKind.Statue;
             def.SetGuid(def.Number);
-            this.GameConfiguration.Monsters.Add(def);
+            def.AssignMonsterTypeByNpcWindow(this.GameConfiguration);
+ this.GameConfiguration.Monsters.Add(def);
         }
 
         {
@@ -1007,7 +1020,8 @@ internal partial class NpcInitialization : Version095d.NpcInitialization
             def.Designation = "Captured Stone Statue (3)";
             def.ObjectKind = NpcObjectKind.Statue;
             def.SetGuid(def.Number);
-            this.GameConfiguration.Monsters.Add(def);
+            def.AssignMonsterTypeByNpcWindow(this.GameConfiguration);
+ this.GameConfiguration.Monsters.Add(def);
         }
 
         {
@@ -1016,7 +1030,8 @@ internal partial class NpcInitialization : Version095d.NpcInitialization
             def.Designation = "Captured Stone Statue (4)";
             def.ObjectKind = NpcObjectKind.Statue;
             def.SetGuid(def.Number);
-            this.GameConfiguration.Monsters.Add(def);
+            def.AssignMonsterTypeByNpcWindow(this.GameConfiguration);
+ this.GameConfiguration.Monsters.Add(def);
         }
 
         {
@@ -1025,7 +1040,8 @@ internal partial class NpcInitialization : Version095d.NpcInitialization
             def.Designation = "Captured Stone Statue (5)";
             def.ObjectKind = NpcObjectKind.Statue;
             def.SetGuid(def.Number);
-            this.GameConfiguration.Monsters.Add(def);
+            def.AssignMonsterTypeByNpcWindow(this.GameConfiguration);
+ this.GameConfiguration.Monsters.Add(def);
         }
 
         {
@@ -1034,7 +1050,8 @@ internal partial class NpcInitialization : Version095d.NpcInitialization
             def.Designation = "Captured Stone Statue (6)";
             def.ObjectKind = NpcObjectKind.Statue;
             def.SetGuid(def.Number);
-            this.GameConfiguration.Monsters.Add(def);
+            def.AssignMonsterTypeByNpcWindow(this.GameConfiguration);
+ this.GameConfiguration.Monsters.Add(def);
         }
 
         {
@@ -1043,7 +1060,8 @@ internal partial class NpcInitialization : Version095d.NpcInitialization
             def.Designation = "Captured Stone Statue (7)";
             def.ObjectKind = NpcObjectKind.Statue;
             def.SetGuid(def.Number);
-            this.GameConfiguration.Monsters.Add(def);
+            def.AssignMonsterTypeByNpcWindow(this.GameConfiguration);
+ this.GameConfiguration.Monsters.Add(def);
         }
 
         {
@@ -1052,7 +1070,8 @@ internal partial class NpcInitialization : Version095d.NpcInitialization
             def.Designation = "Captured Stone Statue (8)";
             def.ObjectKind = NpcObjectKind.Statue;
             def.SetGuid(def.Number);
-            this.GameConfiguration.Monsters.Add(def);
+            def.AssignMonsterTypeByNpcWindow(this.GameConfiguration);
+ this.GameConfiguration.Monsters.Add(def);
         }
 
         {
@@ -1061,7 +1080,8 @@ internal partial class NpcInitialization : Version095d.NpcInitialization
             def.Designation = "Captured Stone Statue (9)";
             def.ObjectKind = NpcObjectKind.Statue;
             def.SetGuid(def.Number);
-            this.GameConfiguration.Monsters.Add(def);
+            def.AssignMonsterTypeByNpcWindow(this.GameConfiguration);
+ this.GameConfiguration.Monsters.Add(def);
         }
 
         {
@@ -1070,7 +1090,8 @@ internal partial class NpcInitialization : Version095d.NpcInitialization
             def.Designation = "Captured Stone Statue (10)";
             def.ObjectKind = NpcObjectKind.Statue;
             def.SetGuid(def.Number);
-            this.GameConfiguration.Monsters.Add(def);
+            def.AssignMonsterTypeByNpcWindow(this.GameConfiguration);
+ this.GameConfiguration.Monsters.Add(def);
         }
     }
 }

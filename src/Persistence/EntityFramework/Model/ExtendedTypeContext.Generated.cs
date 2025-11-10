@@ -75,6 +75,7 @@ public class ExtendedTypeContext : Microsoft.EntityFrameworkCore.DbContext
         modelBuilder.Ignore<MUnique.OpenMU.DataModel.Configuration.MonsterAttribute>();
         modelBuilder.Ignore<MUnique.OpenMU.DataModel.Configuration.MonsterDefinition>();
         modelBuilder.Ignore<MUnique.OpenMU.DataModel.Configuration.MonsterSpawnArea>();
+        modelBuilder.Ignore<MUnique.OpenMU.DataModel.Configuration.MonsterTypeDefinition>();
         modelBuilder.Ignore<MUnique.OpenMU.DataModel.Configuration.Rectangle>();
         modelBuilder.Ignore<MUnique.OpenMU.DataModel.Configuration.Skill>();
         modelBuilder.Ignore<MUnique.OpenMU.DataModel.Configuration.SkillComboDefinition>();
@@ -155,6 +156,7 @@ public class ExtendedTypeContext : Microsoft.EntityFrameworkCore.DbContext
         modelBuilder.Entity<GameConfiguration>().HasMany(entity => entity.RawItemOptionCombinationBonuses).WithOne().OnDelete(DeleteBehavior.Cascade);
         modelBuilder.Entity<GameConfiguration>().HasMany(entity => entity.RawMaps).WithOne().OnDelete(DeleteBehavior.Cascade);
         modelBuilder.Entity<GameConfiguration>().HasMany(entity => entity.RawMonsters).WithOne().OnDelete(DeleteBehavior.Cascade);
+        modelBuilder.Entity<GameConfiguration>().HasMany(entity => entity.RawMonsterTypes).WithOne().OnDelete(DeleteBehavior.Cascade);
         modelBuilder.Entity<GameConfiguration>().HasMany(entity => entity.RawAttributes).WithOne().OnDelete(DeleteBehavior.Cascade);
         modelBuilder.Entity<GameConfiguration>().HasMany(entity => entity.RawMagicEffects).WithOne().OnDelete(DeleteBehavior.Cascade);
         modelBuilder.Entity<GameConfiguration>().HasMany(entity => entity.RawMasterSkillRoots).WithOne().OnDelete(DeleteBehavior.Cascade);

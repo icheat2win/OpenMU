@@ -1,4 +1,4 @@
-﻿// <copyright file="Tarkan.cs" company="MUnique">
+// <copyright file="Tarkan.cs" company="MUnique">
 // Licensed under the MIT License. See LICENSE file in the project root for full license information.
 // </copyright>
 
@@ -258,6 +258,7 @@ internal class Tarkan : BaseMapInitializer
         {
             var monster = this.Context.CreateNew<MonsterDefinition>();
             this.GameConfiguration.Monsters.Add(monster);
+            monster.AsNormalMonster(this.GameConfiguration);
             monster.Number = 57;
             monster.Designation = "Iron Wheel";
             monster.MoveRange = 3;
@@ -290,6 +291,7 @@ internal class Tarkan : BaseMapInitializer
         {
             var monster = this.Context.CreateNew<MonsterDefinition>();
             this.GameConfiguration.Monsters.Add(monster);
+            monster.AsNormalMonster(this.GameConfiguration);
             monster.Number = 58;
             monster.Designation = "Tantallos";
             monster.MoveRange = 3;
@@ -323,6 +325,7 @@ internal class Tarkan : BaseMapInitializer
         {
             var monster = this.Context.CreateNew<MonsterDefinition>();
             this.GameConfiguration.Monsters.Add(monster);
+            monster.AsNormalMonster(this.GameConfiguration);
             monster.Number = 59;
             monster.Designation = "Zaikan";
             monster.MoveRange = 3;
@@ -356,6 +359,7 @@ internal class Tarkan : BaseMapInitializer
         {
             var monster = this.Context.CreateNew<MonsterDefinition>();
             this.GameConfiguration.Monsters.Add(monster);
+            monster.AsNormalMonster(this.GameConfiguration);
             monster.Number = 60;
             monster.Designation = "Bloody Wolf";
             monster.MoveRange = 3;
@@ -388,6 +392,7 @@ internal class Tarkan : BaseMapInitializer
         {
             var monster = this.Context.CreateNew<MonsterDefinition>();
             this.GameConfiguration.Monsters.Add(monster);
+            monster.AsNormalMonster(this.GameConfiguration);
             monster.Number = 61;
             monster.Designation = "Beam Knight";
             monster.MoveRange = 3;
@@ -421,6 +426,7 @@ internal class Tarkan : BaseMapInitializer
         {
             var monster = this.Context.CreateNew<MonsterDefinition>();
             this.GameConfiguration.Monsters.Add(monster);
+            monster.AsNormalMonster(this.GameConfiguration);
             monster.Number = 62;
             monster.Designation = "Mutant";
             monster.MoveRange = 3;
@@ -453,6 +459,7 @@ internal class Tarkan : BaseMapInitializer
         {
             var monster = this.Context.CreateNew<MonsterDefinition>();
             this.GameConfiguration.Monsters.Add(monster);
+            monster.AsNormalMonster(this.GameConfiguration);
             monster.Number = 63;
             monster.Designation = "Death Beam Knight";
             monster.MoveRange = 3;

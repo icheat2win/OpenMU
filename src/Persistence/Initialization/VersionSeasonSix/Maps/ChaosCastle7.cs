@@ -1,4 +1,4 @@
-﻿// <copyright file="ChaosCastle7.cs" company="MUnique">
+// <copyright file="ChaosCastle7.cs" company="MUnique">
 // Licensed under the MIT License. See LICENSE file in the project root for full license information.
 // </copyright>
 
@@ -155,6 +155,7 @@ internal class ChaosCastle7 : BaseMapInitializer
         {
             var monster = this.Context.CreateNew<MonsterDefinition>();
             this.GameConfiguration.Monsters.Add(monster);
+            monster.AsNormalMonster(this.GameConfiguration);
             monster.Number = 426;
             monster.Designation = "Chaos Castle 13";
             monster.MoveRange = 50;
@@ -187,6 +188,7 @@ internal class ChaosCastle7 : BaseMapInitializer
         {
             var monster = this.Context.CreateNew<MonsterDefinition>();
             this.GameConfiguration.Monsters.Add(monster);
+            monster.AsNormalMonster(this.GameConfiguration);
             monster.Number = 427;
             monster.Designation = "Chaos Castle 14";
             monster.MoveRange = 50;

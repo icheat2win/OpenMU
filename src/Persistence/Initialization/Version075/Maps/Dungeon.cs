@@ -1,4 +1,4 @@
-﻿// <copyright file="Dungeon.cs" company="MUnique">
+// <copyright file="Dungeon.cs" company="MUnique">
 // Licensed under the MIT License. See LICENSE file in the project root for full license information.
 // </copyright>
 
@@ -624,6 +624,7 @@ internal class Dungeon : BaseMapInitializer
         {
             var monster = this.Context.CreateNew<MonsterDefinition>();
             this.GameConfiguration.Monsters.Add(monster);
+            monster.AsNormalMonster(this.GameConfiguration);
             monster.Number = 5;
             monster.Designation = "Hell Hound";
             monster.MoveRange = 3;
@@ -653,6 +654,7 @@ internal class Dungeon : BaseMapInitializer
         {
             var monster = this.Context.CreateNew<MonsterDefinition>();
             this.GameConfiguration.Monsters.Add(monster);
+            monster.AsNormalMonster(this.GameConfiguration);
             monster.Number = 8;
             monster.Designation = "Poison Bull";
             monster.MoveRange = 3;
@@ -684,6 +686,7 @@ internal class Dungeon : BaseMapInitializer
         {
             var monster = this.Context.CreateNew<MonsterDefinition>();
             this.GameConfiguration.Monsters.Add(monster);
+            monster.AsNormalMonster(this.GameConfiguration);
             monster.Number = 9;
             monster.Designation = "Thunder Lich";
             monster.MoveRange = 3;
@@ -714,6 +717,7 @@ internal class Dungeon : BaseMapInitializer
         {
             var monster = this.Context.CreateNew<MonsterDefinition>();
             this.GameConfiguration.Monsters.Add(monster);
+            monster.AsNormalMonster(this.GameConfiguration);
             monster.Number = 10;
             monster.Designation = "Dark Knight";
             monster.MoveRange = 3;
@@ -746,6 +750,7 @@ internal class Dungeon : BaseMapInitializer
         {
             var monster = this.Context.CreateNew<MonsterDefinition>();
             this.GameConfiguration.Monsters.Add(monster);
+            monster.AsNormalMonster(this.GameConfiguration);
             monster.Number = 11;
             monster.Designation = "Ghost";
             monster.MoveRange = 3;
@@ -778,6 +783,7 @@ internal class Dungeon : BaseMapInitializer
         {
             var monster = this.Context.CreateNew<MonsterDefinition>();
             this.GameConfiguration.Monsters.Add(monster);
+            monster.AsNormalMonster(this.GameConfiguration);
             monster.Number = 12;
             monster.Designation = "Larva";
             monster.MoveRange = 3;
@@ -808,6 +814,7 @@ internal class Dungeon : BaseMapInitializer
         {
             var monster = this.Context.CreateNew<MonsterDefinition>();
             this.GameConfiguration.Monsters.Add(monster);
+            monster.AsNormalMonster(this.GameConfiguration);
             monster.Number = 13;
             monster.Designation = "Hell Spider";
             monster.MoveRange = 3;
@@ -838,6 +845,7 @@ internal class Dungeon : BaseMapInitializer
         {
             var monster = this.Context.CreateNew<MonsterDefinition>();
             this.GameConfiguration.Monsters.Add(monster);
+            monster.AsNormalMonster(this.GameConfiguration);
             monster.Number = 15;
             monster.Designation = "Skeleton Archer";
             monster.MoveRange = 2;
@@ -866,6 +874,7 @@ internal class Dungeon : BaseMapInitializer
         {
             var monster = this.Context.CreateNew<MonsterDefinition>();
             this.GameConfiguration.Monsters.Add(monster);
+            monster.AsNormalMonster(this.GameConfiguration);
             monster.Number = 16;
             monster.Designation = "Elite Skeleton";
             monster.MoveRange = 2;
@@ -894,6 +903,7 @@ internal class Dungeon : BaseMapInitializer
         {
             var monster = this.Context.CreateNew<MonsterDefinition>();
             this.GameConfiguration.Monsters.Add(monster);
+            monster.AsNormalMonster(this.GameConfiguration);
             monster.Number = 17;
             monster.Designation = "Cyclops";
             monster.MoveRange = 3;
@@ -923,6 +933,7 @@ internal class Dungeon : BaseMapInitializer
         {
             var monster = this.Context.CreateNew<MonsterDefinition>();
             this.GameConfiguration.Monsters.Add(monster);
+            monster.AsNormalMonster(this.GameConfiguration);
             monster.Number = 18;
             monster.Designation = "Gorgon";
             monster.MoveRange = 3;
@@ -955,6 +966,7 @@ internal class Dungeon : BaseMapInitializer
         {
             var trap = this.Context.CreateNew<MonsterDefinition>();
             this.GameConfiguration.Monsters.Add(trap);
+            trap.AsNormalMonster(this.GameConfiguration);
             trap.Number = 100;
             trap.Designation = "Lance Trap";
             trap.MoveRange = 0;
@@ -982,6 +994,7 @@ internal class Dungeon : BaseMapInitializer
         {
             var trap = this.Context.CreateNew<MonsterDefinition>();
             this.GameConfiguration.Monsters.Add(trap);
+            trap.AsNormalMonster(this.GameConfiguration);
             trap.Number = 101;
             trap.Designation = "Iron Stick Trap";
             trap.MoveRange = 0;
@@ -1009,6 +1022,7 @@ internal class Dungeon : BaseMapInitializer
         {
             var trap = this.Context.CreateNew<MonsterDefinition>();
             this.GameConfiguration.Monsters.Add(trap);
+            trap.AsNormalMonster(this.GameConfiguration);
             trap.Number = 102;
             trap.Designation = "Fire Trap";
             trap.MoveRange = 0;

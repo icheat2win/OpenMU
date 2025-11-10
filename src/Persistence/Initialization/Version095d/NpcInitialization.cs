@@ -1,4 +1,4 @@
-﻿// <copyright file="NpcInitialization.cs" company="MUnique">
+// <copyright file="NpcInitialization.cs" company="MUnique">
 // Licensed under the MIT License. See LICENSE file in the project root for full license information.
 // </copyright>
 
@@ -40,7 +40,8 @@ internal partial class NpcInitialization : Version075.NpcInitialization
             def.NpcWindow = NpcWindow.LegacyQuest;
             def.ObjectKind = NpcObjectKind.PassiveNpc;
             def.SetGuid(def.Number);
-            this.GameConfiguration.Monsters.Add(def);
+            def.AssignMonsterTypeByNpcWindow(this.GameConfiguration);
+ this.GameConfiguration.Monsters.Add(def);
         }
 
         {
@@ -49,7 +50,8 @@ internal partial class NpcInitialization : Version075.NpcInitialization
             def.Designation = "Golden Archer";
             def.ObjectKind = NpcObjectKind.PassiveNpc;
             def.SetGuid(def.Number);
-            this.GameConfiguration.Monsters.Add(def);
+            def.AssignMonsterTypeByNpcWindow(this.GameConfiguration);
+ this.GameConfiguration.Monsters.Add(def);
         }
 
         {
@@ -59,7 +61,8 @@ internal partial class NpcInitialization : Version075.NpcInitialization
             def.NpcWindow = NpcWindow.DevilSquare;
             def.ObjectKind = NpcObjectKind.PassiveNpc;
             def.SetGuid(def.Number);
-            this.GameConfiguration.Monsters.Add(def);
+            def.AssignMonsterTypeByNpcWindow(this.GameConfiguration);
+ this.GameConfiguration.Monsters.Add(def);
         }
     }
 }

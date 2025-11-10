@@ -1,4 +1,4 @@
-﻿// <copyright file="Icarus.cs" company="MUnique">
+// <copyright file="Icarus.cs" company="MUnique">
 // Licensed under the MIT License. See LICENSE file in the project root for full license information.
 // </copyright>
 
@@ -124,6 +124,7 @@ internal class Icarus : BaseMapInitializer
         {
             var monster = this.Context.CreateNew<MonsterDefinition>();
             this.GameConfiguration.Monsters.Add(monster);
+            monster.AsNormalMonster(this.GameConfiguration);
             monster.Number = 69;
             monster.Designation = "Alquamos";
             monster.MoveRange = 3;
@@ -157,6 +158,7 @@ internal class Icarus : BaseMapInitializer
         {
             var monster = this.Context.CreateNew<MonsterDefinition>();
             this.GameConfiguration.Monsters.Add(monster);
+            monster.AsNormalMonster(this.GameConfiguration);
             monster.Number = 70;
             monster.Designation = "Queen Rainer";
             monster.MoveRange = 3;
@@ -190,6 +192,7 @@ internal class Icarus : BaseMapInitializer
         {
             var monster = this.Context.CreateNew<MonsterDefinition>();
             this.GameConfiguration.Monsters.Add(monster);
+            monster.AsNormalMonster(this.GameConfiguration);
             monster.Number = 71;
             monster.Designation = "Mega Crust";
             monster.MoveRange = 3;
@@ -222,6 +225,7 @@ internal class Icarus : BaseMapInitializer
         {
             var monster = this.Context.CreateNew<MonsterDefinition>();
             this.GameConfiguration.Monsters.Add(monster);
+            monster.AsNormalMonster(this.GameConfiguration);
             monster.Number = 72;
             monster.Designation = "Phantom Knight";
             monster.MoveRange = 3;
@@ -255,6 +259,7 @@ internal class Icarus : BaseMapInitializer
         {
             var monster = this.Context.CreateNew<MonsterDefinition>();
             this.GameConfiguration.Monsters.Add(monster);
+            monster.AsNormalMonster(this.GameConfiguration);
             monster.Number = 73;
             monster.Designation = "Drakan";
             monster.MoveRange = 3;
@@ -288,6 +293,7 @@ internal class Icarus : BaseMapInitializer
         {
             var monster = this.Context.CreateNew<MonsterDefinition>();
             this.GameConfiguration.Monsters.Add(monster);
+            monster.AsNormalMonster(this.GameConfiguration);
             monster.Number = 74;
             monster.Designation = "Alpha Crust";
             monster.MoveRange = 3;
@@ -320,6 +326,7 @@ internal class Icarus : BaseMapInitializer
         {
             var monster = this.Context.CreateNew<MonsterDefinition>();
             this.GameConfiguration.Monsters.Add(monster);
+            monster.AsNormalMonster(this.GameConfiguration);
             monster.Number = 75;
             monster.Designation = "Great Drakan";
             monster.MoveRange = 3;
@@ -353,6 +360,7 @@ internal class Icarus : BaseMapInitializer
         {
             var monster = this.Context.CreateNew<MonsterDefinition>();
             this.GameConfiguration.Monsters.Add(monster);
+            monster.AsNormalMonster(this.GameConfiguration);
             monster.Number = 76;
             monster.Designation = "Dark Phoenix Shield";
             monster.MoveRange = 3;
@@ -386,6 +394,7 @@ internal class Icarus : BaseMapInitializer
         {
             var monster = this.Context.CreateNew<MonsterDefinition>();
             this.GameConfiguration.Monsters.Add(monster);
+            monster.AsNormalMonster(this.GameConfiguration);
             monster.Number = 77;
             monster.Designation = "Dark Phoenix";
             monster.MoveRange = 1;

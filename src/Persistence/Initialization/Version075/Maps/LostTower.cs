@@ -1,4 +1,4 @@
-﻿// <copyright file="LostTower.cs" company="MUnique">
+// <copyright file="LostTower.cs" company="MUnique">
 // Licensed under the MIT License. See LICENSE file in the project root for full license information.
 // </copyright>
 
@@ -657,6 +657,7 @@ internal class LostTower : BaseMapInitializer
         {
             var monster = this.Context.CreateNew<MonsterDefinition>();
             this.GameConfiguration.Monsters.Add(monster);
+            monster.AsNormalMonster(this.GameConfiguration);
             monster.Number = 34;
             monster.Designation = "Cursed Wizard";
             monster.MoveRange = 3;
@@ -690,6 +691,7 @@ internal class LostTower : BaseMapInitializer
         {
             var monster = this.Context.CreateNew<MonsterDefinition>();
             this.GameConfiguration.Monsters.Add(monster);
+            monster.AsNormalMonster(this.GameConfiguration);
             monster.Number = 35;
             monster.Designation = "Death Gorgon";
             monster.MoveRange = 3;
@@ -723,6 +725,7 @@ internal class LostTower : BaseMapInitializer
         {
             var monster = this.Context.CreateNew<MonsterDefinition>();
             this.GameConfiguration.Monsters.Add(monster);
+            monster.AsNormalMonster(this.GameConfiguration);
             monster.Number = 36;
             monster.Designation = "Shadow";
             monster.MoveRange = 3;
@@ -755,6 +758,7 @@ internal class LostTower : BaseMapInitializer
         {
             var monster = this.Context.CreateNew<MonsterDefinition>();
             this.GameConfiguration.Monsters.Add(monster);
+            monster.AsNormalMonster(this.GameConfiguration);
             monster.Number = 37;
             monster.Designation = "Devil";
             monster.MoveRange = 3;
@@ -788,6 +792,7 @@ internal class LostTower : BaseMapInitializer
         {
             var monster = this.Context.CreateNew<MonsterDefinition>();
             this.GameConfiguration.Monsters.Add(monster);
+            monster.AsNormalMonster(this.GameConfiguration);
             monster.Number = 38;
             monster.Designation = "Balrog";
             monster.MoveRange = 3;
@@ -821,6 +826,7 @@ internal class LostTower : BaseMapInitializer
         {
             var monster = this.Context.CreateNew<MonsterDefinition>();
             this.GameConfiguration.Monsters.Add(monster);
+            monster.AsNormalMonster(this.GameConfiguration);
             monster.Number = 39;
             monster.Designation = "Poison Shadow";
             monster.MoveRange = 3;
@@ -855,6 +861,7 @@ internal class LostTower : BaseMapInitializer
         {
             var monster = this.Context.CreateNew<MonsterDefinition>();
             this.GameConfiguration.Monsters.Add(monster);
+            monster.AsNormalMonster(this.GameConfiguration);
             monster.Number = 40;
             monster.Designation = "Death Knight";
             monster.MoveRange = 3;
@@ -887,6 +894,7 @@ internal class LostTower : BaseMapInitializer
         {
             var monster = this.Context.CreateNew<MonsterDefinition>();
             this.GameConfiguration.Monsters.Add(monster);
+            monster.AsNormalMonster(this.GameConfiguration);
             monster.Number = 41;
             monster.Designation = "Death Cow";
             monster.MoveRange = 3;
@@ -919,6 +927,7 @@ internal class LostTower : BaseMapInitializer
         {
             var trap = this.Context.CreateNew<MonsterDefinition>();
             this.GameConfiguration.Monsters.Add(trap);
+            trap.AsNormalMonster(this.GameConfiguration);
             trap.Number = 103;
             trap.Designation = "Meteorite Trap";
             trap.MoveRange = 0;

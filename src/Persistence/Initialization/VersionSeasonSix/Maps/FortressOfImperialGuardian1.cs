@@ -1,4 +1,4 @@
-﻿// <copyright file="FortressOfImperialGuardian1.cs" company="MUnique">
+// <copyright file="FortressOfImperialGuardian1.cs" company="MUnique">
 // Licensed under the MIT License. See LICENSE file in the project root for full license information.
 // </copyright>
 
@@ -47,6 +47,7 @@ internal class FortressOfImperialGuardian1 : BaseMapInitializer
         {
             var monster = this.Context.CreateNew<MonsterDefinition>();
             this.GameConfiguration.Monsters.Add(monster);
+            monster.AsNormalMonster(this.GameConfiguration);
             monster.Number = 523;
             monster.Designation = "Trap";
             monster.MoveRange = 0;
@@ -80,6 +81,7 @@ internal class FortressOfImperialGuardian1 : BaseMapInitializer
         {
             var monster = this.Context.CreateNew<MonsterDefinition>();
             this.GameConfiguration.Monsters.Add(monster);
+            monster.AsNormalMonster(this.GameConfiguration);
             monster.Number = 524;
             monster.Designation = "Evil Gate";
             monster.MoveRange = 0;
@@ -107,6 +109,7 @@ internal class FortressOfImperialGuardian1 : BaseMapInitializer
         {
             var monster = this.Context.CreateNew<MonsterDefinition>();
             this.GameConfiguration.Monsters.Add(monster);
+            monster.AsNormalMonster(this.GameConfiguration);
             monster.Number = 525;
             monster.Designation = "Lion Gate";
             monster.MoveRange = 0;
@@ -134,6 +137,7 @@ internal class FortressOfImperialGuardian1 : BaseMapInitializer
         {
             var monster = this.Context.CreateNew<MonsterDefinition>();
             this.GameConfiguration.Monsters.Add(monster);
+            monster.AsNormalMonster(this.GameConfiguration);
             monster.Number = 526;
             monster.Designation = "Statue";
             monster.MoveRange = 0;
@@ -161,6 +165,7 @@ internal class FortressOfImperialGuardian1 : BaseMapInitializer
         {
             var monster = this.Context.CreateNew<MonsterDefinition>();
             this.GameConfiguration.Monsters.Add(monster);
+            monster.AsNormalMonster(this.GameConfiguration);
             monster.Number = 527;
             monster.Designation = "Star Gate";
             monster.MoveRange = 0;
@@ -188,6 +193,7 @@ internal class FortressOfImperialGuardian1 : BaseMapInitializer
         {
             var monster = this.Context.CreateNew<MonsterDefinition>();
             this.GameConfiguration.Monsters.Add(monster);
+            monster.AsNormalMonster(this.GameConfiguration);
             monster.Number = 528;
             monster.Designation = "Rush Gate";
             monster.MoveRange = 0;
@@ -215,6 +221,7 @@ internal class FortressOfImperialGuardian1 : BaseMapInitializer
         {
             var monster = this.Context.CreateNew<MonsterDefinition>();
             this.GameConfiguration.Monsters.Add(monster);
+            monster.AsNormalMonster(this.GameConfiguration);
             monster.Number = 512;
             monster.Designation = "Quarter Master";
             monster.MoveRange = 6;
@@ -246,6 +253,7 @@ internal class FortressOfImperialGuardian1 : BaseMapInitializer
         {
             var monster = this.Context.CreateNew<MonsterDefinition>();
             this.GameConfiguration.Monsters.Add(monster);
+            monster.AsNormalMonster(this.GameConfiguration);
             monster.Number = 513;
             monster.Designation = "Combat Instructor";
             monster.MoveRange = 3;
@@ -277,6 +285,7 @@ internal class FortressOfImperialGuardian1 : BaseMapInitializer
         {
             var monster = this.Context.CreateNew<MonsterDefinition>();
             this.GameConfiguration.Monsters.Add(monster);
+            monster.AsNormalMonster(this.GameConfiguration);
             monster.Number = 514;
             monster.Designation = "Aticle's Head";
             monster.MoveRange = 6;
@@ -309,6 +318,7 @@ internal class FortressOfImperialGuardian1 : BaseMapInitializer
         {
             var monster = this.Context.CreateNew<MonsterDefinition>();
             this.GameConfiguration.Monsters.Add(monster);
+            monster.AsNormalMonster(this.GameConfiguration);
             monster.Number = 515;
             monster.Designation = "Dark Ghost";
             monster.MoveRange = 6;
@@ -340,6 +350,7 @@ internal class FortressOfImperialGuardian1 : BaseMapInitializer
         {
             var monster = this.Context.CreateNew<MonsterDefinition>();
             this.GameConfiguration.Monsters.Add(monster);
+            monster.AsNormalMonster(this.GameConfiguration);
             monster.Number = 516;
             monster.Designation = "Banshee";
             monster.MoveRange = 3;
@@ -371,6 +382,7 @@ internal class FortressOfImperialGuardian1 : BaseMapInitializer
         {
             var monster = this.Context.CreateNew<MonsterDefinition>();
             this.GameConfiguration.Monsters.Add(monster);
+            monster.AsNormalMonster(this.GameConfiguration);
             monster.Number = 517;
             monster.Designation = "Head Mounter";
             monster.MoveRange = 3;
@@ -402,6 +414,7 @@ internal class FortressOfImperialGuardian1 : BaseMapInitializer
         {
             var monster = this.Context.CreateNew<MonsterDefinition>();
             this.GameConfiguration.Monsters.Add(monster);
+            monster.AsNormalMonster(this.GameConfiguration);
             monster.Number = 518;
             monster.Designation = "Defender";
             monster.MoveRange = 3;
@@ -433,6 +446,7 @@ internal class FortressOfImperialGuardian1 : BaseMapInitializer
         {
             var monster = this.Context.CreateNew<MonsterDefinition>();
             this.GameConfiguration.Monsters.Add(monster);
+            monster.AsNormalMonster(this.GameConfiguration);
             monster.Number = 519;
             monster.Designation = "Forsaker";
             monster.MoveRange = 3;
@@ -464,6 +478,7 @@ internal class FortressOfImperialGuardian1 : BaseMapInitializer
         {
             var monster = this.Context.CreateNew<MonsterDefinition>();
             this.GameConfiguration.Monsters.Add(monster);
+            monster.AsNormalMonster(this.GameConfiguration);
             monster.Number = 520;
             monster.Designation = "Ocelot the Lord";
             monster.MoveRange = 3;
@@ -495,6 +510,7 @@ internal class FortressOfImperialGuardian1 : BaseMapInitializer
         {
             var monster = this.Context.CreateNew<MonsterDefinition>();
             this.GameConfiguration.Monsters.Add(monster);
+            monster.AsNormalMonster(this.GameConfiguration);
             monster.Number = 521;
             monster.Designation = "Eric the Guard";
             monster.MoveRange = 3;
@@ -526,6 +542,7 @@ internal class FortressOfImperialGuardian1 : BaseMapInitializer
         {
             var monster = this.Context.CreateNew<MonsterDefinition>();
             this.GameConfiguration.Monsters.Add(monster);
+            monster.AsNormalMonster(this.GameConfiguration);
             monster.Number = 504;
             monster.Designation = "Gayion The Gladiator";
             monster.MoveRange = 3;
@@ -558,6 +575,7 @@ internal class FortressOfImperialGuardian1 : BaseMapInitializer
         {
             var monster = this.Context.CreateNew<MonsterDefinition>();
             this.GameConfiguration.Monsters.Add(monster);
+            monster.AsNormalMonster(this.GameConfiguration);
             monster.Number = 505;
             monster.Designation = "Jerry";
             monster.MoveRange = 6;
@@ -589,6 +607,7 @@ internal class FortressOfImperialGuardian1 : BaseMapInitializer
         {
             var monster = this.Context.CreateNew<MonsterDefinition>();
             this.GameConfiguration.Monsters.Add(monster);
+            monster.AsNormalMonster(this.GameConfiguration);
             monster.Number = 506;
             monster.Designation = "Raymond";
             monster.MoveRange = 6;
@@ -620,6 +639,7 @@ internal class FortressOfImperialGuardian1 : BaseMapInitializer
         {
             var monster = this.Context.CreateNew<MonsterDefinition>();
             this.GameConfiguration.Monsters.Add(monster);
+            monster.AsNormalMonster(this.GameConfiguration);
             monster.Number = 507;
             monster.Designation = "Lucas";
             monster.MoveRange = 6;
@@ -651,6 +671,7 @@ internal class FortressOfImperialGuardian1 : BaseMapInitializer
         {
             var monster = this.Context.CreateNew<MonsterDefinition>();
             this.GameConfiguration.Monsters.Add(monster);
+            monster.AsNormalMonster(this.GameConfiguration);
             monster.Number = 508;
             monster.Designation = "Fred";
             monster.MoveRange = 6;
@@ -682,6 +703,7 @@ internal class FortressOfImperialGuardian1 : BaseMapInitializer
         {
             var monster = this.Context.CreateNew<MonsterDefinition>();
             this.GameConfiguration.Monsters.Add(monster);
+            monster.AsNormalMonster(this.GameConfiguration);
             monster.Number = 509;
             monster.Designation = "Hammerize";
             monster.MoveRange = 6;
@@ -713,6 +735,7 @@ internal class FortressOfImperialGuardian1 : BaseMapInitializer
         {
             var monster = this.Context.CreateNew<MonsterDefinition>();
             this.GameConfiguration.Monsters.Add(monster);
+            monster.AsNormalMonster(this.GameConfiguration);
             monster.Number = 510;
             monster.Designation = "Dual Berserker";
             monster.MoveRange = 6;
@@ -744,6 +767,7 @@ internal class FortressOfImperialGuardian1 : BaseMapInitializer
         {
             var monster = this.Context.CreateNew<MonsterDefinition>();
             this.GameConfiguration.Monsters.Add(monster);
+            monster.AsNormalMonster(this.GameConfiguration);
             monster.Number = 511;
             monster.Designation = "Devil Lord";
             monster.MoveRange = 6;

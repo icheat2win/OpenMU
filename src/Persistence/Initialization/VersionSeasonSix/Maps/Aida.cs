@@ -1,4 +1,4 @@
-﻿// <copyright file="Aida.cs" company="MUnique">
+// <copyright file="Aida.cs" company="MUnique">
 // Licensed under the MIT License. See LICENSE file in the project root for full license information.
 // </copyright>
 
@@ -312,6 +312,7 @@ internal class Aida : BaseMapInitializer
         {
             var monster = this.Context.CreateNew<MonsterDefinition>();
             this.GameConfiguration.Monsters.Add(monster);
+            monster.AsNormalMonster(this.GameConfiguration);
             monster.Number = 304;
             monster.Designation = "Witch Queen";
             monster.MoveRange = 4;
@@ -343,6 +344,7 @@ internal class Aida : BaseMapInitializer
         {
             var monster = this.Context.CreateNew<MonsterDefinition>();
             this.GameConfiguration.Monsters.Add(monster);
+            monster.AsNormalMonster(this.GameConfiguration);
             monster.Number = 305;
             monster.Designation = "Blue Golem";
             monster.MoveRange = 4;
@@ -374,6 +376,7 @@ internal class Aida : BaseMapInitializer
         {
             var monster = this.Context.CreateNew<MonsterDefinition>();
             this.GameConfiguration.Monsters.Add(monster);
+            monster.AsNormalMonster(this.GameConfiguration);
             monster.Number = 306;
             monster.Designation = "Death Rider";
             monster.MoveRange = 4;
@@ -405,6 +408,7 @@ internal class Aida : BaseMapInitializer
         {
             var monster = this.Context.CreateNew<MonsterDefinition>();
             this.GameConfiguration.Monsters.Add(monster);
+            monster.AsNormalMonster(this.GameConfiguration);
             monster.Number = 307;
             monster.Designation = "Forest Orc";
             monster.MoveRange = 4;
@@ -436,6 +440,7 @@ internal class Aida : BaseMapInitializer
         {
             var monster = this.Context.CreateNew<MonsterDefinition>();
             this.GameConfiguration.Monsters.Add(monster);
+            monster.AsNormalMonster(this.GameConfiguration);
             monster.Number = 308;
             monster.Designation = "Death Tree";
             monster.MoveRange = 4;
@@ -467,6 +472,7 @@ internal class Aida : BaseMapInitializer
         {
             var monster = this.Context.CreateNew<MonsterDefinition>();
             this.GameConfiguration.Monsters.Add(monster);
+            monster.AsNormalMonster(this.GameConfiguration);
             monster.Number = 309;
             monster.Designation = "Hell Maine";
             monster.MoveRange = 6;
@@ -498,6 +504,7 @@ internal class Aida : BaseMapInitializer
         {
             var monster = this.Context.CreateNew<MonsterDefinition>();
             this.GameConfiguration.Monsters.Add(monster);
+            monster.AsNormalMonster(this.GameConfiguration);
             monster.Number = 549;
             monster.Designation = "Bloody Orc";
             monster.MoveRange = 4;
@@ -529,6 +536,7 @@ internal class Aida : BaseMapInitializer
         {
             var monster = this.Context.CreateNew<MonsterDefinition>();
             this.GameConfiguration.Monsters.Add(monster);
+            monster.AsNormalMonster(this.GameConfiguration);
             monster.Number = 550;
             monster.Designation = "Bloody Death Rider";
             monster.MoveRange = 4;
@@ -560,6 +568,7 @@ internal class Aida : BaseMapInitializer
         {
             var monster = this.Context.CreateNew<MonsterDefinition>();
             this.GameConfiguration.Monsters.Add(monster);
+            monster.AsNormalMonster(this.GameConfiguration);
             monster.Number = 551;
             monster.Designation = "Bloody Golem";
             monster.MoveRange = 4;
@@ -591,6 +600,7 @@ internal class Aida : BaseMapInitializer
         {
             var monster = this.Context.CreateNew<MonsterDefinition>();
             this.GameConfiguration.Monsters.Add(monster);
+            monster.AsNormalMonster(this.GameConfiguration);
             monster.Number = 552;
             monster.Designation = "Bloody Witch Queen";
             monster.MoveRange = 4;

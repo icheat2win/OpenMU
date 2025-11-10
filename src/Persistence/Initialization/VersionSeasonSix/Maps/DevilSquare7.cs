@@ -1,4 +1,4 @@
-﻿// <copyright file="DevilSquare7.cs" company="MUnique">
+// <copyright file="DevilSquare7.cs" company="MUnique">
 // Licensed under the MIT License. See LICENSE file in the project root for full license information.
 // </copyright>
 
@@ -73,6 +73,7 @@ internal class DevilSquare7 : BaseMapInitializer
         {
             var monster = this.Context.CreateNew<MonsterDefinition>();
             this.GameConfiguration.Monsters.Add(monster);
+            monster.AsNormalMonster(this.GameConfiguration);
             monster.Number = 434;
             monster.Designation = "Gigantis";
             monster.MoveRange = 3;
@@ -105,6 +106,7 @@ internal class DevilSquare7 : BaseMapInitializer
         {
             var monster = this.Context.CreateNew<MonsterDefinition>();
             this.GameConfiguration.Monsters.Add(monster);
+            monster.AsNormalMonster(this.GameConfiguration);
             monster.Number = 435;
             monster.Designation = "Berserk";
             monster.MoveRange = 3;
@@ -137,6 +139,7 @@ internal class DevilSquare7 : BaseMapInitializer
         {
             var monster = this.Context.CreateNew<MonsterDefinition>();
             this.GameConfiguration.Monsters.Add(monster);
+            monster.AsNormalMonster(this.GameConfiguration);
             monster.Number = 436;
             monster.Designation = "Balram (Trainee)";
             monster.MoveRange = 6;
@@ -169,6 +172,7 @@ internal class DevilSquare7 : BaseMapInitializer
         {
             var monster = this.Context.CreateNew<MonsterDefinition>();
             this.GameConfiguration.Monsters.Add(monster);
+            monster.AsNormalMonster(this.GameConfiguration);
             monster.Number = 437;
             monster.Designation = "Soram (Trainee)";
             monster.MoveRange = 6;
@@ -201,6 +205,7 @@ internal class DevilSquare7 : BaseMapInitializer
         {
             var monster = this.Context.CreateNew<MonsterDefinition>();
             this.GameConfiguration.Monsters.Add(monster);
+            monster.AsNormalMonster(this.GameConfiguration);
             monster.Number = 438;
             monster.Designation = "Persona";
             monster.MoveRange = 3;
@@ -233,6 +238,7 @@ internal class DevilSquare7 : BaseMapInitializer
         {
             var monster = this.Context.CreateNew<MonsterDefinition>();
             this.GameConfiguration.Monsters.Add(monster);
+            monster.AsNormalMonster(this.GameConfiguration);
             monster.Number = 439;
             monster.Designation = "Dreadfear";
             monster.MoveRange = 3;
@@ -265,6 +271,7 @@ internal class DevilSquare7 : BaseMapInitializer
         {
             var monster = this.Context.CreateNew<MonsterDefinition>();
             this.GameConfiguration.Monsters.Add(monster);
+            monster.AsNormalMonster(this.GameConfiguration);
             monster.Number = 440;
             monster.Designation = "Dark_Elf";
             monster.MoveRange = 6;

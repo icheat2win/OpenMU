@@ -1,4 +1,4 @@
-﻿// <copyright file="SwampOfCalmness.cs" company="MUnique">
+// <copyright file="SwampOfCalmness.cs" company="MUnique">
 // Licensed under the MIT License. See LICENSE file in the project root for full license information.
 // </copyright>
 
@@ -340,6 +340,7 @@ internal class SwampOfCalmness : BaseMapInitializer
         {
             var monster = this.Context.CreateNew<MonsterDefinition>();
             this.GameConfiguration.Monsters.Add(monster);
+            monster.AsNormalMonster(this.GameConfiguration);
             monster.Number = 441;
             monster.Designation = "Sapi-Unus";
             monster.MoveRange = 4;
@@ -369,6 +370,7 @@ internal class SwampOfCalmness : BaseMapInitializer
         {
             var monster = this.Context.CreateNew<MonsterDefinition>();
             this.GameConfiguration.Monsters.Add(monster);
+            monster.AsNormalMonster(this.GameConfiguration);
             monster.Number = 442;
             monster.Designation = "Sapi-Duo";
             monster.MoveRange = 4;
@@ -398,6 +400,7 @@ internal class SwampOfCalmness : BaseMapInitializer
         {
             var monster = this.Context.CreateNew<MonsterDefinition>();
             this.GameConfiguration.Monsters.Add(monster);
+            monster.AsNormalMonster(this.GameConfiguration);
             monster.Number = 443;
             monster.Designation = "Sapi-Tres";
             monster.MoveRange = 4;
@@ -428,6 +431,7 @@ internal class SwampOfCalmness : BaseMapInitializer
         {
             var monster = this.Context.CreateNew<MonsterDefinition>();
             this.GameConfiguration.Monsters.Add(monster);
+            monster.AsNormalMonster(this.GameConfiguration);
             monster.Number = 444;
             monster.Designation = "Shadow Pawn";
             monster.MoveRange = 4;
@@ -458,6 +462,7 @@ internal class SwampOfCalmness : BaseMapInitializer
         {
             var monster = this.Context.CreateNew<MonsterDefinition>();
             this.GameConfiguration.Monsters.Add(monster);
+            monster.AsNormalMonster(this.GameConfiguration);
             monster.Number = 445;
             monster.Designation = "Shadow Knight";
             monster.MoveRange = 4;
@@ -489,6 +494,7 @@ internal class SwampOfCalmness : BaseMapInitializer
         {
             var monster = this.Context.CreateNew<MonsterDefinition>();
             this.GameConfiguration.Monsters.Add(monster);
+            monster.AsNormalMonster(this.GameConfiguration);
             monster.Number = 446;
             monster.Designation = "Shadow Look";
             monster.MoveRange = 4;
@@ -519,6 +525,7 @@ internal class SwampOfCalmness : BaseMapInitializer
         {
             var monster = this.Context.CreateNew<MonsterDefinition>();
             this.GameConfiguration.Monsters.Add(monster);
+            monster.AsNormalMonster(this.GameConfiguration);
             monster.Number = 447;
             monster.Designation = "Thunder Napin";
             monster.MoveRange = 4;
@@ -548,6 +555,7 @@ internal class SwampOfCalmness : BaseMapInitializer
         {
             var monster = this.Context.CreateNew<MonsterDefinition>();
             this.GameConfiguration.Monsters.Add(monster);
+            monster.AsNormalMonster(this.GameConfiguration);
             monster.Number = 448;
             monster.Designation = "Ghost Napin";
             monster.MoveRange = 4;
@@ -578,6 +586,7 @@ internal class SwampOfCalmness : BaseMapInitializer
         {
             var monster = this.Context.CreateNew<MonsterDefinition>();
             this.GameConfiguration.Monsters.Add(monster);
+            monster.AsNormalMonster(this.GameConfiguration);
             monster.Number = 449;
             monster.Designation = "Blaze Napin";
             monster.MoveRange = 4;
@@ -607,6 +616,7 @@ internal class SwampOfCalmness : BaseMapInitializer
         {
             var monster = this.Context.CreateNew<MonsterDefinition>();
             this.GameConfiguration.Monsters.Add(monster);
+            monster.AsNormalMonster(this.GameConfiguration);
             monster.Number = 557;
             monster.Designation = "Sapi Queen";
             monster.MoveRange = 4;
@@ -639,6 +649,7 @@ internal class SwampOfCalmness : BaseMapInitializer
         {
             var monster = this.Context.CreateNew<MonsterDefinition>();
             this.GameConfiguration.Monsters.Add(monster);
+            monster.AsNormalMonster(this.GameConfiguration);
             monster.Number = 558;
             monster.Designation = "Ice Napin";
             monster.MoveRange = 4;
@@ -671,6 +682,7 @@ internal class SwampOfCalmness : BaseMapInitializer
         {
             var monster = this.Context.CreateNew<MonsterDefinition>();
             this.GameConfiguration.Monsters.Add(monster);
+            monster.AsNormalMonster(this.GameConfiguration);
             monster.Number = 559;
             monster.Designation = "Shadow Master";
             monster.MoveRange = 4;

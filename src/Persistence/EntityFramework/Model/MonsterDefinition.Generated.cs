@@ -87,6 +87,32 @@ internal partial class MonsterDefinition : MUnique.OpenMU.DataModel.Configuratio
     }
 
     /// <summary>
+    /// Gets or sets the identifier of <see cref="MonsterType"/>.
+    /// </summary>
+    public Guid? MonsterTypeId { get; set; }
+
+    /// <summary>
+    /// Gets the raw object of <see cref="MonsterType" />.
+    /// </summary>
+    [ForeignKey(nameof(MonsterTypeId))]
+    public MonsterTypeDefinition RawMonsterType
+    {
+        get => base.MonsterType as MonsterTypeDefinition;
+        set => base.MonsterType = value;
+    }
+
+    /// <inheritdoc/>
+    [NotMapped]
+    public override MUnique.OpenMU.DataModel.Configuration.MonsterTypeDefinition MonsterType
+    {
+        get => base.MonsterType;set
+        {
+            base.MonsterType = value;
+            this.MonsterTypeId = this.RawMonsterType?.Id;
+        }
+    }
+
+    /// <summary>
     /// Gets or sets the identifier of <see cref="MerchantStore"/>.
     /// </summary>
     public Guid? MerchantStoreId { get; set; }

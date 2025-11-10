@@ -1,4 +1,4 @@
-﻿// <copyright file="Raklion.cs" company="MUnique">
+// <copyright file="Raklion.cs" company="MUnique">
 // Licensed under the MIT License. See LICENSE file in the project root for full license information.
 // </copyright>
 
@@ -179,6 +179,7 @@ internal class Raklion : BaseMapInitializer
         {
             var monster = this.Context.CreateNew<MonsterDefinition>();
             this.GameConfiguration.Monsters.Add(monster);
+            monster.AsNormalMonster(this.GameConfiguration);
             monster.Number = 454;
             monster.Designation = "Ice Walker";
             monster.MoveRange = 3;
@@ -212,6 +213,7 @@ internal class Raklion : BaseMapInitializer
         {
             var monster = this.Context.CreateNew<MonsterDefinition>();
             this.GameConfiguration.Monsters.Add(monster);
+            monster.AsNormalMonster(this.GameConfiguration);
             monster.Number = 455;
             monster.Designation = "Giant Mammoth";
             monster.MoveRange = 3;
@@ -244,6 +246,7 @@ internal class Raklion : BaseMapInitializer
         {
             var monster = this.Context.CreateNew<MonsterDefinition>();
             this.GameConfiguration.Monsters.Add(monster);
+            monster.AsNormalMonster(this.GameConfiguration);
             monster.Number = 456;
             monster.Designation = "Ice Giant";
             monster.MoveRange = 3;
@@ -276,6 +279,7 @@ internal class Raklion : BaseMapInitializer
         {
             var monster = this.Context.CreateNew<MonsterDefinition>();
             this.GameConfiguration.Monsters.Add(monster);
+            monster.AsNormalMonster(this.GameConfiguration);
             monster.Number = 457;
             monster.Designation = "Coolutin";
             monster.MoveRange = 3;
@@ -309,6 +313,7 @@ internal class Raklion : BaseMapInitializer
         {
             var monster = this.Context.CreateNew<MonsterDefinition>();
             this.GameConfiguration.Monsters.Add(monster);
+            monster.AsNormalMonster(this.GameConfiguration);
             monster.Number = 458;
             monster.Designation = "Iron Knight";
             monster.MoveRange = 3;
@@ -341,6 +346,7 @@ internal class Raklion : BaseMapInitializer
         {
             var monster = this.Context.CreateNew<MonsterDefinition>();
             this.GameConfiguration.Monsters.Add(monster);
+            monster.AsNormalMonster(this.GameConfiguration);
             monster.Number = 562;
             monster.Designation = "Dark Mammoth";
             monster.MoveRange = 3;
@@ -373,6 +379,7 @@ internal class Raklion : BaseMapInitializer
         {
             var monster = this.Context.CreateNew<MonsterDefinition>();
             this.GameConfiguration.Monsters.Add(monster);
+            monster.AsNormalMonster(this.GameConfiguration);
             monster.Number = 563;
             monster.Designation = "Dark Giant";
             monster.MoveRange = 3;
@@ -405,6 +412,7 @@ internal class Raklion : BaseMapInitializer
         {
             var monster = this.Context.CreateNew<MonsterDefinition>();
             this.GameConfiguration.Monsters.Add(monster);
+            monster.AsNormalMonster(this.GameConfiguration);
             monster.Number = 564;
             monster.Designation = "Dark Coolutin";
             monster.MoveRange = 3;
@@ -437,6 +445,7 @@ internal class Raklion : BaseMapInitializer
         {
             var monster = this.Context.CreateNew<MonsterDefinition>();
             this.GameConfiguration.Monsters.Add(monster);
+            monster.AsNormalMonster(this.GameConfiguration);
             monster.Number = 565;
             monster.Designation = "Dark Iron Knight";
             monster.MoveRange = 3;

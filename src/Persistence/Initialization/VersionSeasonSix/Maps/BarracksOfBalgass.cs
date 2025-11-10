@@ -1,4 +1,4 @@
-﻿// <copyright file="BarracksOfBalgass.cs" company="MUnique">
+// <copyright file="BarracksOfBalgass.cs" company="MUnique">
 // Licensed under the MIT License. See LICENSE file in the project root for full license information.
 // </copyright>
 
@@ -101,6 +101,7 @@ internal class BarracksOfBalgass : BaseMapInitializer
         {
             var monster = this.Context.CreateNew<MonsterDefinition>();
             this.GameConfiguration.Monsters.Add(monster);
+            monster.AsNormalMonster(this.GameConfiguration);
             monster.Number = 409;
             monster.Designation = "Balram (Trainee Soldier)";
             monster.MoveRange = 6;
@@ -133,6 +134,7 @@ internal class BarracksOfBalgass : BaseMapInitializer
         {
             var monster = this.Context.CreateNew<MonsterDefinition>();
             this.GameConfiguration.Monsters.Add(monster);
+            monster.AsNormalMonster(this.GameConfiguration);
             monster.Number = 410;
             monster.Designation = "Death Spirit (Trainee Soldier)";
             monster.MoveRange = 6;
@@ -165,6 +167,7 @@ internal class BarracksOfBalgass : BaseMapInitializer
         {
             var monster = this.Context.CreateNew<MonsterDefinition>();
             this.GameConfiguration.Monsters.Add(monster);
+            monster.AsNormalMonster(this.GameConfiguration);
             monster.Number = 411;
             monster.Designation = "Soram (Trainee Soldier)";
             monster.MoveRange = 6;

@@ -1,4 +1,4 @@
-﻿// <copyright file="Noria.cs" company="MUnique">
+// <copyright file="Noria.cs" company="MUnique">
 // Licensed under the MIT License. See LICENSE file in the project root for full license information.
 // </copyright>
 
@@ -69,6 +69,7 @@ internal class Noria : BaseMapInitializer
         {
             var monster = this.Context.CreateNew<MonsterDefinition>();
             this.GameConfiguration.Monsters.Add(monster);
+            monster.AsNormalMonster(this.GameConfiguration);
             monster.Number = 26;
             monster.Designation = "Goblin";
             monster.MoveRange = 2;
@@ -101,6 +102,7 @@ internal class Noria : BaseMapInitializer
         {
             var monster = this.Context.CreateNew<MonsterDefinition>();
             this.GameConfiguration.Monsters.Add(monster);
+            monster.AsNormalMonster(this.GameConfiguration);
             monster.Number = 27;
             monster.Designation = "Chain Scorpion";
             monster.MoveRange = 3;
@@ -129,6 +131,7 @@ internal class Noria : BaseMapInitializer
         {
             var monster = this.Context.CreateNew<MonsterDefinition>();
             this.GameConfiguration.Monsters.Add(monster);
+            monster.AsNormalMonster(this.GameConfiguration);
             monster.Number = 28;
             monster.Designation = "Beetle Monster";
             monster.MoveRange = 3;
@@ -156,6 +159,7 @@ internal class Noria : BaseMapInitializer
         {
             var monster = this.Context.CreateNew<MonsterDefinition>();
             this.GameConfiguration.Monsters.Add(monster);
+            monster.AsNormalMonster(this.GameConfiguration);
             monster.Number = 29;
             monster.Designation = "Hunter";
             monster.MoveRange = 3;
@@ -184,6 +188,7 @@ internal class Noria : BaseMapInitializer
         {
             var monster = this.Context.CreateNew<MonsterDefinition>();
             this.GameConfiguration.Monsters.Add(monster);
+            monster.AsNormalMonster(this.GameConfiguration);
             monster.Number = 30;
             monster.Designation = "Forest Monster";
             monster.MoveRange = 3;
@@ -212,6 +217,7 @@ internal class Noria : BaseMapInitializer
         {
             var monster = this.Context.CreateNew<MonsterDefinition>();
             this.GameConfiguration.Monsters.Add(monster);
+            monster.AsNormalMonster(this.GameConfiguration);
             monster.Number = 31;
             monster.Designation = "Agon";
             monster.MoveRange = 2;
@@ -240,6 +246,7 @@ internal class Noria : BaseMapInitializer
         {
             var monster = this.Context.CreateNew<MonsterDefinition>();
             this.GameConfiguration.Monsters.Add(monster);
+            monster.AsNormalMonster(this.GameConfiguration);
             monster.Number = 32;
             monster.Designation = "Stone Golem";
             monster.MoveRange = 2;
@@ -267,6 +274,7 @@ internal class Noria : BaseMapInitializer
         {
             var monster = this.Context.CreateNew<MonsterDefinition>();
             this.GameConfiguration.Monsters.Add(monster);
+            monster.AsNormalMonster(this.GameConfiguration);
             monster.Number = 33;
             monster.Designation = "Elite Goblin";
             monster.MoveRange = 3;

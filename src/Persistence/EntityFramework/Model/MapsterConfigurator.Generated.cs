@@ -188,6 +188,9 @@ public static class MapsterConfigurator
         Mapster.TypeAdapterConfig.GlobalSettings.NewConfig<MUnique.OpenMU.DataModel.Configuration.MonsterSpawnArea, MUnique.OpenMU.DataModel.Configuration.MonsterSpawnArea>()
             .Include<MonsterSpawnArea, BasicModel.MonsterSpawnArea>();
 
+        Mapster.TypeAdapterConfig.GlobalSettings.NewConfig<MUnique.OpenMU.DataModel.Configuration.MonsterTypeDefinition, MUnique.OpenMU.DataModel.Configuration.MonsterTypeDefinition>()
+            .Include<MonsterTypeDefinition, BasicModel.MonsterTypeDefinition>();
+
         Mapster.TypeAdapterConfig.GlobalSettings.NewConfig<MUnique.OpenMU.DataModel.Configuration.Rectangle, MUnique.OpenMU.DataModel.Configuration.Rectangle>()
             .Include<Rectangle, BasicModel.Rectangle>();
 

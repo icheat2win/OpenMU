@@ -1,4 +1,4 @@
-﻿// <copyright file="KanturuRelics.cs" company="MUnique">
+// <copyright file="KanturuRelics.cs" company="MUnique">
 // Licensed under the MIT License. See LICENSE file in the project root for full license information.
 // </copyright>
 
@@ -151,6 +151,7 @@ internal class KanturuRelics : BaseMapInitializer
         {
             var monster = this.Context.CreateNew<MonsterDefinition>();
             this.GameConfiguration.Monsters.Add(monster);
+            monster.AsNormalMonster(this.GameConfiguration);
             monster.Number = 105;
             monster.Designation = "Canon Trap";
             monster.MoveRange = 0;
@@ -180,6 +181,7 @@ internal class KanturuRelics : BaseMapInitializer
         {
             var monster = this.Context.CreateNew<MonsterDefinition>();
             this.GameConfiguration.Monsters.Add(monster);
+            monster.AsNormalMonster(this.GameConfiguration);
             monster.Number = 106;
             monster.Designation = "Laser Trap";
             monster.MoveRange = 0;
@@ -209,6 +211,7 @@ internal class KanturuRelics : BaseMapInitializer
         {
             var monster = this.Context.CreateNew<MonsterDefinition>();
             this.GameConfiguration.Monsters.Add(monster);
+            monster.AsNormalMonster(this.GameConfiguration);
             monster.Number = 358;
             monster.Designation = "Persona";
             monster.MoveRange = 3;
@@ -241,6 +244,7 @@ internal class KanturuRelics : BaseMapInitializer
         {
             var monster = this.Context.CreateNew<MonsterDefinition>();
             this.GameConfiguration.Monsters.Add(monster);
+            monster.AsNormalMonster(this.GameConfiguration);
             monster.Number = 359;
             monster.Designation = "Twin Tale";
             monster.MoveRange = 3;
@@ -273,6 +277,7 @@ internal class KanturuRelics : BaseMapInitializer
         {
             var monster = this.Context.CreateNew<MonsterDefinition>();
             this.GameConfiguration.Monsters.Add(monster);
+            monster.AsNormalMonster(this.GameConfiguration);
             monster.Number = 360;
             monster.Designation = "Dreadfear";
             monster.MoveRange = 3;

@@ -1,4 +1,4 @@
-﻿// <copyright file="BloodCastle2.cs" company="MUnique">
+// <copyright file="BloodCastle2.cs" company="MUnique">
 // Licensed under the MIT License. See LICENSE file in the project root for full license information.
 // </copyright>
 
@@ -141,6 +141,7 @@ internal class BloodCastle2 : BloodCastleBase
         {
             var monster = this.Context.CreateNew<MonsterDefinition>();
             this.GameConfiguration.Monsters.Add(monster);
+            monster.AsNormalMonster(this.GameConfiguration);
             monster.Number = 90;
             monster.Designation = "Chief Skeleton Warrior 2";
             monster.MoveRange = 3;
@@ -173,6 +174,7 @@ internal class BloodCastle2 : BloodCastleBase
         {
             var monster = this.Context.CreateNew<MonsterDefinition>();
             this.GameConfiguration.Monsters.Add(monster);
+            monster.AsNormalMonster(this.GameConfiguration);
             monster.Number = 91;
             monster.Designation = "Chief Skeleton Archer 2";
             monster.MoveRange = 3;
@@ -205,6 +207,7 @@ internal class BloodCastle2 : BloodCastleBase
         {
             var monster = this.Context.CreateNew<MonsterDefinition>();
             this.GameConfiguration.Monsters.Add(monster);
+            monster.AsNormalMonster(this.GameConfiguration);
             monster.Number = 92;
             monster.Designation = "Dark Skull Soldier 2";
             monster.MoveRange = 3;
@@ -237,6 +240,7 @@ internal class BloodCastle2 : BloodCastleBase
         {
             var monster = this.Context.CreateNew<MonsterDefinition>();
             this.GameConfiguration.Monsters.Add(monster);
+            monster.AsNormalMonster(this.GameConfiguration);
             monster.Number = 93;
             monster.Designation = "Giant Ogre 2";
             monster.MoveRange = 3;
@@ -270,6 +274,7 @@ internal class BloodCastle2 : BloodCastleBase
         {
             var monster = this.Context.CreateNew<MonsterDefinition>();
             this.GameConfiguration.Monsters.Add(monster);
+            monster.AsNormalMonster(this.GameConfiguration);
             monster.Number = 94;
             monster.Designation = "Red Skeleton Knight 2";
             monster.MoveRange = 3;
@@ -302,6 +307,7 @@ internal class BloodCastle2 : BloodCastleBase
         {
             var monster = this.Context.CreateNew<MonsterDefinition>();
             this.GameConfiguration.Monsters.Add(monster);
+            monster.AsNormalMonster(this.GameConfiguration);
             monster.Number = 95;
             monster.Designation = "Magic Skeleton 2";
             monster.MoveRange = 4;

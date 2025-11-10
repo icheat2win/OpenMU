@@ -320,6 +320,27 @@ public partial class GameConfiguration : MUnique.OpenMU.DataModel.Configuration.
     }
 
     /// <summary>
+    /// Gets the raw collection of <see cref="MonsterTypes" />.
+    /// </summary>
+    [System.Text.Json.Serialization.JsonPropertyName("monsterTypes")]
+    public ICollection<MonsterTypeDefinition> RawMonsterTypes { get; } = new List<MonsterTypeDefinition>();
+    
+    /// <inheritdoc/>
+    [System.Text.Json.Serialization.JsonIgnore]
+    public override ICollection<MUnique.OpenMU.DataModel.Configuration.MonsterTypeDefinition> MonsterTypes
+    {
+        get => base.MonsterTypes ??= new CollectionAdapter<MUnique.OpenMU.DataModel.Configuration.MonsterTypeDefinition, MonsterTypeDefinition>(this.RawMonsterTypes);
+        protected set
+        {
+            this.MonsterTypes.Clear();
+            foreach (var item in value)
+            {
+                this.MonsterTypes.Add(item);
+            }
+        }
+    }
+
+    /// <summary>
     /// Gets the raw collection of <see cref="Attributes" />.
     /// </summary>
     [System.Text.Json.Serialization.JsonPropertyName("attributes")]
