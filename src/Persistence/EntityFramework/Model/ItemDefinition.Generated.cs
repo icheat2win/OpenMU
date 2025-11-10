@@ -87,6 +87,32 @@ internal partial class ItemDefinition : MUnique.OpenMU.DataModel.Configuration.I
     }
 
     /// <summary>
+    /// Gets or sets the identifier of <see cref="ItemGroup"/>.
+    /// </summary>
+    public Guid? ItemGroupId { get; set; }
+
+    /// <summary>
+    /// Gets the raw object of <see cref="ItemGroup" />.
+    /// </summary>
+    [ForeignKey(nameof(ItemGroupId))]
+    public ItemGroupDefinition RawItemGroup
+    {
+        get => base.ItemGroup as ItemGroupDefinition;
+        set => base.ItemGroup = value;
+    }
+
+    /// <inheritdoc/>
+    [NotMapped]
+    public override MUnique.OpenMU.DataModel.Configuration.Items.ItemGroupDefinition ItemGroup
+    {
+        get => base.ItemGroup;set
+        {
+            base.ItemGroup = value;
+            this.ItemGroupId = this.RawItemGroup?.Id;
+        }
+    }
+
+    /// <summary>
     /// Gets or sets the identifier of <see cref="ConsumeEffect"/>.
     /// </summary>
     public Guid? ConsumeEffectId { get; set; }

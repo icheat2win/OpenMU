@@ -170,6 +170,24 @@ public partial class ItemDefinition : MUnique.OpenMU.DataModel.Configuration.Ite
     }
 
     /// <summary>
+    /// Gets the raw object of <see cref="ItemGroup" />.
+    /// </summary>
+    [System.Text.Json.Serialization.JsonPropertyName("itemGroup")]
+    public ItemGroupDefinition RawItemGroup
+    {
+        get => base.ItemGroup as ItemGroupDefinition;
+        set => base.ItemGroup = value;
+    }
+
+    /// <inheritdoc/>
+    [System.Text.Json.Serialization.JsonIgnore]
+    public override MUnique.OpenMU.DataModel.Configuration.Items.ItemGroupDefinition ItemGroup
+    {
+        get => base.ItemGroup;
+        set => base.ItemGroup = value;
+    }
+
+    /// <summary>
     /// Gets the raw object of <see cref="ConsumeEffect" />.
     /// </summary>
     [System.Text.Json.Serialization.JsonPropertyName("consumeEffect")]

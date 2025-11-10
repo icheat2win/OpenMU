@@ -92,6 +92,7 @@ public class ExtendedTypeContext : Microsoft.EntityFrameworkCore.DbContext
         modelBuilder.Ignore<MUnique.OpenMU.DataModel.Configuration.Items.IncreasableItemOption>();
         modelBuilder.Ignore<MUnique.OpenMU.DataModel.Configuration.Items.ItemBasePowerUpDefinition>();
         modelBuilder.Ignore<MUnique.OpenMU.DataModel.Configuration.Items.ItemDefinition>();
+        modelBuilder.Ignore<MUnique.OpenMU.DataModel.Configuration.Items.ItemGroupDefinition>();
         modelBuilder.Ignore<MUnique.OpenMU.DataModel.Configuration.Items.ItemLevelBonusTable>();
         modelBuilder.Ignore<MUnique.OpenMU.DataModel.Configuration.Items.ItemOfItemSet>();
         modelBuilder.Ignore<MUnique.OpenMU.DataModel.Configuration.Items.ItemOption>();
@@ -148,6 +149,7 @@ public class ExtendedTypeContext : Microsoft.EntityFrameworkCore.DbContext
         modelBuilder.Entity<GameConfiguration>().HasMany(entity => entity.RawSkills).WithOne().OnDelete(DeleteBehavior.Cascade);
         modelBuilder.Entity<GameConfiguration>().HasMany(entity => entity.RawCharacterClasses).WithOne().OnDelete(DeleteBehavior.Cascade);
         modelBuilder.Entity<GameConfiguration>().HasMany(entity => entity.RawItems).WithOne().OnDelete(DeleteBehavior.Cascade);
+        modelBuilder.Entity<GameConfiguration>().HasMany(entity => entity.RawItemGroups).WithOne().OnDelete(DeleteBehavior.Cascade);
         modelBuilder.Entity<GameConfiguration>().HasMany(entity => entity.RawItemLevelBonusTables).WithOne().OnDelete(DeleteBehavior.Cascade);
         modelBuilder.Entity<GameConfiguration>().HasMany(entity => entity.RawItemSlotTypes).WithOne().OnDelete(DeleteBehavior.Cascade);
         modelBuilder.Entity<GameConfiguration>().HasMany(entity => entity.RawItemOptions).WithOne().OnDelete(DeleteBehavior.Cascade);

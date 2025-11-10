@@ -152,6 +152,27 @@ public partial class GameConfiguration : MUnique.OpenMU.DataModel.Configuration.
     }
 
     /// <summary>
+    /// Gets the raw collection of <see cref="ItemGroups" />.
+    /// </summary>
+    [System.Text.Json.Serialization.JsonPropertyName("itemGroups")]
+    public ICollection<ItemGroupDefinition> RawItemGroups { get; } = new List<ItemGroupDefinition>();
+    
+    /// <inheritdoc/>
+    [System.Text.Json.Serialization.JsonIgnore]
+    public override ICollection<MUnique.OpenMU.DataModel.Configuration.Items.ItemGroupDefinition> ItemGroups
+    {
+        get => base.ItemGroups ??= new CollectionAdapter<MUnique.OpenMU.DataModel.Configuration.Items.ItemGroupDefinition, ItemGroupDefinition>(this.RawItemGroups);
+        protected set
+        {
+            this.ItemGroups.Clear();
+            foreach (var item in value)
+            {
+                this.ItemGroups.Add(item);
+            }
+        }
+    }
+
+    /// <summary>
     /// Gets the raw collection of <see cref="ItemLevelBonusTables" />.
     /// </summary>
     [System.Text.Json.Serialization.JsonPropertyName("itemLevelBonusTables")]
