@@ -231,6 +231,13 @@ public partial class GameConfiguration
     public virtual ICollection<MonsterDefinition> Monsters { get; protected set; } = null!;
 
     /// <summary>
+    /// Gets or sets the monster type definitions.
+    /// Defines behavioral characteristics for different categories of monsters.
+    /// </summary>
+    [MemberOfAggregate]
+    public virtual ICollection<MonsterTypeDefinition> MonsterTypes { get; protected set; } = null!;
+
+    /// <summary>
     /// Gets or sets the attributes.
     /// </summary>
     [MemberOfAggregate]

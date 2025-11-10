@@ -66,6 +66,7 @@ public abstract class GameConfigurationInitializerBase : InitializerBase
 
         this.CreateStatAttributes();
 
+        MonsterTypeInitializer.Initialize(this.Context, this.GameConfiguration);
         new SlotTypesInitializer(this.Context, this.GameConfiguration).Initialize();
         this.CreateItemOptionTypes();
         this.GameConfiguration.ItemOptions.Add(this.CreateLuckOptionDefinition());

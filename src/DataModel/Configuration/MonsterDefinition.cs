@@ -192,7 +192,7 @@ public enum NpcObjectKind
     Trap,
 
     /// <summary>
-    /// The npc is a gate
+    /// The npc is a gate.
     /// </summary>
     Gate,
 
@@ -300,6 +300,13 @@ public partial class MonsterDefinition
     /// </summary>
     /// <remarks>The additional damage of the skill is usually NOT applied; However, magic effects are.</remarks>
     public virtual Skill? AttackSkill { get; set; }
+
+    /// <summary>
+    /// Gets or sets the monster type definition which defines behavioral characteristics.
+    /// This allows data-driven configuration of monster behavior patterns.
+    /// If null, the monster uses default behavior based on its other properties.
+    /// </summary>
+    public virtual MonsterTypeDefinition? MonsterType { get; set; }
 
     /// <summary>
     /// Gets or sets the items of the merchant store. Is only relevant for merchant NPCs.
