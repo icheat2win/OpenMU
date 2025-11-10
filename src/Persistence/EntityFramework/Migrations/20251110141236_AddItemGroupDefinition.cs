@@ -20,6 +20,7 @@ namespace MUnique.OpenMU.Persistence.EntityFramework.Migrations
 
             migrationBuilder.CreateTable(
                 name: "ItemGroupDefinition",
+                schema: "config",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
@@ -36,7 +37,8 @@ namespace MUnique.OpenMU.Persistence.EntityFramework.Migrations
                         column: x => x.GameConfigurationId,
                         principalSchema: "config",
                         principalTable: "GameConfiguration",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
@@ -47,6 +49,7 @@ namespace MUnique.OpenMU.Persistence.EntityFramework.Migrations
 
             migrationBuilder.CreateIndex(
                 name: "IX_ItemGroupDefinition_GameConfigurationId",
+                schema: "config",
                 table: "ItemGroupDefinition",
                 column: "GameConfigurationId");
 
@@ -55,6 +58,7 @@ namespace MUnique.OpenMU.Persistence.EntityFramework.Migrations
                 schema: "config",
                 table: "ItemDefinition",
                 column: "ItemGroupId",
+                principalSchema: "config",
                 principalTable: "ItemGroupDefinition",
                 principalColumn: "Id");
         }
@@ -68,7 +72,8 @@ namespace MUnique.OpenMU.Persistence.EntityFramework.Migrations
                 table: "ItemDefinition");
 
             migrationBuilder.DropTable(
-                name: "ItemGroupDefinition");
+                name: "ItemGroupDefinition",
+                schema: "config");
 
             migrationBuilder.DropIndex(
                 name: "IX_ItemDefinition_ItemGroupId",

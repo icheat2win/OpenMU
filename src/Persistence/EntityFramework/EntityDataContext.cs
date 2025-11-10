@@ -38,6 +38,13 @@ public class EntityDataContext : ExtendedTypeContext
     {
         base.OnModelCreating(modelBuilder);
 
+        // Fix ItemGroupDefinition relationship to prevent shadow foreign key GameConfigurationId1
+        modelBuilder.Entity<ItemGroupDefinition>()
+            .HasOne(ig => ig.RawGameConfiguration)
+            .WithMany(gc => gc.RawItemGroups)
+            .HasForeignKey(ig => ig.GameConfigurationId)
+            .OnDelete(DeleteBehavior.Cascade);
+
         modelBuilder.Entity<AppearanceData>(o => o.Ignore(p => p.CharacterStatus)); // todo
         modelBuilder.Ignore<ConstantElement>();
         modelBuilder.Ignore<SimpleElement>();

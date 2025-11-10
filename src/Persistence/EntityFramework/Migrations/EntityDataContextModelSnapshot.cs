@@ -22,33 +22,6 @@ namespace MUnique.OpenMU.Persistence.EntityFramework.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("MUnique.OpenMU.DataModel.Configuration.Items.ItemGroupDefinition", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<Guid?>("GameConfigurationId")
-                        .HasColumnType("uuid");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<byte>("Number")
-                        .HasColumnType("smallint");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("GameConfigurationId");
-
-                    b.ToTable("ItemGroupDefinition");
-                });
-
             modelBuilder.Entity("MUnique.OpenMU.Persistence.EntityFramework.Model.Account", b =>
                 {
                     b.Property<Guid>("Id")
@@ -2004,6 +1977,33 @@ namespace MUnique.OpenMU.Persistence.EntityFramework.Migrations
                     b.ToTable("ItemDropItemGroupItemDefinition", "config");
                 });
 
+            modelBuilder.Entity("MUnique.OpenMU.Persistence.EntityFramework.Model.ItemGroupDefinition", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<Guid?>("GameConfigurationId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<byte>("Number")
+                        .HasColumnType("smallint");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("GameConfigurationId");
+
+                    b.ToTable("ItemGroupDefinition", "config");
+                });
+
             modelBuilder.Entity("MUnique.OpenMU.Persistence.EntityFramework.Model.ItemItemOfItemSet", b =>
                 {
                     b.Property<Guid>("ItemId")
@@ -3649,13 +3649,6 @@ namespace MUnique.OpenMU.Persistence.EntityFramework.Migrations
                     b.ToTable("WarpInfo", "config");
                 });
 
-            modelBuilder.Entity("MUnique.OpenMU.DataModel.Configuration.Items.ItemGroupDefinition", b =>
-                {
-                    b.HasOne("MUnique.OpenMU.Persistence.EntityFramework.Model.GameConfiguration", null)
-                        .WithMany("ItemGroups")
-                        .HasForeignKey("GameConfigurationId");
-                });
-
             modelBuilder.Entity("MUnique.OpenMU.Persistence.EntityFramework.Model.Account", b =>
                 {
                     b.HasOne("MUnique.OpenMU.Persistence.EntityFramework.Model.ItemStorage", "RawVault")
@@ -4387,7 +4380,7 @@ namespace MUnique.OpenMU.Persistence.EntityFramework.Migrations
                         .HasForeignKey("GameConfigurationId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("MUnique.OpenMU.DataModel.Configuration.Items.ItemGroupDefinition", "ItemGroup")
+                    b.HasOne("MUnique.OpenMU.Persistence.EntityFramework.Model.ItemGroupDefinition", "RawItemGroup")
                         .WithMany()
                         .HasForeignKey("ItemGroupId");
 
@@ -4407,9 +4400,9 @@ namespace MUnique.OpenMU.Persistence.EntityFramework.Migrations
                         .WithMany()
                         .HasForeignKey("WearableSkillId");
 
-                    b.Navigation("ItemGroup");
-
                     b.Navigation("RawConsumeEffect");
+
+                    b.Navigation("RawItemGroup");
 
                     b.Navigation("RawItemSlot");
 
@@ -4508,6 +4501,16 @@ namespace MUnique.OpenMU.Persistence.EntityFramework.Migrations
                     b.Navigation("ItemDefinition");
 
                     b.Navigation("ItemDropItemGroup");
+                });
+
+            modelBuilder.Entity("MUnique.OpenMU.Persistence.EntityFramework.Model.ItemGroupDefinition", b =>
+                {
+                    b.HasOne("MUnique.OpenMU.Persistence.EntityFramework.Model.GameConfiguration", "RawGameConfiguration")
+                        .WithMany("RawItemGroups")
+                        .HasForeignKey("GameConfigurationId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.Navigation("RawGameConfiguration");
                 });
 
             modelBuilder.Entity("MUnique.OpenMU.Persistence.EntityFramework.Model.ItemItemOfItemSet", b =>
@@ -5268,8 +5271,6 @@ namespace MUnique.OpenMU.Persistence.EntityFramework.Migrations
 
             modelBuilder.Entity("MUnique.OpenMU.Persistence.EntityFramework.Model.GameConfiguration", b =>
                 {
-                    b.Navigation("ItemGroups");
-
                     b.Navigation("RawAttributes");
 
                     b.Navigation("RawCashShopCategories");
@@ -5279,6 +5280,8 @@ namespace MUnique.OpenMU.Persistence.EntityFramework.Migrations
                     b.Navigation("RawCharacterClasses");
 
                     b.Navigation("RawDropItemGroups");
+
+                    b.Navigation("RawItemGroups");
 
                     b.Navigation("RawItemLevelBonusTables");
 

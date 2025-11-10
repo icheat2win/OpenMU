@@ -55,6 +55,7 @@ public static class WebApplicationExtensions
 
         services.AddBlazoredModal();
         services.AddBlazoredToast();
+        services.AddSingleton<IExports, Exports>();
 
         services.AddScoped<ILookupController, PersistentObjectsLookupController>();
 
