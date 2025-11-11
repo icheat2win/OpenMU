@@ -5,7 +5,7 @@ services:
     image: nginx:alpine
     container_name: nginx-80
     ports:
-      - "80:80"
+      - "192.168.4.71:80:80"
     volumes:
       - ./nginx/nginx.dev.conf:/etc/nginx/nginx.conf:ro
       - ./.htpasswd:/etc/nginx/.htpasswd
@@ -17,28 +17,28 @@ services:
     image: mcr.microsoft.com/dotnet/aspnet:9.0-alpine
     container_name: openmu-startup
     ports:
-      - "8081:8080"
-      - "50001:55901"
-      - "50002:55902"
-      - "50003:55903"
-      - "50004:55904"
-      - "50005:55905"
-      - "50006:55906"
-      - "50401:44405"
-      - "50402:44406"
-      - "50980:55980"
+      - "192.168.4.71:8080:8080"
+      - "192.168.4.71:55901:55901"
+      - "192.168.4.71:55902:55902"
+      - "192.168.4.71:55903:55903"
+      - "192.168.4.71:55904:55904"
+      - "192.168.4.71:55905:55905"
+      - "192.168.4.71:55906:55906"
+      - "192.168.4.71:44405:44405"
+      - "192.168.4.71:44406:44406"
+      - "192.168.4.71:55980:55980"
     environment:
       DB_HOST: database
       ASPNETCORE_URLS: http://+:8080
       ASPNETCORE_ENVIRONMENT: Development
-      RESOLVE_IP: "127.0.0.1"
+      RESOLVE_IP: "192.168.4.71"
       LOGS_PATH: "/logs"
     working_dir: /app/
     volumes:
       - ./app:/app:ro
       - ./.htpasswd:/etc/nginx/.htpasswd
       - ./logs:/logs
-    command: ["dotnet", "MUnique.OpenMU.Startup.dll", "-autostart", "-adminpanel", "-resolveIP:127.0.0.1"]
+    command: ["dotnet", "MUnique.OpenMU.Startup.dll", "-autostart", "-adminpanel", "-resolveIP:192.168.4.71"]
     depends_on:
       database:
         condition: service_healthy
@@ -51,7 +51,7 @@ services:
       POSTGRES_DB: openmu
       POSTGRES_USER: postgres
     ports:
-      - "5432"
+      - "192.168.4.71:5432:5432"
     volumes:
       - dbdata:/var/lib/postgresql/data #store data on volume
     healthcheck:
