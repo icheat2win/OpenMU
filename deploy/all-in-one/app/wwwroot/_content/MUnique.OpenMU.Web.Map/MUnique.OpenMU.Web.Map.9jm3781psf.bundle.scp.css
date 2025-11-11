@@ -1,0 +1,9 @@
+/* _content/MUnique.OpenMU.Web.Map/Components/LiveMap.razor.rz.scp.css */
+.livemap-target[b-lpa9vu2w3h] {
+    width: auto;
+}
+/* _content/MUnique.OpenMU.Web.Map/Components/Map.razor.rz.scp.css */
+.livemap[b-3xy7ga4f06] {
+    display: grid;
+    grid-template-columns: auto 250px;
+}

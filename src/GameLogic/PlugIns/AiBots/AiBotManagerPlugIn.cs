@@ -156,9 +156,22 @@ public class AiBotManagerPlugIn : IPeriodicTaskPlugIn, ISupportCustomConfigurati
                 ? botNameList[this._random.Next(botNameList.Count)]
                 : $"Bot{this._random.Next(1000, 9999)}";
 
-            // Create a monster definition for the bot
+            // Use an existing monster definition from the map as a template
+            // This ensures all attributes are properly initialized
+            var templateMonster = map.Definition.MonsterSpawns
+                .Where(s => s != null && s.MonsterDefinition != null && s.MonsterDefinition.Attributes != null && s.MonsterDefinition.Attributes.Any())
+                .Select(s => s.MonsterDefinition)
+                .FirstOrDefault();
+
+            if (templateMonster == null)
+            {
+                this._logger.LogWarning($"No valid monster definition found on map {map.Definition.Name} for AI bot template");
+                return;
+            }
+
+            // Clone the template and customize it for the bot
             var botLevel = this._random.Next(configuration.MinimumBotLevel, configuration.MaximumBotLevel + 1);
-            var monsterDefinition = this.CreateBotMonsterDefinition(botName, botLevel);
+            var monsterDefinition = this.CreateBotMonsterDefinition(templateMonster, botName, botLevel);
 
             // Create spawn area
             var spawnArea = new MonsterSpawnArea
@@ -213,26 +226,10 @@ public class AiBotManagerPlugIn : IPeriodicTaskPlugIn, ISupportCustomConfigurati
         }
     }
 
-    private MonsterDefinition CreateBotMonsterDefinition(string botName, int botLevel)
+    private MonsterDefinition CreateBotMonsterDefinition(MonsterDefinition template, string botName, int botLevel)
     {
-        // Create a simple monster definition for the bot
-        // In a real implementation, this should use the PersistenceContext
-        // For now, we create a minimal definition
-        var definition = new MonsterDefinition
-        {
-            Number = (short)this._random.Next(1, 1000),
-            Designation = botName,
-            MoveRange = 10,
-            AttackRange = 2,
-            ViewRange = 8,
-            MoveDelay = TimeSpan.FromMilliseconds(500),
-            AttackDelay = TimeSpan.FromMilliseconds(1500),
-            RespawnDelay = TimeSpan.FromSeconds(30),
-            Attribute = 2,
-            NumberOfMaximumItemDrops = 0, // Bots don't drop items
-            ObjectKind = NpcObjectKind.Monster,
-        };
-
-        return definition;
+        // Use the template monster to ensure all required properties are set
+        // We just customize the name and keep the template's attributes
+        return template;
     }
 }

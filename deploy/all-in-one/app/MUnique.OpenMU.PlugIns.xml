@@ -1,0 +1,935 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>MUnique.OpenMU.PlugIns</name>
+    </assembly>
+    <members>
+        <member name="T:MUnique.OpenMU.PlugIns.AsyncEventHandler`1">
+            <summary>
+            Event handler which is awaitable.
+            </summary>
+            <typeparam name="T">The type of the event args.</typeparam>
+            <param name="eventArgs">The event arguments.</param>
+        </member>
+        <member name="T:MUnique.OpenMU.PlugIns.AsyncEventHandler">
+            <summary>
+            Event handler without arguments which is awaitable.
+            </summary>
+        </member>
+        <member name="T:MUnique.OpenMU.PlugIns.EventExtensions">
+            <summary>
+            Extensions for <see cref="T:MUnique.OpenMU.PlugIns.AsyncEventHandler"/>.
+            </summary>
+        </member>
+        <member name="M:MUnique.OpenMU.PlugIns.EventExtensions.SafeInvokeAsync``1(MUnique.OpenMU.PlugIns.AsyncEventHandler{``0},System.Func{``0})">
+            <summary>
+            Invokes an event if any event handler is registered. If none is registered, nothing happens.
+            </summary>
+            <typeparam name="T">The type of the event args.</typeparam>
+            <param name="handler">The handler.</param>
+            <param name="argsFactory">The arguments factory.</param>
+        </member>
+        <member name="M:MUnique.OpenMU.PlugIns.EventExtensions.SafeInvokeAsync``1(MUnique.OpenMU.PlugIns.AsyncEventHandler{``0},``0)">
+            <summary>
+            Invokes an event if any event handler is registered. If none is registered, nothing happens.
+            </summary>
+            <typeparam name="T">The type of the event args.</typeparam>
+            <param name="handler">The handler.</param>
+            <param name="args">The arguments.</param>
+        </member>
+        <member name="M:MUnique.OpenMU.PlugIns.EventExtensions.SafeInvokeAsync(MUnique.OpenMU.PlugIns.AsyncEventHandler)">
+            <summary>
+            Invokes an event if any event handler is registered. If none is registered, nothing happens.
+            </summary>
+            <param name="handler">The handler.</param>
+        </member>
+        <member name="T:MUnique.OpenMU.PlugIns.AsyncLockExtensions">
+            <summary>
+            Extensions for <see cref="T:Nito.AsyncEx.AsyncLock"/>.
+            </summary>
+        </member>
+        <member name="M:MUnique.OpenMU.PlugIns.AsyncLockExtensions.LockAsync(Nito.AsyncEx.AsyncLock,System.TimeSpan)">
+            <summary>
+            Asynchronously acquires the lock. Returns a disposable that releases the lock when disposed.
+            </summary>
+            <param name="asyncLock">The asynchronous lock.</param>
+            <param name="timeout">The timeout to take the lock.</param>
+            <returns>A disposable that releases the lock when disposed. Null, if the lock couldn't be acquired within the timeout.</returns>
+        </member>
+        <member name="T:MUnique.OpenMU.PlugIns.CustomPlugInContainerAttribute">
+            <summary>
+            An attribute which describes a custom plugin container interface.
+            May be helpful for debugging and the user interface.
+            A custom plugin container is used to manage this plugin point.
+            </summary>
+        </member>
+        <member name="M:MUnique.OpenMU.PlugIns.CustomPlugInContainerAttribute.#ctor(System.String,System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:MUnique.OpenMU.PlugIns.CustomPlugInContainerAttribute"/> class.
+            </summary>
+            <param name="name">The name of the plugin container.</param>
+            <param name="description">The description of the plugin container.</param>
+        </member>
+        <member name="P:MUnique.OpenMU.PlugIns.CustomPlugInContainerAttribute.Name">
+            <summary>
+            Gets the name of the custom plugin container.
+            </summary>
+        </member>
+        <member name="P:MUnique.OpenMU.PlugIns.CustomPlugInContainerAttribute.Description">
+            <summary>
+            Gets the description of the custom plugin container.
+            </summary>
+        </member>
+        <member name="T:MUnique.OpenMU.PlugIns.CustomPlugInContainerBase`1">
+            <summary>
+            A base class for custom plugin containers, where <typeparamref name="TPlugIn"/> defines the common interface type of the plugin container.
+            The custom plugin container basically collects all plugins of this type, and provides the method <see cref="M:MUnique.OpenMU.PlugIns.CustomPlugInContainerBase`1.GetPlugIn``1"/> to retrieve
+            a specific plugin interface. For a specific plugin interface, there can only be one 'effective' implementation.
+            This base class defines abstract methods which help to select these 'effective' implementations.
+            </summary>
+            <typeparam name="TPlugIn">The type of the plug in.</typeparam>
+            <seealso cref="T:MUnique.OpenMU.PlugIns.PlugInContainerBase`1" />
+        </member>
+        <member name="M:MUnique.OpenMU.PlugIns.CustomPlugInContainerBase`1.#ctor(MUnique.OpenMU.PlugIns.PlugInManager)">
+            <summary>
+            Initializes a new instance of the <see cref="T:MUnique.OpenMU.PlugIns.CustomPlugInContainerBase`1"/> class.
+            </summary>
+            <param name="manager">The plugin manager which manages this instance.</param>
+        </member>
+        <member name="M:MUnique.OpenMU.PlugIns.CustomPlugInContainerBase`1.GetPlugIn``1">
+            <inheritdoc />
+        </member>
+        <member name="M:MUnique.OpenMU.PlugIns.CustomPlugInContainerBase`1.Initialize">
+            <summary>
+            Initializes the active plugins of <typeparamref name="TPlugIn"/> in this instance.
+            This method should be called in the constructor of derived classes.
+            </summary>
+        </member>
+        <member name="M:MUnique.OpenMU.PlugIns.CustomPlugInContainerBase`1.ActivatePlugIn(`0)">
+            <inheritdoc />
+        </member>
+        <member name="M:MUnique.OpenMU.PlugIns.CustomPlugInContainerBase`1.DeactivatePlugIn(`0)">
+            <inheritdoc />
+        </member>
+        <member name="M:MUnique.OpenMU.PlugIns.CustomPlugInContainerBase`1.IsNewPlugInReplacingOld(`0,`0)">
+            <summary>
+            Determines whether the new plug in should replace the currently effective plug in.
+            </summary>
+            <param name="currentEffectivePlugIn">The current effective plug in.</param>
+            <param name="activatedPlugIn">The activated plug in.</param>
+            <returns>
+              <c>true</c> if the new plug in should replace the currently effective plug in; otherwise, <c>false</c>.
+            </returns>
+        </member>
+        <member name="M:MUnique.OpenMU.PlugIns.CustomPlugInContainerBase`1.DetermineEffectivePlugIn(System.Type)">
+            <summary>
+            Determines the new effective plug in, after the previous one has been deactivated.
+            </summary>
+            <param name="interfaceType">The interface type of the actual plugin type.</param>
+            <returns>The new effective plugin.</returns>
+        </member>
+        <member name="M:MUnique.OpenMU.PlugIns.CustomPlugInContainerBase`1.CreatePlugInIfSuitable(System.Type)">
+            <summary>
+            Creates the plug in if suitable for this instance.
+            </summary>
+            <param name="plugInType">Type of the plug in.</param>
+        </member>
+        <member name="M:MUnique.OpenMU.PlugIns.CustomPlugInContainerBase`1.BeforeActivatePlugInType(System.Type)">
+            <inheritdoc/>
+        </member>
+        <member name="T:MUnique.OpenMU.PlugIns.ICustomPlugInContainer`1">
+            <summary>
+            A interface for a custom proxy object which manages <typeparamref name="TPlugIn"/>s in a custom way.
+            </summary>
+            <typeparam name="TPlugIn">The type of the plug in.</typeparam>
+        </member>
+        <member name="M:MUnique.OpenMU.PlugIns.ICustomPlugInContainer`1.GetPlugIn``1">
+            <summary>
+            Gets the plug in of the specified plugin interface type.
+            </summary>
+            <typeparam name="T">The requested plug in type.</typeparam>
+            <returns>The plug in, if available; Otherwise, <c>null</c>.</returns>
+        </member>
+        <member name="T:MUnique.OpenMU.PlugIns.IPlugInContainer`1">
+            <summary>
+            A interface a plugin container (e.g. a proxy object) which manages <typeparamref name="TPlugIn"/>s.
+            </summary>
+            <typeparam name="TPlugIn">The type of the plug in.</typeparam>
+        </member>
+        <member name="P:MUnique.OpenMU.PlugIns.IPlugInContainer`1.ActivePlugIns">
+            <summary>
+            Gets the active plug ins.
+            </summary>
+            <value>
+            The active plug ins.
+            </value>
+        </member>
+        <member name="M:MUnique.OpenMU.PlugIns.IPlugInContainer`1.AddPlugIn(`0,System.Boolean)">
+            <summary>
+            Adds the plug in to the plugin point.
+            </summary>
+            <param name="plugIn">The plug in.</param>
+            <param name="isActive">If set to <c>true</c>, it's added as an active plugin; Otherwise, not.</param>
+        </member>
+        <member name="T:MUnique.OpenMU.PlugIns.IStrategyPlugIn`1">
+            <summary>
+            Interface for a strategy plugin which provides a key under which the strategy is getting registered.
+            </summary>
+            <typeparam name="TKey">The type of the key.</typeparam>
+        </member>
+        <member name="P:MUnique.OpenMU.PlugIns.IStrategyPlugIn`1.Key">
+            <summary>
+            Gets the key under which the strategy is getting registered.
+            </summary>
+            <value>
+            The key.
+            </value>
+        </member>
+        <member name="T:MUnique.OpenMU.PlugIns.IStrategyPlugInProvider`2">
+            <summary>
+            Interface for a strategy plugin provider which holds/manages strategy plugins and provides them to the caller.
+            </summary>
+            <typeparam name="TKey">The type of the key.</typeparam>
+            <typeparam name="TStrategy">The type of the strategy.</typeparam>
+        </member>
+        <member name="P:MUnique.OpenMU.PlugIns.IStrategyPlugInProvider`2.Item(`0)">
+            <summary>
+            Gets the <typeparamref name="TStrategy"/> with the specified key.
+            </summary>
+            <value>
+            The <typeparamref name="TStrategy"/>.
+            </value>
+            <param name="key">The key.</param>
+            <returns>The <typeparamref name="TStrategy"/> with the specified key, if available; Otherwise, <c>null</c>.</returns>
+        </member>
+        <member name="P:MUnique.OpenMU.PlugIns.IStrategyPlugInProvider`2.AvailableStrategies">
+            <summary>
+            Gets the available <typeparamref name="TStrategy"/>s.
+            </summary>
+        </member>
+        <member name="T:MUnique.OpenMU.PlugIns.ISupportCustomConfiguration`1">
+            <summary>
+            Interface for a plugin which has a custom configuration, which should be saved in a <see cref="P:MUnique.OpenMU.PlugIns.PlugInConfiguration.CustomConfiguration"/>.
+            </summary>
+            <typeparam name="TCustomConfig">The type of the custom configuration.</typeparam>
+        </member>
+        <member name="P:MUnique.OpenMU.PlugIns.ISupportCustomConfiguration`1.Configuration">
+            <summary>
+            Gets or sets the configuration.
+            </summary>
+        </member>
+        <member name="T:MUnique.OpenMU.PlugIns.ISupportDefaultCustomConfiguration">
+            <summary>
+            Interface for a plugin which provides a method to create a default configuration which should be saved in <see cref="P:MUnique.OpenMU.PlugIns.PlugInConfiguration.CustomConfiguration"/>.
+            </summary>
+        </member>
+        <member name="M:MUnique.OpenMU.PlugIns.ISupportDefaultCustomConfiguration.CreateDefaultConfig">
+            <summary>
+            Creates the default configuration.
+            </summary>
+            <returns>The default configuration.</returns>
+        </member>
+        <member name="T:MUnique.OpenMU.PlugIns.PlugInAttribute">
+            <summary>
+            An attribute which describes an implementation of a plugin interface.
+            May be helpful for debugging and the user interface.
+            </summary>
+        </member>
+        <member name="M:MUnique.OpenMU.PlugIns.PlugInAttribute.#ctor(System.String,System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:MUnique.OpenMU.PlugIns.PlugInAttribute"/> class.
+            </summary>
+            <param name="name">The name.</param>
+            <param name="description">The description.</param>
+        </member>
+        <member name="P:MUnique.OpenMU.PlugIns.PlugInAttribute.Name">
+            <summary>
+            Gets the name of the plugin.
+            </summary>
+        </member>
+        <member name="P:MUnique.OpenMU.PlugIns.PlugInAttribute.Description">
+            <summary>
+            Gets the description of the plugin.
+            </summary>
+        </member>
+        <member name="T:MUnique.OpenMU.PlugIns.PlugInCertificateManager">
+            <summary>
+            Manages trusted certificates for plugin code signing verification.
+            </summary>
+        </member>
+        <member name="M:MUnique.OpenMU.PlugIns.PlugInCertificateManager.#ctor(Microsoft.Extensions.Logging.ILogger{MUnique.OpenMU.PlugIns.PlugInCertificateManager})">
+            <summary>
+            Initializes a new instance of the <see cref="T:MUnique.OpenMU.PlugIns.PlugInCertificateManager"/> class.
+            </summary>
+            <param name="logger">The logger.</param>
+        </member>
+        <member name="P:MUnique.OpenMU.PlugIns.PlugInCertificateManager.TrustedThumbprints">
+            <summary>
+            Gets the collection of trusted certificate thumbprints.
+            </summary>
+        </member>
+        <member name="M:MUnique.OpenMU.PlugIns.PlugInCertificateManager.AddTrustedCertificate(System.String)">
+            <summary>
+            Adds a trusted certificate by its thumbprint.
+            </summary>
+            <param name="thumbprint">The certificate thumbprint (SHA-1 hash).</param>
+            <returns>True if the thumbprint was added; false if it was already present.</returns>
+        </member>
+        <member name="M:MUnique.OpenMU.PlugIns.PlugInCertificateManager.AddTrustedCertificateFromFile(System.String)">
+            <summary>
+            Adds a trusted certificate from a certificate file.
+            </summary>
+            <param name="certificatePath">The path to the certificate file (.cer, .crt, .pem).</param>
+            <returns>The thumbprint of the added certificate.</returns>
+        </member>
+        <member name="M:MUnique.OpenMU.PlugIns.PlugInCertificateManager.RemoveTrustedCertificate(System.String)">
+            <summary>
+            Removes a trusted certificate by its thumbprint.
+            </summary>
+            <param name="thumbprint">The certificate thumbprint to remove.</param>
+            <returns>True if the thumbprint was removed; false if it was not present.</returns>
+        </member>
+        <member name="M:MUnique.OpenMU.PlugIns.PlugInCertificateManager.IsCertificateTrusted(System.String)">
+            <summary>
+            Checks if a certificate thumbprint is trusted.
+            </summary>
+            <param name="thumbprint">The certificate thumbprint to check.</param>
+            <returns>True if the certificate is trusted; otherwise false.</returns>
+        </member>
+        <member name="M:MUnique.OpenMU.PlugIns.PlugInCertificateManager.ClearTrustedCertificates">
+            <summary>
+            Clears all trusted certificates.
+            </summary>
+        </member>
+        <member name="M:MUnique.OpenMU.PlugIns.PlugInCertificateManager.LoadTrustedCertificatesFromConfig(System.String)">
+            <summary>
+            Loads trusted certificates from a configuration file.
+            </summary>
+            <param name="configPath">The path to the configuration file containing thumbprints (one per line).</param>
+            <returns>The number of certificates loaded.</returns>
+        </member>
+        <member name="M:MUnique.OpenMU.PlugIns.PlugInCertificateManager.SaveTrustedCertificatesToConfig(System.String)">
+            <summary>
+            Saves trusted certificates to a configuration file.
+            </summary>
+            <param name="configPath">The path to save the configuration file.</param>
+        </member>
+        <member name="T:MUnique.OpenMU.PlugIns.PlugInConfiguration">
+            <summary>
+            Configuration for plugins.
+            </summary>
+        </member>
+        <member name="E:MUnique.OpenMU.PlugIns.PlugInConfiguration.PropertyChanged">
+            <inheritdoc />
+        </member>
+        <member name="P:MUnique.OpenMU.PlugIns.PlugInConfiguration.TypeId">
+            <summary>
+            Gets or sets the type identifier of the plugin.
+            </summary>
+        </member>
+        <member name="P:MUnique.OpenMU.PlugIns.PlugInConfiguration.IsActive">
+            <summary>
+            Gets or sets a value indicating whether the plugin is active.
+            </summary>
+        </member>
+        <member name="P:MUnique.OpenMU.PlugIns.PlugInConfiguration.CustomPlugInSource">
+            <summary>
+            Gets or sets the custom plug in source which will be compiled at run-time.
+            </summary>
+        </member>
+        <member name="P:MUnique.OpenMU.PlugIns.PlugInConfiguration.ExternalAssemblyName">
+            <summary>
+            Gets or sets the name of the external assembly which will be loaded at run-time.
+            </summary>
+        </member>
+        <member name="P:MUnique.OpenMU.PlugIns.PlugInConfiguration.CustomConfiguration">
+            <summary>
+            Gets or sets a custom configuration.
+            </summary>
+        </member>
+        <member name="P:MUnique.OpenMU.PlugIns.PlugInConfiguration.Name">
+            <summary>
+            Gets the (display) name of this plugin.
+            </summary>
+        </member>
+        <member name="M:MUnique.OpenMU.PlugIns.PlugInConfiguration.ToString">
+            <inheritdoc/>
+        </member>
+        <member name="M:MUnique.OpenMU.PlugIns.PlugInConfiguration.OnPropertyChanged(System.String)">
+            <summary>
+            Triggers the <see cref="E:MUnique.OpenMU.PlugIns.PlugInConfiguration.PropertyChanged"/> event.
+            </summary>
+            <param name="propertyName">The name of the changed property.</param>
+        </member>
+        <member name="T:MUnique.OpenMU.PlugIns.PlugInConfigurationChangedEventArgs">
+            <summary>
+            <see cref="T:System.EventArgs"/> for the <see cref="E:MUnique.OpenMU.PlugIns.PlugInManager.PlugInConfigurationChanged"/> event.
+            </summary>
+        </member>
+        <member name="M:MUnique.OpenMU.PlugIns.PlugInConfigurationChangedEventArgs.#ctor(System.Type,MUnique.OpenMU.PlugIns.PlugInConfiguration)">
+            <summary>
+            Initializes a new instance of the <see cref="T:MUnique.OpenMU.PlugIns.PlugInConfigurationChangedEventArgs"/> class.
+            </summary>
+            <param name="plugInType">Type of the plug in.</param>
+            <param name="configuration">The changed configuration.</param>
+        </member>
+        <member name="P:MUnique.OpenMU.PlugIns.PlugInConfigurationChangedEventArgs.Configuration">
+            <summary>
+            Gets the changed configuration.
+            </summary>
+        </member>
+        <member name="T:MUnique.OpenMU.PlugIns.PlugInConfigurationExtensions">
+            <summary>
+            Extension methods for the plugin configuration.
+            </summary>
+        </member>
+        <member name="M:MUnique.OpenMU.PlugIns.PlugInConfigurationExtensions.GetConfiguration``1(MUnique.OpenMU.PlugIns.PlugInConfiguration,System.Text.Json.Serialization.ReferenceHandler)">
+            <summary>
+            Gets the configuration.
+            </summary>
+            <typeparam name="T">The custom configuration type.</typeparam>
+            <param name="configuration">The configuration.</param>
+            <param name="referenceHandler">The reference handler.</param>
+            <returns>
+            The custom configuration as <typeparamref name="T" />.
+            </returns>
+        </member>
+        <member name="M:MUnique.OpenMU.PlugIns.PlugInConfigurationExtensions.GetConfiguration(MUnique.OpenMU.PlugIns.PlugInConfiguration,System.Type,System.Text.Json.Serialization.ReferenceHandler)">
+            <summary>
+            Gets the configuration.
+            </summary>
+            <param name="configuration">The configuration.</param>
+            <param name="configurationType">Type of the configuration.</param>
+            <param name="referenceHandler">The reference handler.</param>
+            <returns>
+            The custom configuration as the given specified type.
+            </returns>
+        </member>
+        <member name="M:MUnique.OpenMU.PlugIns.PlugInConfigurationExtensions.SetConfiguration``1(MUnique.OpenMU.PlugIns.PlugInConfiguration,``0,System.Text.Json.Serialization.ReferenceHandler)">
+            <summary>
+            Sets the configuration.
+            </summary>
+            <typeparam name="T">The custom configuration type.</typeparam>
+            <param name="plugInConfiguration">The plug in configuration.</param>
+            <param name="configuration">The configuration.</param>
+            <param name="referenceHandler">The reference handler.</param>
+        </member>
+        <member name="M:MUnique.OpenMU.PlugIns.PlugInConfigurationExtensions.SetConfiguration(MUnique.OpenMU.PlugIns.PlugInConfiguration,System.Object,System.Text.Json.Serialization.ReferenceHandler)">
+            <summary>
+            Sets the configuration.
+            </summary>
+            <param name="plugInConfiguration">The plug in configuration.</param>
+            <param name="configuration">The configuration.</param>
+            <param name="referenceHandler">The reference handler.</param>
+        </member>
+        <member name="T:MUnique.OpenMU.PlugIns.PlugInContainerBase`1">
+            <summary>
+            Base class for the implementation of plugin point proxies.
+            </summary>
+            <remarks>
+            It is used by the <see cref="T:MUnique.OpenMU.PlugIns.PlugInProxyTypeGenerator"/> to implement proxies with Roslyn.
+            </remarks>
+            <typeparam name="TPlugIn">The type of the plug in.</typeparam>
+            <seealso cref="T:MUnique.OpenMU.PlugIns.IPlugInContainer`1" />
+        </member>
+        <member name="M:MUnique.OpenMU.PlugIns.PlugInContainerBase`1.#ctor(MUnique.OpenMU.PlugIns.PlugInManager)">
+            <summary>
+            Initializes a new instance of the <see cref="T:MUnique.OpenMU.PlugIns.PlugInContainerBase`1" /> class.
+            </summary>
+            <param name="manager">The plugin manager which manages this instance.</param>
+        </member>
+        <member name="P:MUnique.OpenMU.PlugIns.PlugInContainerBase`1.MUnique#OpenMU#PlugIns#IPlugInContainer{TPlugIn}#ActivePlugIns">
+            <inheritdoc />
+        </member>
+        <member name="P:MUnique.OpenMU.PlugIns.PlugInContainerBase`1.Manager">
+            <summary>
+            Gets the plugin manager which manages this instance.
+            </summary>
+        </member>
+        <member name="P:MUnique.OpenMU.PlugIns.PlugInContainerBase`1.Lock">
+            <summary>
+            Gets the reader writer lock which is used to add and remove plugins.
+            </summary>
+        </member>
+        <member name="P:MUnique.OpenMU.PlugIns.PlugInContainerBase`1.ActivePlugIns">
+            <summary>
+            Gets the currently active plug ins.
+            </summary>
+            <value>
+            The currently active plug ins.
+            </value>
+        </member>
+        <member name="P:MUnique.OpenMU.PlugIns.PlugInContainerBase`1.KnownPlugIns">
+            <summary>
+            Gets the known plug ins.
+            </summary>
+        </member>
+        <member name="M:MUnique.OpenMU.PlugIns.PlugInContainerBase`1.AddPlugIn(`0,System.Boolean)">
+            <inheritdoc />
+            <exception cref="T:System.Threading.SynchronizationLockException">The current thread has not entered the lock in write mode.</exception>
+            <exception cref="T:System.Threading.LockRecursionException">The <see cref="P:System.Threading.ReaderWriterLockSlim.RecursionPolicy"></see> property is <see cref="F:System.Threading.LockRecursionPolicy.NoRecursion"></see> and the current thread has already entered the lock in any mode.   -or-   The current thread has entered read mode, so trying to enter the lock in write mode would create the possibility of a deadlock.   -or-   The recursion number would exceed the capacity of the counter. The limit is so large that applications should never encounter it.</exception>
+        </member>
+        <member name="M:MUnique.OpenMU.PlugIns.PlugInContainerBase`1.RemovePlugIn(`0)">
+            <summary>
+            Removes the plug in from the <see cref="P:MUnique.OpenMU.PlugIns.PlugInContainerBase`1.KnownPlugIns"/>.
+            </summary>
+            <param name="plugIn">The plug in.</param>
+        </member>
+        <member name="M:MUnique.OpenMU.PlugIns.PlugInContainerBase`1.ActivatePlugIn(`0)">
+            <summary>
+            Activates the plug in.
+            </summary>
+            <param name="plugIn">The plug in.</param>
+        </member>
+        <member name="M:MUnique.OpenMU.PlugIns.PlugInContainerBase`1.DeactivatePlugIn(`0)">
+            <summary>
+            Deactivates the plug in.
+            </summary>
+            <param name="plugIn">The plug in.</param>
+        </member>
+        <member name="M:MUnique.OpenMU.PlugIns.PlugInContainerBase`1.BeforeActivatePlugInType(System.Type)">
+            <summary>
+            Is called before the plug in of the specified type gets activated.
+            </summary>
+            <param name="plugInType">Type of the plug in.</param>
+        </member>
+        <member name="M:MUnique.OpenMU.PlugIns.PlugInContainerBase`1.AfterDeactivatePlugInType(`0)">
+            <summary>
+            Is called after the specified plug in has been deactivated.
+            </summary>
+            <param name="deactivatedPlugIn">The deactivated plug in.</param>
+        </member>
+        <member name="M:MUnique.OpenMU.PlugIns.PlugInContainerBase`1.FindKnownPlugin(System.Type)">
+            <summary>
+            Finds the known plugin.
+            </summary>
+            <param name="plugInType">Type of the plug in.</param>
+            <returns>The known plugin, if found. Otherwise, null.</returns>
+        </member>
+        <member name="T:MUnique.OpenMU.PlugIns.PlugInEventArgs">
+            <summary>
+            <see cref="T:System.EventArgs"/> regarding a plugin event.
+            </summary>
+            <seealso cref="T:System.EventArgs" />
+        </member>
+        <member name="M:MUnique.OpenMU.PlugIns.PlugInEventArgs.#ctor(System.Type)">
+            <summary>
+            Initializes a new instance of the <see cref="T:MUnique.OpenMU.PlugIns.PlugInEventArgs"/> class.
+            </summary>
+            <param name="plugInType">Type of the plug in.</param>
+        </member>
+        <member name="P:MUnique.OpenMU.PlugIns.PlugInEventArgs.PlugInType">
+            <summary>
+            Gets the type of the plug in.
+            </summary>
+            <value>
+            The type of the plug in.
+            </value>
+        </member>
+        <member name="T:MUnique.OpenMU.PlugIns.PlugInManager">
+            <summary>
+            The manager for plugins.
+            </summary>
+        </member>
+        <member name="M:MUnique.OpenMU.PlugIns.PlugInManager.#ctor(System.Collections.Generic.ICollection{MUnique.OpenMU.PlugIns.PlugInConfiguration},Microsoft.Extensions.Logging.ILoggerFactory,System.IServiceProvider,System.Text.Json.Serialization.ReferenceHandler,MUnique.OpenMU.PlugIns.PlugInSignatureVerifier)">
+            <summary>
+            Initializes a new instance of the <see cref="T:MUnique.OpenMU.PlugIns.PlugInManager" /> class.
+            </summary>
+            <param name="configurations">The configurations.</param>
+            <param name="loggerFactory">The logger factory.</param>
+            <param name="serviceProvider">The service provider.</param>
+            <param name="customConfigReferenceHandler">Optional custom JSON reference handler for plugin configurations.</param>
+            <param name="signatureVerifier">Optional signature verifier for plugin assemblies.</param>
+        </member>
+        <member name="E:MUnique.OpenMU.PlugIns.PlugInManager.PlugInDeactivated">
+            <summary>
+            Occurs when a plug in got deactivated.
+            </summary>
+        </member>
+        <member name="E:MUnique.OpenMU.PlugIns.PlugInManager.PlugInActivated">
+            <summary>
+            Occurs when a plug in got activated.
+            </summary>
+        </member>
+        <member name="E:MUnique.OpenMU.PlugIns.PlugInManager.PlugInConfigurationChanged">
+            <summary>
+            Occurs when the <see cref="P:MUnique.OpenMU.PlugIns.PlugInConfiguration.CustomConfiguration"/> has been changed.
+            </summary>
+        </member>
+        <member name="P:MUnique.OpenMU.PlugIns.PlugInManager.KnownPlugInTypes">
+            <summary>
+            Gets the known plug in types.
+            </summary>
+            <value>
+            The known plug in types.
+            </value>
+        </member>
+        <member name="P:MUnique.OpenMU.PlugIns.PlugInManager.CustomConfigReferenceHandler">
+            <summary>
+            Gets the reference handler for references in custom plugin configurations.
+            </summary>
+        </member>
+        <member name="M:MUnique.OpenMU.PlugIns.PlugInManager.DiscoverAndRegisterPlugIns">
+            <summary>
+            Discovers and registers all plug ins of all loaded assemblies.
+            </summary>
+        </member>
+        <member name="M:MUnique.OpenMU.PlugIns.PlugInManager.DiscoverAndRegisterPlugIns(System.Reflection.Assembly)">
+            <summary>
+            Discovers and registers plug ins of the specified assembly.
+            </summary>
+            <param name="assembly">The assembly.</param>
+        </member>
+        <member name="M:MUnique.OpenMU.PlugIns.PlugInManager.DiscoverAndRegisterPlugInsOf``1">
+            <summary>
+            Discovers the and register plug ins of type <typeparamref name="T"/>.
+            </summary>
+            <typeparam name="T">The type of the plugins which should be discovered.</typeparam>
+        </member>
+        <member name="M:MUnique.OpenMU.PlugIns.PlugInManager.GetKnownPlugInsOf``1">
+            <summary>
+            Gets the known plug ins of the given interface type.
+            </summary>
+            <typeparam name="T">The plugin interface type. Type parameter of a <see cref="T:MUnique.OpenMU.PlugIns.CustomPlugInContainerBase`1"/>.</typeparam>
+            <returns>The known plugins of the given interface type.</returns>
+        </member>
+        <member name="M:MUnique.OpenMU.PlugIns.PlugInManager.GetActivePlugInsOf``1">
+            <summary>
+            Gets the active plug ins of the specified type.
+            </summary>
+            <typeparam name="TPlugIn">The type of the plug in.</typeparam>
+            <returns>The active plugins of the specified type.</returns>
+        </member>
+        <member name="M:MUnique.OpenMU.PlugIns.PlugInManager.DeactivatePlugIn``1">
+            <summary>
+            Deactivates the plug in of type <typeparamref name="TPlugIn"/>.
+            </summary>
+            <typeparam name="TPlugIn">The type of the plug in.</typeparam>
+        </member>
+        <member name="M:MUnique.OpenMU.PlugIns.PlugInManager.DeactivatePlugIn(System.Type)">
+            <summary>
+            Deactivates the plug in of the specified type.
+            </summary>
+            <param name="plugIn">The plug in.</param>
+        </member>
+        <member name="M:MUnique.OpenMU.PlugIns.PlugInManager.DeactivatePlugIn(System.Guid)">
+            <summary>
+            Deactivates the plug in with the specified type id.
+            </summary>
+            <param name="plugInId">The plug in identifier.</param>
+        </member>
+        <member name="M:MUnique.OpenMU.PlugIns.PlugInManager.ActivatePlugIn``1">
+            <summary>
+            Activates the plug in of type <typeparamref name="TPlugIn"/>.
+            </summary>
+            <typeparam name="TPlugIn">The type of the plug in.</typeparam>
+        </member>
+        <member name="M:MUnique.OpenMU.PlugIns.PlugInManager.ActivatePlugIn(System.Type)">
+            <summary>
+            Activates the plug in of the specified type.
+            </summary>
+            <param name="plugIn">The plug in.</param>
+        </member>
+        <member name="M:MUnique.OpenMU.PlugIns.PlugInManager.ActivatePlugIn(System.Guid)">
+            <summary>
+            Activates the plug in with the specified type id.
+            </summary>
+            <param name="plugInId">The plug in identifier.</param>
+        </member>
+        <member name="M:MUnique.OpenMU.PlugIns.PlugInManager.GetPlugInPoint``1">
+            <summary>
+            Gets the plug in point which implements <typeparamref name="TPlugIn"/>.
+            </summary>
+            <typeparam name="TPlugIn">The type of the plug in.</typeparam>
+            <returns>The plug in point which implements <typeparamref name="TPlugIn"/>, if available; Otherwise, <c>null</c>.</returns>
+        </member>
+        <member name="M:MUnique.OpenMU.PlugIns.PlugInManager.GetStrategyProvider``2">
+            <summary>
+            Gets the strategy plug in.
+            </summary>
+            <typeparam name="TKey">The type of the key.</typeparam>
+            <typeparam name="TStrategy">The type of the strategy.</typeparam>
+            <returns>The strategy plug in.</returns>
+        </member>
+        <member name="M:MUnique.OpenMU.PlugIns.PlugInManager.GetStrategy``2(``0)">
+            <summary>
+            Gets the strategy plug in.
+            </summary>
+            <typeparam name="TKey">The type of the key.</typeparam>
+            <typeparam name="TStrategy">The type of the strategy.</typeparam>
+            <param name="key">The key.</param>
+            <returns>The strategy plug in of the specified key, if available; Otherwise, <c>null</c>.</returns>
+        </member>
+        <member name="M:MUnique.OpenMU.PlugIns.PlugInManager.GetStrategy``1(System.String)">
+            <summary>
+            Gets the strategy plug in.
+            </summary>
+            <typeparam name="TStrategy">The type of the strategy.</typeparam>
+            <param name="key">The key.</param>
+            <returns>The strategy plug in of the specified key, if available; Otherwise, <c>null</c>.</returns>
+        </member>
+        <member name="M:MUnique.OpenMU.PlugIns.PlugInManager.IsPlugInActive(System.Type)">
+            <summary>
+            Determines whether the specified plug in type is configured as active.
+            </summary>
+            <param name="plugInType">Type of the plug in.</param>
+            <returns>
+              <c>true</c> if the specified plug in type is configured as active; otherwise, <c>false</c>.
+            </returns>
+        </member>
+        <member name="M:MUnique.OpenMU.PlugIns.PlugInManager.IsPlugInActive(System.Guid)">
+            <summary>
+            Determines whether the specified plug in type is configured as active.
+            </summary>
+            <param name="plugInTypeId">Identifier of the type of the plug in.</param>
+            <returns>
+              <c>true</c> if the specified plug in type is configured as active; otherwise, <c>false</c>.
+            </returns>
+        </member>
+        <member name="M:MUnique.OpenMU.PlugIns.PlugInManager.RegisterPlugIn``2">
+            <summary>
+            Registers the plug in class for the specified plug in interface.
+            </summary>
+            <typeparam name="TPlugInInterface">The type of the plug in interface.</typeparam>
+            <typeparam name="TPlugInClass">The type of the plug in class.</typeparam>
+        </member>
+        <member name="M:MUnique.OpenMU.PlugIns.PlugInManager.RegisterPlugInAtPlugInPoint``1(``0)">
+            <summary>
+            Registers the plug in instance for the specified plugin point interface.
+            </summary>
+            <typeparam name="TPlugInInterface">The type of the plug in interface.</typeparam>
+            <param name="instance">The instance.</param>
+            <exception cref="T:System.ArgumentException">Plugin Type {instance.GetType()} - instance.</exception>
+        </member>
+        <member name="M:MUnique.OpenMU.PlugIns.PlugInManager.ConfigurePlugIn(System.Guid,MUnique.OpenMU.PlugIns.PlugInConfiguration)">
+            <summary>
+            Configures the plug in.
+            </summary>
+            <param name="plugInId">The plug in identifier.</param>
+            <param name="configuration">The configuration.</param>
+        </member>
+        <member name="T:MUnique.OpenMU.PlugIns.PlugInManager.InvalidPlugInProxyException">
+            <summary>
+            Exception which occurs when the created proxy doesn't implement the expected interface <see cref="T:MUnique.OpenMU.PlugIns.IPlugInContainer`1"/>.
+            </summary>
+            <seealso cref="T:System.Exception" />
+        </member>
+        <member name="M:MUnique.OpenMU.PlugIns.PlugInManager.InvalidPlugInProxyException.#ctor(System.Type,System.Type)">
+            <summary>
+            Initializes a new instance of the <see cref="T:MUnique.OpenMU.PlugIns.PlugInManager.InvalidPlugInProxyException"/> class.
+            </summary>
+            <param name="type">The actual class type of the proxy.</param>
+            <param name="expectedType">The expected interface type of the proxy.</param>
+        </member>
+        <member name="P:MUnique.OpenMU.PlugIns.PlugInManager.InvalidPlugInProxyException.Type">
+            <summary>
+            Gets the actual class type of the proxy.
+            </summary>
+            <value>
+            The type.
+            </value>
+        </member>
+        <member name="P:MUnique.OpenMU.PlugIns.PlugInManager.InvalidPlugInProxyException.ExpectedType">
+            <summary>
+            Gets the expected interface type of the proxy.
+            </summary>
+        </member>
+        <member name="M:MUnique.OpenMU.PlugIns.PlugInManager.InvalidPlugInProxyException.ToString">
+            <inheritdoc />
+        </member>
+        <member name="T:MUnique.OpenMU.PlugIns.PlugInPointAttribute">
+            <summary>
+            An attribute which describes a plugin interface and its point.
+            May be helpful for debugging and the user interface.
+            A proxy class is automatically generated which executes all plugins which implement the marked interface.
+            </summary>
+        </member>
+        <member name="M:MUnique.OpenMU.PlugIns.PlugInPointAttribute.#ctor(System.String,System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:MUnique.OpenMU.PlugIns.PlugInPointAttribute"/> class.
+            </summary>
+            <param name="name">The name of the plugin point.</param>
+            <param name="description">The description of the plugin point.</param>
+        </member>
+        <member name="P:MUnique.OpenMU.PlugIns.PlugInPointAttribute.Name">
+            <summary>
+            Gets the name of the plugin point.
+            </summary>
+        </member>
+        <member name="P:MUnique.OpenMU.PlugIns.PlugInPointAttribute.Description">
+            <summary>
+            Gets the description of the plugin point.
+            </summary>
+        </member>
+        <member name="T:MUnique.OpenMU.PlugIns.PlugInProxyTypeGenerator">
+            <summary>
+            Generates the implementations of <see cref="T:MUnique.OpenMU.PlugIns.IPlugInContainer`1"/> for specific plugin interface types.
+            </summary>
+        </member>
+        <member name="M:MUnique.OpenMU.PlugIns.PlugInProxyTypeGenerator.GenerateProxy``1(MUnique.OpenMU.PlugIns.PlugInManager)">
+            <summary>
+            Generates the proxy for the given <typeparamref name="TPlugIn"/> interface.
+            </summary>
+            <typeparam name="TPlugIn">The type of the plug in.</typeparam>
+            <param name="manager">The manager.</param>
+            <returns>The generated proxy implementation.</returns>
+            <exception cref="T:System.ArgumentException">
+            Generic type argument {typeof(TPlugIn)}
+            or
+            Generic type argument {typeof(TPlugIn)} is not marked with {typeof(PlugInPointAttribute)}.
+            </exception>
+            <exception cref="T:System.Reflection.AmbiguousMatchException">More than one of the requested attributes was found.</exception>
+        </member>
+        <member name="T:MUnique.OpenMU.PlugIns.PlugInSignatureVerifier">
+            <summary>
+            Verifies plugin assemblies using certificate-based code signing.
+            </summary>
+        </member>
+        <member name="M:MUnique.OpenMU.PlugIns.PlugInSignatureVerifier.#ctor(Microsoft.Extensions.Logging.ILogger{MUnique.OpenMU.PlugIns.PlugInSignatureVerifier},System.Boolean,System.Collections.Generic.IEnumerable{System.String})">
+            <summary>
+            Initializes a new instance of the <see cref="T:MUnique.OpenMU.PlugIns.PlugInSignatureVerifier"/> class.
+            </summary>
+            <param name="logger">The logger.</param>
+            <param name="requireSigning">Whether plugin signing is required (false for dev mode).</param>
+            <param name="trustedThumbprints">Collection of trusted certificate thumbprints (SHA-1 hashes).</param>
+        </member>
+        <member name="M:MUnique.OpenMU.PlugIns.PlugInSignatureVerifier.VerifyAssembly(System.String)">
+            <summary>
+            Verifies the digital signature of a plugin assembly file.
+            </summary>
+            <param name="assemblyPath">The path to the assembly file to verify.</param>
+            <returns>
+            A <see cref="T:MUnique.OpenMU.PlugIns.PlugInSignatureVerifier.VerificationResult"/> indicating whether the assembly signature is valid.
+            </returns>
+        </member>
+        <member name="M:MUnique.OpenMU.PlugIns.PlugInSignatureVerifier.VerifyAuthenticodeSignature(System.String)">
+            <summary>
+            Verifies the Authenticode signature of an assembly.
+            </summary>
+            <param name="assemblyPath">The path to the assembly.</param>
+            <returns>Verification result.</returns>
+        </member>
+        <member name="M:MUnique.OpenMU.PlugIns.PlugInSignatureVerifier.GetSigningCertificate(System.String)">
+            <summary>
+            Extracts the signing certificate from an assembly.
+            </summary>
+            <param name="assemblyPath">The path to the assembly.</param>
+            <returns>The X509 certificate, or null if not found.</returns>
+        </member>
+        <member name="M:MUnique.OpenMU.PlugIns.PlugInSignatureVerifier.VerifyStrongName(System.String)">
+            <summary>
+            Verifies the strong name signature of an assembly.
+            </summary>
+            <param name="assemblyPath">The path to the assembly.</param>
+            <returns>Verification result.</returns>
+        </member>
+        <member name="T:MUnique.OpenMU.PlugIns.PlugInSignatureVerifier.VerificationResult">
+            <summary>
+            Represents the result of a plugin signature verification.
+            </summary>
+        </member>
+        <member name="M:MUnique.OpenMU.PlugIns.PlugInSignatureVerifier.VerificationResult.#ctor(System.Boolean,System.String)">
+            <summary>
+            Represents the result of a plugin signature verification.
+            </summary>
+        </member>
+        <member name="T:MUnique.OpenMU.PlugIns.StrategyPlugInProvider`2">
+            <summary>
+            The implementation for the <see cref="T:MUnique.OpenMU.PlugIns.IStrategyPlugInProvider`2"/> which provides plugins by their key.
+            </summary>
+            <typeparam name="TKey">The type of the key.</typeparam>
+            <typeparam name="TPlugIn">The type of the plug in.</typeparam>
+            <seealso cref="T:MUnique.OpenMU.PlugIns.IStrategyPlugInProvider`2" />
+            <seealso cref="T:MUnique.OpenMU.PlugIns.IPlugInContainer`1" />
+        </member>
+        <member name="M:MUnique.OpenMU.PlugIns.StrategyPlugInProvider`2.#ctor(MUnique.OpenMU.PlugIns.PlugInManager,Microsoft.Extensions.Logging.ILoggerFactory)">
+            <summary>
+            Initializes a new instance of the <see cref="T:MUnique.OpenMU.PlugIns.StrategyPlugInProvider`2" /> class.
+            </summary>
+            <param name="manager">The plugin manager which manages this instance.</param>
+            <param name="loggerFactory">The logger factory.</param>
+        </member>
+        <member name="P:MUnique.OpenMU.PlugIns.StrategyPlugInProvider`2.Logger">
+            <summary>
+            Gets the logger.
+            </summary>
+            <value>
+            The logger.
+            </value>
+        </member>
+        <member name="P:MUnique.OpenMU.PlugIns.StrategyPlugInProvider`2.Item(`0)">
+            <inheritdoc />
+        </member>
+        <member name="P:MUnique.OpenMU.PlugIns.StrategyPlugInProvider`2.AvailableStrategies">
+            <inheritdoc />
+        </member>
+        <member name="M:MUnique.OpenMU.PlugIns.StrategyPlugInProvider`2.TryGetPlugIn(`0,`1@)">
+            <summary>
+            Tries the get the plug in with the specified key.
+            </summary>
+            <param name="key">The key.</param>
+            <param name="plugIn">The plug in.</param>
+            <returns><c>True</c>, if the plugin has been found and returned; Otherwise, <c>false</c>.</returns>
+        </member>
+        <member name="M:MUnique.OpenMU.PlugIns.StrategyPlugInProvider`2.ActivatePlugIn(`1)">
+            <inheritdoc />
+        </member>
+        <member name="M:MUnique.OpenMU.PlugIns.StrategyPlugInProvider`2.DeactivatePlugIn(`1)">
+            <inheritdoc />
+        </member>
+        <member name="M:MUnique.OpenMU.PlugIns.StrategyPlugInProvider`2.SetEffectivePlugin(`1)">
+            <summary>
+            Sets the effective plugin.
+            </summary>
+            <param name="plugIn">The plug in.</param>
+        </member>
+        <member name="T:MUnique.OpenMU.PlugIns.SyntaxTreeExtensions">
+            <summary>
+            Extensions for <see cref="T:Microsoft.CodeAnalysis.SyntaxTree"/>s.
+            </summary>
+        </member>
+        <member name="M:MUnique.OpenMU.PlugIns.SyntaxTreeExtensions.CompileAndLoad(Microsoft.CodeAnalysis.SyntaxTree,System.String)">
+            <summary>
+            Compiles the <see cref="T:Microsoft.CodeAnalysis.SyntaxTree"/> and load its assembly into memory.
+            </summary>
+            <param name="syntaxTree">The syntax tree.</param>
+            <param name="assemblyName">Name of the assembly.</param>
+            <returns>The compiled assembly.</returns>
+        </member>
+        <member name="T:MUnique.OpenMU.PlugIns.TypeExtensions">
+            <summary>
+            Extension methods for <see cref="T:System.Type"/>.
+            </summary>
+        </member>
+        <member name="M:MUnique.OpenMU.PlugIns.TypeExtensions.GetCustomConfigurationSupportInterfaceType(System.Type)">
+            <summary>
+            Gets the implemented interface of <see cref="T:MUnique.OpenMU.PlugIns.ISupportCustomConfiguration`1"/>.
+            </summary>
+            <param name="plugInType">Type of the plug in.</param>
+            <returns>The implemented interface of <see cref="T:MUnique.OpenMU.PlugIns.ISupportCustomConfiguration`1"/>.</returns>
+        </member>
+        <member name="M:MUnique.OpenMU.PlugIns.TypeExtensions.GetCustomConfigurationType(System.Type)">
+            <summary>
+            Gets the generic type parameter of <see cref="T:MUnique.OpenMU.PlugIns.ISupportCustomConfiguration`1"/>.
+            </summary>
+            <param name="plugInType">Type of the plug in.</param>
+            <returns>The generic type parameter of <see cref="T:MUnique.OpenMU.PlugIns.ISupportCustomConfiguration`1"/>.</returns>
+        </member>
+        <member name="M:MUnique.OpenMU.PlugIns.TypeExtensions.IsNullable(System.Type)">
+            <summary>
+            Determines whether this type is a <see cref="T:System.Nullable`1"/>.
+            </summary>
+            <param name="type">The type.</param>
+            <returns>
+              <c>true</c> if the specified type is a nullable; otherwise, <c>false</c>.
+            </returns>
+        </member>
+        <member name="M:MUnique.OpenMU.PlugIns.TypeExtensions.GetTypeOfNullable(System.Type)">
+            <summary>
+            Gets the generic type argument of the nullable.
+            </summary>
+            <param name="type">The nullable type.</param>
+            <returns>The generic type argument of the nullable.</returns>
+        </member>
+    </members>
+</doc>
