@@ -107,6 +107,17 @@ public partial class Index : ComponentBase, IDisposable
     }
 
     /// <summary>
+    /// Gets the build date of the application.
+    /// </summary>
+    /// <returns>The formatted build date string.</returns>
+    protected string GetBuildDate()
+    {
+        var assembly = typeof(Index).Assembly;
+        var buildDate = System.IO.File.GetLastWriteTime(assembly.Location);
+        return buildDate.ToString("yyyy-MM-dd HH:mm");
+    }
+
+    /// <summary>
     /// Disposes the component.
     /// </summary>
     /// <param name="disposing">Whether the component is being disposed.</param>

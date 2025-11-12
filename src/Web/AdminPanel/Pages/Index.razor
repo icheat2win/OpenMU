@@ -182,7 +182,11 @@
                     <div class="system-info">
                         <div class="info-item">
                             <strong>Version:</strong>
-                            <span>OpenMU 1.6+</span>
+                            <span>OpenMU v@(typeof(Index).Assembly.GetName().Version?.ToString(3) ?? "Unknown")</span>
+                        </div>
+                        <div class="info-item">
+                            <strong>Build Date:</strong>
+                            <span>@GetBuildDate()</span>
                         </div>
                         <div class="info-item">
                             <strong>Uptime:</strong>
