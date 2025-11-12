@@ -635,3 +635,240 @@ label {
     color: var(--color-text-secondary);
     margin-top: var(--spacing-md);
 }
+
+/* ============================================
+   SERVER MANAGEMENT PAGE
+   ============================================ */
+
+/* Page Header */
+.page-header {
+    margin-bottom: var(--spacing-2xl);
+}
+
+.page-header h1 {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    font-size: 2rem;
+    font-weight: var(--font-weight-bold);
+    color: var(--color-text-primary);
+    margin-bottom: var(--spacing-xs);
+}
+
+.page-header .text-muted {
+    color: var(--color-text-secondary);
+    font-size: 1rem;
+}
+
+/* Servers Page Layout */
+.servers-page {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-xl);
+}
+
+.servers-header {
+    display: grid;
+    gap: var(--spacing-lg);
+}
+
+.servers-actions {
+    display: grid;
+    gap: var(--spacing-lg);
+}
+
+.servers-actions .actions-card .action-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--spacing-md);
+}
+
+.servers-actions .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--spacing-xs);
+}
+
+.servers-actions .btn-icon {
+    font-size: 1.25rem;
+}
+
+/* Servers List */
+.servers-list {
+    display: grid;
+    gap: var(--spacing-lg);
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+}
+
+/* Server Card */
+.server-card {
+    position: relative;
+    transition: all var(--transition-normal);
+}
+
+.server-card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-lg);
+}
+
+.server-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding: var(--spacing-lg);
+    border-bottom: 1px solid var(--color-border-primary);
+}
+
+.server-info {
+    display: flex;
+    gap: var(--spacing-md);
+    flex: 1;
+}
+
+.server-type-icon {
+    font-size: 2rem;
+    line-height: 1;
+}
+
+.server-details {
+    flex: 1;
+    min-width: 0;
+}
+
+.server-name {
+    font-size: 1.125rem;
+    font-weight: var(--font-weight-semibold);
+    margin: 0 0 var(--spacing-xs) 0;
+    color: var(--color-text-primary);
+}
+
+.server-name a {
+    color: var(--color-primary);
+    text-decoration: none;
+    transition: color var(--transition-fast);
+}
+
+.server-name a:hover {
+    color: var(--color-primary-light);
+}
+
+.server-meta {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-md);
+    font-size: 0.875rem;
+    color: var(--color-text-secondary);
+}
+
+.server-type {
+    padding: var(--spacing-2xs) var(--spacing-xs);
+    background: var(--color-bg-tertiary);
+    border-radius: var(--border-radius-sm);
+    font-weight: var(--font-weight-medium);
+}
+
+.server-map-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    color: var(--color-primary);
+    text-decoration: none;
+    transition: color var(--transition-fast);
+}
+
+.server-map-link:hover {
+    color: var(--color-primary-light);
+}
+
+.server-status {
+    flex-shrink: 0;
+}
+
+.server-card-body {
+    padding: var(--spacing-lg);
+}
+
+.server-stats {
+    display: grid;
+    gap: var(--spacing-md);
+}
+
+.stat-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.stat-label {
+    color: var(--color-text-secondary);
+    font-size: 0.875rem;
+    font-weight: var(--font-weight-medium);
+}
+
+.stat-value {
+    color: var(--color-text-primary);
+    font-size: 1rem;
+    font-weight: var(--font-weight-semibold);
+}
+
+.server-card-actions {
+    padding: var(--spacing-md) var(--spacing-lg);
+    background: var(--color-bg-tertiary);
+    border-top: 1px solid var(--color-border-primary);
+    border-bottom-left-radius: var(--border-radius-lg);
+    border-bottom-right-radius: var(--border-radius-lg);
+}
+
+.server-card-actions .btn-group {
+    display: flex;
+    gap: var(--spacing-xs);
+}
+
+.server-card-actions .btn {
+    flex: 1;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--spacing-xs);
+}
+
+/* Server Status Classes */
+.server-started {
+    border-left: 4px solid var(--color-success);
+}
+
+.server-starting {
+    border-left: 4px solid var(--color-warning);
+}
+
+.server-stopping {
+    border-left: 4px solid var(--color-warning);
+}
+
+.server-stopped {
+    border-left: 4px solid var(--color-text-tertiary);
+}
+
+.server-timeout {
+    border-left: 4px solid var(--color-danger);
+}
+
+/* Responsive Design for Servers Page */
+@media (max-width: 768px) {
+    .servers-list {
+        grid-template-columns: 1fr;
+    }
+
+    .servers-actions .action-buttons {
+        flex-direction: column;
+    }
+
+    .servers-actions .btn {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .server-card-actions .btn-group {
+        flex-wrap: wrap;
+    }
+}

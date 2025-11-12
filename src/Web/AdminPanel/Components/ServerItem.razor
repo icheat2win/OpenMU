@@ -9,88 +9,105 @@
   return;
 }
 
-<tr class=@(this.Server.ServerState == ServerState.Started ? "success" : "warning") id=@Server.Id>
-    <td>
-        @if (this.Server.Type == ServerType.GameServer)
-        {
-            // Link to a reverse proxied server page
-            // Take a look at the nginx.conf
-            // For an all-in-one-deployment, this link leads to the MapPage.
-            <a href="/gameServer/@(this.Server.Id)/" target="_blank"><span class="oi oi-map"></span></a>
-        }
-    </td>
-    <td>
-        @switch (this.Server.Type)
-        {
-            case ServerType.GameServer:
-                <NavLink href="@("edit-config/" + typeof(GameServerDefinition).FullName + "/" + this.Server.ConfigurationId)">@this.Server.Description</NavLink>
-                break;
-            case ServerType.ConnectServer:
-                <NavLink href="@("edit-connectionServer/" + this.Server.ConfigurationId)">@this.Server.Description</NavLink>
-                break;
-            case ServerType.ChatServer:
-                <NavLink href="@("edit-config/" + typeof(ChatServerDefinition).FullName + "/" + this.Server.ConfigurationId)">@this.Server.Description</NavLink>
-                break;
-            default:
-                @this.Server.Description
-                break;
-        }
-    </td>
-    <td>
-        <div>@this.Server.CurrentConnections / @(this.Server.MaximumConnections < int.MaxValue ? this.Server.MaximumConnections.ToString() : "∞")</div>
-    </td>
-    <td>@this.GetStateCaption()</td>
-    <td>
-      <div class="btn-group" role="group" aria-label="Server control">
-      @if (this.Server.ServerState == ServerState.Started)
-      {
-        <button type="button" class="btn-secondary" title="Start" disabled>
-          <span class="oi oi-media-play"></span>
-        </button>
-        <button type="button" class="btn-warning" title="Stop" @onclick="this.OnPauseClickAsync">
-          <span class="oi oi-media-pause"></span>
-        </button>
-        @if (this.Server.Type is ServerType.GameServer or ServerType.ConnectServer)
-        {
-          <button type="button" class="btn-secondary" title="Remove" disabled>
-            <span class="oi oi-trash"></span>
-          </button>
-        }
-      }
-      else if ((this.Server.ServerState == ServerState.Stopped))
-      {
-        <button type="button" class="btn-success" title="Start" @onclick="this.OnStartClickAsync">
-          <span class="oi oi-media-play"></span>
-        </button>
-        <button type="button" class="btn-secondary" title="Stop" disabled>
-          <span class="oi oi-media-pause"></span>
-        </button>
-        @if (this.Server.Type is ServerType.GameServer or ServerType.ConnectServer)
-        {
-          <button type="button" class="btn-danger" title="Remove" @onclick="this.OnDeleteServerClickAsync">
-            <span class="oi oi-trash"></span>
-          </button>
-        }
-      }
-      else
-      {
-        <button type="button" class="btn-secondary" title="Start" disabled>
-          <span class="oi oi-media-play"></span>
-        </button>
-        <button type="button" class="btn-secondary" title="Stop" disabled>
-          <span class="oi oi-media-pause"></span>
-        </button>
-        @if (this.Server.Type is ServerType.GameServer or ServerType.ConnectServer)
-        {
-                  <button type="button" class="btn-secondary" title="Remove" disabled>
-            <span class="oi oi-trash"></span>
-          </button>
-        }
-      }
-      </div>
-
-    </td>
-</tr>
+<ModernCard CssClass="server-card @GetServerStatusClass()">
+    <div class="server-card-header">
+        <div class="server-info">
+            <div class="server-type-icon">
+                @GetServerTypeIcon()
+            </div>
+            <div class="server-details">
+                <h4 class="server-name">
+                    @switch (this.Server.Type)
+                    {
+                        case ServerType.GameServer:
+                            <NavLink href="@("edit-config/" + typeof(GameServerDefinition).FullName + "/" + this.Server.ConfigurationId)">@this.Server.Description</NavLink>
+                            break;
+                        case ServerType.ConnectServer:
+                            <NavLink href="@("edit-connectionServer/" + this.Server.ConfigurationId)">@this.Server.Description</NavLink>
+                            break;
+                        case ServerType.ChatServer:
+                            <NavLink href="@("edit-config/" + typeof(ChatServerDefinition).FullName + "/" + this.Server.ConfigurationId)">@this.Server.Description</NavLink>
+                            break;
+                        default:
+                            @this.Server.Description
+                            break;
+                    }
+                </h4>
+                <div class="server-meta">
+                    <span class="server-type">@GetServerTypeText()</span>
+                    @if (this.Server.Type == ServerType.GameServer)
+                    {
+                        <a href="/gameServer/@(this.Server.Id)/" target="_blank" class="server-map-link" title="View Map">
+                            <span>🗺️</span> Map
+                        </a>
+                    }
+                </div>
+            </div>
+        </div>
+        <div class="server-status">
+            <StatBadge Value="@GetStateCaption()" Color="@GetServerStatusBadgeColor()" />
+        </div>
+    </div>
+    
+    <div class="server-card-body">
+        <div class="server-stats">
+            <div class="stat-item">
+                <span class="stat-label">Players</span>
+                <span class="stat-value">@this.Server.CurrentConnections / @(this.Server.MaximumConnections < int.MaxValue ? this.Server.MaximumConnections.ToString() : "∞")</span>
+            </div>
+        </div>
+    </div>
+    
+    <div class="server-card-actions">
+        <div class="btn-group" role="group" aria-label="Server control">
+            @if (this.Server.ServerState == ServerState.Started)
+            {
+                <button type="button" class="btn btn-secondary" title="Start" disabled>
+                    <span>▶️</span>
+                </button>
+                <button type="button" class="btn btn-warning" title="Stop" @onclick="this.OnPauseClickAsync">
+                    <span>⏸️</span> Stop
+                </button>
+                @if (this.Server.Type is ServerType.GameServer or ServerType.ConnectServer)
+                {
+                    <button type="button" class="btn btn-secondary" title="Remove" disabled>
+                        <span>🗑️</span>
+                    </button>
+                }
+            }
+            else if ((this.Server.ServerState == ServerState.Stopped))
+            {
+                <button type="button" class="btn btn-success" title="Start" @onclick="this.OnStartClickAsync">
+                    <span>▶️</span> Start
+                </button>
+                <button type="button" class="btn btn-secondary" title="Stop" disabled>
+                    <span>⏸️</span>
+                </button>
+                @if (this.Server.Type is ServerType.GameServer or ServerType.ConnectServer)
+                {
+                    <button type="button" class="btn btn-danger" title="Remove" @onclick="this.OnDeleteServerClickAsync">
+                        <span>🗑️</span> Remove
+                    </button>
+                }
+            }
+            else
+            {
+                <button type="button" class="btn btn-secondary" title="Start" disabled>
+                    <span>▶️</span>
+                </button>
+                <button type="button" class="btn btn-secondary" title="Stop" disabled>
+                    <span>⏸️</span>
+                </button>
+                @if (this.Server.Type is ServerType.GameServer or ServerType.ConnectServer)
+                {
+                    <button type="button" class="btn btn-secondary" title="Remove" disabled>
+                        <span>🗑️</span>
+                    </button>
+                }
+            }
+        </div>
+    </div>
+</ModernCard>
 
 @code {
 
@@ -245,5 +262,53 @@
         }
 
         return string.Empty;
+    }
+
+    private string GetServerStatusClass()
+    {
+        return this.Server.ServerState switch
+        {
+            ServerState.Started => "server-started",
+            ServerState.Starting => "server-starting",
+            ServerState.Stopping => "server-stopping",
+            ServerState.Stopped => "server-stopped",
+            ServerState.Timeout => "server-timeout",
+            _ => string.Empty
+        };
+    }
+
+    private string GetServerStatusBadgeColor()
+    {
+        return this.Server.ServerState switch
+        {
+            ServerState.Started => "success",
+            ServerState.Starting => "warning",
+            ServerState.Stopping => "warning",
+            ServerState.Stopped => "default",
+            ServerState.Timeout => "danger",
+            _ => "default"
+        };
+    }
+
+    private string GetServerTypeIcon()
+    {
+        return this.Server.Type switch
+        {
+            ServerType.GameServer => "🎮",
+            ServerType.ConnectServer => "🔗",
+            ServerType.ChatServer => "💬",
+            _ => "🖥️"
+        };
+    }
+
+    private string GetServerTypeText()
+    {
+        return this.Server.Type switch
+        {
+            ServerType.GameServer => "Game Server",
+            ServerType.ConnectServer => "Connect Server",
+            ServerType.ChatServer => "Chat Server",
+            _ => "Unknown"
+        };
     }
 }

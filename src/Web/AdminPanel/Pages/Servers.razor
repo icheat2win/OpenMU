@@ -6,68 +6,63 @@
 
 <PageTitle>OpenMU: Servers</PageTitle>
 <Breadcrumb IsFirstFromRoot="true" Caption="Servers"/>
-<h1>Servers</h1>
+
+<div class="page-header">
+    <h1>🖥️ Server Management</h1>
+    <p class="text-muted">Manage and monitor all OpenMU servers</p>
+</div>
 
 @if (_servers == null)
 {
-    <p><em>Loading...</em></p>
+    <div class="loading-container">
+        <div class="spinner"></div>
+        <p>Loading servers...</p>
+    </div>
 }
 else
 {
-<div>
-  <table>
-    <thead>
-    <tr>
-      <th></th>
-      <th class="col-sm-7">Server Name</th>
-      <th class="col-sm-1">Players</th>
-      <th class="col-sm-2">Current State</th>
-      <th class="col-sm-2">Action</th>
-    </tr>
-    </thead>
-    <tfoot>
-    <TotalOnlineCounter Servers=@_servers />
-    </tfoot>
-    <tbody>
-    @foreach (var server in this._servers.OrderBy(s => s.Type).ThenBy(s => s.Description))
-    {
-      <ServerItem Server=@server/>
-    }
-    
-    <tr>
-      <td></td>
-      <td>
-        <NavLink class="btn btn-primary" href="create-game-server">
-          <span class="oi oi-plus"></span> Game Server
-        </NavLink>
-        <NavLink class="btn btn-primary" href="create-connect-server">
-            <span class="oi oi-plus"></span> Connect Server
-        </NavLink>
-      </td>
-      <td></td>
-      <td></td>
-      <td>
-        @if (this.ServerInstanceManager is not null)
+<div class="servers-page">
+    <div class="servers-header">
+        <SectionCard Title="Server Overview" Icon="📊">
+            <TotalOnlineCounter Servers=@_servers />
+        </SectionCard>
+    </div>
+
+    <div class="servers-actions">
+        <ModernCard Title="Quick Actions" Icon="⚡" CssClass="actions-card">
+            <div class="action-buttons">
+                <NavLink class="btn btn-primary" href="create-game-server">
+                    <span class="btn-icon">🎮</span> Create Game Server
+                </NavLink>
+                <NavLink class="btn btn-primary" href="create-connect-server">
+                    <span class="btn-icon">🔗</span> Create Connect Server
+                </NavLink>
+                @if (this.ServerInstanceManager is not null)
+                {
+                    @if (this._isRestarting)
+                    {
+                        <button type="button" class="btn btn-warning" disabled="disabled">
+                            <div class="spinner"></div>
+                            Restarting...
+                        </button>
+                    }
+                    else
+                    {
+                        <button type="button" class="btn btn-warning" @onclick="this.OnReloadAndRestartClickAsync">
+                            <span class="btn-icon">🔄</span> Reload & Restart All
+                        </button>
+                    }
+                }
+            </div>
+        </ModernCard>
+    </div>
+
+    <div class="servers-list">
+        @foreach (var server in this._servers.OrderBy(s => s.Type).ThenBy(s => s.Description))
         {
-          @if (this._isRestarting)
-          {
-            <button type="button" class="btn-warning" disabled="disabled">
-              <div class="spinner-border text-secondary" role="status">
-              </div>
-            </button>
-          }
-          else
-          {
-            <button type="button" class="btn-warning" @onclick="this.OnReloadAndRestartClickAsync">
-              <span class="oi oi-reload"></span>
-              Reload configuration and restart all Game Servers
-            </button>
-          }
+            <ServerItem Server=@server/>
         }
-      </td>
-    </tr>
-    </tbody>
-  </table>
+    </div>
 </div>
 }
 
