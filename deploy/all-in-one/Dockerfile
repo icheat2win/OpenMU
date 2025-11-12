@@ -12,10 +12,14 @@ EXPOSE 55980
 
 FROM --platform=$BUILDPLATFORM mcr.microsoft.com/dotnet/sdk:9.0-alpine AS build
 WORKDIR /src
-COPY ["Startup/MUnique.OpenMU.Startup.csproj", "Startup/"]
-RUN dotnet restore "Startup/MUnique.OpenMU.Startup.csproj"
+COPY ["src/Startup/MUnique.OpenMU.Startup.csproj", "src/Startup/"]
+COPY ["src/Directory.Build.props", "src/"]
+COPY ["src/SharedAssemblyInfo.cs", "src/"]
+COPY ["src/SharedGlobalUsings.cs", "src/"]
+COPY ["src/stylecop.json", "src/"]
+RUN dotnet restore "src/Startup/MUnique.OpenMU.Startup.csproj"
 COPY . .
-WORKDIR "/src/Startup"
+WORKDIR "/src/src/Startup"
 RUN dotnet build "MUnique.OpenMU.Startup.csproj" -c Release -o /app/build -p:ci=true
 
 FROM build AS publish
