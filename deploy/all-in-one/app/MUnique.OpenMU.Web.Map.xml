@@ -257,27 +257,6 @@
             Gets the y coordinate on the game map.
             </summary>
         </member>
-        <member name="T:MUnique.OpenMU.Web.Map.MapApp">
-            <summary>
-            The admin panel host class which provides a web server over ASP.NET Core Kestrel.
-            </summary>
-        </member>
-        <member name="M:MUnique.OpenMU.Web.Map.MapApp.#ctor(MUnique.OpenMU.Web.Map.IObservableGameServer,Microsoft.Extensions.Logging.ILoggerFactory)">
-            <summary>
-            Initializes a new instance of the <see cref="T:MUnique.OpenMU.Web.Map.MapApp" /> class.
-            </summary>
-            <param name="gameServer">The game server which contains the hosted maps.</param>
-            <param name="loggerFactory">The logger factory.</param>
-        </member>
-        <member name="M:MUnique.OpenMU.Web.Map.MapApp.StartAsync(System.Threading.CancellationToken)">
-            <inheritdoc />
-        </member>
-        <member name="M:MUnique.OpenMU.Web.Map.MapApp.StopAsync(System.Threading.CancellationToken)">
-            <inheritdoc />
-        </member>
-        <member name="M:MUnique.OpenMU.Web.Map.MapApp.Dispose">
-            <inheritdoc />
-        </member>
         <member name="T:MUnique.OpenMU.Web.Map.Map.CustomPlugInContainer`1">
             <summary>
             A plugin container which allows to manually register plugins.
@@ -509,6 +488,27 @@
             Lightweight implementation of <see cref="T:MUnique.OpenMU.Web.Map.IGameMapInfo"/> for terrain rendering only.
             Avoids the expensive ObservableGameServerAdapter creation.
             </summary>
+        </member>
+        <member name="T:MUnique.OpenMU.Web.Map.MapApp">
+            <summary>
+            The admin panel host class which provides a web server over ASP.NET Core Kestrel.
+            </summary>
+        </member>
+        <member name="M:MUnique.OpenMU.Web.Map.MapApp.#ctor(MUnique.OpenMU.Web.Map.IObservableGameServer,Microsoft.Extensions.Logging.ILoggerFactory)">
+            <summary>
+            Initializes a new instance of the <see cref="T:MUnique.OpenMU.Web.Map.MapApp" /> class.
+            </summary>
+            <param name="gameServer">The game server which contains the hosted maps.</param>
+            <param name="loggerFactory">The logger factory.</param>
+        </member>
+        <member name="M:MUnique.OpenMU.Web.Map.MapApp.StartAsync(System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="M:MUnique.OpenMU.Web.Map.MapApp.StopAsync(System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="M:MUnique.OpenMU.Web.Map.MapApp.Dispose">
+            <inheritdoc />
         </member>
         <member name="T:MUnique.OpenMU.Web.Map.ObservableGameServerAdapter">
             <summary>

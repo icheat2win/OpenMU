@@ -97,7 +97,6 @@
           }
         }
       },
-      "BuildWebCompiler2022/1.14.10": {},
       "Castle.Core/5.1.1": {
         "dependencies": {
           "System.Diagnostics.EventLog": "9.0.0"
@@ -1164,7 +1163,6 @@
           "Blazored.Modal": "7.3.1",
           "Blazored.Toast": "4.2.1",
           "Blazored.Typeahead": "4.7.0",
-          "BuildWebCompiler2022": "1.14.10",
           "MUnique.OpenMU.DataModel": "1.0.0",
           "MUnique.OpenMU.GameLogic": "1.0.0",
           "MUnique.OpenMU.Persistence": "1.0.0",
@@ -1200,7 +1198,6 @@
       },
       "MUnique.OpenMU.Web.Map/1.0.0": {
         "dependencies": {
-          "BuildWebCompiler2022": "1.14.10",
           "MUnique.OpenMU.GameLogic": "1.0.0",
           "Mapster": "7.4.0",
           "Nito.AsyncEx": "5.1.2",
@@ -1256,13 +1253,6 @@
       "sha512": "sha512-wsPTwoA9fkHOxjEh0W0brNeTaVBaMCFwfBLehbRhfW+RzlIrYtlJ5qFpT5f377Ej6ELk+xeoUrkDBx9c8JF7DQ==",
       "path": "blazorinputfile/0.2.0",
       "hashPath": "blazorinputfile.0.2.0.nupkg.sha512"
-    },
-    "BuildWebCompiler2022/1.14.10": {
-      "type": "package",
-      "serviceable": true,
-      "sha512": "sha512-K6DuYLk2vB1H35DdAyqaqYkAOSTRcB6rxaPIyL1T0k0cOx70Jm4QKav7JzJx1+6KoltvXlM4oCtmgRbm2F4jhw==",
-      "path": "buildwebcompiler2022/1.14.10",
-      "hashPath": "buildwebcompiler2022.1.14.10.nupkg.sha512"
     },
     "Castle.Core/5.1.1": {
       "type": "package",

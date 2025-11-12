@@ -12215,17 +12215,6 @@
             Gets or sets a value indicating whether the argument is required to execute the command.
             </summary>
         </member>
-        <member name="T:MUnique.OpenMU.GameLogic.PlugIns.ChatCommands.ArgumentsBase">
-            <summary>
-            The base of every arguments class used in the commands.
-            </summary>
-        </member>
-        <member name="M:MUnique.OpenMU.GameLogic.PlugIns.ChatCommands.ArgumentsBase.ToString">
-            <summary>
-            This makes it easier to print the arguments and its values for debugging.
-            </summary>
-            <returns>String.</returns>
-        </member>
         <member name="T:MUnique.OpenMU.GameLogic.PlugIns.ChatCommands.Arguments.BanAccChatCommandArgs">
             <summary>
             Arguments used by BanAccChatCommandPlugIn.
@@ -12554,6 +12543,17 @@
             <summary>
             Gets or sets the character name.
             </summary>
+        </member>
+        <member name="T:MUnique.OpenMU.GameLogic.PlugIns.ChatCommands.ArgumentsBase">
+            <summary>
+            The base of every arguments class used in the commands.
+            </summary>
+        </member>
+        <member name="M:MUnique.OpenMU.GameLogic.PlugIns.ChatCommands.ArgumentsBase.ToString">
+            <summary>
+            This makes it easier to print the arguments and its values for debugging.
+            </summary>
+            <returns>String.</returns>
         </member>
         <member name="T:MUnique.OpenMU.GameLogic.PlugIns.ChatCommands.BanAccChatCommandPlugIn">
             <summary>

@@ -1,0 +1,63 @@
+/* _content/MUnique.OpenMU.Web.AdminPanel/Components/Form/ItemStorageField.razor.rz.scp.css */
+.editor-container[b-5mhv4spowv] {
+    
+}
+
+.editor-row[b-5mhv4spowv] {
+    flex-wrap: nowrap;
+    width: inherit;
+}
+
+.left-column[b-5mhv4spowv] {
+    min-width: 336px;
+    max-width: 336px;
+    padding-left: 0;
+    padding-right: 0;
+    height: max-content;
+}
+
+.extension-header[b-5mhv4spowv] {
+    width: 100%;
+    background-color: black;
+    color: wheat;
+    text-align: center;
+    border-top-color: wheat;
+    border-top-width: 1px;
+    border-top-style: dashed;
+}
+
+.equipped-box[b-5mhv4spowv] {
+    background-color: black;
+    padding-left: 5px;
+}
+
+.middle-column[b-5mhv4spowv] {
+    max-width: 45px;
+    min-width: 45px;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+.right-column[b-5mhv4spowv] {
+    padding-right: 0;
+}
+
+.item-edit[b-5mhv4spowv] {
+    background-color: transparent;
+}
+/* _content/MUnique.OpenMU.Web.AdminPanel/Pages/EditConfigGrid.razor.rz.scp.css */
+
+.col-title[b-0om9i9s3rh] {
+    min-width: 0px;
+    display: flex;
+    flex-grow: 1;
+    padding: 0;
+}
+
+.col-title-text[b-0om9i9s3rh] {
+    font-weight: bold;
+}
+
+.col-search[b-0om9i9s3rh] {
+    width: 50%;
+}

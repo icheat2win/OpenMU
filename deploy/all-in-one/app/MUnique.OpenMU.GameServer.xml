@@ -857,6 +857,156 @@
         <member name="M:MUnique.OpenMU.GameServer.MessageHandler.CastleSiege.CastleSiegeUnregisterRequestHandlerPlugIn.HandlePacketAsync(MUnique.OpenMU.GameLogic.Player,System.Memory{System.Byte})">
             <inheritdoc/>
         </member>
+        <member name="T:MUnique.OpenMU.GameServer.MessageHandler.Character.CharacterAddMasterPointPacketHandlerPlugIn">
+            <summary>
+            Sub packet handler for master skill point add requests.
+            </summary>
+        </member>
+        <member name="P:MUnique.OpenMU.GameServer.MessageHandler.Character.CharacterAddMasterPointPacketHandlerPlugIn.IsEncryptionExpected">
+            <inheritdoc/>
+        </member>
+        <member name="P:MUnique.OpenMU.GameServer.MessageHandler.Character.CharacterAddMasterPointPacketHandlerPlugIn.Key">
+            <inheritdoc/>
+        </member>
+        <member name="M:MUnique.OpenMU.GameServer.MessageHandler.Character.CharacterAddMasterPointPacketHandlerPlugIn.HandlePacketAsync(MUnique.OpenMU.GameLogic.Player,System.Memory{System.Byte})">
+            <inheritdoc />
+        </member>
+        <member name="T:MUnique.OpenMU.GameServer.MessageHandler.Character.CharacterClientReadyPacketHandlerPlugIn">
+            <summary>
+            Sub packet handler for 'client ready' packets which are sent by the client after map changes.
+            </summary>
+        </member>
+        <member name="P:MUnique.OpenMU.GameServer.MessageHandler.Character.CharacterClientReadyPacketHandlerPlugIn.IsEncryptionExpected">
+            <inheritdoc/>
+        </member>
+        <member name="P:MUnique.OpenMU.GameServer.MessageHandler.Character.CharacterClientReadyPacketHandlerPlugIn.Key">
+            <inheritdoc/>
+        </member>
+        <member name="M:MUnique.OpenMU.GameServer.MessageHandler.Character.CharacterClientReadyPacketHandlerPlugIn.HandlePacketAsync(MUnique.OpenMU.GameLogic.Player,System.Memory{System.Byte})">
+            <inheritdoc />
+        </member>
+        <member name="T:MUnique.OpenMU.GameServer.MessageHandler.Character.CharacterCreatePacketHandlerPlugIn">
+            <summary>
+            Packet handler for character creation packets (0xF3, 0x01 identifier).
+            </summary>
+        </member>
+        <member name="P:MUnique.OpenMU.GameServer.MessageHandler.Character.CharacterCreatePacketHandlerPlugIn.IsEncryptionExpected">
+            <inheritdoc/>
+        </member>
+        <member name="P:MUnique.OpenMU.GameServer.MessageHandler.Character.CharacterCreatePacketHandlerPlugIn.Key">
+            <inheritdoc/>
+        </member>
+        <member name="M:MUnique.OpenMU.GameServer.MessageHandler.Character.CharacterCreatePacketHandlerPlugIn.HandlePacketAsync(MUnique.OpenMU.GameLogic.Player,System.Memory{System.Byte})">
+            <inheritdoc />
+        </member>
+        <member name="T:MUnique.OpenMU.GameServer.MessageHandler.Character.CharacterDeletePacketHandlerPlugIn">
+            <summary>
+            Packet handler for character delete packets (0xF3, 0x02 identifier).
+            </summary>
+        </member>
+        <member name="P:MUnique.OpenMU.GameServer.MessageHandler.Character.CharacterDeletePacketHandlerPlugIn.IsEncryptionExpected">
+            <inheritdoc/>
+        </member>
+        <member name="P:MUnique.OpenMU.GameServer.MessageHandler.Character.CharacterDeletePacketHandlerPlugIn.Key">
+            <inheritdoc/>
+        </member>
+        <member name="M:MUnique.OpenMU.GameServer.MessageHandler.Character.CharacterDeletePacketHandlerPlugIn.HandlePacketAsync(MUnique.OpenMU.GameLogic.Player,System.Memory{System.Byte})">
+            <inheritdoc />
+        </member>
+        <member name="T:MUnique.OpenMU.GameServer.MessageHandler.Character.CharacterFocusPacketHandlerPlugIn">
+            <summary>
+            Packet handler for character focus packets (0xF3, 0x15 identifier).
+            </summary>
+        </member>
+        <member name="P:MUnique.OpenMU.GameServer.MessageHandler.Character.CharacterFocusPacketHandlerPlugIn.IsEncryptionExpected">
+            <inheritdoc/>
+        </member>
+        <member name="P:MUnique.OpenMU.GameServer.MessageHandler.Character.CharacterFocusPacketHandlerPlugIn.Key">
+            <inheritdoc/>
+        </member>
+        <member name="M:MUnique.OpenMU.GameServer.MessageHandler.Character.CharacterFocusPacketHandlerPlugIn.HandlePacketAsync(MUnique.OpenMU.GameLogic.Player,System.Memory{System.Byte})">
+            <inheritdoc />
+        </member>
+        <member name="T:MUnique.OpenMU.GameServer.MessageHandler.Character.CharacterGroupHandlerPlugIn">
+            <summary>
+            Packet handler for character packets (0xF3 identifier).
+            </summary>
+        </member>
+        <member name="F:MUnique.OpenMU.GameServer.MessageHandler.Character.CharacterGroupHandlerPlugIn.GroupKey">
+            <summary>
+            The group key.
+            </summary>
+        </member>
+        <member name="M:MUnique.OpenMU.GameServer.MessageHandler.Character.CharacterGroupHandlerPlugIn.#ctor(MUnique.OpenMU.GameServer.IClientVersionProvider,MUnique.OpenMU.PlugIns.PlugInManager,Microsoft.Extensions.Logging.ILoggerFactory)">
+            <summary>
+            Initializes a new instance of the <see cref="T:MUnique.OpenMU.GameServer.MessageHandler.Character.CharacterGroupHandlerPlugIn" /> class.
+            </summary>
+            <param name="clientVersionProvider">The client version provider.</param>
+            <param name="manager">The manager.</param>
+            <param name="loggerFactory">The logger factory.</param>
+        </member>
+        <member name="P:MUnique.OpenMU.GameServer.MessageHandler.Character.CharacterGroupHandlerPlugIn.IsEncryptionExpected">
+            <inheritdoc/>
+        </member>
+        <member name="P:MUnique.OpenMU.GameServer.MessageHandler.Character.CharacterGroupHandlerPlugIn.Key">
+            <inheritdoc/>
+        </member>
+        <member name="T:MUnique.OpenMU.GameServer.MessageHandler.Character.CharacterKeyConfigurationPacketHandlerPlugIn">
+            <summary>
+            Packet handler for character key configuration packets (0xF3, 0x30 identifier).
+            </summary>
+        </member>
+        <member name="P:MUnique.OpenMU.GameServer.MessageHandler.Character.CharacterKeyConfigurationPacketHandlerPlugIn.IsEncryptionExpected">
+            <inheritdoc/>
+        </member>
+        <member name="P:MUnique.OpenMU.GameServer.MessageHandler.Character.CharacterKeyConfigurationPacketHandlerPlugIn.Key">
+            <inheritdoc/>
+        </member>
+        <member name="M:MUnique.OpenMU.GameServer.MessageHandler.Character.CharacterKeyConfigurationPacketHandlerPlugIn.HandlePacketAsync(MUnique.OpenMU.GameLogic.Player,System.Memory{System.Byte})">
+            <inheritdoc />
+        </member>
+        <member name="T:MUnique.OpenMU.GameServer.MessageHandler.Character.CharacterListRequestPacketHandlerPlugIn">
+            <summary>
+            Packet handler for character list request packets (0xF3, 0x00 identifier).
+            </summary>
+        </member>
+        <member name="P:MUnique.OpenMU.GameServer.MessageHandler.Character.CharacterListRequestPacketHandlerPlugIn.IsEncryptionExpected">
+            <inheritdoc/>
+        </member>
+        <member name="P:MUnique.OpenMU.GameServer.MessageHandler.Character.CharacterListRequestPacketHandlerPlugIn.Key">
+            <inheritdoc/>
+        </member>
+        <member name="M:MUnique.OpenMU.GameServer.MessageHandler.Character.CharacterListRequestPacketHandlerPlugIn.HandlePacketAsync(MUnique.OpenMU.GameLogic.Player,System.Memory{System.Byte})">
+            <inheritdoc />
+        </member>
+        <member name="T:MUnique.OpenMU.GameServer.MessageHandler.Character.CharacterSelectPacketHandlerPlugIn">
+            <summary>
+            Packet handler for character select packets (0xF3, 0x03 identifier).
+            </summary>
+        </member>
+        <member name="P:MUnique.OpenMU.GameServer.MessageHandler.Character.CharacterSelectPacketHandlerPlugIn.IsEncryptionExpected">
+            <inheritdoc/>
+        </member>
+        <member name="P:MUnique.OpenMU.GameServer.MessageHandler.Character.CharacterSelectPacketHandlerPlugIn.Key">
+            <inheritdoc/>
+        </member>
+        <member name="M:MUnique.OpenMU.GameServer.MessageHandler.Character.CharacterSelectPacketHandlerPlugIn.HandlePacketAsync(MUnique.OpenMU.GameLogic.Player,System.Memory{System.Byte})">
+            <inheritdoc />
+        </member>
+        <member name="T:MUnique.OpenMU.GameServer.MessageHandler.Character.CharacterStatIncreasePacketHandlerPlugIn">
+            <summary>
+            Packet handler for character stat increase packets (0xF3, 0x06 identifier).
+            </summary>
+        </member>
+        <member name="P:MUnique.OpenMU.GameServer.MessageHandler.Character.CharacterStatIncreasePacketHandlerPlugIn.IsEncryptionExpected">
+            <inheritdoc/>
+        </member>
+        <member name="P:MUnique.OpenMU.GameServer.MessageHandler.Character.CharacterStatIncreasePacketHandlerPlugIn.Key">
+            <inheritdoc/>
+        </member>
+        <member name="M:MUnique.OpenMU.GameServer.MessageHandler.Character.CharacterStatIncreasePacketHandlerPlugIn.HandlePacketAsync(MUnique.OpenMU.GameLogic.Player,System.Memory{System.Byte})">
+            <inheritdoc />
+        </member>
         <member name="T:MUnique.OpenMU.GameServer.MessageHandler.CharacterMoveBaseHandlerPlugIn">
             <summary>
             Abstract packet handler for move packets.
@@ -1044,156 +1194,6 @@
         </member>
         <member name="P:MUnique.OpenMU.GameServer.MessageHandler.CharacterWalkHandlerPlugIn075.Key">
             <inheritdoc/>
-        </member>
-        <member name="T:MUnique.OpenMU.GameServer.MessageHandler.Character.CharacterAddMasterPointPacketHandlerPlugIn">
-            <summary>
-            Sub packet handler for master skill point add requests.
-            </summary>
-        </member>
-        <member name="P:MUnique.OpenMU.GameServer.MessageHandler.Character.CharacterAddMasterPointPacketHandlerPlugIn.IsEncryptionExpected">
-            <inheritdoc/>
-        </member>
-        <member name="P:MUnique.OpenMU.GameServer.MessageHandler.Character.CharacterAddMasterPointPacketHandlerPlugIn.Key">
-            <inheritdoc/>
-        </member>
-        <member name="M:MUnique.OpenMU.GameServer.MessageHandler.Character.CharacterAddMasterPointPacketHandlerPlugIn.HandlePacketAsync(MUnique.OpenMU.GameLogic.Player,System.Memory{System.Byte})">
-            <inheritdoc />
-        </member>
-        <member name="T:MUnique.OpenMU.GameServer.MessageHandler.Character.CharacterClientReadyPacketHandlerPlugIn">
-            <summary>
-            Sub packet handler for 'client ready' packets which are sent by the client after map changes.
-            </summary>
-        </member>
-        <member name="P:MUnique.OpenMU.GameServer.MessageHandler.Character.CharacterClientReadyPacketHandlerPlugIn.IsEncryptionExpected">
-            <inheritdoc/>
-        </member>
-        <member name="P:MUnique.OpenMU.GameServer.MessageHandler.Character.CharacterClientReadyPacketHandlerPlugIn.Key">
-            <inheritdoc/>
-        </member>
-        <member name="M:MUnique.OpenMU.GameServer.MessageHandler.Character.CharacterClientReadyPacketHandlerPlugIn.HandlePacketAsync(MUnique.OpenMU.GameLogic.Player,System.Memory{System.Byte})">
-            <inheritdoc />
-        </member>
-        <member name="T:MUnique.OpenMU.GameServer.MessageHandler.Character.CharacterCreatePacketHandlerPlugIn">
-            <summary>
-            Packet handler for character creation packets (0xF3, 0x01 identifier).
-            </summary>
-        </member>
-        <member name="P:MUnique.OpenMU.GameServer.MessageHandler.Character.CharacterCreatePacketHandlerPlugIn.IsEncryptionExpected">
-            <inheritdoc/>
-        </member>
-        <member name="P:MUnique.OpenMU.GameServer.MessageHandler.Character.CharacterCreatePacketHandlerPlugIn.Key">
-            <inheritdoc/>
-        </member>
-        <member name="M:MUnique.OpenMU.GameServer.MessageHandler.Character.CharacterCreatePacketHandlerPlugIn.HandlePacketAsync(MUnique.OpenMU.GameLogic.Player,System.Memory{System.Byte})">
-            <inheritdoc />
-        </member>
-        <member name="T:MUnique.OpenMU.GameServer.MessageHandler.Character.CharacterDeletePacketHandlerPlugIn">
-            <summary>
-            Packet handler for character delete packets (0xF3, 0x02 identifier).
-            </summary>
-        </member>
-        <member name="P:MUnique.OpenMU.GameServer.MessageHandler.Character.CharacterDeletePacketHandlerPlugIn.IsEncryptionExpected">
-            <inheritdoc/>
-        </member>
-        <member name="P:MUnique.OpenMU.GameServer.MessageHandler.Character.CharacterDeletePacketHandlerPlugIn.Key">
-            <inheritdoc/>
-        </member>
-        <member name="M:MUnique.OpenMU.GameServer.MessageHandler.Character.CharacterDeletePacketHandlerPlugIn.HandlePacketAsync(MUnique.OpenMU.GameLogic.Player,System.Memory{System.Byte})">
-            <inheritdoc />
-        </member>
-        <member name="T:MUnique.OpenMU.GameServer.MessageHandler.Character.CharacterFocusPacketHandlerPlugIn">
-            <summary>
-            Packet handler for character focus packets (0xF3, 0x15 identifier).
-            </summary>
-        </member>
-        <member name="P:MUnique.OpenMU.GameServer.MessageHandler.Character.CharacterFocusPacketHandlerPlugIn.IsEncryptionExpected">
-            <inheritdoc/>
-        </member>
-        <member name="P:MUnique.OpenMU.GameServer.MessageHandler.Character.CharacterFocusPacketHandlerPlugIn.Key">
-            <inheritdoc/>
-        </member>
-        <member name="M:MUnique.OpenMU.GameServer.MessageHandler.Character.CharacterFocusPacketHandlerPlugIn.HandlePacketAsync(MUnique.OpenMU.GameLogic.Player,System.Memory{System.Byte})">
-            <inheritdoc />
-        </member>
-        <member name="T:MUnique.OpenMU.GameServer.MessageHandler.Character.CharacterGroupHandlerPlugIn">
-            <summary>
-            Packet handler for character packets (0xF3 identifier).
-            </summary>
-        </member>
-        <member name="F:MUnique.OpenMU.GameServer.MessageHandler.Character.CharacterGroupHandlerPlugIn.GroupKey">
-            <summary>
-            The group key.
-            </summary>
-        </member>
-        <member name="M:MUnique.OpenMU.GameServer.MessageHandler.Character.CharacterGroupHandlerPlugIn.#ctor(MUnique.OpenMU.GameServer.IClientVersionProvider,MUnique.OpenMU.PlugIns.PlugInManager,Microsoft.Extensions.Logging.ILoggerFactory)">
-            <summary>
-            Initializes a new instance of the <see cref="T:MUnique.OpenMU.GameServer.MessageHandler.Character.CharacterGroupHandlerPlugIn" /> class.
-            </summary>
-            <param name="clientVersionProvider">The client version provider.</param>
-            <param name="manager">The manager.</param>
-            <param name="loggerFactory">The logger factory.</param>
-        </member>
-        <member name="P:MUnique.OpenMU.GameServer.MessageHandler.Character.CharacterGroupHandlerPlugIn.IsEncryptionExpected">
-            <inheritdoc/>
-        </member>
-        <member name="P:MUnique.OpenMU.GameServer.MessageHandler.Character.CharacterGroupHandlerPlugIn.Key">
-            <inheritdoc/>
-        </member>
-        <member name="T:MUnique.OpenMU.GameServer.MessageHandler.Character.CharacterKeyConfigurationPacketHandlerPlugIn">
-            <summary>
-            Packet handler for character key configuration packets (0xF3, 0x30 identifier).
-            </summary>
-        </member>
-        <member name="P:MUnique.OpenMU.GameServer.MessageHandler.Character.CharacterKeyConfigurationPacketHandlerPlugIn.IsEncryptionExpected">
-            <inheritdoc/>
-        </member>
-        <member name="P:MUnique.OpenMU.GameServer.MessageHandler.Character.CharacterKeyConfigurationPacketHandlerPlugIn.Key">
-            <inheritdoc/>
-        </member>
-        <member name="M:MUnique.OpenMU.GameServer.MessageHandler.Character.CharacterKeyConfigurationPacketHandlerPlugIn.HandlePacketAsync(MUnique.OpenMU.GameLogic.Player,System.Memory{System.Byte})">
-            <inheritdoc />
-        </member>
-        <member name="T:MUnique.OpenMU.GameServer.MessageHandler.Character.CharacterListRequestPacketHandlerPlugIn">
-            <summary>
-            Packet handler for character list request packets (0xF3, 0x00 identifier).
-            </summary>
-        </member>
-        <member name="P:MUnique.OpenMU.GameServer.MessageHandler.Character.CharacterListRequestPacketHandlerPlugIn.IsEncryptionExpected">
-            <inheritdoc/>
-        </member>
-        <member name="P:MUnique.OpenMU.GameServer.MessageHandler.Character.CharacterListRequestPacketHandlerPlugIn.Key">
-            <inheritdoc/>
-        </member>
-        <member name="M:MUnique.OpenMU.GameServer.MessageHandler.Character.CharacterListRequestPacketHandlerPlugIn.HandlePacketAsync(MUnique.OpenMU.GameLogic.Player,System.Memory{System.Byte})">
-            <inheritdoc />
-        </member>
-        <member name="T:MUnique.OpenMU.GameServer.MessageHandler.Character.CharacterSelectPacketHandlerPlugIn">
-            <summary>
-            Packet handler for character select packets (0xF3, 0x03 identifier).
-            </summary>
-        </member>
-        <member name="P:MUnique.OpenMU.GameServer.MessageHandler.Character.CharacterSelectPacketHandlerPlugIn.IsEncryptionExpected">
-            <inheritdoc/>
-        </member>
-        <member name="P:MUnique.OpenMU.GameServer.MessageHandler.Character.CharacterSelectPacketHandlerPlugIn.Key">
-            <inheritdoc/>
-        </member>
-        <member name="M:MUnique.OpenMU.GameServer.MessageHandler.Character.CharacterSelectPacketHandlerPlugIn.HandlePacketAsync(MUnique.OpenMU.GameLogic.Player,System.Memory{System.Byte})">
-            <inheritdoc />
-        </member>
-        <member name="T:MUnique.OpenMU.GameServer.MessageHandler.Character.CharacterStatIncreasePacketHandlerPlugIn">
-            <summary>
-            Packet handler for character stat increase packets (0xF3, 0x06 identifier).
-            </summary>
-        </member>
-        <member name="P:MUnique.OpenMU.GameServer.MessageHandler.Character.CharacterStatIncreasePacketHandlerPlugIn.IsEncryptionExpected">
-            <inheritdoc/>
-        </member>
-        <member name="P:MUnique.OpenMU.GameServer.MessageHandler.Character.CharacterStatIncreasePacketHandlerPlugIn.Key">
-            <inheritdoc/>
-        </member>
-        <member name="M:MUnique.OpenMU.GameServer.MessageHandler.Character.CharacterStatIncreasePacketHandlerPlugIn.HandlePacketAsync(MUnique.OpenMU.GameLogic.Player,System.Memory{System.Byte})">
-            <inheritdoc />
         </member>
         <member name="T:MUnique.OpenMU.GameServer.MessageHandler.ChatMessageBaseHandlerPlugIn">
              <summary>
@@ -5884,25 +5884,6 @@
         <member name="M:MUnique.OpenMU.GameServer.RemoteView.CastleSiege.ShowCastleSiegeStatusPlugIn.ShowStatusAsync(System.String,System.String)">
             <inheritdoc/>
         </member>
-        <member name="T:MUnique.OpenMU.GameServer.RemoteView.CharacterStatTypeExtensions">
-            <summary>
-            Extensions for <see cref="T:MUnique.OpenMU.Network.Packets.CharacterStatAttribute"/>.
-            </summary>
-        </member>
-        <member name="M:MUnique.OpenMU.GameServer.RemoteView.CharacterStatTypeExtensions.GetAttributeDefinition(MUnique.OpenMU.Network.Packets.CharacterStatAttribute)">
-            <summary>
-            Gets the attribute definition of a <see cref="T:MUnique.OpenMU.Network.Packets.CharacterStatAttribute"/>.
-            </summary>
-            <param name="statType">Type of the stat.</param>
-            <returns>The corresponding <see cref="T:MUnique.OpenMU.AttributeSystem.AttributeDefinition"/>.</returns>
-        </member>
-        <member name="M:MUnique.OpenMU.GameServer.RemoteView.CharacterStatTypeExtensions.GetStatType(MUnique.OpenMU.AttributeSystem.AttributeDefinition)">
-            <summary>
-            Gets the <see cref="T:MUnique.OpenMU.Network.Packets.CharacterStatAttribute"/> of the specified <see cref="T:MUnique.OpenMU.AttributeSystem.AttributeDefinition"/>.
-            </summary>
-            <param name="attributeDefinition">The attribute definition.</param>
-            <returns>The corresponding <see cref="T:MUnique.OpenMU.Network.Packets.CharacterStatAttribute"/>.</returns>
-        </member>
         <member name="T:MUnique.OpenMU.GameServer.RemoteView.Character.AddExperienceExtendedPlugIn">
             <summary>
             The extended implementation of the <see cref="T:MUnique.OpenMU.GameLogic.Views.Character.IAddExperiencePlugIn"/> which is forwarding everything to the game client with specific data packets.
@@ -6502,6 +6483,25 @@
             Initializes a new instance of the <see cref="T:MUnique.OpenMU.GameServer.RemoteView.Character.UpdateStatsPlugIn"/> class.
             </summary>
             <param name="player">The player.</param>
+        </member>
+        <member name="T:MUnique.OpenMU.GameServer.RemoteView.CharacterStatTypeExtensions">
+            <summary>
+            Extensions for <see cref="T:MUnique.OpenMU.Network.Packets.CharacterStatAttribute"/>.
+            </summary>
+        </member>
+        <member name="M:MUnique.OpenMU.GameServer.RemoteView.CharacterStatTypeExtensions.GetAttributeDefinition(MUnique.OpenMU.Network.Packets.CharacterStatAttribute)">
+            <summary>
+            Gets the attribute definition of a <see cref="T:MUnique.OpenMU.Network.Packets.CharacterStatAttribute"/>.
+            </summary>
+            <param name="statType">Type of the stat.</param>
+            <returns>The corresponding <see cref="T:MUnique.OpenMU.AttributeSystem.AttributeDefinition"/>.</returns>
+        </member>
+        <member name="M:MUnique.OpenMU.GameServer.RemoteView.CharacterStatTypeExtensions.GetStatType(MUnique.OpenMU.AttributeSystem.AttributeDefinition)">
+            <summary>
+            Gets the <see cref="T:MUnique.OpenMU.Network.Packets.CharacterStatAttribute"/> of the specified <see cref="T:MUnique.OpenMU.AttributeSystem.AttributeDefinition"/>.
+            </summary>
+            <param name="attributeDefinition">The attribute definition.</param>
+            <returns>The corresponding <see cref="T:MUnique.OpenMU.Network.Packets.CharacterStatAttribute"/>.</returns>
         </member>
         <member name="T:MUnique.OpenMU.GameServer.RemoteView.ChatViewPlugIn">
             <summary>

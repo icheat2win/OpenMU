@@ -2551,6 +2551,11 @@
         <member name="M:MUnique.OpenMU.Web.AdminPanel.Pages.EditAccount.AddFormToRenderTree(Microsoft.AspNetCore.Components.Rendering.RenderTreeBuilder,System.Int32@)">
             <inheritdoc />
         </member>
+        <member name="T:MUnique.OpenMU.Web.AdminPanel.Pages.EditAccount.AccountDataSourceWrapper">
+            <summary>
+            Wrapper for AccountData that also supports Character and Item types by loading them from the Account.
+            </summary>
+        </member>
         <member name="T:MUnique.OpenMU.Web.AdminPanel.Pages.EditBase">
             <summary>
             Abstract common base class for an edit page.
