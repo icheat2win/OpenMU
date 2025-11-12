@@ -54,7 +54,7 @@ public class Exports : IExports
         get
         {
             yield return "_content/Blazored.Typeahead/blazored-typeahead.js";
-            yield return "_content/Blazored.Modal/blazored.modal.js";
+            yield return "_content/Blazored.Modal/BlazoredModal.razor.js";
             yield return "_content/BlazorInputFile/inputfile.js";
             yield return $"{this.Prefix}/js/map.js";
         }
@@ -65,7 +65,7 @@ public class Exports : IExports
         get
         {
             yield return "_content/Blazored.Typeahead/blazored-typeahead.css";
-            yield return "_content/Blazored.Modal/blazored-modal.css";
+            yield return "_content/Blazored.Modal/Blazored.Modal.bundle.scp.css";
             yield return $"{this.Prefix}/css/site.css";
         }
     }

@@ -195,7 +195,7 @@
             <div class="form-grid">
                 <div class="form-field">
                     <label>Character Name</label>
-                    <InputText @bind-Value="@Character.Name" class="form-control" />
+                    <InputText @bind-Value="@Character.Name" />
                     <ValidationMessage For="@(() => Character.Name)" />
                 </div>
 
@@ -251,25 +251,25 @@
             <div class="form-grid">
                 <div class="form-field">
                     <label>Experience</label>
-                    <InputNumber @bind-Value="@Character.Experience" class="form-control" min="0" />
+                    <InputNumber @bind-Value="@Character.Experience" min="0" />
                     <ValidationMessage For="@(() => Character.Experience)" />
                 </div>
 
                 <div class="form-field">
                     <label>Master Experience</label>
-                    <InputNumber @bind-Value="@Character.MasterExperience" class="form-control" min="0" />
+                    <InputNumber @bind-Value="@Character.MasterExperience" min="0" />
                     <ValidationMessage For="@(() => Character.MasterExperience)" />
                 </div>
 
                 <div class="form-field">
                     <label>Level Up Points</label>
-                    <InputNumber @bind-Value="@Character.LevelUpPoints" class="form-control" min="0" />
+                    <InputNumber @bind-Value="@Character.LevelUpPoints" min="0" />
                     <ValidationMessage For="@(() => Character.LevelUpPoints)" />
                 </div>
 
                 <div class="form-field">
                     <label>Master Level Up Points</label>
-                    <InputNumber @bind-Value="@Character.MasterLevelUpPoints" class="form-control" min="0" />
+                    <InputNumber @bind-Value="@Character.MasterLevelUpPoints" min="0" />
                     <ValidationMessage For="@(() => Character.MasterLevelUpPoints)" />
                 </div>
             </div>
@@ -285,7 +285,7 @@
             <div class="form-grid">
                 <div class="form-field">
                     <label>Hero State</label>
-                    <InputSelect @bind-Value="@Character.State" class="form-control">
+                    <InputSelect @bind-Value="@Character.State">
                         @foreach (var state in Enum.GetValues<HeroState>())
                         {
                             <option value="@state">@state</option>
@@ -296,13 +296,13 @@
 
                 <div class="form-field">
                     <label>State Remaining Seconds</label>
-                    <InputNumber @bind-Value="@Character.StateRemainingSeconds" class="form-control" min="0" />
+                    <InputNumber @bind-Value="@Character.StateRemainingSeconds" min="0" />
                     <ValidationMessage For="@(() => Character.StateRemainingSeconds)" />
                 </div>
 
                 <div class="form-field">
                     <label>Character Status</label>
-                    <InputSelect @bind-Value="@Character.CharacterStatus" class="form-control">
+                    <InputSelect @bind-Value="@Character.CharacterStatus">
                         @foreach (var status in Enum.GetValues<CharacterStatus>())
                         {
                             <option value="@status">@status</option>
@@ -313,7 +313,7 @@
 
                 <div class="form-field">
                     <label>Pose</label>
-                    <InputSelect @bind-Value="@Character.Pose" class="form-control">
+                    <InputSelect @bind-Value="@Character.Pose">
                         @foreach (var pose in Enum.GetValues<CharacterPose>())
                         {
                             <option value="@pose">@pose</option>
@@ -324,7 +324,7 @@
 
                 <div class="form-field">
                     <label>Player Kill Count</label>
-                    <InputNumber @bind-Value="@Character.PlayerKillCount" class="form-control" min="0" />
+                    <InputNumber @bind-Value="@Character.PlayerKillCount" min="0" />
                     <ValidationMessage For="@(() => Character.PlayerKillCount)" />
                 </div>
             </div>
@@ -340,19 +340,19 @@
             <div class="form-grid">
                 <div class="form-field">
                     <label>Used Fruit Points</label>
-                    <InputNumber @bind-Value="@Character.UsedFruitPoints" class="form-control" min="0" />
+                    <InputNumber @bind-Value="@Character.UsedFruitPoints" min="0" />
                     <ValidationMessage For="@(() => Character.UsedFruitPoints)" />
                 </div>
 
                 <div class="form-field">
                     <label>Used Negative Fruit Points</label>
-                    <InputNumber @bind-Value="@Character.UsedNegFruitPoints" class="form-control" min="0" />
+                    <InputNumber @bind-Value="@Character.UsedNegFruitPoints" min="0" />
                     <ValidationMessage For="@(() => Character.UsedNegFruitPoints)" />
                 </div>
 
                 <div class="form-field">
                     <label>Inventory Extensions</label>
-                    <InputNumber @bind-Value="@Character.InventoryExtensions" class="form-control" min="0" max="4" />
+                    <InputNumber @bind-Value="@Character.InventoryExtensions" min="0" max="4" />
                     <small>Season 6+ feature (0-4 extensions)</small>
                     <ValidationMessage For="@(() => Character.InventoryExtensions)" />
                 </div>
@@ -369,7 +369,7 @@
             <div class="form-grid">
                 <div class="form-field">
                     <label>Store Name</label>
-                    <InputText @bind-Value="@Character.StoreName" class="form-control" />
+                    <InputText @bind-Value="@Character.StoreName" />
                     <ValidationMessage For="@(() => Character.StoreName)" />
                 </div>
 
@@ -384,7 +384,7 @@
         <div class="section-card">
             <div class="form-field">
                 <label>Create Date</label>
-                <InputDate @bind-Value="@Character.CreateDate" class="form-control" />
+                <InputDate @bind-Value="@Character.CreateDate" />
                 <ValidationMessage For="@(() => Character.CreateDate)" />
             </div>
         </div>
