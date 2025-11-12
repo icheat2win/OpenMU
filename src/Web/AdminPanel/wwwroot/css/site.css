@@ -11027,3 +11027,24 @@ mark {
   transform: rotate(315deg);
   -webkit-transform: rotate(315deg);
 }
+
+/* Footer styles */
+.footer {
+  margin-top: 2rem;
+  padding-top: 1rem;
+  border-top: 1px solid #dee2e6;
+  font-size: 0.875rem;
+  color: #6c757d;
+  background-color: #f8f9fa;
+}
+
+.footer .d-flex {
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+@media (max-width: 768px) {
+  .footer .d-flex {
+    flex-direction: column;
+  }
+}
