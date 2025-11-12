@@ -3,196 +3,552 @@
 @using MUnique.OpenMU.Persistence
 
 <PageTitle>Edit Account: @Account.LoginName</PageTitle>
-<EditForm Model="Account" OnValidSubmit="OnValidSubmit">
-    <DataAnnotationsValidator />
+
+<style>
+    .account-edit-container {
+        max-width: 1400px;
+        margin: 0 auto;
+        padding: 20px;
+        background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+        min-height: 100vh;
+    }
     
-    <div class="form-group">
-        <label>Login Name</label>
-        <InputText @bind-Value="@Account.LoginName" class="form-control" maxlength="10" />
-        <ValidationMessage For="@(() => Account.LoginName)" />
+    .account-header {
+        background: linear-gradient(135deg, rgba(99, 102, 241, 0.1) 0%, rgba(14, 165, 233, 0.1) 100%);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 16px;
+        padding: 32px;
+        margin-bottom: 24px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    }
+    
+    .account-header h1 {
+        font-size: 2.5rem;
+        font-weight: 700;
+        color: #f1f5f9;
+        margin: 0 0 12px 0;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+    
+    .account-header p {
+        color: #94a3b8;
+        margin: 0;
+        font-size: 1rem;
+    }
+    
+    .section-card {
+        background: rgba(15, 23, 42, 0.6);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 16px;
+        padding: 24px;
+        margin-bottom: 20px;
+        backdrop-filter: blur(10px);
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    }
+    
+    .section-header {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        font-size: 1.25rem;
+        font-weight: 600;
+        color: #f1f5f9;
+        margin-bottom: 20px;
+        padding-bottom: 12px;
+        border-bottom: 2px solid rgba(99, 102, 241, 0.3);
+    }
+    
+    .section-icon {
+        font-size: 1.5rem;
+    }
+    
+    .form-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 20px;
+    }
+    
+    .form-field {
+        margin-bottom: 0;
+    }
+    
+    .form-field label {
+        display: block;
+        font-size: 0.875rem;
+        font-weight: 600;
+        color: #cbd5e1;
+        margin-bottom: 8px;
+    }
+    
+    .form-field input,
+    .form-field select {
+        width: 100%;
+        padding: 12px 16px;
+        background: rgba(0, 0, 0, 0.4);
+        border: 1px solid rgba(255, 255, 255, 0.15);
+        border-radius: 12px;
+        color: #f1f5f9;
+        font-size: 0.875rem;
+        transition: all 0.2s;
+    }
+    
+    .form-field input:focus,
+    .form-field select:focus {
+        outline: none;
+        border-color: rgba(99, 102, 241, 0.6);
+        box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+        background: rgba(0, 0, 0, 0.5);
+    }
+    
+    .checkbox-field {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 14px 18px;
+        background: rgba(0, 0, 0, 0.3);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 12px;
+        cursor: pointer;
+        transition: all 0.2s;
+    }
+    
+    .checkbox-field:hover {
+        background: rgba(0, 0, 0, 0.4);
+        border-color: rgba(99, 102, 241, 0.3);
+    }
+    
+    .checkbox-field input[type="checkbox"] {
+        width: 20px;
+        height: 20px;
+        margin: 0;
+        cursor: pointer;
+    }
+    
+    .checkbox-field label {
+        margin: 0;
+        color: #e2e8f0;
+        font-weight: 500;
+        cursor: pointer;
+    }
+    
+    .action-buttons {
+        display: flex;
+        gap: 12px;
+        justify-content: flex-end;
+        margin-top: 32px;
+    }
+    
+    .btn-save {
+        background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+        border: none;
+        color: white;
+        padding: 14px 36px;
+        border-radius: 12px;
+        font-weight: 600;
+        font-size: 0.95rem;
+        cursor: pointer;
+        transition: all 0.2s;
+        box-shadow: 0 4px 14px rgba(99, 102, 241, 0.35);
+    }
+    
+    .btn-save:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(99, 102, 241, 0.45);
+    }
+    
+    .btn-cancel {
+        background: transparent;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        color: #cbd5e1;
+        padding: 14px 28px;
+        border-radius: 12px;
+        font-weight: 600;
+        font-size: 0.95rem;
+        cursor: pointer;
+        transition: all 0.2s;
+    }
+    
+    .btn-cancel:hover {
+        background: rgba(255, 255, 255, 0.05);
+        border-color: #64748b;
+    }
+</style>
+
+<div class="account-edit-container">
+    <div class="account-header">
+        <h1>👤 Edit Account</h1>
+        <p>@Account.LoginName • Registered @Account.RegistrationDate.ToShortDateString()</p>
     </div>
 
-    <div class="form-group">
-        <label>E-Mail</label>
-        <InputText @bind-Value="@Account.EMail" class="form-control" type="email" />
-        <ValidationMessage For="@(() => Account.EMail)" />
-    </div>
+    <EditForm Model="Account" OnValidSubmit="OnValidSubmit">
+        <DataAnnotationsValidator />
+        
+        <!-- Basic Information -->
+        <div class="section-card">
+            <div class="section-header">
+                <span class="section-icon">📋</span>
+                <span>Basic Information</span>
+            </div>
+            
+            <div class="form-grid">
+                <div class="form-field">
+                    <label>Login Name</label>
+                    <InputText @bind-Value="@Account.LoginName" class="form-control" maxlength="10" />
+                    <ValidationMessage For="@(() => Account.LoginName)" />
+                </div>
 
-    <div class="form-group">
-        <label>State</label>
-        <InputSelect @bind-Value="@Account.State" class="form-control">
-            @foreach (var state in Enum.GetValues<AccountState>())
-            {
-                <option value="@state">@state</option>
-            }
-        </InputSelect>
-        <ValidationMessage For="@(() => Account.State)" />
-    </div>
+                <div class="form-field">
+                    <label>E-Mail Address</label>
+                    <InputText @bind-Value="@Account.EMail" class="form-control" type="email" />
+                    <ValidationMessage For="@(() => Account.EMail)" />
+                </div>
 
-    <div class="form-group">
-        <label>Registration Date</label>
-        <InputDate @bind-Value="@Account.RegistrationDate" class="form-control" />
-        <ValidationMessage For="@(() => Account.RegistrationDate)" />
-    </div>
+                <div class="form-field">
+                    <label>Account State</label>
+                    <InputSelect @bind-Value="@Account.State" class="form-control">
+                        @foreach (var state in Enum.GetValues<AccountState>())
+                        {
+                            <option value="@state">@state</option>
+                        }
+                    </InputSelect>
+                    <ValidationMessage For="@(() => Account.State)" />
+                </div>
 
-    <div class="form-group">
-        <label>Time Zone (UTC offset)</label>
-        <InputNumber @bind-Value="@Account.TimeZone" class="form-control" />
-        <ValidationMessage For="@(() => Account.TimeZone)" />
-    </div>
+                <div class="form-field">
+                    <label>Registration Date</label>
+                    <InputDate @bind-Value="@Account.RegistrationDate" class="form-control" />
+                    <ValidationMessage For="@(() => Account.RegistrationDate)" />
+                </div>
 
-    <div class="form-group">
-        <label>
-            <InputCheckbox @bind-Value="@Account.IsVaultExtended" />
-            Vault Extended
-        </label>
-    </div>
-
-    <div class="form-group">
-        <label>
-            <InputCheckbox @bind-Value="@Account.IsTemplate" />
-            Is Template Account (read-only, multi-login for testing)
-        </label>
-    </div>
-
-    <details class="field-group">
-        <summary class="field-group-header">Cash Shop Balance</summary>
-        <div class="field-group-content">
-            <div class="form-group">
-                <label>WCoin C (Cash Coins)</label>
-                <InputNumber @bind-Value="@Account.WCoinC" class="form-control" min="0" />
-                <ValidationMessage For="@(() => Account.WCoinC)" />
+                <div class="form-field">
+                    <label>Time Zone (UTC Offset)</label>
+                    <InputNumber @bind-Value="@Account.TimeZone" class="form-control" />
+                    <ValidationMessage For="@(() => Account.TimeZone)" />
+                </div>
             </div>
 
-            <div class="form-group">
-                <label>WCoin P (Prepaid Coins)</label>
-                <InputNumber @bind-Value="@Account.WCoinP" class="form-control" min="0" />
-                <ValidationMessage For="@(() => Account.WCoinP)" />
-            </div>
+            <div class="form-grid" style="margin-top: 20px;">
+                <div class="checkbox-field">
+                    <InputCheckbox @bind-Value="@Account.IsVaultExtended" />
+                    <label>🔒 Extended Vault</label>
+                </div>
 
-            <div class="form-group">
-                <label>Goblin Points</label>
-                <InputNumber @bind-Value="@Account.GoblinPoints" class="form-control" min="0" />
-                <ValidationMessage For="@(() => Account.GoblinPoints)" />
+                <div class="checkbox-field">
+                    <InputCheckbox @bind-Value="@Account.IsTemplate" />
+                    <label>🧪 Template Account (Testing)</label>
+                </div>
             </div>
         </div>
-    </details>
 
-    <details class="field-group">
-        <summary class="field-group-header">Security</summary>
-        <div class="field-group-content">
-            <div class="form-group">
-                <label>Security Code</label>
-                <InputText @bind-Value="@Account.SecurityCode" class="form-control" maxlength="10" />
-                <small class="form-text text-muted">Used for character deletion and guild operations</small>
-                <ValidationMessage For="@(() => Account.SecurityCode)" />
+        <!-- Cash Shop Balance -->
+        <div class="section-card">
+            <div class="section-header">
+                <span class="section-icon">💰</span>
+                <span>Cash Shop Balance</span>
             </div>
+            
+            <div class="form-grid">
+                <div class="form-field">
+                    <label>WCoin C (Cash Coins)</label>
+                    <InputNumber @bind-Value="@Account.WCoinC" class="form-control" min="0" />
+                    <ValidationMessage For="@(() => Account.WCoinC)" />
+                </div>
 
-            <div class="form-group">
-                <label>Vault Password</label>
-                <InputText @bind-Value="@Account.VaultPassword" class="form-control" />
-                <ValidationMessage For="@(() => Account.VaultPassword)" />
-            </div>
+                <div class="form-field">
+                    <label>WCoin P (Prepaid Coins)</label>
+                    <InputNumber @bind-Value="@Account.WCoinP" class="form-control" min="0" />
+                    <ValidationMessage For="@(() => Account.WCoinP)" />
+                </div>
 
-            <div class="form-group">
-                <label>Chat Ban Until</label>
-                @if (Account.ChatBanUntil.HasValue)
-                {
-                    <InputDate @bind-Value="@Account.ChatBanUntil" class="form-control" />
-                    <button type="button" class="btn btn-sm btn-secondary mt-1" @onclick="@(() => Account.ChatBanUntil = null)">Clear Ban</button>
-                }
-                else
-                {
-                    <div class="form-control-plaintext">No active chat ban</div>
-                    <button type="button" class="btn btn-sm btn-warning mt-1" @onclick="@(() => Account.ChatBanUntil = DateTime.UtcNow.AddDays(7))">Ban for 7 days</button>
-                }
-                <ValidationMessage For="@(() => Account.ChatBanUntil)" />
+                <div class="form-field">
+                    <label>Goblin Points</label>
+                    <InputNumber @bind-Value="@Account.GoblinPoints" class="form-control" min="0" />
+                    <ValidationMessage For="@(() => Account.GoblinPoints)" />
+                </div>
             </div>
         </div>
-    </details>
 
-    <details class="field-group" open>
-        <summary class="field-group-header">
-            <span class="badge bg-primary">@Account.Characters?.Count ?? 0</span>
-            Characters
-        </summary>
-        <div class="field-group-content">
+        <!-- Security Settings -->
+        <div class="section-card">
+            <div class="section-header">
+                <span class="section-icon">🔐</span>
+                <span>Security Settings</span>
+            </div>
+            
+            <div class="form-grid">
+                <div class="form-field">
+                    <label>Security Code</label>
+                    <InputText @bind-Value="@Account.SecurityCode" class="form-control" maxlength="10" />
+                    <small style="color: #94a3b8; font-size: 0.75rem; margin-top: 4px; display: block;">Used for character deletion and guild operations</small>
+                    <ValidationMessage For="@(() => Account.SecurityCode)" />
+                </div>
+
+                <div class="form-field">
+                    <label>Vault Password</label>
+                    <InputText @bind-Value="@Account.VaultPassword" class="form-control" />
+                    <ValidationMessage For="@(() => Account.VaultPassword)" />
+                </div>
+
+                <div class="form-field" style="grid-column: 1 / -1;">
+                    <label>Chat Ban Status</label>
+                    @if (Account.ChatBanUntil.HasValue)
+                    {
+                        <div style="display: flex; gap: 12px; align-items: center;">
+                            <InputDate @bind-Value="@Account.ChatBanUntil" class="form-control" style="flex: 1;" />
+                            <button type="button" class="btn btn-sm btn-success" @onclick="@(() => Account.ChatBanUntil = null)" 
+                                    style="padding: 10px 20px; border-radius: 8px; white-space: nowrap;">
+                                ✓ Clear Ban
+                            </button>
+                        </div>
+                    }
+                    else
+                    {
+                        <div style="display: flex; gap: 12px; align-items: center;">
+                            <div class="form-control" style="flex: 1; background: rgba(34, 197, 94, 0.1); border-color: rgba(34, 197, 94, 0.3); color: #86efac;">
+                                ✓ No active chat ban
+                            </div>
+                            <button type="button" class="btn btn-sm btn-warning" @onclick="@(() => Account.ChatBanUntil = DateTime.UtcNow.AddDays(7))"
+                                    style="padding: 10px 20px; border-radius: 8px; white-space: nowrap;">
+                                ⚠ Ban for 7 days
+                            </button>
+                        </div>
+                    }
+                    <ValidationMessage For="@(() => Account.ChatBanUntil)" />
+                </div>
+            </div>
+        </div>
+
+        <!-- Characters -->
+        <div class="section-card">
+            <div class="section-header">
+                <span class="section-icon">⚔️</span>
+                <span>Characters</span>
+                <span style="margin-left: auto; background: rgba(99, 102, 241, 0.2); color: #a5b4fc; padding: 4px 12px; border-radius: 20px; font-size: 0.875rem; font-weight: 600;">
+                    @(Account.Characters?.Count ?? 0) Total
+                </span>
+            </div>
+            
             @if (Account.Characters != null && Account.Characters.Any())
             {
-                <div class="table-responsive">
-                    <table class="table table-striped table-hover">
-                        <thead class="table-dark">
+                <style>
+                    .characters-table {
+                        width: 100%;
+                        border-collapse: separate;
+                        border-spacing: 0 8px;
+                    }
+                    
+                    .characters-table thead th {
+                        background: rgba(0, 0, 0, 0.3);
+                        color: #94a3b8;
+                        font-weight: 600;
+                        font-size: 0.75rem;
+                        text-transform: uppercase;
+                        letter-spacing: 0.05em;
+                        padding: 12px 16px;
+                        border: none;
+                        text-align: left;
+                    }
+                    
+                    .characters-table thead th:first-child {
+                        border-radius: 8px 0 0 8px;
+                    }
+                    
+                    .characters-table thead th:last-child {
+                        border-radius: 0 8px 8px 0;
+                    }
+                    
+                    .characters-table tbody tr {
+                        background: rgba(0, 0, 0, 0.2);
+                        transition: all 0.2s;
+                    }
+                    
+                    .characters-table tbody tr:hover {
+                        background: rgba(99, 102, 241, 0.1);
+                        transform: translateX(4px);
+                    }
+                    
+                    .characters-table tbody td {
+                        padding: 16px;
+                        border: none;
+                        color: #e2e8f0;
+                        vertical-align: middle;
+                    }
+                    
+                    .characters-table tbody tr td:first-child {
+                        border-radius: 8px 0 0 8px;
+                    }
+                    
+                    .characters-table tbody tr td:last-child {
+                        border-radius: 0 8px 8px 0;
+                    }
+                    
+                    .char-badge {
+                        display: inline-block;
+                        padding: 4px 12px;
+                        border-radius: 6px;
+                        font-size: 0.75rem;
+                        font-weight: 600;
+                        text-transform: uppercase;
+                        letter-spacing: 0.05em;
+                    }
+                    
+                    .char-badge-slot {
+                        background: rgba(100, 116, 139, 0.3);
+                        color: #cbd5e1;
+                    }
+                    
+                    .char-badge-level {
+                        background: rgba(14, 165, 233, 0.2);
+                        color: #7dd3fc;
+                    }
+                    
+                    .char-badge-master {
+                        background: rgba(251, 191, 36, 0.2);
+                        color: #fcd34d;
+                        margin-left: 4px;
+                    }
+                    
+                    .char-badge-normal {
+                        background: rgba(34, 197, 94, 0.2);
+                        color: #86efac;
+                    }
+                    
+                    .char-badge-banned {
+                        background: rgba(239, 68, 68, 0.2);
+                        color: #fca5a5;
+                    }
+                    
+                    .char-badge-gm {
+                        background: rgba(99, 102, 241, 0.2);
+                        color: #c7d2fe;
+                    }
+                    
+                    .char-name {
+                        font-weight: 600;
+                        font-size: 0.95rem;
+                        color: #f1f5f9;
+                    }
+                    
+                    .char-class {
+                        color: #94a3b8;
+                        font-size: 0.875rem;
+                    }
+                    
+                    .btn-edit-char {
+                        background: linear-gradient(135deg, rgba(99, 102, 241, 0.2) 0%, rgba(139, 92, 246, 0.2) 100%);
+                        border: 1px solid rgba(99, 102, 241, 0.3);
+                        color: #c7d2fe;
+                        padding: 8px 20px;
+                        border-radius: 8px;
+                        font-weight: 600;
+                        font-size: 0.875rem;
+                        cursor: pointer;
+                        transition: all 0.2s;
+                        text-decoration: none;
+                        display: inline-block;
+                    }
+                    
+                    .btn-edit-char:hover {
+                        background: linear-gradient(135deg, rgba(99, 102, 241, 0.3) 0%, rgba(139, 92, 246, 0.3) 100%);
+                        border-color: rgba(99, 102, 241, 0.5);
+                        transform: translateY(-1px);
+                        box-shadow: 0 4px 12px rgba(99, 102, 241, 0.25);
+                        color: #e0e7ff;
+                    }
+                    
+                    .no-characters-alert {
+                        background: rgba(14, 165, 233, 0.1);
+                        border: 1px solid rgba(14, 165, 233, 0.3);
+                        border-radius: 12px;
+                        padding: 20px;
+                        text-align: center;
+                        color: #7dd3fc;
+                    }
+                </style>
+                
+                <table class="characters-table">
+                    <thead>
+                        <tr>
+                            <th>Slot</th>
+                            <th>Name</th>
+                            <th>Class</th>
+                            <th>Level</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var character in Account.Characters.OrderBy(c => c.CharacterSlot))
+                        {
+                            var level = (int)(character.Attributes?.FirstOrDefault(a => a.Definition?.Designation == "Level")?.Value ?? 0);
+                            var masterLevel = (int)(character.Attributes?.FirstOrDefault(a => a.Definition?.Designation == "Master Level")?.Value ?? 0);
                             <tr>
-                                <th>Slot</th>
-                                <th>Name</th>
-                                <th>Class</th>
-                                <th>Level</th>
-                                <th>Status</th>
-                                <th>Actions</th>
+                                <td>
+                                    <span class="char-badge char-badge-slot">@character.CharacterSlot</span>
+                                </td>
+                                <td>
+                                    <div class="char-name">@character.Name</div>
+                                </td>
+                                <td>
+                                    <div class="char-class">@(character.CharacterClass?.Name ?? "Unknown")</div>
+                                </td>
+                                <td>
+                                    <span class="char-badge char-badge-level">Lv @level</span>
+                                    @if (masterLevel > 0)
+                                    {
+                                        <span class="char-badge char-badge-master">ML @masterLevel</span>
+                                    }
+                                </td>
+                                <td>
+                                    @switch (character.CharacterStatus)
+                                    {
+                                        case CharacterStatus.Normal:
+                                            <span class="char-badge char-badge-normal">✓ Normal</span>
+                                            break;
+                                        case CharacterStatus.Banned:
+                                            <span class="char-badge char-badge-banned">✖ Banned</span>
+                                            break;
+                                        case CharacterStatus.GameMaster:
+                                            <span class="char-badge char-badge-gm">★ GM</span>
+                                            break;
+                                        default:
+                                            <span class="char-badge">@character.CharacterStatus</span>
+                                            break;
+                                    }
+                                </td>
+                                <td>
+                                    <a href="/edit-account/@Account.GetId()/@(typeof(Character).FullName)/@character.GetId()" 
+                                       class="btn-edit-char">
+                                        ✏️ Edit
+                                    </a>
+                                </td>
                             </tr>
-                        </thead>
-                        <tbody>
-                            @foreach (var character in Account.Characters.OrderBy(c => c.CharacterSlot))
-                            {
-                                var level = (int)(character.Attributes?.FirstOrDefault(a => a.Definition?.Designation == "Level")?.Value ?? 0);
-                                var masterLevel = (int)(character.Attributes?.FirstOrDefault(a => a.Definition?.Designation == "Master Level")?.Value ?? 0);
-                                <tr>
-                                    <td><span class="badge bg-secondary">@character.CharacterSlot</span></td>
-                                    <td><strong>@character.Name</strong></td>
-                                    <td>@(character.CharacterClass?.Name ?? "Unknown")</td>
-                                    <td>
-                                        <span class="badge bg-info">Lv @level</span>
-                                        @if (masterLevel > 0)
-                                        {
-                                            <span class="badge bg-warning ms-1">ML @masterLevel</span>
-                                        }
-                                    </td>
-                                    <td>
-                                        @switch (character.CharacterStatus)
-                                        {
-                                            case CharacterStatus.Normal:
-                                                <span class="badge bg-success">Normal</span>
-                                                break;
-                                            case CharacterStatus.Banned:
-                                                <span class="badge bg-danger">Banned</span>
-                                                break;
-                                            case CharacterStatus.GameMaster:
-                                                <span class="badge bg-primary">GM</span>
-                                                break;
-                                            default:
-                                                <span class="badge bg-secondary">@character.CharacterStatus</span>
-                                                break;
-                                        }
-                                    </td>
-                                    <td>
-                                        <a href="/edit-account/@Account.GetId()/@(typeof(Character).FullName)/@character.GetId()" class="btn btn-sm btn-outline-primary">
-                                            <i class="bi bi-pencil"></i> Edit
-                                        </a>
-                                    </td>
-                                </tr>
-                            }
-                        </tbody>
-                    </table>
-                </div>
+                        }
+                    </tbody>
+                </table>
             }
             else
             {
-                <div class="alert alert-info" role="alert">
-                    <i class="bi bi-info-circle"></i> No characters found for this account.
+                <div class="no-characters-alert">
+                    <div style="font-size: 2rem; margin-bottom: 8px;">👤</div>
+                    <div style="font-weight: 600; margin-bottom: 4px;">No characters found</div>
+                    <div style="font-size: 0.875rem; opacity: 0.8;">This account doesn't have any characters yet.</div>
                 </div>
             }
         </div>
-    </details>
 
-    <ValidationSummary />
-    <div class="mt-3">
-        <button type="submit" class="btn btn-primary">Save</button>
-        @if (OnCancel.HasDelegate)
-        {
-            <button type="button" class="btn btn-secondary" @onclick="OnCancel">Cancel</button>
-        }
-    </div>
-</EditForm>
+        <ValidationSummary />
+        <div class="action-buttons">
+            @if (OnCancel.HasDelegate)
+            {
+                <button type="button" class="btn-cancel" @onclick="OnCancel">Cancel</button>
+            }
+            <button type="submit" class="btn-save">💾 Save Changes</button>
+        </div>
+    </EditForm>
+</div>
 
 @code {
     /// <summary>
