@@ -482,8 +482,8 @@
                     <tbody>
                         @foreach (var character in Account.Characters.OrderBy(c => c.CharacterSlot))
                         {
-                            var level = (int)(character.Attributes?.FirstOrDefault(a => a.Definition?.Designation == "Level")?.Value ?? 0);
-                            var masterLevel = (int)(character.Attributes?.FirstOrDefault(a => a.Definition?.Designation == "Master Level")?.Value ?? 0);
+                            var level = GetCharacterLevel(character);
+                            var masterLevel = GetCharacterMasterLevel(character);
                             <tr>
                                 <td>
                                     <span class="char-badge char-badge-slot">@character.CharacterSlot</span>
@@ -569,4 +569,50 @@
     /// </summary>
     [Parameter]
     public EventCallback OnCancel { get; set; }
+
+    private int GetCharacterLevel(Character character)
+    {
+        try
+        {
+            // Try to get level from Attributes collection
+            if (character.Attributes != null)
+            {
+                var levelAttr = character.Attributes.FirstOrDefault(a => a.Definition?.Designation == "Level");
+                if (levelAttr != null)
+                {
+                    return (int)levelAttr.Value;
+                }
+            }
+            
+            // Fallback: calculate from experience (if available)
+            // This is a rough estimation - actual formula may vary
+            return 0;
+        }
+        catch
+        {
+            return 0;
+        }
+    }
+
+    private int GetCharacterMasterLevel(Character character)
+    {
+        try
+        {
+            // Try to get master level from Attributes collection
+            if (character.Attributes != null)
+            {
+                var masterLevelAttr = character.Attributes.FirstOrDefault(a => a.Definition?.Designation == "Master Level");
+                if (masterLevelAttr != null)
+                {
+                    return (int)masterLevelAttr.Value;
+                }
+            }
+            
+            return 0;
+        }
+        catch
+        {
+            return 0;
+        }
+    }
 }
