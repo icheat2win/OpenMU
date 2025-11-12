@@ -6,18 +6,27 @@
 <PageTitle>Edit Character: @Character.Name</PageTitle>
 
 <style>
+    /* Force dark theme for entire page */
+    body {
+        background-color: #0f172a !important;
+        color: #f1f5f9 !important;
+    }
+    
     .character-edit-container {
         max-width: 1400px;
         margin: 0 auto;
         padding: 20px;
+        background-color: #0f172a;
+        min-height: 100vh;
     }
     
     .character-header {
-        background: linear-gradient(135deg, rgba(14, 165, 233, 0.1) 0%, rgba(99, 102, 241, 0.1) 100%);
-        border: 1px solid rgba(255, 255, 255, 0.1);
+        background: linear-gradient(135deg, #1e3a8a 0%, #7c3aed 100%);
+        border: 1px solid rgba(255, 255, 255, 0.2);
         border-radius: 16px;
         padding: 24px;
         margin-bottom: 24px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
     }
     
     .character-header h1 {
@@ -34,11 +43,12 @@
     }
     
     .section-card {
-        background: rgba(15, 23, 42, 0.5);
-        border: 1px solid rgba(255, 255, 255, 0.1);
+        background: #1e293b;
+        border: 1px solid rgba(255, 255, 255, 0.15);
         border-radius: 16px;
         padding: 24px;
         margin-bottom: 20px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
     }
     
     .section-header {
@@ -78,22 +88,51 @@
     }
     
     .form-field input,
-    .form-field select {
-        width: 100%;
-        padding: 12px 16px;
-        background: rgba(0, 0, 0, 0.3);
-        border: 1px solid rgba(255, 255, 255, 0.1);
-        border-radius: 12px;
-        color: #f1f5f9;
-        font-size: 0.875rem;
-        transition: all 0.2s;
+    .form-field select,
+    .form-field .form-control {
+        width: 100% !important;
+        padding: 12px 16px !important;
+        background: rgba(0, 0, 0, 0.3) !important;
+        border: 1px solid rgba(255, 255, 255, 0.1) !important;
+        border-radius: 12px !important;
+        color: #f1f5f9 !important;
+        font-size: 0.875rem !important;
+        transition: all 0.2s !important;
+        height: auto !important;
     }
     
     .form-field input:focus,
-    .form-field select:focus {
-        outline: none;
-        border-color: rgba(6, 182, 212, 0.6);
-        box-shadow: 0 0 0 3px rgba(6, 182, 212, 0.1);
+    .form-field select:focus,
+    .form-field .form-control:focus {
+        outline: none !important;
+        border-color: rgba(6, 182, 212, 0.6) !important;
+        box-shadow: 0 0 0 3px rgba(6, 182, 212, 0.1) !important;
+        background: rgba(0, 0, 0, 0.4) !important;
+    }
+    
+    /* Override Bootstrap placeholder color */
+    .form-field input::placeholder,
+    .form-field .form-control::placeholder {
+        color: #64748b !important;
+        opacity: 1 !important;
+    }
+    
+    /* Style BlazoredTypeahead dropdowns */
+    .form-field .blazored-typeahead__input {
+        width: 100% !important;
+        padding: 12px 16px !important;
+        background: rgba(0, 0, 0, 0.3) !important;
+        border: 1px solid rgba(255, 255, 255, 0.1) !important;
+        border-radius: 12px !important;
+        color: #f1f5f9 !important;
+        font-size: 0.875rem !important;
+    }
+    
+    .form-field .blazored-typeahead__input:focus {
+        outline: none !important;
+        border-color: rgba(6, 182, 212, 0.6) !important;
+        box-shadow: 0 0 0 3px rgba(6, 182, 212, 0.1) !important;
+        background: rgba(0, 0, 0, 0.4) !important;
     }
     
     .form-field small {
