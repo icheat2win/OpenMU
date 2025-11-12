@@ -14,7 +14,7 @@ services:
       - openmu-startup
 
   openmu-startup:
-    image: mcr.microsoft.com/dotnet/aspnet:9.0-alpine
+    image: openmu
     container_name: openmu-startup
     ports:
       - "192.168.4.71:8080:8080"
@@ -33,12 +33,9 @@ services:
       ASPNETCORE_ENVIRONMENT: Development
       RESOLVE_IP: "192.168.4.71"
       LOGS_PATH: "/logs"
-    working_dir: /app/
     volumes:
-      - ./app:/app:ro
       - ./.htpasswd:/etc/nginx/.htpasswd
       - ./logs:/logs
-    command: ["dotnet", "MUnique.OpenMU.Startup.dll", "-autostart", "-adminpanel", "-resolveIP:192.168.4.71"]
     depends_on:
       database:
         condition: service_healthy
