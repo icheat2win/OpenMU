@@ -54,7 +54,6 @@ public class Exports : IExports
         get
         {
             yield return "_content/Blazored.Typeahead/blazored-typeahead.js";
-            yield return "_content/Blazored.Modal/BlazoredModal.razor.js";
             yield return "_content/BlazorInputFile/inputfile.js";
             yield return $"{this.Prefix}/js/map.js";
         }
