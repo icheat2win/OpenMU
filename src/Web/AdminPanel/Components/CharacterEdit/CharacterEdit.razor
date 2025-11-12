@@ -1,6 +1,7 @@
 @using System.ComponentModel.DataAnnotations
 @using MUnique.OpenMU.DataModel.Entities
 @using MUnique.OpenMU.DataModel.Configuration
+@using MUnique.OpenMU.Web.AdminPanel.Components.Form
 
 <PageTitle>Edit Character: @Character.Name</PageTitle>
 
@@ -206,7 +207,7 @@
 
                 <div class="form-field">
                     <label>Character Slot</label>
-                    <InputNumber @bind-Value="@Character.CharacterSlot" class="form-control" min="0" max="4" />
+                    <InputByte @bind-Value="@Character.CharacterSlot" Min="0" Max="4" />
                     <ValidationMessage For="@(() => Character.CharacterSlot)" />
                 </div>
             </div>
@@ -228,13 +229,13 @@
 
                 <div class="form-field">
                     <label>Position X</label>
-                    <InputNumber @bind-Value="@Character.PositionX" class="form-control" min="0" max="255" />
+                    <InputByte @bind-Value="@Character.PositionX" Min="0" Max="255" />
                     <ValidationMessage For="@(() => Character.PositionX)" />
                 </div>
 
                 <div class="form-field">
                     <label>Position Y</label>
-                    <InputNumber @bind-Value="@Character.PositionY" class="form-control" min="0" max="255" />
+                    <InputByte @bind-Value="@Character.PositionY" Min="0" Max="255" />
                     <ValidationMessage For="@(() => Character.PositionY)" />
                 </div>
             </div>
