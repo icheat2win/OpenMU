@@ -1,0 +1,89 @@
+@*
+    ModernCard Component
+    
+    A reusable card component with modern dark theme styling.
+    Supports optional header with title and icon, body content, and footer actions.
+    
+    Usage:
+    <ModernCard Title="Card Title" Icon="🎮">
+        <BodyContent>
+            Your card content here
+        </BodyContent>
+        <FooterActions>
+            <button class="btn btn-primary">Save</button>
+        </FooterActions>
+    </ModernCard>
+*@
+
+<div class="modern-card @CssClass">
+    @if (!string.IsNullOrEmpty(Title) || HeaderActions != null)
+    {
+        <div class="modern-card-header">
+            <div style="display: flex; align-items: center;">
+                @if (!string.IsNullOrEmpty(Icon))
+                {
+                    <span class="modern-card-icon">@Icon</span>
+                }
+                @if (!string.IsNullOrEmpty(Title))
+                {
+                    <h3>@Title</h3>
+                }
+            </div>
+            @if (HeaderActions != null)
+            {
+                <div>
+                    @HeaderActions
+                </div>
+            }
+        </div>
+    }
+    
+    <div class="modern-card-body">
+        @ChildContent
+    </div>
+    
+    @if (FooterActions != null)
+    {
+        <div class="modern-card-footer">
+            @FooterActions
+        </div>
+    }
+</div>
+
+@code {
+    /// <summary>
+    /// Optional title displayed in the card header.
+    /// </summary>
+    [Parameter]
+    public string? Title { get; set; }
+
+    /// <summary>
+    /// Optional icon/emoji displayed before the title.
+    /// </summary>
+    [Parameter]
+    public string? Icon { get; set; }
+
+    /// <summary>
+    /// Additional CSS classes to apply to the card.
+    /// </summary>
+    [Parameter]
+    public string? CssClass { get; set; }
+
+    /// <summary>
+    /// The main content of the card body.
+    /// </summary>
+    [Parameter]
+    public RenderFragment? ChildContent { get; set; }
+
+    /// <summary>
+    /// Optional actions displayed in the card header (e.g., buttons, links).
+    /// </summary>
+    [Parameter]
+    public RenderFragment? HeaderActions { get; set; }
+
+    /// <summary>
+    /// Optional actions displayed in the card footer (e.g., submit/cancel buttons).
+    /// </summary>
+    [Parameter]
+    public RenderFragment? FooterActions { get; set; }
+}

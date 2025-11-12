@@ -1,0 +1,45 @@
+@*
+    StatBadge Component
+    
+    A colored badge component for displaying stats, levels, status indicators.
+    Supports different color schemes for various contexts.
+    
+    Usage:
+    <StatBadge Value="Level 400" Color="level" Icon="⬆️" />
+    <StatBadge Value="Online" Color="success" />
+    <StatBadge Value="Banned" Color="danger" />
+*@
+
+<span class="badge badge-@Color @CssClass">
+    @if (!string.IsNullOrEmpty(Icon))
+    {
+        <span class="stat-badge-icon">@Icon</span>
+    }
+    @Value
+</span>
+
+@code {
+    /// <summary>
+    /// The value/text to display in the badge.
+    /// </summary>
+    [Parameter]
+    public string? Value { get; set; }
+
+    /// <summary>
+    /// Optional icon/emoji displayed before the value.
+    /// </summary>
+    [Parameter]
+    public string? Icon { get; set; }
+
+    /// <summary>
+    /// Color scheme: level, master, success, danger, warning, default.
+    /// </summary>
+    [Parameter]
+    public string Color { get; set; } = "default";
+
+    /// <summary>
+    /// Additional CSS classes to apply to the badge.
+    /// </summary>
+    [Parameter]
+    public string? CssClass { get; set; }
+}

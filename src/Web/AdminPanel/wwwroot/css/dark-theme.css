@@ -1,0 +1,449 @@
+/*
+ * OpenMU Admin Panel - Dark Theme Design System
+ * Based on open-mu-web modern dark theme with cyan/blue accents
+ * Date: November 12, 2025
+ */
+
+:root {
+    /* Primary Background Colors */
+    --color-bg-primary: #0f172a;        /* Dark slate blue - main background */
+    --color-bg-secondary: #1e293b;      /* Slightly lighter slate - cards, panels */
+    --color-bg-tertiary: #334155;       /* Mid-tone slate - hover states */
+    --color-bg-elevated: #1e3a8a;       /* Blue elevated surfaces */
+    
+    /* Accent Colors */
+    --color-accent-cyan: #06b6d4;       /* Cyan - primary accent */
+    --color-accent-blue: #3b82f6;       /* Blue - secondary accent */
+    --color-accent-purple: #7c3aed;     /* Purple - tertiary accent */
+    --color-accent-green: #10b981;      /* Green - success states */
+    --color-accent-red: #ef4444;        /* Red - error/danger states */
+    --color-accent-yellow: #f59e0b;     /* Yellow - warning states */
+    
+    /* Text Colors */
+    --color-text-primary: #f1f5f9;      /* Light slate - primary text */
+    --color-text-secondary: #94a3b8;    /* Mid slate - secondary text */
+    --color-text-muted: #64748b;        /* Muted slate - disabled/placeholder */
+    --color-text-inverse: #0f172a;      /* Dark text on light backgrounds */
+    
+    /* Border Colors */
+    --color-border-primary: #334155;    /* Primary borders */
+    --color-border-secondary: #475569;  /* Secondary borders */
+    --color-border-accent: #06b6d4;     /* Accent borders */
+    
+    /* Gradient Definitions */
+    --gradient-header: linear-gradient(135deg, #1e3a8a 0%, #7c3aed 100%);
+    --gradient-card: linear-gradient(135deg, #1a1c2e, #2d1f3d);
+    --gradient-button: linear-gradient(135deg, #06b6d4 0%, #3b82f6 100%);
+    --gradient-danger: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+    
+    /* Shadow Definitions */
+    --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
+    --shadow-md: 0 2px 8px rgba(0, 0, 0, 0.4);
+    --shadow-lg: 0 4px 16px rgba(0, 0, 0, 0.5);
+    --shadow-xl: 0 8px 32px rgba(0, 0, 0, 0.6);
+    
+    /* Spacing Scale */
+    --spacing-xs: 0.25rem;   /* 4px */
+    --spacing-sm: 0.5rem;    /* 8px */
+    --spacing-md: 1rem;      /* 16px */
+    --spacing-lg: 1.5rem;    /* 24px */
+    --spacing-xl: 2rem;      /* 32px */
+    --spacing-2xl: 3rem;     /* 48px */
+    
+    /* Border Radius */
+    --radius-sm: 0.25rem;    /* 4px */
+    --radius-md: 0.5rem;     /* 8px */
+    --radius-lg: 0.75rem;    /* 12px */
+    --radius-xl: 1rem;       /* 16px */
+    --radius-full: 9999px;   /* Fully rounded */
+    
+    /* Transitions */
+    --transition-fast: 150ms ease-in-out;
+    --transition-base: 300ms ease-in-out;
+    --transition-slow: 500ms ease-in-out;
+    
+    /* Font Weights */
+    --font-weight-normal: 400;
+    --font-weight-medium: 500;
+    --font-weight-semibold: 600;
+    --font-weight-bold: 700;
+    
+    /* Z-Index Scale */
+    --z-index-dropdown: 1000;
+    --z-index-modal: 1050;
+    --z-index-tooltip: 1100;
+}
+
+/* Global Dark Theme Enforcement */
+body {
+    background-color: var(--color-bg-primary) !important;
+    color: var(--color-text-primary) !important;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    line-height: 1.5;
+    min-height: 100vh;
+}
+
+/* Modern Card Component */
+.modern-card {
+    background: var(--color-bg-secondary);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-md);
+    padding: var(--spacing-lg);
+    margin-bottom: var(--spacing-lg);
+    transition: box-shadow var(--transition-base);
+}
+
+.modern-card:hover {
+    box-shadow: var(--shadow-lg);
+}
+
+.modern-card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-bottom: var(--spacing-md);
+    margin-bottom: var(--spacing-md);
+    border-bottom: 1px solid var(--color-border-primary);
+}
+
+.modern-card-header h3 {
+    color: var(--color-text-primary);
+    font-size: 1.25rem;
+    font-weight: var(--font-weight-semibold);
+    margin: 0;
+}
+
+.modern-card-icon {
+    color: var(--color-accent-cyan);
+    margin-right: var(--spacing-sm);
+    font-size: 1.5rem;
+}
+
+.modern-card-body {
+    color: var(--color-text-primary);
+}
+
+.modern-card-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: var(--spacing-sm);
+    padding-top: var(--spacing-md);
+    margin-top: var(--spacing-md);
+    border-top: 1px solid var(--color-border-primary);
+}
+
+/* Section Cards with Gradient Headers */
+.section-card {
+    background: var(--color-bg-secondary);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-md);
+    margin-bottom: var(--spacing-lg);
+    overflow: hidden;
+}
+
+.section-card-header {
+    background: var(--gradient-header);
+    color: var(--color-text-primary);
+    padding: var(--spacing-lg);
+    font-size: 1.25rem;
+    font-weight: var(--font-weight-semibold);
+    box-shadow: var(--shadow-sm);
+}
+
+.section-card-body {
+    padding: var(--spacing-lg);
+}
+
+/* Modern Form Controls */
+.form-control,
+input[type="text"],
+input[type="number"],
+input[type="email"],
+input[type="password"],
+select,
+textarea {
+    background-color: var(--color-bg-tertiary) !important;
+    border: 1px solid var(--color-border-primary) !important;
+    border-radius: var(--radius-md) !important;
+    color: var(--color-text-primary) !important;
+    padding: var(--spacing-sm) var(--spacing-md) !important;
+    transition: all var(--transition-fast) !important;
+}
+
+.form-control:focus,
+input:focus,
+select:focus,
+textarea:focus {
+    background-color: var(--color-bg-secondary) !important;
+    border-color: var(--color-accent-cyan) !important;
+    box-shadow: 0 0 0 3px rgba(6, 182, 212, 0.2) !important;
+    outline: none !important;
+}
+
+.form-control::placeholder,
+input::placeholder,
+textarea::placeholder {
+    color: var(--color-text-muted) !important;
+}
+
+/* Form Labels */
+.form-label,
+label {
+    color: var(--color-text-secondary) !important;
+    font-weight: var(--font-weight-medium);
+    margin-bottom: var(--spacing-xs);
+    display: block;
+}
+
+/* Modern Buttons */
+.btn-primary {
+    background: var(--gradient-button) !important;
+    border: none !important;
+    color: var(--color-text-primary) !important;
+    padding: var(--spacing-sm) var(--spacing-lg) !important;
+    border-radius: var(--radius-md) !important;
+    font-weight: var(--font-weight-medium) !important;
+    transition: all var(--transition-fast) !important;
+    cursor: pointer;
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-lg) !important;
+}
+
+.btn-danger {
+    background: var(--gradient-danger) !important;
+    border: none !important;
+    color: var(--color-text-primary) !important;
+}
+
+.btn-secondary {
+    background: var(--color-bg-tertiary) !important;
+    border: 1px solid var(--color-border-secondary) !important;
+    color: var(--color-text-primary) !important;
+}
+
+.btn-success {
+    background: var(--color-accent-green) !important;
+    border: none !important;
+    color: var(--color-text-primary) !important;
+}
+
+/* Badge Styles */
+.badge {
+    padding: var(--spacing-xs) var(--spacing-sm);
+    border-radius: var(--radius-full);
+    font-weight: var(--font-weight-medium);
+    font-size: 0.75rem;
+}
+
+.badge-level {
+    background: var(--color-accent-cyan);
+    color: var(--color-text-primary);
+}
+
+.badge-master {
+    background: var(--color-accent-purple);
+    color: var(--color-text-primary);
+}
+
+.badge-success {
+    background: var(--color-accent-green);
+    color: var(--color-text-primary);
+}
+
+.badge-danger {
+    background: var(--color-accent-red);
+    color: var(--color-text-primary);
+}
+
+.badge-warning {
+    background: var(--color-accent-yellow);
+    color: var(--color-text-inverse);
+}
+
+/* Tables */
+.table {
+    color: var(--color-text-primary) !important;
+    background-color: transparent !important;
+}
+
+.table thead th {
+    background: var(--color-bg-tertiary) !important;
+    color: var(--color-text-primary) !important;
+    border-bottom: 2px solid var(--color-border-accent) !important;
+    font-weight: var(--font-weight-semibold);
+    padding: var(--spacing-md) !important;
+}
+
+.table tbody tr {
+    background: var(--color-bg-secondary) !important;
+    border-bottom: 1px solid var(--color-border-primary) !important;
+    transition: background-color var(--transition-fast);
+}
+
+.table tbody tr:hover {
+    background: var(--color-bg-tertiary) !important;
+}
+
+.table tbody td {
+    color: var(--color-text-primary) !important;
+    padding: var(--spacing-md) !important;
+    vertical-align: middle;
+}
+
+/* Modal Dialogs */
+.modal-content {
+    background: var(--color-bg-secondary) !important;
+    border: 1px solid var(--color-border-primary) !important;
+    border-radius: var(--radius-lg) !important;
+    box-shadow: var(--shadow-xl) !important;
+}
+
+.modal-header {
+    background: var(--gradient-header) !important;
+    color: var(--color-text-primary) !important;
+    border-bottom: 1px solid var(--color-border-primary) !important;
+    border-radius: var(--radius-lg) var(--radius-lg) 0 0 !important;
+}
+
+.modal-body {
+    background: var(--color-bg-secondary) !important;
+    color: var(--color-text-primary) !important;
+}
+
+.modal-footer {
+    background: var(--color-bg-secondary) !important;
+    border-top: 1px solid var(--color-border-primary) !important;
+}
+
+/* Navigation */
+.navbar {
+    background: var(--color-bg-secondary) !important;
+    border-bottom: 1px solid var(--color-border-primary) !important;
+    box-shadow: var(--shadow-md) !important;
+}
+
+.nav-link {
+    color: var(--color-text-secondary) !important;
+    transition: color var(--transition-fast);
+}
+
+.nav-link:hover,
+.nav-link.active {
+    color: var(--color-accent-cyan) !important;
+}
+
+/* Sidebar */
+.sidebar {
+    background: var(--color-bg-secondary) !important;
+    border-right: 1px solid var(--color-border-primary) !important;
+    box-shadow: var(--shadow-md) !important;
+}
+
+/* Alerts */
+.alert {
+    border-radius: var(--radius-md) !important;
+    border: none !important;
+    padding: var(--spacing-md) !important;
+}
+
+.alert-success {
+    background: rgba(16, 185, 129, 0.2) !important;
+    color: var(--color-accent-green) !important;
+    border-left: 4px solid var(--color-accent-green) !important;
+}
+
+.alert-danger {
+    background: rgba(239, 68, 68, 0.2) !important;
+    color: var(--color-accent-red) !important;
+    border-left: 4px solid var(--color-accent-red) !important;
+}
+
+.alert-warning {
+    background: rgba(245, 158, 11, 0.2) !important;
+    color: var(--color-accent-yellow) !important;
+    border-left: 4px solid var(--color-accent-yellow) !important;
+}
+
+.alert-info {
+    background: rgba(6, 182, 212, 0.2) !important;
+    color: var(--color-accent-cyan) !important;
+    border-left: 4px solid var(--color-accent-cyan) !important;
+}
+
+/* Progress Bars */
+.progress {
+    background: var(--color-bg-tertiary) !important;
+    border-radius: var(--radius-full) !important;
+    height: 0.75rem;
+    overflow: hidden;
+}
+
+.progress-bar {
+    background: var(--gradient-button) !important;
+    transition: width var(--transition-base);
+}
+
+/* Loading Spinner */
+.spinner {
+    border: 3px solid var(--color-bg-tertiary);
+    border-top-color: var(--color-accent-cyan);
+    border-radius: var(--radius-full);
+    width: 2rem;
+    height: 2rem;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+/* Utility Classes */
+.text-muted {
+    color: var(--color-text-muted) !important;
+}
+
+.text-accent {
+    color: var(--color-accent-cyan) !important;
+}
+
+.bg-elevated {
+    background: var(--color-bg-elevated) !important;
+}
+
+.shadow-sm { box-shadow: var(--shadow-sm) !important; }
+.shadow-md { box-shadow: var(--shadow-md) !important; }
+.shadow-lg { box-shadow: var(--shadow-lg) !important; }
+.shadow-xl { box-shadow: var(--shadow-xl) !important; }
+
+/* Scrollbar Styling */
+::-webkit-scrollbar {
+    width: 12px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--color-bg-primary);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--color-bg-tertiary);
+    border-radius: var(--radius-md);
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--color-border-secondary);
+}
+
+/* Responsive Design Breakpoints */
+@media (max-width: 768px) {
+    .modern-card {
+        padding: var(--spacing-md);
+    }
+    
+    .section-card-header,
+    .section-card-body {
+        padding: var(--spacing-md);
+    }
+}

@@ -1,0 +1,54 @@
+@*
+    SectionCard Component
+    
+    A card component with a gradient header, perfect for grouping related content.
+    Features a solid gradient background header inspired by open-mu-web design.
+    
+    Usage:
+    <SectionCard Title="Account Information" Icon="👤">
+        Your section content here
+    </SectionCard>
+*@
+
+<div class="section-card @CssClass">
+    @if (!string.IsNullOrEmpty(Title))
+    {
+        <div class="section-card-header">
+            @if (!string.IsNullOrEmpty(Icon))
+            {
+                <span style="margin-right: 0.5rem;">@Icon</span>
+            }
+            @Title
+        </div>
+    }
+    
+    <div class="section-card-body">
+        @ChildContent
+    </div>
+</div>
+
+@code {
+    /// <summary>
+    /// Title displayed in the gradient header.
+    /// </summary>
+    [Parameter]
+    public string? Title { get; set; }
+
+    /// <summary>
+    /// Optional icon/emoji displayed before the title.
+    /// </summary>
+    [Parameter]
+    public string? Icon { get; set; }
+
+    /// <summary>
+    /// Additional CSS classes to apply to the card.
+    /// </summary>
+    [Parameter]
+    public string? CssClass { get; set; }
+
+    /// <summary>
+    /// The main content of the section.
+    /// </summary>
+    [Parameter]
+    public RenderFragment? ChildContent { get; set; }
+}
