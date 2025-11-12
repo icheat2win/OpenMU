@@ -71,6 +71,22 @@ public partial class Index : ComponentBase, IDisposable
     }
 
     /// <summary>
+    /// Gets the color for server status badge (for StatBadge component).
+    /// </summary>
+    /// <param name="server">The server.</param>
+    /// <returns>The badge color name.</returns>
+    protected string GetServerStatusBadgeColor(IManageableServer server)
+    {
+        return server.ServerState switch
+        {
+            ServerState.Started => "success",
+            ServerState.Stopped => "default",
+            ServerState.Timeout => "warning",
+            _ => "default",
+        };
+    }
+
+    /// <summary>
     /// Gets the server status display text.
     /// </summary>
     /// <param name="server">The server.</param>
