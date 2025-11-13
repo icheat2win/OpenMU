@@ -2,89 +2,162 @@
 
 <PageTitle>OpenMU: Configuration Updates</PageTitle>
 <Breadcrumb IsFirstFromRoot="true" Caption="Configuration Updates"/>
-<h3>Configuration Updates</h3>
 
-@if (!this.SetupService.IsInstalled || this.SetupService.IsUpdateRequired)
-{
-    <div class="alert alert-info" role="alert">Please, first install the database updates on the <NavLink href="setup">Setup page</NavLink>.</div>
-    return;
-}
-@if (!this._availableUpdates.Any())
-{
-    <div class="alert alert-success" role="alert">No configuration data update available.</div>
-    return;
-}
+<div class="min-h-screen bg-white dark:bg-slate-900 py-6">
+    <!-- Header Section -->
+    <div class="mb-8">
+        <h1 class="text-4xl font-bold text-slate-900 dark:text-white flex items-center gap-3 mb-2">
+            <span class="oi oi-reload text-cyan-500" aria-hidden="true"></span>
+            Configuration Updates
+        </h1>
+        <p class="text-slate-600 dark:text-slate-400 text-lg">Manage and apply configuration database updates</p>
+    </div>
 
-<div class="alert alert-light">
-    <p>New updates for the configuration data are available. You can select the ones which should be applied to your configuration.</p>
-    <p>Mandatory updates are always applied and cannot be deselected.</p>
-    <p>The updates require a restart of the server process to take effect.</p>
-</div>
+    @if (!this.SetupService.IsInstalled || this.SetupService.IsUpdateRequired)
+    {
+        <div class="bg-blue-50 dark:bg-blue-900/20 border-l-4 border-blue-500 rounded-lg p-6 mb-6">
+            <div class="flex items-start gap-3">
+                <span class="oi oi-info text-blue-500 text-2xl" aria-hidden="true"></span>
+                <div>
+                    <h3 class="font-semibold text-slate-900 dark:text-white mb-2">Setup Required</h3>
+                    <p class="text-slate-600 dark:text-slate-400">
+                        Please first install the database updates on the <NavLink href="setup" class="text-blue-500 hover:text-blue-600 underline font-semibold">Setup page</NavLink>.
+                    </p>
+                </div>
+            </div>
+        </div>
+        return;
+    }
 
-@foreach (var update in this._availableUpdates)
-{
-    <div class="alert @(update.State == UpdateState.Failed ? "alert-warning" : update.Selected ? "alert-primary" : "alert-secondary")" role="alert">
-        @if (update.State == UpdateState.Started)
+    @if (!this._availableUpdates.Any())
+    {
+        <div class="bg-emerald-50 dark:bg-emerald-900/20 border-l-4 border-emerald-500 rounded-lg p-6">
+            <div class="flex items-center gap-3">
+                <span class="oi oi-check text-emerald-500 text-2xl" aria-hidden="true"></span>
+                <div>
+                    <h3 class="font-semibold text-slate-900 dark:text-white mb-1">All Up to Date!</h3>
+                    <p class="text-slate-600 dark:text-slate-400">No configuration data updates are available at this time.</p>
+                </div>
+            </div>
+        </div>
+        return;
+    }
+
+    <!-- Info Card -->
+    <div class="bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl p-6 mb-8">
+        <div class="flex items-start gap-3">
+            <span class="oi oi-info text-cyan-500 text-2xl" aria-hidden="true"></span>
+            <div class="space-y-2">
+                <p class="text-slate-700 dark:text-slate-300">• New updates for the configuration data are available.</p>
+                <p class="text-slate-700 dark:text-slate-300">• Select the updates which should be applied to your configuration.</p>
+                <p class="text-slate-700 dark:text-slate-300">• <strong>Mandatory updates</strong> are always applied and cannot be deselected.</p>
+                <p class="text-amber-600 dark:text-amber-400 font-semibold">⚠️ Updates require a server restart to take effect.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Available Updates List -->
+    <div class="space-y-4 mb-8">
+        @foreach (var update in this._availableUpdates)
         {
-            <div class="spinner-border text-secondary spinner-border-sm" role="status">
-                <span class="sr-only">Updating...</span>
+            var cardClass = update.State == UpdateState.Failed 
+                ? "bg-red-50 dark:bg-red-900/20 border-red-500" 
+                : update.Selected 
+                    ? "bg-cyan-50 dark:bg-cyan-900/20 border-cyan-500" 
+                    : "bg-slate-50 dark:bg-slate-800 border-slate-300 dark:border-slate-600";
+
+            <div class="@cardClass border-l-4 rounded-lg p-6 transition-all hover:shadow-md">
+                <div class="flex items-start gap-4">
+                    <!-- Status Icon/Checkbox -->
+                    <div class="flex-shrink-0 mt-1">
+                        @if (update.State == UpdateState.Started)
+                        {
+                            <div class="animate-spin rounded-full h-6 w-6 border-4 border-cyan-500 border-t-transparent"></div>
+                        }
+                        else if (update.State == UpdateState.Failed)
+                        {
+                            <span class="oi oi-bolt text-red-500 text-2xl" aria-hidden="true"></span>
+                        }
+                        else if (update.State == UpdateState.Installed)
+                        {
+                            <span class="oi oi-check text-emerald-500 text-2xl" aria-hidden="true"></span>
+                        }
+                        else if (update.IsMandatory)
+                        {
+                            <div class="flex items-center gap-2">
+                                <InputCheckbox @bind-Value="@update.Selected" disabled="disabled" class="w-5 h-5"></InputCheckbox>
+                                <span class="px-2 py-1 bg-amber-100 dark:bg-amber-900/50 text-amber-700 dark:text-amber-300 text-xs font-semibold rounded">MANDATORY</span>
+                            </div>
+                        }
+                        else
+                        {
+                            <InputCheckbox @bind-Value="@update.Selected" class="w-5 h-5 cursor-pointer"></InputCheckbox>
+                        }
+                    </div>
+
+                    <!-- Update Info -->
+                    <div class="flex-1">
+                        <div class="flex items-center gap-3 mb-3">
+                            <h3 class="text-xl font-bold text-slate-900 dark:text-white">@update.Name</h3>
+                            <span class="px-3 py-1 bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-300 text-sm font-semibold rounded-full">
+                                v@update.Version
+                            </span>
+                        </div>
+                        
+                        <div class="bg-white dark:bg-slate-900/50 rounded-lg p-4 border border-slate-200 dark:border-slate-700">
+                            <p class="text-slate-600 dark:text-slate-400">@update.Description</p>
+                        </div>
+                    </div>
+                </div>
             </div>
         }
-        else if (update.State == UpdateState.Failed)
+    </div>
+
+    <!-- Action Button -->
+    <div class="flex items-center gap-4">
+        @if (this._overallState == UpdateState.Started)
         {
-            <span class="oi oi-bolt"></span>
+            <button class="px-8 py-4 bg-gradient-to-r from-cyan-500 to-blue-500 text-white rounded-lg font-semibold text-lg shadow-lg cursor-not-allowed opacity-75 flex items-center gap-3" type="button" disabled>
+                <div class="animate-spin rounded-full h-5 w-5 border-3 border-white border-t-transparent"></div>
+                <span>Applying updates...</span>
+            </button>
         }
-        else if (update.State == UpdateState.Installed)
+        else if (this._overallState == UpdateState.Failed)
         {
-            <span class="oi oi-check"></span>
+            <button class="px-8 py-4 bg-gradient-to-r from-red-500 to-red-600 text-white rounded-lg font-semibold text-lg shadow-lg cursor-not-allowed flex items-center gap-3" type="button" disabled>
+                <span class="oi oi-bolt" aria-hidden="true"></span>
+                <span>Update Failed!</span>
+            </button>
         }
-        else if (update.IsMandatory)
+        else if (this._availableUpdates.Any(u => u.Selected))
         {
-            <InputCheckbox @bind-Value="@update.Selected" disabled="disabled"></InputCheckbox>
+            <button class="px-8 py-4 bg-gradient-to-r from-emerald-500 to-emerald-600 hover:from-emerald-600 hover:to-emerald-700 text-white rounded-lg font-semibold text-lg shadow-lg hover:shadow-xl transition-all flex items-center gap-3" type="button" @onclick="this.OnUpdateClickAsync">
+                <span class="oi oi-check" aria-hidden="true"></span>
+                <span>Apply Selected Updates (@this._availableUpdates.Count(u => u.Selected))</span>
+            </button>
         }
         else
         {
-            <InputCheckbox @bind-Value="@update.Selected"></InputCheckbox>
+            <button class="px-8 py-4 bg-slate-300 dark:bg-slate-700 text-slate-500 dark:text-slate-400 rounded-lg font-semibold text-lg cursor-not-allowed flex items-center gap-3" type="button" disabled>
+                <span class="oi oi-info" aria-hidden="true"></span>
+                <span>Select updates to apply</span>
+            </button>
         }
-        <span>&nbsp;@update.Name (#@update.Version)</span>
-        <hr/>
-        <div class="alert alert-secondary">
-            <span>@update.Description</span>
+    </div>
+
+    <!-- Error Display -->
+    @if (this._exception is { } exception)
+    {
+        <div class="mt-8 bg-red-50 dark:bg-red-900/20 border-l-4 border-red-500 rounded-lg p-6">
+            <div class="flex items-start gap-3 mb-4">
+                <span class="oi oi-bolt text-red-500 text-2xl" aria-hidden="true"></span>
+                <div>
+                    <h3 class="text-xl font-bold text-red-700 dark:text-red-400 mb-2">@exception.Message</h3>
+                </div>
+            </div>
+            <div class="bg-white dark:bg-slate-900 rounded-lg p-4 border border-red-200 dark:border-red-800 overflow-auto">
+                <pre class="text-xs text-slate-700 dark:text-slate-300 whitespace-pre-wrap font-mono">@exception.StackTrace</pre>
+            </div>
         </div>
-    </div>
-}
-
-@if (this._overallState == UpdateState.Started)
-{
-    <button class="btn btn-primary" type="button" disabled>
-        <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-        Applying updates ...
-    </button>
-}
-else if (this._overallState == UpdateState.Failed)
-{
-    <button class="btn btn-primary" type="button" disabled>
-        <span class="oi oi-bolt" role="status" aria-hidden="true"></span>
-        Update Failed!
-    </button>
-}
-else if (this._availableUpdates.Any(u => u.Selected))
-{
-    <button class="btn btn-primary" type="button" @onclick="this.OnUpdateClickAsync">Apply selected updates</button>
-}
-else
-{
-    <button class="btn btn-primary" type="button" disabled>Apply selected updates</button>
-}
-
-@if (this._exception is { } exception)
-{
-    <hr/>
-    <div class="alert alert-danger">
-        <h3 class="alert-heading">
-            <span class="oi oi-bolt"></span><span>&nbsp;@exception.Message</span>
-        </h3>
-        <hr/>
-        <span>@exception.StackTrace</span>
-    </div>
-}
+    }
+</div>

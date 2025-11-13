@@ -1,43 +1,156 @@
 ﻿@page "/users"
 @using MUnique.OpenMU.Web.AdminPanel.Services
 
-
 @inject IUserService UserService;
 
 <PageTitle>OpenMU: Admin Users</PageTitle>
 <Breadcrumb IsFirstFromRoot="true" Caption="Admin Users"/>
-<h1>Admin Users</h1>
 
-<div>
-    <table>
-        <thead>
-        <th class="col-10">Login Name</th>
-        <th class="col-1">Actions</th>
-        <th class="col-1"></th>
-        </thead>
-        <tbody>
-        @{ var users = this.UserService.Users; }
-        @foreach (var user in users)
-        {
-            <tr>
-                <td>@user</td>
-                <td>
-                    <button type="button" class="btn btn-sm btn-primary" @onclick="async () => await this.UserService.ChangePasswordInModalDialogAsync(user)">Change password</button>
-                </td>
-                <td>
-                    @if (users.Count > 1)
-                    {
-                        <button type="button" class="btn btn-sm btn-danger" @onclick="async () => await this.UserService.DeleteUserAsync(user)">Delete</button>
-                    }
-                </td>
-            </tr>
-        }
-        </tbody>
+<div class="min-h-screen bg-white dark:bg-slate-900 py-6">
+    <!-- Header Section -->
+    <div class="mb-8 flex items-center justify-between">
+        <div>
+            <h1 class="text-4xl font-bold text-slate-900 dark:text-white flex items-center gap-3 mb-2">
+                <span class="oi oi-people text-cyan-500" aria-hidden="true"></span>
+                Admin Users
+            </h1>
+            <p class="text-slate-600 dark:text-slate-400 text-lg">Manage administrator accounts and permissions</p>
+        </div>
+        <button
+            @onclick="@this.UserService.CreateNewInModalDialogAsync"
+            class="px-6 py-3 bg-gradient-to-r from-emerald-500 to-emerald-600 hover:from-emerald-600 hover:to-emerald-700 text-white rounded-lg transition-all shadow-lg hover:shadow-xl flex items-center gap-2 font-semibold">
+            <span class="oi oi-plus" aria-hidden="true"></span>
+            <span>Create New User</span>
+        </button>
+    </div>
+
+    <!-- Stats Card -->
+    @{ var users = this.UserService.Users; }
+    <div class="bg-gradient-to-br from-blue-500 to-blue-600 dark:from-blue-600 dark:to-blue-700 rounded-xl shadow-lg p-6 text-white mb-8">
+        <div class="flex items-center justify-between">
+            <div>
+                <p class="text-blue-100 font-medium mb-1">Total Admin Users</p>
+                <h3 class="text-4xl font-bold">@users.Count</h3>
+            </div>
+            <div class="p-4 bg-white/20 rounded-lg backdrop-blur-sm">
+                <span class="oi oi-people text-4xl" aria-hidden="true"></span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Users Table Card -->
+    <div class="bg-white dark:bg-slate-800 rounded-xl shadow-lg border border-slate-200 dark:border-slate-700">
+        <div class="p-6 border-b border-slate-200 dark:border-slate-700">
+            <div class="flex items-center gap-3">
+                <span class="text-2xl">👥</span>
+                <h2 class="text-2xl font-bold text-slate-900 dark:text-white">Administrator Accounts</h2>
+            </div>
+        </div>
         
-        <tfoot>
-            <td><button type="button" class="btn btn-sm btn-success" @onclick="@this.UserService.CreateNewInModalDialogAsync">Create User</button></td>
-            <td></td>
-            <td></td>
-        </tfoot>
-    </table>
+        @if (users.Any())
+        {
+            <div class="overflow-x-auto">
+                <table class="w-full">
+                    <thead class="bg-slate-50 dark:bg-slate-700/50 border-b border-slate-200 dark:border-slate-600">
+                        <tr>
+                            <th class="px-6 py-4 text-left text-sm font-semibold text-slate-700 dark:text-slate-300">
+                                <div class="flex items-center gap-2">
+                                    <span class="oi oi-person" aria-hidden="true"></span>
+                                    <span>Login Name</span>
+                                </div>
+                            </th>
+                            <th class="px-6 py-4 text-center text-sm font-semibold text-slate-700 dark:text-slate-300">
+                                <div class="flex items-center justify-center gap-2">
+                                    <span class="oi oi-cog" aria-hidden="true"></span>
+                                    <span>Actions</span>
+                                </div>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-200 dark:divide-slate-700">
+                        @foreach (var user in users)
+                        {
+                            <tr class="hover:bg-slate-50 dark:hover:bg-slate-700/50 transition-colors">
+                                <td class="px-6 py-4">
+                                    <div class="flex items-center gap-3">
+                                        <div class="w-10 h-10 bg-gradient-to-br from-cyan-500 to-blue-500 rounded-full flex items-center justify-center text-white font-bold">
+                                            @user.Substring(0, 1).ToUpper()
+                                        </div>
+                                        <div>
+                                            <p class="font-semibold text-slate-900 dark:text-white">@user</p>
+                                            <p class="text-sm text-slate-600 dark:text-slate-400">Administrator</p>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4">
+                                    <div class="flex items-center justify-center gap-3">
+                                        <button
+                                            type="button"
+                                            @onclick="async () => await this.UserService.ChangePasswordInModalDialogAsync(user)"
+                                            class="px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg transition-colors flex items-center gap-2 text-sm font-semibold shadow-md hover:shadow-lg">
+                                            <span class="oi oi-lock-locked" aria-hidden="true"></span>
+                                            <span>Change Password</span>
+                                        </button>
+                                        @if (users.Count > 1)
+                                        {
+                                            <button
+                                                type="button"
+                                                @onclick="async () => await this.UserService.DeleteUserAsync(user)"
+                                                class="px-4 py-2 bg-red-500 hover:bg-red-600 text-white rounded-lg transition-colors flex items-center gap-2 text-sm font-semibold shadow-md hover:shadow-lg">
+                                                <span class="oi oi-trash" aria-hidden="true"></span>
+                                                <span>Delete</span>
+                                            </button>
+                                        }
+                                        else
+                                        {
+                                            <div class="px-4 py-2 bg-slate-100 dark:bg-slate-700 text-slate-400 dark:text-slate-500 rounded-lg text-sm font-medium flex items-center gap-2">
+                                                <span class="oi oi-shield" aria-hidden="true"></span>
+                                                <span>Protected</span>
+                                            </div>
+                                        }
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
+        else
+        {
+            <div class="p-12 text-center">
+                <span class="oi oi-info text-4xl text-slate-400 dark:text-slate-500 mb-4 block" aria-hidden="true"></span>
+                <p class="text-slate-600 dark:text-slate-400 mb-4">No admin users found</p>
+                <button
+                    @onclick="@this.UserService.CreateNewInModalDialogAsync"
+                    class="px-6 py-3 bg-gradient-to-r from-cyan-500 to-blue-500 text-white rounded-lg hover:from-cyan-600 hover:to-blue-600 transition-all shadow-lg inline-flex items-center gap-2">
+                    <span class="oi oi-plus" aria-hidden="true"></span>
+                    Create First User
+                </button>
+            </div>
+        }
+    </div>
+
+    <!-- Info Cards -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8">
+        <div class="bg-blue-50 dark:bg-blue-900/20 border-l-4 border-blue-500 rounded-lg p-6">
+            <div class="flex items-start gap-3">
+                <span class="oi oi-info text-blue-500 text-xl" aria-hidden="true"></span>
+                <div>
+                    <h3 class="font-semibold text-slate-900 dark:text-white mb-1">Security Notice</h3>
+                    <p class="text-sm text-slate-600 dark:text-slate-400">Admin users have full access to all server functions. Keep credentials secure and change passwords regularly.</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="bg-amber-50 dark:bg-amber-900/20 border-l-4 border-amber-500 rounded-lg p-6">
+            <div class="flex items-start gap-3">
+                <span class="oi oi-warning text-amber-500 text-xl" aria-hidden="true"></span>
+                <div>
+                    <h3 class="font-semibold text-slate-900 dark:text-white mb-1">Minimum Requirement</h3>
+                    <p class="text-sm text-slate-600 dark:text-slate-400">At least one admin user must exist. The last remaining user cannot be deleted.</p>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
