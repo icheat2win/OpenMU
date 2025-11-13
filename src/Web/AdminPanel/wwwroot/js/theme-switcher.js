@@ -6,10 +6,20 @@
 (function() {
     'use strict';
 
+    // IMMEDIATELY apply theme (before any rendering)
+    const savedTheme = localStorage.getItem('theme') || 'dark';
+    const html = document.documentElement;
+    if (savedTheme === 'dark') {
+        html.classList.add('dark');
+    } else {
+        html.classList.remove('dark');
+    }
+    html.setAttribute('data-theme', savedTheme);
+
     // Initialize theme from localStorage or default to dark
     function initTheme() {
-        const savedTheme = localStorage.getItem('theme') || 'dark';
-        setTheme(savedTheme);
+        const theme = localStorage.getItem('theme') || 'dark';
+        setTheme(theme);
     }
 
     // Set theme on document root (uses class for Tailwind CSS v4)
