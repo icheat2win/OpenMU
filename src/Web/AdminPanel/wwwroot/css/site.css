@@ -47,6 +47,7 @@ html {
   font-family: sans-serif;
   line-height: 1.15;
   -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }
 
@@ -11047,4 +11048,51 @@ mark {
   .footer .d-flex {
     flex-direction: column;
   }
+}
+
+/* Modern Sidebar Navigation Styles */
+.sidebar {
+  /* Sidebar is visible by default on large screens */
+}
+
+.sidebar.collapse {
+  /* Hide on mobile when collapsed */
+  transform: translateX(-100%);
+}
+
+@media (min-width: 1024px) {
+  .sidebar.collapse {
+    /* Always show on desktop */
+    transform: translateX(0);
+  }
+}
+
+/* Active NavLink Styling */
+.sidebar a.active {
+  background: linear-gradient(135deg, rgba(59, 130, 246, 0.2), rgba(6, 182, 212, 0.2));
+  border-left: 4px solid #06b6d4;
+  font-weight: 600;
+}
+
+/* NavLink Hover Effects */
+.sidebar a:hover {
+  transform: translateX(2px);
+}
+
+/* Smooth scrollbar for sidebar */
+.sidebar::-webkit-scrollbar {
+  width: 6px;
+}
+
+.sidebar::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.sidebar::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 3px;
+}
+
+.sidebar::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.3);
 }

@@ -1,4 +1,4 @@
-﻿@page "/"
+@page "/"
 @using MUnique.OpenMU.Interfaces
 @using System.ComponentModel
 @using MUnique.OpenMU.DataModel.Configuration
@@ -6,113 +6,153 @@
 <PageTitle>OpenMU AdminPanel - Dashboard</PageTitle>
 <Breadcrumb IsFirstFromRoot="true" Caption="Dashboard"/>
 
-<div class="dashboard-container">
-    <div class="dashboard-header">
-        <h1 class="dashboard-title">
-            <span class="oi oi-dashboard"></span>
-            OpenMU AdminPanel
-        </h1>
-        <p class="dashboard-subtitle">Manage your OpenMU server infrastructure</p>
+<div class="min-h-screen bg-white dark:bg-slate-900 py-6">
+    <!-- Header Section -->
+    <div class="mb-8 flex items-center justify-between">
+        <div>
+            <h1 class="text-4xl font-bold text-slate-900 dark:text-white flex items-center gap-3 mb-2">
+                <span class="oi oi-dashboard text-cyan-500" aria-hidden="true"></span>
+                OpenMU AdminPanel
+            </h1>
+            <p class="text-slate-600 dark:text-slate-400 text-lg">Manage your OpenMU server infrastructure with modern, intuitive controls</p>
+        </div>
+        <button 
+            onclick="window.location.reload()" 
+            title="Refresh dashboard"
+            class="px-4 py-2 bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-600 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors flex items-center gap-2 text-slate-700 dark:text-slate-300">
+            <span class="oi oi-reload" aria-hidden="true"></span>
+            <span class="hidden md:inline">Refresh</span>
+        </button>
     </div>
 
-    <div class="dashboard-stats row">
-        @if (_servers != null)
-        {
-            <div class="col-md-3">
-                <ModernCard CssClass="stat-card stat-card-primary">
-                    <div class="stat-icon">
-                        🖥️
+    <!-- Stats Grid -->
+    @if (_servers != null)
+    {
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+            <!-- Total Servers Card -->
+            <div class="bg-gradient-to-br from-blue-500 to-blue-600 dark:from-blue-600 dark:to-blue-700 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 p-6 text-white">
+                <div class="flex items-start justify-between mb-4">
+                    <div class="p-3 bg-white/20 rounded-lg backdrop-blur-sm">
+                        <span class="oi oi-hard-drive text-2xl" aria-hidden="true"></span>
                     </div>
-                    <div class="stat-content">
-                        <h3>@_servers.Count()</h3>
-                        <p>Total Servers</p>
-                    </div>
-                </ModernCard>
-            </div>
-            <div class="col-md-3">
-                <ModernCard CssClass="stat-card stat-card-success">
-                    <div class="stat-icon">
-                        ▶️
-                    </div>
-                    <div class="stat-content">
-                        <h3>@_servers.Count(s => s.ServerState == ServerState.Started)</h3>
-                        <p>Running Servers</p>
-                    </div>
-                </ModernCard>
-            </div>
-            <div class="col-md-3">
-                <ModernCard CssClass="stat-card stat-card-info">
-                    <div class="stat-icon">
-                        👥
-                    </div>
-                    <div class="stat-content">
-                        <h3>@_servers.Sum(s => s.CurrentConnections)</h3>
-                        <p>Online Players</p>
-                    </div>
-                </ModernCard>
-            </div>
-            <div class="col-md-3">
-                <ModernCard CssClass="stat-card stat-card-warning">
-                    <div class="stat-icon">
-                        📊
-                    </div>
-                    <div class="stat-content">
-                        <h3>@(Math.Round(_servers.Where(s => s.MaximumConnections > 0).Average(s => (double)s.CurrentConnections / s.MaximumConnections * 100), 1))%</h3>
-                        <p>Avg Load</p>
-                    </div>
-                </ModernCard>
-            </div>
-        }
-        else
-        {
-            <div class="col-12">
-                <div class="loading-container">
-                    <div class="spinner" role="status">
-                        <span class="sr-only">Loading...</span>
-                    </div>
-                    <p class="mt-2">Loading server statistics...</p>
+                    <span class="px-3 py-1 bg-white/20 rounded-full text-xs font-semibold backdrop-blur-sm">ALL</span>
+                </div>
+                <h3 class="text-4xl font-bold mb-1">@_servers.Count()</h3>
+                <p class="text-blue-100 font-medium mb-2">Total Servers</p>
+                <div class="flex items-center gap-2 text-sm text-blue-100">
+                    <span class="oi oi-info" aria-hidden="true"></span>
+                    <span>Configured servers</span>
                 </div>
             </div>
-        }
-    </div>
 
-    <div class="dashboard-content row">
-        <div class="col-lg-8">
-            <SectionCard Title="Server Status Overview" Icon="🖥️">
+            <!-- Running Servers Card -->
+            <div class="bg-gradient-to-br from-emerald-500 to-emerald-600 dark:from-emerald-600 dark:to-emerald-700 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 p-6 text-white">
+                <div class="flex items-start justify-between mb-4">
+                    <div class="p-3 bg-white/20 rounded-lg backdrop-blur-sm">
+                        <span class="oi oi-media-play text-2xl" aria-hidden="true"></span>
+                    </div>
+                    <span class="px-3 py-1 bg-white/20 rounded-full text-xs font-semibold backdrop-blur-sm">ACTIVE</span>
+                </div>
+                <h3 class="text-4xl font-bold mb-1">@_servers.Count(s => s.ServerState == ServerState.Started)</h3>
+                <p class="text-emerald-100 font-medium mb-2">Running Servers</p>
+                <div class="flex items-center gap-2 text-sm text-emerald-100">
+                    <span class="oi oi-circle-check" aria-hidden="true"></span>
+                    <span>Active and healthy</span>
+                </div>
+            </div>
+
+            <!-- Online Players Card -->
+            <div class="bg-gradient-to-br from-cyan-500 to-cyan-600 dark:from-cyan-600 dark:to-cyan-700 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 p-6 text-white">
+                <div class="flex items-start justify-between mb-4">
+                    <div class="p-3 bg-white/20 rounded-lg backdrop-blur-sm">
+                        <span class="oi oi-people text-2xl" aria-hidden="true"></span>
+                    </div>
+                    <span class="px-3 py-1 bg-white/20 rounded-full text-xs font-semibold backdrop-blur-sm">LIVE</span>
+                </div>
+                <h3 class="text-4xl font-bold mb-1">@_servers.Sum(s => s.CurrentConnections)</h3>
+                <p class="text-cyan-100 font-medium mb-2">Online Players</p>
+                <div class="flex items-center gap-2 text-sm text-cyan-100">
+                    <span class="oi oi-pulse" aria-hidden="true"></span>
+                    <span>Currently connected</span>
+                </div>
+            </div>
+
+            <!-- Average Load Card -->
+            <div class="bg-gradient-to-br from-amber-500 to-amber-600 dark:from-amber-600 dark:to-amber-700 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 p-6 text-white">
+                <div class="flex items-start justify-between mb-4">
+                    <div class="p-3 bg-white/20 rounded-lg backdrop-blur-sm">
+                        <span class="oi oi-dashboard text-2xl" aria-hidden="true"></span>
+                    </div>
+                    <span class="px-3 py-1 bg-white/20 rounded-full text-xs font-semibold backdrop-blur-sm">AVG</span>
+                </div>
+                <h3 class="text-4xl font-bold mb-1">@(Math.Round(_servers.Where(s => s.MaximumConnections > 0).Average(s => (double)s.CurrentConnections / s.MaximumConnections * 100), 1))%</h3>
+                <p class="text-amber-100 font-medium mb-2">Avg Load</p>
+                <div class="flex items-center gap-2 text-sm text-amber-100">
+                    <span class="oi oi-graph" aria-hidden="true"></span>
+                    <span>Server capacity</span>
+                </div>
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="flex items-center justify-center py-20">
+            <div class="text-center">
+                <div class="inline-block animate-spin rounded-full h-16 w-16 border-4 border-cyan-500 border-t-transparent mb-4"></div>
+                <p class="text-slate-600 dark:text-slate-400 text-lg">Loading server statistics...</p>
+            </div>
+        </div>
+    }
+
+    <!-- Main Content Grid -->
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <!-- Server Status Section (2/3 width) -->
+        <div class="lg:col-span-2">
+            <div class="bg-white dark:bg-slate-800 rounded-xl shadow-lg border border-slate-200 dark:border-slate-700 p-6">
+                <div class="flex items-center gap-3 mb-6">
+                    <span class="text-2xl">🖥️</span>
+                    <h2 class="text-2xl font-bold text-slate-900 dark:text-white">Server Status Overview</h2>
+                </div>
+
                 @if (_servers != null && _servers.Any())
                 {
-                    <div class="server-grid">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                         @foreach (var server in _servers.OrderBy(s => s.Type).ThenBy(s => s.Description))
                         {
-                            <div class="server-item @GetServerStatusClass(server)">
-                                <div class="server-header">
-                                    <span class="server-type-icon">
+                            var statusClass = GetServerStatusClass(server);
+                            var statusColor = GetServerStatusColorClass(server);
+                            
+                            <div class="bg-slate-50 dark:bg-slate-700/50 rounded-lg border-2 @statusColor hover:shadow-md transition-all duration-200 p-4">
+                                <div class="flex items-center justify-between mb-3">
+                                    <div class="flex items-center gap-3">
                                         @if (server.Type == ServerType.GameServer)
                                         {
-                                            <span class="oi oi-target"></span>
+                                            <span class="oi oi-target text-cyan-500" aria-hidden="true"></span>
                                         }
                                         else if (server.Type == ServerType.ConnectServer)
                                         {
-                                            <span class="oi oi-wifi"></span>
+                                            <span class="oi oi-wifi text-blue-500" aria-hidden="true"></span>
                                         }
                                         else
                                         {
-                                            <span class="oi oi-chat"></span>
+                                            <span class="oi oi-chat text-purple-500" aria-hidden="true"></span>
                                         }
+                                        <h3 class="font-semibold text-slate-900 dark:text-white">@server.Description</h3>
+                                    </div>
+                                    <span class="px-3 py-1 rounded-full text-xs font-semibold @GetStatusBadgeClass(server)">
+                                        @GetServerStatusText(server)
                                     </span>
-                                    <h6 class="server-name">@server.Description</h6>
-                                    <StatBadge Value="@GetServerStatusText(server)" Color="@GetServerStatusBadgeColor(server)" />
                                 </div>
-                                <div class="server-details">
-                                    <div class="detail-item">
-                                        <span class="oi oi-people"></span>
-                                        @server.CurrentConnections/@(server.MaximumConnections < int.MaxValue ? server.MaximumConnections.ToString() : "∞")
+                                <div class="flex items-center gap-4 text-sm text-slate-600 dark:text-slate-400">
+                                    <div class="flex items-center gap-2">
+                                        <span class="oi oi-people" aria-hidden="true"></span>
+                                        <span>@server.CurrentConnections / @(server.MaximumConnections < int.MaxValue ? server.MaximumConnections.ToString() : "∞")</span>
                                     </div>
                                     @if (server.Type == ServerType.GameServer)
                                     {
-                                        <div class="detail-item">
-                                            <span class="oi oi-map"></span>
-                                            Game Server
+                                        <div class="flex items-center gap-2">
+                                            <span class="oi oi-map" aria-hidden="true"></span>
+                                            <span>Game Server</span>
                                         </div>
                                     }
                                 </div>
@@ -122,57 +162,71 @@
                 }
                 else if (_servers != null)
                 {
-                    <div class="empty-state">
-                        <span class="oi oi-info"></span>
-                        <p>No servers configured yet.</p>
-                        <a href="/servers" class="btn btn-primary">Configure Servers</a>
+                    <div class="text-center py-12">
+                        <span class="oi oi-info text-4xl text-slate-400 dark:text-slate-500 mb-4 block" aria-hidden="true"></span>
+                        <p class="text-slate-600 dark:text-slate-400 mb-4">No servers configured yet.</p>
+                        <a href="/servers" class="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-cyan-500 to-blue-500 text-white rounded-lg hover:from-cyan-600 hover:to-blue-600 transition-all shadow-lg">
+                            <span class="oi oi-plus" aria-hidden="true"></span>
+                            Configure Servers
+                        </a>
                     </div>
                 }
-            </SectionCard>
+            </div>
         </div>
 
-        <div class="col-lg-4">
-            <ModernCard Title="Quick Actions" Icon="⚡">
-                <div class="quick-actions">
-                    <a href="/servers" class="btn btn-outline-primary btn-block mb-2">
-                        <span class="oi oi-project"></span>
-                        Manage Servers
+        <!-- Sidebar Section (1/3 width) -->
+        <div class="space-y-6">
+            <!-- Quick Actions Card -->
+            <div class="bg-white dark:bg-slate-800 rounded-xl shadow-lg border border-slate-200 dark:border-slate-700 p-6">
+                <div class="flex items-center gap-3 mb-6">
+                    <span class="text-2xl">⚡</span>
+                    <h2 class="text-2xl font-bold text-slate-900 dark:text-white">Quick Actions</h2>
+                </div>
+                <div class="space-y-3">
+                    <a href="/servers" class="flex items-center gap-3 px-4 py-3 bg-slate-50 dark:bg-slate-700/50 hover:bg-slate-100 dark:hover:bg-slate-700 border border-slate-200 dark:border-slate-600 rounded-lg transition-colors text-slate-700 dark:text-slate-300">
+                        <span class="oi oi-project" aria-hidden="true"></span>
+                        <span>Manage Servers</span>
                     </a>
-                    <a href="/accounts" class="btn btn-outline-secondary btn-block mb-2">
-                        <span class="oi oi-people"></span>
-                        View Accounts
+                    <a href="/accounts" class="flex items-center gap-3 px-4 py-3 bg-slate-50 dark:bg-slate-700/50 hover:bg-slate-100 dark:hover:bg-slate-700 border border-slate-200 dark:border-slate-600 rounded-lg transition-colors text-slate-700 dark:text-slate-300">
+                        <span class="oi oi-people" aria-hidden="true"></span>
+                        <span>View Accounts</span>
                     </a>
-                    <a href="/logged-in" class="btn btn-outline-info btn-block mb-2">
-                        <span class="oi oi-eye"></span>
-                        Online Players
+                    <a href="/logged-in" class="flex items-center gap-3 px-4 py-3 bg-slate-50 dark:bg-slate-700/50 hover:bg-slate-100 dark:hover:bg-slate-700 border border-slate-200 dark:border-slate-600 rounded-lg transition-colors text-slate-700 dark:text-slate-300">
+                        <span class="oi oi-eye" aria-hidden="true"></span>
+                        <span>Online Players</span>
                     </a>
-                    <a href="/setup" class="btn btn-outline-warning btn-block">
-                        <span class="oi oi-cog"></span>
-                        Server Setup
+                    <a href="/setup" class="flex items-center gap-3 px-4 py-3 bg-slate-50 dark:bg-slate-700/50 hover:bg-slate-100 dark:hover:bg-slate-700 border border-slate-200 dark:border-slate-600 rounded-lg transition-colors text-slate-700 dark:text-slate-300">
+                        <span class="oi oi-cog" aria-hidden="true"></span>
+                        <span>Server Setup</span>
                     </a>
                 </div>
-            </ModernCard>
+            </div>
 
-            <ModernCard Title="System Information" Icon="ℹ️" CssClass="mt-3">
-                <div class="system-info">
-                    <div class="info-item">
-                        <strong>Version:</strong>
-                        <span>OpenMU v@(typeof(Index).Assembly.GetName().Version?.ToString(3) ?? "Unknown")</span>
+            <!-- System Information Card -->
+            <div class="bg-white dark:bg-slate-800 rounded-xl shadow-lg border border-slate-200 dark:border-slate-700 p-6">
+                <div class="flex items-center gap-3 mb-6">
+                    <span class="text-2xl">ℹ️</span>
+                    <h2 class="text-2xl font-bold text-slate-900 dark:text-white">System Info</h2>
+                </div>
+                <div class="space-y-3 text-sm">
+                    <div class="flex justify-between items-center py-2 border-b border-slate-200 dark:border-slate-700">
+                        <span class="text-slate-600 dark:text-slate-400 font-medium">Version:</span>
+                        <span class="text-slate-900 dark:text-white font-semibold">OpenMU v@(typeof(Index).Assembly.GetName().Version?.ToString(3) ?? "Unknown")</span>
                     </div>
-                    <div class="info-item">
-                        <strong>Build Date:</strong>
-                        <span>@GetBuildDate()</span>
+                    <div class="flex justify-between items-center py-2 border-b border-slate-200 dark:border-slate-700">
+                        <span class="text-slate-600 dark:text-slate-400 font-medium">Build Date:</span>
+                        <span class="text-slate-900 dark:text-white font-semibold">@GetBuildDate()</span>
                     </div>
-                    <div class="info-item">
-                        <strong>Uptime:</strong>
-                        <span>@GetSystemUptime()</span>
+                    <div class="flex justify-between items-center py-2 border-b border-slate-200 dark:border-slate-700">
+                        <span class="text-slate-600 dark:text-slate-400 font-medium">Uptime:</span>
+                        <span class="text-slate-900 dark:text-white font-semibold">@GetSystemUptime()</span>
                     </div>
-                    <div class="info-item">
-                        <strong>Environment:</strong>
-                        <span>@System.Environment.MachineName</span>
+                    <div class="flex justify-between items-center py-2">
+                        <span class="text-slate-600 dark:text-slate-400 font-medium">Environment:</span>
+                        <span class="text-slate-900 dark:text-white font-semibold">@System.Environment.MachineName</span>
                     </div>
                 </div>
-            </ModernCard>
+            </div>
         </div>
     </div>
 </div>

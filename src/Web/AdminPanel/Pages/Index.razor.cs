@@ -71,6 +71,38 @@ public partial class Index : ComponentBase, IDisposable
     }
 
     /// <summary>
+    /// Gets the Tailwind CSS class for server status border and background color.
+    /// </summary>
+    /// <param name="server">The server.</param>
+    /// <returns>The Tailwind CSS classes for server status styling.</returns>
+    protected string GetServerStatusColorClass(IManageableServer server)
+    {
+        return server.ServerState switch
+        {
+            ServerState.Started => "border-emerald-500 bg-emerald-50/50 dark:bg-emerald-900/20",
+            ServerState.Stopped => "border-slate-300 dark:border-slate-600",
+            ServerState.Timeout => "border-amber-500 bg-amber-50/50 dark:bg-amber-900/20",
+            _ => "border-red-500 bg-red-50/50 dark:bg-red-900/20",
+        };
+    }
+
+    /// <summary>
+    /// Gets the Tailwind CSS class for status badge styling.
+    /// </summary>
+    /// <param name="server">The server.</param>
+    /// <returns>The Tailwind CSS classes for status badge.</returns>
+    protected string GetStatusBadgeClass(IManageableServer server)
+    {
+        return server.ServerState switch
+        {
+            ServerState.Started => "bg-emerald-100 dark:bg-emerald-900/50 text-emerald-700 dark:text-emerald-300",
+            ServerState.Stopped => "bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-300",
+            ServerState.Timeout => "bg-amber-100 dark:bg-amber-900/50 text-amber-700 dark:text-amber-300",
+            _ => "bg-red-100 dark:bg-red-900/50 text-red-700 dark:text-red-300",
+        };
+    }
+
+    /// <summary>
     /// Gets the color for server status badge (for StatBadge component).
     /// </summary>
     /// <param name="server">The server.</param>

@@ -1,112 +1,177 @@
 ﻿@using MUnique.OpenMU.DataModel.Configuration
 @using MUnique.OpenMU.Persistence;
 
-<nav>
-    <div>
-        <a href="">OpenMU</a>
-        <button @onclick="ToggleNavMenu">
-            <span></span>
+<nav class="sidebar bg-slate-900 dark:bg-slate-950 text-white shadow-2xl flex flex-col h-screen fixed top-0 left-0 w-64 z-50 transition-all duration-300 @NavMenuCssClass">
+    <!-- Header -->
+    <div class="flex items-center justify-between px-6 py-4 bg-gradient-to-r from-primary-600 to-cyan-600 border-b border-white/10">
+        <a href="" class="flex items-center gap-3 text-xl font-bold hover:opacity-80 transition-opacity">
+            <span class="text-2xl">🎮</span>
+            <span>OpenMU</span>
+        </a>
+        <button @onclick="ToggleNavMenu" 
+                class="lg:hidden p-2 rounded-lg hover:bg-white/10 transition-colors"
+                aria-label="Toggle navigation">
+            <span class="oi oi-menu text-xl"></span>
         </button>
     </div>
 
-    <!-- Hiding it programmatically is not a good idea here, because we want to hide it based on the width of the device/window. -->
-    <div class="@NavMenuCssClass">
-        <ul>
+    <!-- Navigation Menu -->
+    <div class="flex-1 overflow-y-auto px-3 py-4">
+        <ul class="space-y-1">
             @if (this._isLoadingConfig)
             {
                 <li>
-                    <NavLink href="" Match="NavLinkMatch.All">
-                        <span class="oi oi-clock" aria-hidden="true"></span> Loading ...
-                    </NavLink>
+                    <div class="flex items-center gap-3 px-4 py-3 text-slate-400">
+                        <span class="oi oi-clock animate-spin" aria-hidden="true"></span>
+                        <span>Loading...</span>
+                    </div>
                 </li>
             }
             else if (this._onlyShowSetup)
             {
                 <li>
-                    <NavLink href="setup">
-                        <span class="oi oi-cog" aria-hidden="true"></span> Setup
+                    <NavLink href="setup" 
+                             class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-white/10 transition-all duration-200 group">
+                        <span class="oi oi-cog text-cyan-400 group-hover:scale-110 transition-transform" aria-hidden="true"></span>
+                        <span class="font-medium">Setup</span>
                     </NavLink>
                 </li>
             }
             else
             {
+                <!-- Main Navigation -->
                 <li>
-                    <NavLink href="" Match="NavLinkMatch.All">
-                        <span class="oi oi-home" aria-hidden="true"></span> Home
+                    <NavLink href="" Match="NavLinkMatch.All" 
+                             class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-white/10 transition-all duration-200 group">
+                        <span class="oi oi-home text-cyan-400 group-hover:scale-110 transition-transform" aria-hidden="true"></span>
+                        <span class="font-medium">Home</span>
                     </NavLink>
                 </li>
                 <li>
-                    <NavLink href="servers">
-                        <span class="oi oi-project" aria-hidden="true"></span> Servers
+                    <NavLink href="servers" 
+                             class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-white/10 transition-all duration-200 group">
+                        <span class="oi oi-project text-blue-400 group-hover:scale-110 transition-transform" aria-hidden="true"></span>
+                        <span class="font-medium">Servers</span>
                     </NavLink>
                 </li>
                 <li>
-                  <NavLink href="accounts">
-                    <span class="oi oi-list" aria-hidden="true"></span> Accounts
-                  </NavLink>
+                    <NavLink href="accounts" 
+                             class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-white/10 transition-all duration-200 group">
+                        <span class="oi oi-list text-purple-400 group-hover:scale-110 transition-transform" aria-hidden="true"></span>
+                        <span class="font-medium">Accounts</span>
+                    </NavLink>
                 </li>
                 <li>
-                  <NavLink href="logged-in">
-                    <span class="oi oi-people" aria-hidden="true" /> Online Accounts
-                  </NavLink>
+                    <NavLink href="logged-in" 
+                             class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-white/10 transition-all duration-200 group">
+                        <span class="oi oi-people text-emerald-400 group-hover:scale-110 transition-transform" aria-hidden="true"></span>
+                        <span class="font-medium">Online Accounts</span>
+                    </NavLink>
                 </li>
-                @if (this.GameConfigurationId is { } gameConfigurationId )
+
+                <!-- Configuration Section -->
+                @if (this.GameConfigurationId is { } gameConfigurationId)
                 {
+                    <li class="pt-4 pb-2">
+                        <div class="px-4 text-xs font-semibold text-slate-400 uppercase tracking-wider">Configuration</div>
+                    </li>
                     <ConfigNavMenu GameConfigurationId="@gameConfigurationId" />
                 }
+
+                <!-- System Section -->
+                <li class="pt-4 pb-2">
+                    <div class="px-4 text-xs font-semibold text-slate-400 uppercase tracking-wider">System</div>
+                </li>
                 <li>
-                    <NavLink href="setup">
-                        <span class="oi oi-cog" aria-hidden="true"></span> Setup
+                    <NavLink href="setup" 
+                             class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-white/10 transition-all duration-200 group">
+                        <span class="oi oi-cog text-amber-400 group-hover:scale-110 transition-transform" aria-hidden="true"></span>
+                        <span class="font-medium">Setup</span>
                     </NavLink>
                 </li>
                 <li>
-                    <NavLink href="config-updates">
-                        <span class="oi oi-medical-cross" aria-hidden="true"></span> Updates
+                    <NavLink href="config-updates" 
+                             class="flex items-center justify-between px-4 py-3 rounded-lg hover:bg-white/10 transition-all duration-200 group">
+                        <div class="flex items-center gap-3">
+                            <span class="oi oi-medical-cross text-rose-400 group-hover:scale-110 transition-transform" aria-hidden="true"></span>
+                            <span class="font-medium">Updates</span>
+                        </div>
                         @if (this._availableConfigUpdates > 0)
                         {
-                            <span class="badge badge-light ml-2">@this._availableConfigUpdates</span>
-                            <span class="sr-only">available updates</span>
+                            <span class="px-2 py-1 bg-rose-500 text-white text-xs font-bold rounded-full animate-pulse">
+                                @this._availableConfigUpdates
+                            </span>
                         }
                     </NavLink>
                 </li>
             }
+
+            <!-- Users Section -->
             @if (UserService.IsAvailable)
             {
                 <li>
-                    <NavLink href="users">
-                        <span class="oi oi-key" aria-hidden="true"></span> Users
+                    <NavLink href="users" 
+                             class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-white/10 transition-all duration-200 group">
+                        <span class="oi oi-key text-yellow-400 group-hover:scale-110 transition-transform" aria-hidden="true"></span>
+                        <span class="font-medium">Users</span>
                     </NavLink>
                 </li>
             }
-            @if (AdminPanelEnvironment.IsHostingEmbedded)
+
+            <!-- Monitoring Section -->
+            @if (!this._isLoadingConfig && !this._onlyShowSetup)
             {
-                <li>
-                    <NavLink href="logfiles">
-                        <span class="oi oi-list" aria-hidden="true"></span> Log Files
-                    </NavLink>
+                <li class="pt-4 pb-2">
+                    <div class="px-4 text-xs font-semibold text-slate-400 uppercase tracking-wider">Monitoring</div>
                 </li>
-            }
-            else
-            {
-                <li>
-                    <a href="/grafana/explore?orgId=1&left=%7B%22datasource%22:%22Loki%22,%22queries%22:%5B%7B%22refId%22:%22A%22%7D%5D,%22range%22:%7B%22from%22:%22now-1h%22,%22to%22:%22now%22%7D%7D"
-                       target="_blank">
-                        <span class="oi oi-list" aria-hidden="true"></span> Log
-                    </a>
-                </li>
-                <li>
-                    <a href="/grafana/dashboards"
-                       target="_blank">
-                        <span class="oi oi-bar-chart" aria-hidden="true"></span> Metrics
-                    </a>
-                </li>
-                <li>
-                    <a href="/zipkin/"
-                       target="_blank">
-                        <span class="oi oi-fork" aria-hidden="true"></span> Tracing
-                    </a>
-                </li>
+                @if (AdminPanelEnvironment.IsHostingEmbedded)
+                {
+                    <li>
+                        <NavLink href="logfiles" 
+                                 class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-white/10 transition-all duration-200 group">
+                            <span class="oi oi-list text-indigo-400 group-hover:scale-110 transition-transform" aria-hidden="true"></span>
+                            <span class="font-medium">Log Files</span>
+                        </NavLink>
+                    </li>
+                }
+                else
+                {
+                    <li>
+                        <a href="/grafana/explore?orgId=1&left=%7B%22datasource%22:%22Loki%22,%22queries%22:%5B%7B%22refId%22:%22A%22%7D%5D,%22range%22:%7B%22from%22:%22now-1h%22,%22to%22:%22now%22%7D%7D"
+                           target="_blank"
+                           class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-white/10 transition-all duration-200 group">
+                            <span class="oi oi-list text-indigo-400 group-hover:scale-110 transition-transform" aria-hidden="true"></span>
+                            <span class="font-medium">Log</span>
+                            <span class="oi oi-external-link text-xs text-slate-400 ml-auto" aria-hidden="true"></span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="/grafana/dashboards"
+                           target="_blank"
+                           class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-white/10 transition-all duration-200 group">
+                            <span class="oi oi-bar-chart text-teal-400 group-hover:scale-110 transition-transform" aria-hidden="true"></span>
+                            <span class="font-medium">Metrics</span>
+                            <span class="oi oi-external-link text-xs text-slate-400 ml-auto" aria-hidden="true"></span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="/zipkin/"
+                           target="_blank"
+                           class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-white/10 transition-all duration-200 group">
+                            <span class="oi oi-fork text-pink-400 group-hover:scale-110 transition-transform" aria-hidden="true"></span>
+                            <span class="font-medium">Tracing</span>
+                            <span class="oi oi-external-link text-xs text-slate-400 ml-auto" aria-hidden="true"></span>
+                        </a>
+                    </li>
+                }
             }
         </ul>
+    </div>
+
+    <!-- Footer -->
+    <div class="px-6 py-4 border-t border-white/10 bg-slate-950/50">
+        <div class="text-xs text-slate-400 text-center">
+            OpenMU v@(typeof(NavMenu).Assembly.GetName().Version?.ToString(3) ?? "Unknown")
+        </div>
     </div>
 </nav>

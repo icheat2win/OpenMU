@@ -527,6 +527,46 @@
             </div>
         </div>
 
+        <!-- Character Stats -->
+        <div class="section-card">
+            <div class="section-header">
+                <span class="section-icon">💪</span>
+                <span>Character Stats</span>
+            </div>
+            
+            <div class="form-grid">
+                <div class="form-field">
+                    <label>Strength</label>
+                    <InputNumber @bind-Value="@Strength" min="0" max="65000" />
+                    <small>Base strength attribute</small>
+                </div>
+
+                <div class="form-field">
+                    <label>Agility</label>
+                    <InputNumber @bind-Value="@Agility" min="0" max="65000" />
+                    <small>Base agility attribute</small>
+                </div>
+
+                <div class="form-field">
+                    <label>Vitality</label>
+                    <InputNumber @bind-Value="@Vitality" min="0" max="65000" />
+                    <small>Base vitality attribute</small>
+                </div>
+
+                <div class="form-field">
+                    <label>Energy</label>
+                    <InputNumber @bind-Value="@Energy" min="0" max="65000" />
+                    <small>Base energy attribute</small>
+                </div>
+
+                <div class="form-field">
+                    <label>Command</label>
+                    <InputNumber @bind-Value="@Command" min="0" max="65000" />
+                    <small>Command points for summoner</small>
+                </div>
+            </div>
+        </div>
+
         <!-- Money & Currency -->
         <div class="section-card">
             <div class="section-header">
@@ -658,90 +698,63 @@
         <div class="section-card">
             <div class="section-header">
                 <span class="section-icon">🎒</span>
-                <span>Inventory Management</span>
+                <span>Inventory & Equipment</span>
             </div>
             
-            <div class="inventory-section">
-                <div class="inventory-stats">
-                    <div class="stat-badge">
-                        <span class="stat-label">Total Items:</span>
-                        <span class="stat-value">@(Character.Inventory?.Items?.Count ?? 0)</span>
-                    </div>
-                    <div class="stat-badge">
-                        <span class="stat-label">Current Zen:</span>
-                        <span class="stat-value">@(Character.Inventory?.Money ?? 0)</span>
-                    </div>
-                    <div class="stat-badge">
-                        <span class="stat-label">Extensions:</span>
-                        <span class="stat-value">@Character.InventoryExtensions / 4</span>
-                    </div>
+            <div class="inventory-stats">
+                <div class="stat-badge">
+                    <span class="stat-label">Total Items:</span>
+                    <span class="stat-value">@(Character.Inventory?.Items?.Count ?? 0)</span>
                 </div>
-
-                @if (Character.Inventory?.Items != null && Character.Inventory.Items.Any())
-                {
-                    <div class="inventory-grid">
-                        <div class="inventory-header">
-                            <div>Item</div>
-                            <div>Level</div>
-                            <div>Slot</div>
-                            <div>Options</div>
-                            <div>Actions</div>
-                        </div>
-                        @foreach (var item in Character.Inventory.Items.OrderBy(i => i.ItemSlot))
-                        {
-                            <div class="inventory-item">
-                                <div class="item-name">
-                                    @if (item.Definition != null)
-                                    {
-                                        <span class="item-icon">⚔️</span>
-                                        <span>@item.Definition.Name</span>
-                                    }
-                                    else
-                                    {
-                                        <span class="text-muted">Unknown Item</span>
-                                    }
-                                </div>
-                                <div class="item-level">
-                                    <span class="badge badge-info">+@item.Level</span>
-                                </div>
-                                <div class="item-slot">
-                                    Slot @item.ItemSlot
-                                </div>
-                                <div class="item-options">
-                                    @if (item.ItemOptions != null && item.ItemOptions.Any())
-                                    {
-                                        <span class="badge badge-success">@item.ItemOptions.Count options</span>
-                                    }
-                                    else
-                                    {
-                                        <span class="text-muted">No options</span>
-                                    }
-                                </div>
-                                <div class="item-actions">
-                                    <button type="button" class="btn-icon btn-danger-sm" @onclick="() => RemoveItem(item)" title="Remove Item">
-                                        🗑️
-                                    </button>
-                                </div>
-                            </div>
-                        }
-                    </div>
-                }
-                else
-                {
-                    <div class="empty-state">
-                        <span class="empty-icon">📭</span>
-                        <p>No items in inventory</p>
-                    </div>
-                }
-
-                <div class="inventory-actions">
-                    <button type="button" class="btn-add-item" @onclick="ShowAddItemDialog">
-                        <span>➕</span>
-                        <span>Add Item to Inventory</span>
-                    </button>
+                <div class="stat-badge">
+                    <span class="stat-label">Current Zen:</span>
+                    <span class="stat-value">@(Character.Inventory?.Money ?? 0)</span>
+                </div>
+                <div class="stat-badge">
+                    <span class="stat-label">Extensions:</span>
+                    <span class="stat-value">@Character.InventoryExtensions / 4</span>
                 </div>
             </div>
+
+            @if (Character.Inventory != null)
+            {
+                <ItemStorageField @bind-Value="@Character.Inventory" Label="Character Inventory" />
+            }
+            else
+            {
+                <div class="empty-state">
+                    <span class="empty-icon">📭</span>
+                    <p>No inventory storage available</p>
+                    <button type="button" class="btn-add-item" @onclick="CreateInventory">
+                        Create Inventory
+                    </button>
+                </div>
+            }
         </div>
+
+        <!-- Vault Storage -->
+        @if (Account?.Vault != null)
+        {
+            <div class="section-card">
+                <div class="section-header">
+                    <span class="section-icon">🏦</span>
+                    <span>Vault Storage</span>
+                </div>
+                
+                <div class="inventory-stats">
+                    <div class="stat-badge">
+                        <span class="stat-label">Vault Items:</span>
+                        <span class="stat-value">@(Account.Vault.Items?.Count ?? 0)</span>
+                    </div>
+                    <div class="stat-badge">
+                        <span class="stat-label">Vault Zen:</span>
+                        <span class="stat-value">@Account.Vault.Money</span>
+                    </div>
+                </div>
+
+                <ItemStorageField @bind-Value="@Account.Vault" Label="Account Vault" />
+            </div>
+        }
 
         <!-- Other -->
         <div class="section-card">
@@ -851,6 +864,156 @@
     }
 
     /// <summary>
+    /// Gets or sets the character strength attribute.
+    /// Uses direct StatAttribute lookup by Definition ID.
+    /// </summary>
+    private int Strength
+    {
+        get
+        {
+            if (Character?.Attributes == null)
+                return 0;
+            
+            // Use Guid ID: 123282fe-fead-448e-ad2c-baece939b4b1 for Base Strength
+            var strengthAttr = Character.Attributes.FirstOrDefault(a => 
+                a.Definition?.Id == Guid.Parse("123282fe-fead-448e-ad2c-baece939b4b1"));
+            return strengthAttr != null ? (int)strengthAttr.Value : 0;
+        }
+        set
+        {
+            if (Character?.Attributes == null)
+                return;
+            
+            var strengthAttr = Character.Attributes.FirstOrDefault(a => 
+                a.Definition?.Id == Guid.Parse("123282fe-fead-448e-ad2c-baece939b4b1"));
+            if (strengthAttr != null)
+            {
+                strengthAttr.Value = Math.Clamp(value, 0, 65000);
+            }
+        }
+    }
+
+    /// <summary>
+    /// Gets or sets the character agility attribute.
+    /// Uses direct StatAttribute lookup by Definition ID.
+    /// </summary>
+    private int Agility
+    {
+        get
+        {
+            if (Character?.Attributes == null)
+                return 0;
+            
+            // Use Guid ID: 1ae9c014-e3cd-4703-bd05-1b65f5f94ceb for Base Agility
+            var agilityAttr = Character.Attributes.FirstOrDefault(a => 
+                a.Definition?.Id == Guid.Parse("1ae9c014-e3cd-4703-bd05-1b65f5f94ceb"));
+            return agilityAttr != null ? (int)agilityAttr.Value : 0;
+        }
+        set
+        {
+            if (Character?.Attributes == null)
+                return;
+            
+            var agilityAttr = Character.Attributes.FirstOrDefault(a => 
+                a.Definition?.Id == Guid.Parse("1ae9c014-e3cd-4703-bd05-1b65f5f94ceb"));
+            if (agilityAttr != null)
+            {
+                agilityAttr.Value = Math.Clamp(value, 0, 65000);
+            }
+        }
+    }
+
+    /// <summary>
+    /// Gets or sets the character vitality attribute.
+    /// Uses direct StatAttribute lookup by Definition ID.
+    /// </summary>
+    private int Vitality
+    {
+        get
+        {
+            if (Character?.Attributes == null)
+                return 0;
+            
+            // Use Guid ID: 6ca5c3a6-b109-45a5-87a7-fdcb107b4982 for Base Vitality
+            var vitalityAttr = Character.Attributes.FirstOrDefault(a => 
+                a.Definition?.Id == Guid.Parse("6ca5c3a6-b109-45a5-87a7-fdcb107b4982"));
+            return vitalityAttr != null ? (int)vitalityAttr.Value : 0;
+        }
+        set
+        {
+            if (Character?.Attributes == null)
+                return;
+            
+            var vitalityAttr = Character.Attributes.FirstOrDefault(a => 
+                a.Definition?.Id == Guid.Parse("6ca5c3a6-b109-45a5-87a7-fdcb107b4982"));
+            if (vitalityAttr != null)
+            {
+                vitalityAttr.Value = Math.Clamp(value, 0, 65000);
+            }
+        }
+    }
+
+    /// <summary>
+    /// Gets or sets the character energy attribute.
+    /// Uses direct StatAttribute lookup by Definition ID.
+    /// </summary>
+    private int Energy
+    {
+        get
+        {
+            if (Character?.Attributes == null)
+                return 0;
+            
+            // Use Guid ID: 01b0ef28-f7a0-46b5-97ba-2b624a54cd75 for Base Energy
+            var energyAttr = Character.Attributes.FirstOrDefault(a => 
+                a.Definition?.Id == Guid.Parse("01b0ef28-f7a0-46b5-97ba-2b624a54cd75"));
+            return energyAttr != null ? (int)energyAttr.Value : 0;
+        }
+        set
+        {
+            if (Character?.Attributes == null)
+                return;
+            
+            var energyAttr = Character.Attributes.FirstOrDefault(a => 
+                a.Definition?.Id == Guid.Parse("01b0ef28-f7a0-46b5-97ba-2b624a54cd75"));
+            if (energyAttr != null)
+            {
+                energyAttr.Value = Math.Clamp(value, 0, 65000);
+            }
+        }
+    }
+
+    /// <summary>
+    /// Gets or sets the character command/leadership attribute.
+    /// Uses direct StatAttribute lookup by Definition ID.
+    /// </summary>
+    private int Command
+    {
+        get
+        {
+            if (Character?.Attributes == null)
+                return 0;
+            
+            // Use Guid ID: 6af2c9df-3ae4-4721-8462-9a8ec7f56fe4 for Base Leadership
+            var commandAttr = Character.Attributes.FirstOrDefault(a => 
+                a.Definition?.Id == Guid.Parse("6af2c9df-3ae4-4721-8462-9a8ec7f56fe4"));
+            return commandAttr != null ? (int)commandAttr.Value : 0;
+        }
+        set
+        {
+            if (Character?.Attributes == null)
+                return;
+            
+            var commandAttr = Character.Attributes.FirstOrDefault(a => 
+                a.Definition?.Id == Guid.Parse("6af2c9df-3ae4-4721-8462-9a8ec7f56fe4"));
+            if (commandAttr != null)
+            {
+                commandAttr.Value = Math.Clamp(value, 0, 65000);
+            }
+        }
+    }
+
+    /// <summary>
     /// Gets or sets the inventory money (Zen).
     /// </summary>
     private int InventoryMoney
@@ -902,6 +1065,18 @@
         {
             var newItem = PersistenceContext.CreateNew<Item>();
             Character.Inventory.Items.Add(newItem);
+            StateHasChanged();
+        }
+    }
+
+    /// <summary>
+    /// Creates a new inventory for the character if one doesn't exist.
+    /// </summary>
+    private void CreateInventory()
+    {
+        if (Character != null && PersistenceContext != null && Character.Inventory == null)
+        {
+            Character.Inventory = PersistenceContext.CreateNew<ItemStorage>();
             StateHasChanged();
         }
     }

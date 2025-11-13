@@ -1,0 +1,35 @@
+@inject IJSRuntime JS
+
+<div class="inline-flex items-center relative z-10">
+    <button 
+        @onclick="ToggleTheme" 
+        aria-label="Toggle theme" 
+        title="Toggle dark/light theme"
+        class="relative w-16 h-8 rounded-full border-2 border-slate-300 dark:border-slate-600 bg-slate-100 dark:bg-slate-700 hover:border-cyan-500 dark:hover:border-cyan-400 hover:shadow-lg hover:shadow-cyan-500/30 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:ring-offset-2 dark:focus:ring-offset-slate-900 cursor-pointer flex items-center justify-between px-1.5 overflow-hidden">
+        <span class="text-base transition-all duration-300 z-10 @(_isDarkTheme ? "opacity-100 scale-110" : "opacity-40 scale-90 grayscale")" aria-hidden="true">🌙</span>
+        <span class="text-base transition-all duration-300 z-10 @(!_isDarkTheme ? "opacity-100 scale-110" : "opacity-40 scale-90 grayscale")" aria-hidden="true">☀️</span>
+        <span class="absolute w-6 h-6 rounded-full bg-gradient-to-br transition-all duration-300 shadow-lg @(_isDarkTheme ? "from-cyan-500 to-blue-500 left-1 top-1" : "from-amber-400 to-orange-500 right-1 top-1")"></span>
+    </button>
+</div>
+
+@code {
+    private bool _isDarkTheme = true;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            var savedTheme = await JS.InvokeAsync<string>("localStorage.getItem", "theme");
+            _isDarkTheme = savedTheme != "light";
+            StateHasChanged();
+        }
+    }
+
+    private async Task ToggleTheme()
+    {
+        _isDarkTheme = !_isDarkTheme;
+        var theme = _isDarkTheme ? "dark" : "light";
+        await JS.InvokeVoidAsync("localStorage.setItem", "theme", theme);
+        await JS.InvokeVoidAsync("setTheme", theme);
+    }
+}

@@ -8,11 +8,13 @@ using System.IO;
 using Blazored.Modal;
 using Blazored.Toast;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Components.Server.Circuits;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using MUnique.OpenMU.DataModel.Entities;
 using MUnique.OpenMU.Interfaces;
 using MUnique.OpenMU.Persistence;
@@ -52,9 +54,22 @@ public class Startup
     public void ConfigureServices(IServiceCollection services)
     {
         services.AddRazorPages();
-        services.AddServerSideBlazor();
+        services.AddServerSideBlazor(options =>
+        {
+            options.DetailedErrors = true;
+            options.DisconnectedCircuitRetentionPeriod = TimeSpan.FromSeconds(3);
+            options.DisconnectedCircuitMaxRetained = 100;
+            options.JSInteropDefaultCallTimeout = TimeSpan.FromMinutes(1);
+        }).AddCircuitOptions(options =>
+        {
+            options.DetailedErrors = true;
+        });
 
-        services.AddSignalR().AddJsonProtocol(o => o.PayloadSerializerOptions.Converters.Add(new TimeSpanConverter()));
+        services.AddSignalR(options =>
+        {
+            options.EnableDetailedErrors = true;
+            options.MaximumReceiveMessageSize = 102400000;
+        }).AddJsonProtocol(o => o.PayloadSerializerOptions.Converters.Add(new TimeSpanConverter()));
 
         services.AddControllers()
             .ConfigureApplicationPartManager(setup =>
@@ -72,6 +87,9 @@ public class Startup
         services.AddSingleton<ILookupController, PersistentObjectsLookupController>();
 
         services.AddScoped<IChangeNotificationService, ChangeNotificationService>();
+        
+        // Add circuit handler to handle disconnections gracefully
+        services.AddScoped<CircuitHandler, CircuitHandlerService>();
     }
 
     /// <summary>
@@ -92,6 +110,21 @@ public class Startup
             // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
             app.UseHsts();
         }
+
+        // Add middleware to catch JSDisconnectedException and prevent server crashes
+        app.Use(async (context, next) =>
+        {
+            try
+            {
+                await next().ConfigureAwait(false);
+            }
+            catch (Microsoft.JSInterop.JSDisconnectedException ex)
+            {
+                // Client disconnected - this is normal, just log it
+                var logger = context.RequestServices.GetRequiredService<ILogger<Startup>>();
+                logger.LogInformation(ex, "Client disconnected during JSInterop call");
+            }
+        });
 
         app.UseHttpsRedirection();
         app.UseStaticFiles();

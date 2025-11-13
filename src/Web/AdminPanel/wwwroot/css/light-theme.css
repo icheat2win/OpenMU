@@ -1,0 +1,234 @@
+/*
+ * OpenMU Admin Panel - Light Theme Design System
+ * Clean, modern light theme with blue/cyan accents
+ * Date: November 13, 2025
+ */
+
+[data-theme="light"] {
+    /* Primary Background Colors */
+    --color-bg-primary: #ffffff;        /* Pure white - main background */
+    --color-bg-secondary: #f8fafc;      /* Very light gray - cards, panels */
+    --color-bg-tertiary: #e2e8f0;       /* Light gray - hover states */
+    --color-bg-elevated: #eff6ff;       /* Light blue elevated surfaces */
+    
+    /* Accent Colors */
+    --color-accent-cyan: #0891b2;       /* Darker cyan for better contrast */
+    --color-accent-blue: #2563eb;       /* Darker blue - secondary accent */
+    --color-accent-purple: #7c3aed;     /* Purple - tertiary accent */
+    --color-accent-green: #059669;      /* Green - success states */
+    --color-accent-red: #dc2626;        /* Red - error/danger states */
+    --color-accent-yellow: #d97706;     /* Orange/Yellow - warning states */
+    
+    /* Text Colors */
+    --color-text-primary: #0f172a;      /* Dark slate - primary text */
+    --color-text-secondary: #475569;    /* Mid slate - secondary text */
+    --color-text-muted: #94a3b8;        /* Light slate - disabled/placeholder */
+    --color-text-inverse: #ffffff;      /* Light text on dark backgrounds */
+    
+    /* Border Colors */
+    --color-border-primary: #e2e8f0;    /* Primary borders */
+    --color-border-secondary: #cbd5e1;  /* Secondary borders */
+    --color-border-accent: #0891b2;     /* Accent borders */
+    
+    /* Gradient Definitions */
+    --gradient-header: linear-gradient(135deg, #2563eb 0%, #7c3aed 100%);
+    --gradient-card: linear-gradient(135deg, #f8fafc, #eff6ff);
+    --gradient-button: linear-gradient(135deg, #0891b2 0%, #2563eb 100%);
+    --gradient-danger: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
+    
+    /* Shadow Definitions */
+    --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+    --shadow-md: 0 2px 8px rgba(0, 0, 0, 0.08);
+    --shadow-lg: 0 4px 16px rgba(0, 0, 0, 0.1);
+    --shadow-xl: 0 8px 32px rgba(0, 0, 0, 0.12);
+}
+
+/* Light theme specific overrides */
+[data-theme="light"] body {
+    background-color: var(--color-bg-primary);
+    color: var(--color-text-primary);
+}
+
+[data-theme="light"] .sidebar {
+    background: var(--color-bg-secondary);
+    border-right: 1px solid var(--color-border-primary);
+}
+
+[data-theme="light"] .top-row {
+    background-color: var(--color-bg-secondary);
+    border-bottom: 1px solid var(--color-border-primary);
+}
+
+[data-theme="light"] .nav-item a {
+    color: var(--color-text-primary);
+}
+
+[data-theme="light"] .nav-item a:hover {
+    background-color: var(--color-bg-tertiary);
+    color: var(--color-accent-blue);
+}
+
+[data-theme="light"] .nav-item a.active {
+    background: var(--gradient-button);
+    color: var(--color-text-inverse);
+}
+
+[data-theme="light"] .card,
+[data-theme="light"] .modern-card {
+    background: var(--color-bg-secondary);
+    border: 1px solid var(--color-border-primary);
+    box-shadow: var(--shadow-sm);
+}
+
+[data-theme="light"] .card:hover,
+[data-theme="light"] .modern-card:hover {
+    box-shadow: var(--shadow-md);
+}
+
+[data-theme="light"] .btn-primary {
+    background: var(--gradient-button);
+    border: none;
+    color: white;
+}
+
+[data-theme="light"] .btn-outline-primary {
+    border-color: var(--color-accent-blue);
+    color: var(--color-accent-blue);
+    background: transparent;
+}
+
+[data-theme="light"] .btn-outline-primary:hover {
+    background: var(--color-accent-blue);
+    color: white;
+}
+
+[data-theme="light"] .form-control,
+[data-theme="light"] .form-select {
+    background-color: white;
+    border-color: var(--color-border-secondary);
+    color: var(--color-text-primary);
+}
+
+[data-theme="light"] .form-control:focus,
+[data-theme="light"] .form-select:focus {
+    border-color: var(--color-accent-blue);
+    box-shadow: 0 0 0 0.2rem rgba(37, 99, 235, 0.25);
+}
+
+[data-theme="light"] .table {
+    color: var(--color-text-primary);
+}
+
+[data-theme="light"] .table-striped tbody tr:nth-of-type(odd) {
+    background-color: var(--color-bg-secondary);
+}
+
+[data-theme="light"] .table-hover tbody tr:hover {
+    background-color: var(--color-bg-tertiary);
+}
+
+[data-theme="light"] .modal-content {
+    background-color: white;
+    color: var(--color-text-primary);
+}
+
+[data-theme="light"] .modal-header {
+    border-bottom-color: var(--color-border-primary);
+}
+
+[data-theme="light"] .modal-footer {
+    border-top-color: var(--color-border-primary);
+}
+
+[data-theme="light"] .alert-info {
+    background-color: #dbeafe;
+    border-color: #93c5fd;
+    color: #1e40af;
+}
+
+[data-theme="light"] .alert-success {
+    background-color: #d1fae5;
+    border-color: #6ee7b7;
+    color: #065f46;
+}
+
+[data-theme="light"] .alert-warning {
+    background-color: #fed7aa;
+    border-color: #fdba74;
+    color: #92400e;
+}
+
+[data-theme="light"] .alert-danger {
+    background-color: #fee2e2;
+    border-color: #fca5a5;
+    color: #991b1b;
+}
+
+/* Dashboard specific light theme */
+[data-theme="light"] .dashboard-title {
+    color: var(--color-text-primary);
+}
+
+[data-theme="light"] .stat-card {
+    background: white;
+    border: 1px solid var(--color-border-primary);
+}
+
+[data-theme="light"] .stat-card-primary {
+    border-left: 4px solid var(--color-accent-blue);
+}
+
+[data-theme="light"] .stat-card-success {
+    border-left: 4px solid var(--color-accent-green);
+}
+
+[data-theme="light"] .stat-card-info {
+    border-left: 4px solid var(--color-accent-cyan);
+}
+
+[data-theme="light"] .stat-card-warning {
+    border-left: 4px solid var(--color-accent-yellow);
+}
+
+[data-theme="light"] .server-item {
+    background: white;
+    border: 1px solid var(--color-border-primary);
+}
+
+[data-theme="light"] .server-item:hover {
+    border-color: var(--color-accent-blue);
+    box-shadow: var(--shadow-md);
+}
+
+[data-theme="light"] .breadcrumb {
+    background-color: transparent;
+}
+
+[data-theme="light"] .breadcrumb-item + .breadcrumb-item::before {
+    color: var(--color-text-muted);
+}
+
+[data-theme="light"] .footer {
+    background-color: var(--color-bg-secondary);
+    border-top: 1px solid var(--color-border-primary);
+    color: var(--color-text-secondary);
+}
+
+/* Scrollbar styling for light theme */
+[data-theme="light"] ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+}
+
+[data-theme="light"] ::-webkit-scrollbar-track {
+    background: var(--color-bg-secondary);
+}
+
+[data-theme="light"] ::-webkit-scrollbar-thumb {
+    background: var(--color-border-secondary);
+    border-radius: 5px;
+}
+
+[data-theme="light"] ::-webkit-scrollbar-thumb:hover {
+    background: var(--color-text-muted);
+}
