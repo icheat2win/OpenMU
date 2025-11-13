@@ -9,7 +9,7 @@
 }
 
 <!DOCTYPE html>
-<html lang="en" class="dark">
+<html lang="en" class="dark" data-theme="dark">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -17,16 +17,6 @@
     <meta name="description" content="OpenMU Server Administration Panel" />
     <title>OpenMU AdminPanel</title>
     <base href="~/" />
-    
-    <!-- Immediate theme initialization (before any rendering) -->
-    <script>
-        (function() {
-            const savedTheme = localStorage.getItem('theme') || 'dark';
-            if (savedTheme === 'dark') {
-                document.documentElement.classList.add('dark');
-            }
-        })();
-    </script>
     
     <!-- Tailwind CSS v4 (Play CDN) -->
     <script src="https://cdn.jsdelivr.net/npm/@@tailwindcss/browser@@4"></script>
@@ -51,32 +41,50 @@
             --font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
         }
     </style>
+    
+    <!-- Open Iconic Font -->
+    <link href="css/open-iconic/font/css/open-iconic-bootstrap.min.css" rel="stylesheet" />
+    
+    <!-- Minimal App Styles (NO Bootstrap) -->
     <link href="css/site.css" rel="stylesheet" />
     <link href="css/compatibility-fixes.css" rel="stylesheet" />
-    <link href="css/dark-theme.css" rel="stylesheet" />
-    <link href="css/light-theme.css" rel="stylesheet" />
-    <link href="css/dashboard.css" rel="stylesheet" />
-    <link href="css/servers-modern.css" rel="stylesheet" />
-    <link href="css/setup-modern.css" rel="stylesheet" />
+    
+    <!-- Blazored Components -->
     <link href="_content/Blazored.Typeahead/blazored-typeahead.css" rel="stylesheet" />
     <link href="_content/Blazored.Modal/Blazored.Modal.bundle.scp.css" rel="stylesheet" />
     <link href="MUnique.OpenMU.Web.AdminPanel.styles.css" rel="stylesheet" />
+    
+    <!-- Theme Switcher -->
     <script src="js/theme-switcher.js"></script>
-</head>
-<body>
-    <!-- Force dark mode class immediately on body render -->
+    
+    <!-- Apply saved theme on load -->
     <script>
+        // Apply theme immediately when DOM is ready
         (function() {
-            const savedTheme = localStorage.getItem('theme') || 'dark';
-            const html = document.documentElement;
-            if (savedTheme === 'dark') {
-                html.classList.add('dark');
-            } else {
-                html.classList.remove('dark');
+            function applyTheme() {
+                const savedTheme = localStorage.getItem('theme') || 'dark';
+                const html = document.documentElement;
+                if (savedTheme === 'dark') {
+                    html.classList.add('dark');
+                } else {
+                    html.classList.remove('dark');
+                }
+                html.setAttribute('data-theme', savedTheme);
             }
-            html.setAttribute('data-theme', savedTheme);
+            
+            // Try to apply immediately
+            if (document.documentElement) {
+                applyTheme();
+            }
+            
+            // Also apply when DOM is ready
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', applyTheme);
+            }
         })();
     </script>
+</head>
+<body>
     <app>
         <component type="typeof(App)" render-mode="Server" />
     </app>
