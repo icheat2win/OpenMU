@@ -8,8 +8,28 @@
 <Breadcrumb IsFirstFromRoot="true" Caption="Servers"/>
 
 <div class="page-header">
-    <h1>🖥️ Server Management</h1>
-    <p class="text-muted">Manage and monitor all OpenMU servers</p>
+    <div class="page-title-group">
+        <h1>🖥️ Server Management</h1>
+        <p class="text-muted">Manage and monitor all OpenMU servers</p>
+    </div>
+    @if (this.ServerInstanceManager is not null && _servers != null)
+    {
+        <div class="page-actions">
+            @if (this._isRestarting)
+            {
+                <button type="button" class="btn btn-warning" disabled="disabled">
+                    <div class="spinner"></div>
+                    <span>Restarting...</span>
+                </button>
+            }
+            else
+            {
+                <button type="button" class="btn btn-warning" @onclick="this.OnReloadAndRestartClickAsync">
+                    <span class="btn-icon">🔄</span> Reload & Restart All
+                </button>
+            }
+        </div>
+    }
 </div>
 
 @if (_servers == null)
@@ -37,22 +57,6 @@ else
                 <NavLink class="btn btn-primary" href="create-connect-server">
                     <span class="btn-icon">🔗</span> Create Connect Server
                 </NavLink>
-                @if (this.ServerInstanceManager is not null)
-                {
-                    @if (this._isRestarting)
-                    {
-                        <button type="button" class="btn btn-warning" disabled="disabled">
-                            <div class="spinner"></div>
-                            Restarting...
-                        </button>
-                    }
-                    else
-                    {
-                        <button type="button" class="btn btn-warning" @onclick="this.OnReloadAndRestartClickAsync">
-                            <span class="btn-icon">🔄</span> Reload & Restart All
-                        </button>
-                    }
-                }
             </div>
         </ModernCard>
     </div>

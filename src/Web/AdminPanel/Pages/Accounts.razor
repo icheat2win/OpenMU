@@ -9,42 +9,68 @@
 <Breadcrumb IsFirstFromRoot="true" Caption="Accounts" />
 
 <div class="page-header">
-    <h1>👤 Account Management</h1>
-    <p class="text-muted">Manage player accounts and user credentials</p>
+    <div class="page-title-group">
+        <h1>👤 Account Management</h1>
+        <p class="text-muted">Manage player accounts and user credentials</p>
+    </div>
+    <div class="page-actions">
+        <button type="button" class="btn btn-success" @onclick="@this._accountService.CreateNewInModalDialogAsync">
+            <span class="btn-icon">➕</span> Create Account
+        </button>
+    </div>
 </div>
 
 <div class="accounts-page">
     <ModernCard Title="Accounts" Icon="📋" CssClass="accounts-card">
-        <HeaderActions>
-            <button type="button" class="btn btn-sm btn-success" @onclick="@this._accountService.CreateNewInModalDialogAsync">
-                <span class="btn-icon">➕</span> Create Account
-            </button>
-        </HeaderActions>
         <ChildContent>
-            <DataTable TItem=@Account CssClass="modern-table">
-                <TableHeader>
-                    <th class="col-1">Login Name</th>
-                    <th class="col-1">State</th>
-                    <th class="col-2">E-Mail</th>
-                    <th class="col-2">Action</th>
-                </TableHeader>
-                <ItemTemplate Context="item">
-                    <td>
-                        <span class="account-name">@item.LoginName</span>
-                    </td>
-                    <td>
-                        <StatBadge Value="@item.State.ToString()" Color="@GetAccountStateBadgeColor(item.State)" />
-                    </td>
-                    <td>
-                        <span class="account-email">@item.EMail</span>
-                    </td>
-                    <td>
-                        <NavLink href="@($"edit-account/{item.GetId()}/{typeof(Account).FullName}/{item.GetId()}")" class="btn btn-sm btn-primary">
-                            ✏️ Edit
-                        </NavLink>
-                    </td>
-                </ItemTemplate>
-            </DataTable>
+            <div class="table-wrapper">
+                <DataTable TItem=@Account>
+                    <TableHeader>
+                        <th>
+                            <div class="th-content">
+                                <span class="th-icon">👤</span>
+                                <span>Login Name</span>
+                            </div>
+                        </th>
+                        <th>
+                            <div class="th-content">
+                                <span class="th-icon">🔒</span>
+                                <span>State</span>
+                            </div>
+                        </th>
+                        <th>
+                            <div class="th-content">
+                                <span class="th-icon">📧</span>
+                                <span>E-Mail</span>
+                            </div>
+                        </th>
+                        <th>
+                            <div class="th-content">
+                                <span class="th-icon">⚙️</span>
+                                <span>Actions</span>
+                            </div>
+                        </th>
+                    </TableHeader>
+                    <ItemTemplate Context="item">
+                        <td>
+                            <div class="account-login">
+                                <span class="account-name">@item.LoginName</span>
+                            </div>
+                        </td>
+                        <td>
+                            <StatBadge Value="@GetAccountStateText(item.State)" Color="@GetAccountStateBadgeColor(item.State)" />
+                        </td>
+                        <td>
+                            <span class="account-email">@(string.IsNullOrEmpty(item.EMail) ? "—" : item.EMail)</span>
+                        </td>
+                        <td class="text-end">
+                            <NavLink href="@($"edit-account/{item.GetId()}/{typeof(Account).FullName}/{item.GetId()}")" class="btn btn-sm btn-primary">
+                                <span class="btn-icon">✏️</span> Edit
+                            </NavLink>
+                        </td>
+                    </ItemTemplate>
+                </DataTable>
+            </div>
         </ChildContent>
     </ModernCard>
 </div>
@@ -58,6 +84,17 @@
             AccountState.Banned => "danger",
             AccountState.TemporarilyBanned => "warning",
             _ => "default"
+        };
+    }
+
+    private string GetAccountStateText(AccountState state)
+    {
+        return state switch
+        {
+            AccountState.Normal => "Active",
+            AccountState.Banned => "Banned",
+            AccountState.TemporarilyBanned => "Temp Banned",
+            _ => state.ToString()
         };
     }
 }
