@@ -64,6 +64,19 @@
     <script src="js/theme-switcher.js"></script>
 </head>
 <body>
+    <!-- Force dark mode class immediately on body render -->
+    <script>
+        (function() {
+            const savedTheme = localStorage.getItem('theme') || 'dark';
+            const html = document.documentElement;
+            if (savedTheme === 'dark') {
+                html.classList.add('dark');
+            } else {
+                html.classList.remove('dark');
+            }
+            html.setAttribute('data-theme', savedTheme);
+        })();
+    </script>
     <app>
         <component type="typeof(App)" render-mode="Server" />
     </app>
