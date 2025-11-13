@@ -63,8 +63,12 @@ public partial class EditAccount : EditBase
         }
         else if (this.Type == typeof(Character))
         {
+            // Get the Account to pass to CharacterEdit for vault access
+            var account = this.AccountData.Get(this.AccountId) as Account;
+            
             builder.OpenComponent(++currentSequence, typeof(CharacterEdit));
             builder.AddAttribute(++currentSequence, nameof(CharacterEdit.Character), this.Model);
+            builder.AddAttribute(++currentSequence, nameof(CharacterEdit.Account), account);
             builder.AddAttribute(++currentSequence, nameof(CharacterEdit.OnValidSubmit), EventCallback.Factory.Create(this, this.SaveChangesAsync));
             builder.CloseComponent();
         }
