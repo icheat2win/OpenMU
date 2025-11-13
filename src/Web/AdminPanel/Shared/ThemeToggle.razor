@@ -29,7 +29,30 @@
     {
         _isDarkTheme = !_isDarkTheme;
         var theme = _isDarkTheme ? "dark" : "light";
-        await JS.InvokeVoidAsync("localStorage.setItem", "theme", theme);
-        await JS.InvokeVoidAsync("setTheme", theme);
+        
+        try
+        {
+            // Save to localStorage
+            await JS.InvokeVoidAsync("localStorage.setItem", "theme", theme);
+            
+            // Try calling setTheme if available, otherwise manipulate DOM directly
+            try
+            {
+                await JS.InvokeVoidAsync("setTheme", theme);
+            }
+            catch
+            {
+                // Fallback: Directly manipulate the DOM
+                var script = theme == "dark" 
+                    ? "document.documentElement.classList.add('dark');" 
+                    : "document.documentElement.classList.remove('dark');";
+                await JS.InvokeVoidAsync("eval", script);
+            }
+        }
+        catch (Exception ex)
+        {
+            // Log error to console
+            await JS.InvokeVoidAsync("console.error", "Theme toggle error:", ex.Message);
+        }
     }
 }
