@@ -69,6 +69,23 @@
    - Database setup wizard with status indicators
    - Action cards for different setup options
    - Progress indicators and status badges
+   
+   **✅ Admin Users Page (AdminUsers.razor)**
+   - Modern user management interface
+   - User table with avatar circles (first letter)
+   - Action buttons: Change Password (blue), Delete (red)
+   - Protected indicator for last remaining user
+   - Info cards for security notices
+   - Responsive table layout with hover effects
+   
+   **✅ Updates Page (Updates.razor)**
+   - Configuration update system with modern interface
+   - Update selection cards with checkboxes
+   - Mandatory badge for required updates
+   - Status indicators (spinner, check, error)
+   - Version badges and description panels
+   - Apply button with counter of selected updates
+   - Loading states with animations
 
 3. **Navigation Menu (NavMenu.razor)**
    - Modern sidebar navigation (fixed left, 256px wide)
@@ -212,8 +229,10 @@ curl -s http://192.168.4.71:8080/api/server/status | jq .
 4. `src/Web/AdminPanel/Pages/Accounts.razor` - Tailwind v4 conversion
 5. `src/Web/AdminPanel/Pages/LoggedIn.razor` - Tailwind v4 conversion
 6. `src/Web/AdminPanel/Pages/Setup.razor` - Tailwind v4 conversion
-7. `src/Web/AdminPanel/Shared/NavMenu.razor` - Modern sidebar navigation
-8. `src/Web/AdminPanel/Shared/MainLayout.razor` - Updated layout with sidebar spacing
+7. `src/Web/AdminPanel/Pages/AdminUsers.razor` - Tailwind v4 conversion
+8. `src/Web/AdminPanel/Pages/Updates.razor` - Tailwind v4 conversion
+9. `src/Web/AdminPanel/Shared/NavMenu.razor` - Modern sidebar navigation
+10. `src/Web/AdminPanel/Shared/MainLayout.razor` - Updated layout with sidebar spacing
 
 ---
 
@@ -225,14 +244,20 @@ curl -s http://192.168.4.71:8080/api/server/status | jq .
 - Accounts (Accounts.razor) - Account listing and management
 - Logged In (LoggedIn.razor) - Online players table
 - Setup (Setup.razor) - Database setup wizard
+- Admin Users (AdminUsers.razor) - User management with avatars
+- Updates (Updates.razor) - Configuration update system
+- Navigation (NavMenu.razor) - Sidebar menu
+- Layout (MainLayout.razor) - Main application layout
+- Servers (Servers.razor) - Server management interface
+- Accounts (Accounts.razor) - Account listing and management
+- Logged In (LoggedIn.razor) - Online players table
+- Setup (Setup.razor) - Database setup wizard
 - Navigation (NavMenu.razor) - Sidebar menu
 - Layout (MainLayout.razor) - Main application layout
 
 ### ⏳ To Be Converted:
-- Admin Users (AdminUsers.razor) - User management
-- Game Server (GameServer.razor) - Individual server view
-- Log Files (LogFiles.razor) - Log viewer
-- Updates (Updates.razor) - System updates
+- Game Server (GameServer.razor) - Individual server view with maps
+- Log Files (LogFiles.razor) - Log viewer with search
 - Merchants (Merchants.razor) - NPC merchant management
 - Plugins (Plugins.razor) - Plugin configuration
 - Map Page (MapPage.razor) - Live map viewer
