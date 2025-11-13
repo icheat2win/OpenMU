@@ -1,0 +1,10 @@
+{
+    "dotnet.dotnetPath": "/home/asgerh/.dotnet/dotnet",
+    "omnisharp.dotnetPath": "/home/asgerh/.dotnet/dotnet",
+    "dotnet.server.useOmnisharp": false,
+    "dotnet.preferCSharpExtension": true,
+    "files.exclude": {
+        "**/bin": true,
+        "**/obj": true
+    }
+}
