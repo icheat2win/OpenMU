@@ -1,9 +1,12 @@
-/* Modern Server Management Styles */
+/* ============================================
+   MODERN SERVER MANAGEMENT - CLEAN DESIGN
+   ============================================ */
 
 .servers-modern-page {
     min-height: 100vh;
-    background: linear-gradient(135deg, #f5f7fa 0%, #e9ecef 100%);
+    background: #0f172a;
     padding: 0;
+    color: #e2e8f0;
 }
 
 /* Header Section */

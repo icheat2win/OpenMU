@@ -213,6 +213,206 @@
         grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
         gap: 16px;
     }
+
+    /* Inventory Styles */
+    .inventory-section {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    .inventory-stats {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+        gap: 12px;
+        padding: 16px;
+        background: rgba(0, 0, 0, 0.2);
+        border-radius: 12px;
+    }
+
+    .stat-badge {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+    }
+
+    .stat-badge .stat-label {
+        font-size: 0.75rem;
+        color: #94a3b8;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+    }
+
+    .stat-badge .stat-value {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: #06b6d4;
+    }
+
+    .inventory-grid {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .inventory-header {
+        display: grid;
+        grid-template-columns: 2fr 1fr 1fr 1.5fr 100px;
+        gap: 12px;
+        padding: 12px 16px;
+        background: rgba(0, 0, 0, 0.3);
+        border-radius: 8px;
+        font-size: 0.75rem;
+        font-weight: 600;
+        color: #94a3b8;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+    }
+
+    .inventory-item {
+        display: grid;
+        grid-template-columns: 2fr 1fr 1fr 1.5fr 100px;
+        gap: 12px;
+        padding: 12px 16px;
+        background: rgba(0, 0, 0, 0.2);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 8px;
+        align-items: center;
+        transition: all 0.2s;
+    }
+
+    .inventory-item:hover {
+        background: rgba(0, 0, 0, 0.3);
+        border-color: rgba(6, 182, 212, 0.5);
+        transform: translateX(4px);
+    }
+
+    .item-name {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-weight: 500;
+    }
+
+    .item-icon {
+        font-size: 1.2rem;
+    }
+
+    .item-level .badge {
+        font-size: 0.875rem;
+        padding: 4px 8px;
+    }
+
+    .item-slot {
+        color: #94a3b8;
+        font-size: 0.875rem;
+    }
+
+    .item-options .badge {
+        font-size: 0.75rem;
+        padding: 4px 8px;
+    }
+
+    .item-actions {
+        display: flex;
+        gap: 8px;
+        justify-content: center;
+    }
+
+    .btn-icon {
+        padding: 6px 10px;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        transition: all 0.2s;
+        font-size: 1rem;
+        background: rgba(255, 255, 255, 0.1);
+    }
+
+    .btn-icon:hover {
+        transform: scale(1.1);
+    }
+
+    .btn-danger-sm {
+        background: rgba(239, 68, 68, 0.2);
+        border: 1px solid rgba(239, 68, 68, 0.3);
+    }
+
+    .btn-danger-sm:hover {
+        background: rgba(239, 68, 68, 0.4);
+        border-color: rgba(239, 68, 68, 0.6);
+    }
+
+    .empty-state {
+        text-align: center;
+        padding: 48px 24px;
+        color: #64748b;
+    }
+
+    .empty-icon {
+        font-size: 4rem;
+        display: block;
+        margin-bottom: 16px;
+        opacity: 0.5;
+    }
+
+    .empty-state p {
+        margin: 0;
+        font-size: 1.125rem;
+    }
+
+    .inventory-actions {
+        display: flex;
+        justify-content: center;
+        padding-top: 12px;
+    }
+
+    .btn-add-item {
+        background: linear-gradient(135deg, #06b6d4 0%, #0891b2 100%);
+        color: white;
+        box-shadow: 0 4px 14px rgba(6, 182, 212, 0.3);
+        padding: 14px 32px;
+        border: none;
+        border-radius: 12px;
+        font-weight: 600;
+        font-size: 1rem;
+        cursor: pointer;
+        transition: all 0.2s;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .btn-add-item:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(6, 182, 212, 0.4);
+    }
+
+    .badge {
+        display: inline-block;
+        padding: 4px 12px;
+        border-radius: 6px;
+        font-size: 0.75rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+    }
+
+    .badge-info {
+        background: rgba(6, 182, 212, 0.2);
+        color: #06b6d4;
+        border: 1px solid rgba(6, 182, 212, 0.3);
+    }
+
+    .badge-success {
+        background: rgba(16, 185, 129, 0.2);
+        color: #10b981;
+        border: 1px solid rgba(16, 185, 129, 0.3);
+    }
+
+    .text-muted {
+        color: #64748b;
+    }
 </style>
 
 <div class="character-edit-container">
@@ -326,6 +526,28 @@
             </div>
         </div>
 
+        <!-- Money & Currency -->
+        <div class="section-card">
+            <div class="section-header">
+                <span class="section-icon">💰</span>
+                <span>Money & Currency</span>
+            </div>
+            
+            <div class="form-grid">
+                <div class="form-field">
+                    <label>Inventory Zen (Money)</label>
+                    <InputNumber @bind-Value="@InventoryMoney" min="0" />
+                    <small>Current zen in character inventory</small>
+                </div>
+
+                <div class="form-field">
+                    <label>Vault Zen (Bank)</label>
+                    <InputNumber @bind-Value="@VaultMoney" min="0" />
+                    <small>Zen stored in account vault</small>
+                </div>
+            </div>
+        </div>
+
         <!-- Character State -->
         <div class="section-card">
             <div class="section-header">
@@ -431,6 +653,95 @@
             </div>
         </div>
 
+        <!-- Inventory Management -->
+        <div class="section-card">
+            <div class="section-header">
+                <span class="section-icon">🎒</span>
+                <span>Inventory Management</span>
+            </div>
+            
+            <div class="inventory-section">
+                <div class="inventory-stats">
+                    <div class="stat-badge">
+                        <span class="stat-label">Total Items:</span>
+                        <span class="stat-value">@(Character.Inventory?.Items?.Count ?? 0)</span>
+                    </div>
+                    <div class="stat-badge">
+                        <span class="stat-label">Current Zen:</span>
+                        <span class="stat-value">@(Character.Inventory?.Money ?? 0)</span>
+                    </div>
+                    <div class="stat-badge">
+                        <span class="stat-label">Extensions:</span>
+                        <span class="stat-value">@Character.InventoryExtensions / 4</span>
+                    </div>
+                </div>
+
+                @if (Character.Inventory?.Items != null && Character.Inventory.Items.Any())
+                {
+                    <div class="inventory-grid">
+                        <div class="inventory-header">
+                            <div>Item</div>
+                            <div>Level</div>
+                            <div>Slot</div>
+                            <div>Options</div>
+                            <div>Actions</div>
+                        </div>
+                        @foreach (var item in Character.Inventory.Items.OrderBy(i => i.ItemSlot))
+                        {
+                            <div class="inventory-item">
+                                <div class="item-name">
+                                    @if (item.Definition != null)
+                                    {
+                                        <span class="item-icon">⚔️</span>
+                                        <span>@item.Definition.Name</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="text-muted">Unknown Item</span>
+                                    }
+                                </div>
+                                <div class="item-level">
+                                    <span class="badge badge-info">+@item.Level</span>
+                                </div>
+                                <div class="item-slot">
+                                    Slot @item.ItemSlot
+                                </div>
+                                <div class="item-options">
+                                    @if (item.ItemOptions != null && item.ItemOptions.Any())
+                                    {
+                                        <span class="badge badge-success">@item.ItemOptions.Count options</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="text-muted">No options</span>
+                                    }
+                                </div>
+                                <div class="item-actions">
+                                    <button type="button" class="btn-icon btn-danger-sm" @onclick="() => RemoveItem(item)" title="Remove Item">
+                                        🗑️
+                                    </button>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                }
+                else
+                {
+                    <div class="empty-state">
+                        <span class="empty-icon">📭</span>
+                        <p>No items in inventory</p>
+                    </div>
+                }
+
+                <div class="inventory-actions">
+                    <button type="button" class="btn-add-item" @onclick="ShowAddItemDialog">
+                        <span>➕</span>
+                        <span>Add Item to Inventory</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
         <!-- Other -->
         <div class="section-card">
             <div class="form-field">
@@ -525,4 +836,60 @@
             }
         }
     }
+
+    /// <summary>
+    /// Gets or sets the inventory money (Zen).
+    /// </summary>
+    private int InventoryMoney
+    {
+        get => Character?.Inventory?.Money ?? 0;
+        set
+        {
+            if (Character?.Inventory != null)
+            {
+                Character.Inventory.Money = Math.Max(0, value);
+            }
+        }
+    }
+
+    /// <summary>
+    /// Gets or sets the vault money (Bank Zen).
+    /// Requires Character to have an Account with a Vault.
+    /// </summary>
+    private int VaultMoney
+    {
+        get
+        {
+            // Note: Character doesn't have direct access to Account in this context
+            // This would need to be passed from parent component or fetched
+            return 0; // Placeholder - needs Account reference
+        }
+        set
+        {
+            // Placeholder - needs Account reference to update vault
+        }
+    }
+
+    /// <summary>
+    /// Removes an item from the character's inventory.
+    /// </summary>
+    private void RemoveItem(Item item)
+    {
+        if (Character?.Inventory?.Items != null)
+        {
+            Character.Inventory.Items.Remove(item);
+            StateHasChanged();
+        }
+    }
+
+    /// <summary>
+    /// Shows dialog to add a new item to inventory.
+    /// </summary>
+    private void ShowAddItemDialog()
+    {
+        // TODO: Implement item selection dialog
+        // For now, this is a placeholder that would open a modal
+        // to select item definitions and add them to inventory
+    }
 }
+
