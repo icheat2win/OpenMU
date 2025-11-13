@@ -289,21 +289,33 @@
             
             <div class="form-grid">
                 <div class="form-field">
+                    <label>Level</label>
+                    <InputNumber @bind-Value="@CurrentLevel" min="1" max="400" />
+                    <small>Character level (1-400)</small>
+                </div>
+
+                <div class="form-field">
                     <label>Experience</label>
                     <InputNumber @bind-Value="@Character.Experience" min="0" />
                     <ValidationMessage For="@(() => Character.Experience)" />
                 </div>
 
                 <div class="form-field">
-                    <label>Master Experience</label>
-                    <InputNumber @bind-Value="@Character.MasterExperience" min="0" />
-                    <ValidationMessage For="@(() => Character.MasterExperience)" />
-                </div>
-
-                <div class="form-field">
                     <label>Level Up Points</label>
                     <InputNumber @bind-Value="@Character.LevelUpPoints" min="0" />
                     <ValidationMessage For="@(() => Character.LevelUpPoints)" />
+                </div>
+
+                <div class="form-field">
+                    <label>Master Level</label>
+                    <InputNumber @bind-Value="@CurrentMasterLevel" min="0" max="400" />
+                    <small>Master level (0-400)</small>
+                </div>
+
+                <div class="form-field">
+                    <label>Master Experience</label>
+                    <InputNumber @bind-Value="@Character.MasterExperience" min="0" />
+                    <ValidationMessage For="@(() => Character.MasterExperience)" />
                 </div>
 
                 <div class="form-field">
@@ -459,4 +471,58 @@
     /// </summary>
     [Parameter]
     public EventCallback OnCancel { get; set; }
+
+    /// <summary>
+    /// Gets or sets the current character level.
+    /// This property reads from and writes to the Character.Attributes collection.
+    /// </summary>
+    private int CurrentLevel
+    {
+        get
+        {
+            if (Character?.Attributes == null)
+                return 1;
+            
+            var levelAttr = Character.Attributes.FirstOrDefault(a => a.Definition?.Designation == "Level");
+            return levelAttr != null ? (int)levelAttr.Value : 1;
+        }
+        set
+        {
+            if (Character?.Attributes == null)
+                return;
+            
+            var levelAttr = Character.Attributes.FirstOrDefault(a => a.Definition?.Designation == "Level");
+            if (levelAttr != null)
+            {
+                levelAttr.Value = Math.Clamp(value, 1, 400);
+            }
+        }
+    }
+
+    /// <summary>
+    /// Gets or sets the current character master level.
+    /// This property reads from and writes to the Character.Attributes collection.
+    /// </summary>
+    private int CurrentMasterLevel
+    {
+        get
+        {
+            if (Character?.Attributes == null)
+                return 0;
+            
+            var masterLevelAttr = Character.Attributes.FirstOrDefault(a => a.Definition?.Designation == "Master Level");
+            return masterLevelAttr != null ? (int)masterLevelAttr.Value : 0;
+        }
+        set
+        {
+            if (Character?.Attributes == null)
+                return;
+            
+            var masterLevelAttr = Character.Attributes.FirstOrDefault(a => a.Definition?.Designation == "Master Level");
+            if (masterLevelAttr != null)
+            {
+                masterLevelAttr.Value = Math.Clamp(value, 0, 400);
+            }
+        }
+    }
 }
