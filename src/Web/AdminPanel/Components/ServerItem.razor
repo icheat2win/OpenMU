@@ -9,14 +9,18 @@
   return;
 }
 
-<ModernCard CssClass="server-card @GetServerStatusClass()">
-    <div class="server-card-header">
-        <div class="server-info">
-            <div class="server-type-icon">
-                @GetServerTypeIcon()
+<div class="modern-server-card @GetServerStatusClass()">
+    <div class="server-card-main">
+        <div class="server-header-section">
+            <div class="server-icon-wrapper">
+                <div class="server-icon @GetServerTypeClass()">
+                    @GetServerTypeIcon()
+                </div>
+                <div class="status-pulse @GetServerStatusPulseClass()"></div>
             </div>
-            <div class="server-details">
-                <h4 class="server-name">
+            
+            <div class="server-info-section">
+                <h3 class="server-title">
                     @switch (this.Server.Type)
                     {
                         case ServerType.GameServer:
@@ -32,82 +36,97 @@
                             @this.Server.Description
                             break;
                     }
-                </h4>
-                <div class="server-meta">
-                    <span class="server-type">@GetServerTypeText()</span>
-                    @if (this.Server.Type == ServerType.GameServer)
-                    {
-                        <a href="/gameServer/@(this.Server.Id)/" target="_blank" class="server-map-link" title="View Map">
-                            <span>🗺️</span> Map
-                        </a>
-                    }
+                </h3>
+                <div class="server-badges">
+                    <span class="badge badge-type">@GetServerTypeText()</span>
+                    <span class="badge badge-status @GetServerStatusBadgeClass()">
+                        <span class="badge-dot"></span>
+                        @GetStateCaption()
+                    </span>
+                </div>
+            </div>
+
+            @if (this.Server.Type == ServerType.GameServer)
+            {
+                <div class="server-quick-link">
+                    <a href="/gameServer/@(this.Server.Id)/" target="_blank" class="map-link" title="View Map">
+                        <span class="map-icon">🗺️</span>
+                        <span>View Map</span>
+                    </a>
+                </div>
+            }
+        </div>
+
+        <div class="server-stats-section">
+            <div class="stat-box">
+                <div class="stat-icon">👥</div>
+                <div class="stat-content">
+                    <div class="stat-value">@this.Server.CurrentConnections</div>
+                    <div class="stat-label">Online</div>
+                </div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-icon">📊</div>
+                <div class="stat-content">
+                    <div class="stat-value">@(this.Server.MaximumConnections < int.MaxValue ? this.Server.MaximumConnections.ToString() : "∞")</div>
+                    <div class="stat-label">Capacity</div>
+                </div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-icon">⚡</div>
+                <div class="stat-content">
+                    <div class="stat-value">@GetConnectionPercentage()%</div>
+                    <div class="stat-label">Usage</div>
                 </div>
             </div>
         </div>
-        <div class="server-status">
-            <StatBadge Value="@GetStateCaption()" Color="@GetServerStatusBadgeColor()" />
-        </div>
-    </div>
-    
-    <div class="server-card-body">
-        <div class="server-stats">
-            <div class="stat-item">
-                <span class="stat-label">Players</span>
-                <span class="stat-value">@this.Server.CurrentConnections / @(this.Server.MaximumConnections < int.MaxValue ? this.Server.MaximumConnections.ToString() : "∞")</span>
-            </div>
-        </div>
-    </div>
-    
-    <div class="server-card-actions">
-        <div class="btn-group" role="group" aria-label="Server control">
+
+        <div class="server-actions-section">
             @if (this.Server.ServerState == ServerState.Started)
             {
-                <button type="button" class="btn btn-secondary" title="Start" disabled>
-                    <span>▶️</span>
-                </button>
-                <button type="button" class="btn btn-warning" title="Stop" @onclick="this.OnPauseClickAsync">
-                    <span>⏸️</span> Stop
+                <button type="button" class="action-btn action-btn-stop" title="Stop Server" @onclick="this.OnPauseClickAsync">
+                    <span class="action-icon">⏹️</span>
+                    <span>Stop</span>
                 </button>
                 @if (this.Server.Type is ServerType.GameServer or ServerType.ConnectServer)
                 {
-                    <button type="button" class="btn btn-secondary" title="Remove" disabled>
-                        <span>🗑️</span>
+                    <button type="button" class="action-btn action-btn-disabled" title="Cannot remove running server" disabled>
+                        <span class="action-icon">🗑️</span>
+                        <span>Remove</span>
                     </button>
                 }
             }
-            else if ((this.Server.ServerState == ServerState.Stopped))
+            else if (this.Server.ServerState == ServerState.Stopped)
             {
-                <button type="button" class="btn btn-success" title="Start" @onclick="this.OnStartClickAsync">
-                    <span>▶️</span> Start
-                </button>
-                <button type="button" class="btn btn-secondary" title="Stop" disabled>
-                    <span>⏸️</span>
+                <button type="button" class="action-btn action-btn-start" title="Start Server" @onclick="this.OnStartClickAsync">
+                    <span class="action-icon">▶️</span>
+                    <span>Start</span>
                 </button>
                 @if (this.Server.Type is ServerType.GameServer or ServerType.ConnectServer)
                 {
-                    <button type="button" class="btn btn-danger" title="Remove" @onclick="this.OnDeleteServerClickAsync">
-                        <span>🗑️</span> Remove
+                    <button type="button" class="action-btn action-btn-remove" title="Remove Server" @onclick="this.OnDeleteServerClickAsync">
+                        <span class="action-icon">🗑️</span>
+                        <span>Remove</span>
                     </button>
                 }
             }
             else
             {
-                <button type="button" class="btn btn-secondary" title="Start" disabled>
-                    <span>▶️</span>
+                <button type="button" class="action-btn action-btn-disabled" disabled>
+                    <span class="action-icon">⏳</span>
+                    <span>@GetStateCaption()</span>
                 </button>
-                <button type="button" class="btn btn-secondary" title="Stop" disabled>
-                    <span>⏸️</span>
-                </button>
-                @if (this.Server.Type is ServerType.GameServer or ServerType.ConnectServer)
-                {
-                    <button type="button" class="btn btn-secondary" title="Remove" disabled>
-                        <span>🗑️</span>
-                    </button>
-                }
             }
         </div>
     </div>
-</ModernCard>
+
+    @if (this.Server.CurrentConnections > 0 && this.Server.MaximumConnections < int.MaxValue)
+    {
+        <div class="server-progress">
+            <div class="progress-bar" style="width: @GetConnectionPercentage()%"></div>
+        </div>
+    }
+</div>
 
 @code {
 
@@ -310,5 +329,51 @@
             ServerType.ChatServer => "Chat Server",
             _ => "Unknown"
         };
+    }
+
+    private string GetServerTypeClass()
+    {
+        return this.Server.Type switch
+        {
+            ServerType.GameServer => "server-icon-game",
+            ServerType.ConnectServer => "server-icon-connect",
+            ServerType.ChatServer => "server-icon-chat",
+            _ => "server-icon-default"
+        };
+    }
+
+    private string GetServerStatusPulseClass()
+    {
+        return this.Server.ServerState switch
+        {
+            ServerState.Started => "pulse-active",
+            ServerState.Starting => "pulse-warning",
+            ServerState.Stopping => "pulse-warning",
+            ServerState.Timeout => "pulse-danger",
+            _ => string.Empty
+        };
+    }
+
+    private string GetServerStatusBadgeClass()
+    {
+        return this.Server.ServerState switch
+        {
+            ServerState.Started => "badge-success",
+            ServerState.Starting => "badge-warning",
+            ServerState.Stopping => "badge-warning",
+            ServerState.Stopped => "badge-secondary",
+            ServerState.Timeout => "badge-danger",
+            _ => "badge-secondary"
+        };
+    }
+
+    private int GetConnectionPercentage()
+    {
+        if (this.Server.MaximumConnections >= int.MaxValue || this.Server.MaximumConnections == 0)
+        {
+            return 0;
+        }
+        
+        return (int)((double)this.Server.CurrentConnections / this.Server.MaximumConnections * 100);
     }
 }

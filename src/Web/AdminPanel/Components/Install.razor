@@ -1,71 +1,197 @@
-﻿<div>
-@if (this.SelectedVersion is null)
-{
-    <span>Loading ...</span>
-}
-else if (this.IsInstalling)
-{
-    <span>Installing, please wait ...</span>
-}
-else if (this.IsInstalled)
-{
-    <p>Finished! Have fun :)</p>
-    if (!AdminPanelEnvironment.IsHostingEmbedded)
+﻿<div class="install-wizard">
+    @if (this.SelectedVersion is null)
     {
-        <p>Please restart the connect and game server containers.</p>
-    }
-
-    <button class="btn btn-primary" @onclick="async () => await this.InstallationFinished.InvokeAsync()">OK</button>
-}
-else
-{
-    if (this.CurrentConnections > 0)
-    {
-        <div class="alert alert-danger" role="alert">
-            First, close all connections to the server.
+        <div class="wizard-loading">
+            <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+            <p class="loading-text">Loading installation options...</p>
         </div>
     }
+    else if (this.IsInstalling)
+    {
+        <div class="wizard-installing">
+            <div class="install-animation">
+                <div class="spinner-border text-primary" role="status">
+                    <span class="visually-hidden">Installing...</span>
+                </div>
+            </div>
+            <h2 class="install-title">Installing OpenMU Database</h2>
+            <p class="install-description">Please wait while we set up your game server...</p>
+            <div class="install-progress">
+                <div class="progress-bar-animated"></div>
+            </div>
+        </div>
+    }
+    else if (this.IsInstalled)
+    {
+        <div class="wizard-complete">
+            <div class="success-icon">✅</div>
+            <h2 class="success-title">Installation Complete!</h2>
+            <p class="success-message">Your OpenMU database has been successfully initialized.</p>
+            
+            @if (!AdminPanelEnvironment.IsHostingEmbedded)
+            {
+                <div class="alert alert-info">
+                    <span class="alert-icon">ℹ️</span>
+                    <div>
+                        <strong>Important:</strong> Please restart the connect and game server containers for changes to take effect.
+                    </div>
+                </div>
+            }
 
-    <p>
-        <h2>Select the game version</h2>
-
-        <div>
-        @foreach (var initializer in this.SetupService.Versions)
+            <button class="btn-complete" @onclick="async () => await this.InstallationFinished.InvokeAsync()">
+                <span>Continue to Dashboard</span>
+                <span class="btn-arrow">→</span>
+            </button>
+        </div>
+    }
+    else
+    {
+        @if (this.CurrentConnections > 0)
         {
-            <div class="form-check">
-                <input class="form-check-input" type="radio" name="version" id="@initializer.Key" @onclick="() => this.OnSelectVersion(initializer.Key)">
-                <label class="form-check-label" for="@initializer.Key">@initializer.Caption</label>
+            <div class="alert alert-danger">
+                <span class="alert-icon">⚠️</span>
+                <div>
+                    <strong>Active Connections Detected!</strong>
+                    <p>Please close all player connections before proceeding with the installation.</p>
+                    <p class="mb-0"><strong>Current connections:</strong> @this.CurrentConnections</p>
+                </div>
             </div>
         }
-        </div>
-    </p>
-    <p>
-        <h2>How many game servers do you want?</h2>
-        <div>
-            <label for="gameServerCount" class="form-label">Game server count (@this.GameServerCount)</label>
-            <input type="range" class="form-range" min="1" max="10" value="@this.GameServerCount" id="gameServerCount" @oninput="this.OnGameServerCountChange">
-        </div>
-    </p>
-    <p>
-        <h2>Do you want test accounts?</h2>
-        <div class="form-check">
-            <input class="form-check-input" type="checkbox" value="" id="testAccountsCheck" @oninput="this.OnTestAccountsChange">
-            <label class="form-check-label" for="testAccountsCheck">
-                Yes, create test accounts
-            </label>
-        </div>
-    </p>
 
-    <p>
-        @if (this.CurrentConnections == 0)
-        {
-            <button class="btn btn-primary" @onclick="this.StartInstallationAsync">Start install</button>
-        }
-        else
-        {
-            <button class="btn btn-primary disabled">Start install</button>
-        }
-    </p>
-}
+        <div class="wizard-steps">
+            <!-- Step 1: Select Version -->
+            <div class="wizard-step">
+                <div class="step-header">
+                    <div class="step-number">1</div>
+                    <div class="step-title">
+                        <h3>Select Game Version</h3>
+                        <p>Choose the MU Online client version you want to support</p>
+                    </div>
+                </div>
+                <div class="step-content">
+                    <div class="version-options">
+                        @foreach (var initializer in this.SetupService.Versions)
+                        {
+                            <label class="version-card @(SelectedVersion.Key == initializer.Key ? "selected" : "")">
+                                <input type="radio" name="version" value="@initializer.Key" 
+                                       checked="@(SelectedVersion.Key == initializer.Key)"
+                                       @onclick="() => this.OnSelectVersion(initializer.Key)">
+                                <div class="version-content">
+                                    <div class="version-icon">🎮</div>
+                                    <div class="version-info">
+                                        <strong>@initializer.Caption</strong>
+                                        <span class="version-tag">@initializer.Key</span>
+                                    </div>
+                                    <div class="version-check">
+                                        <span class="checkmark">✓</span>
+                                    </div>
+                                </div>
+                            </label>
+                        }
+                    </div>
+                </div>
+            </div>
 
+            <!-- Step 2: Server Count -->
+            <div class="wizard-step">
+                <div class="step-header">
+                    <div class="step-number">2</div>
+                    <div class="step-title">
+                        <h3>Configure Game Servers</h3>
+                        <p>Set the number of game server instances to create</p>
+                    </div>
+                </div>
+                <div class="step-content">
+                    <div class="server-count-section">
+                        <div class="count-display">
+                            <span class="count-number">@this.GameServerCount</span>
+                            <span class="count-label">Game Servers</span>
+                        </div>
+                        <div class="slider-container">
+                            <input type="range" class="server-slider" 
+                                   min="1" max="10" 
+                                   value="@this.GameServerCount" 
+                                   @oninput="this.OnGameServerCountChange">
+                            <div class="slider-labels">
+                                <span>1</span>
+                                <span>5</span>
+                                <span>10</span>
+                            </div>
+                        </div>
+                        <p class="slider-hint">
+                            💡 More servers allow for load distribution and better performance
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 3: Test Accounts -->
+            <div class="wizard-step">
+                <div class="step-header">
+                    <div class="step-number">3</div>
+                    <div class="step-title">
+                        <h3>Test Accounts</h3>
+                        <p>Optionally create pre-configured test accounts for development</p>
+                    </div>
+                </div>
+                <div class="step-content">
+                    <label class="test-accounts-toggle">
+                        <input type="checkbox" 
+                               checked="@this.CreateTestAccounts"
+                               @oninput="this.OnTestAccountsChange">
+                        <div class="toggle-card">
+                            <div class="toggle-icon">👤</div>
+                            <div class="toggle-content">
+                                <strong>Create Test Accounts</strong>
+                                <p>Generate sample accounts with pre-configured characters for testing</p>
+                            </div>
+                            <div class="toggle-switch">
+                                <div class="switch-slider"></div>
+                            </div>
+                        </div>
+                    </label>
+                </div>
+            </div>
+        </div>
+
+        <!-- Installation Summary -->
+        <div class="install-summary">
+            <h4>Installation Summary</h4>
+            <div class="summary-grid">
+                <div class="summary-item">
+                    <span class="summary-label">Game Version:</span>
+                    <span class="summary-value">@this.SelectedVersion.Caption</span>
+                </div>
+                <div class="summary-item">
+                    <span class="summary-label">Game Servers:</span>
+                    <span class="summary-value">@this.GameServerCount</span>
+                </div>
+                <div class="summary-item">
+                    <span class="summary-label">Test Accounts:</span>
+                    <span class="summary-value">@(this.CreateTestAccounts ? "Yes" : "No")</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Start Installation Button -->
+        <div class="wizard-actions">
+            @if (this.CurrentConnections == 0)
+            {
+                <button class="btn-install" @onclick="this.StartInstallationAsync">
+                    <span class="btn-icon">🚀</span>
+                    <span>Start Installation</span>
+                    <span class="btn-arrow">→</span>
+                </button>
+            }
+            else
+            {
+                <button class="btn-install btn-disabled" disabled>
+                    <span class="btn-icon">🔒</span>
+                    <span>Close Active Connections First</span>
+                </button>
+            }
+        </div>
+    }
 </div>

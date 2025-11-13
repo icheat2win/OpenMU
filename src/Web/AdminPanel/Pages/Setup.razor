@@ -3,38 +3,188 @@
 <PageTitle>OpenMU: Setup</PageTitle>
 <Breadcrumb IsFirstFromRoot="true" Caption="Setup"/>
 
-@if (this.ShowInstall)
-{
-    <Install InstallationFinished="() => this.ShowInstall = false" />
-}
-else if (!this.SetupService.CanConnectToDatabase)
-{
-    <p>Database status: <span class="badge bg-danger">Can't connect to the database. Probably not created yet.</span></p>
+<div class="setup-modern-page">
+    <div class="setup-header">
+        <div class="header-content">
+            <div class="title-section">
+                <h1 class="page-title">
+                    <span class="title-icon">⚙️</span>
+                    Database Setup
+                </h1>
+                <p class="page-subtitle">Configure and initialize your OpenMU database</p>
+            </div>
+        </div>
+    </div>
 
-    <button class="btn btn-primary" @onclick="this.OnInstallClick">Create</button>
-}
-else if (!this.SetupService.IsInstalled)
-{
-    <p>Database status: <span class="badge bg-warning text-dark">Not created</span></p>
+    <div class="setup-container">
+        @if (this.ShowInstall)
+        {
+            <Install InstallationFinished="() => this.ShowInstall = false" />
+        }
+        else
+        {
+            <div class="status-dashboard">
+                <!-- Database Status Card -->
+                <div class="status-card @GetDatabaseStatusClass()">
+                    <div class="status-icon-wrapper">
+                        <span class="status-icon">@GetDatabaseIcon()</span>
+                    </div>
+                    <div class="status-content">
+                        <h3 class="status-title">Database Status</h3>
+                        <div class="status-badge-wrapper">
+                            @if (!this.SetupService.CanConnectToDatabase)
+                            {
+                                <span class="status-badge status-error">
+                                    <span class="badge-dot"></span>
+                                    Cannot Connect to Database
+                                </span>
+                                <p class="status-description">Unable to establish connection. The database may not be created yet.</p>
+                            }
+                            else if (!this.SetupService.IsInstalled)
+                            {
+                                <span class="status-badge status-warning">
+                                    <span class="badge-dot"></span>
+                                    Not Initialized
+                                </span>
+                                <p class="status-description">Database is reachable but hasn't been initialized with game data.</p>
+                            }
+                            else if (this.SetupService.IsUpdateRequired)
+                            {
+                                <span class="status-badge status-warning">
+                                    <span class="badge-dot"></span>
+                                    Update Required
+                                </span>
+                                <p class="status-description">Your database schema needs to be updated to the latest version.</p>
+                            }
+                            else
+                            {
+                                <span class="status-badge status-success">
+                                    <span class="badge-dot"></span>
+                                    Up-to-date
+                                </span>
+                                <p class="status-description">Database is properly configured and running the latest schema.</p>
+                            }
+                        </div>
+                    </div>
+                </div>
 
-    <button class="btn btn-primary" @onclick="this.OnInstallClick">Create</button>
-}
-else if (this.SetupService.IsUpdateRequired)
-{
-    <p>Database status: <span class="badge bg-warning text-dark">Update required</span></p>
-    <button class="btn btn-primary" @onclick="this.OnUpdateClickAsync">Update</button>
-}
-else
-{
-    <p>Database status: <span class="badge bg-success">Up-to-date</span></p>
-    @if (!this._isDataInitialized)
+                <!-- Game Version Status Card -->
+                @if (this.SetupService.IsInstalled && !this.SetupService.IsUpdateRequired)
+                {
+                    <div class="status-card status-info">
+                        <div class="status-icon-wrapper">
+                            <span class="status-icon">🎮</span>
+                        </div>
+                        <div class="status-content">
+                            <h3 class="status-title">Game Version</h3>
+                            <div class="status-badge-wrapper">
+                                @if (!this._isDataInitialized)
+                                {
+                                    <span class="status-badge status-warning">
+                                        <span class="badge-dot"></span>
+                                        No Data Found
+                                    </span>
+                                    <p class="status-description">The database is empty. Please initialize game data.</p>
+                                }
+                                else
+                                {
+                                    <span class="status-badge status-success">
+                                        <span class="badge-dot"></span>
+                                        @this._gameClientVersion
+                                    </span>
+                                    <p class="status-description">Game data has been initialized and is ready for use.</p>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="action-section">
+                @if (!this.SetupService.CanConnectToDatabase || !this.SetupService.IsInstalled)
+                {
+                    <div class="action-card action-card-primary">
+                        <div class="action-icon">🚀</div>
+                        <div class="action-content">
+                            <h3>Create Database</h3>
+                            <p>Initialize a new OpenMU database with default game configuration</p>
+                        </div>
+                        <button class="action-btn btn-primary" @onclick="this.OnInstallClick">
+                            <span>Start Setup</span>
+                            <span class="btn-arrow">→</span>
+                        </button>
+                    </div>
+                }
+                else if (this.SetupService.IsUpdateRequired)
+                {
+                    <div class="action-card action-card-warning">
+                        <div class="action-icon">⬆️</div>
+                        <div class="action-content">
+                            <h3>Update Database</h3>
+                            <p>Apply the latest schema migrations to your database</p>
+                        </div>
+                        <button class="action-btn btn-warning" @onclick="this.OnUpdateClickAsync">
+                            <span>Apply Updates</span>
+                            <span class="btn-arrow">→</span>
+                        </button>
+                    </div>
+                }
+                else
+                {
+                    <div class="action-card action-card-danger">
+                        <div class="action-icon">🔄</div>
+                        <div class="action-content">
+                            <h3>Re-install Database</h3>
+                            <p class="text-danger">⚠️ This will delete all existing data and create a fresh installation</p>
+                        </div>
+                        <button class="action-btn btn-danger" @onclick="this.OnReInstallClickAsync">
+                            <span>Re-install</span>
+                            <span class="btn-arrow">→</span>
+                        </button>
+                    </div>
+                }
+            </div>
+
+            <!-- Help Section -->
+            <div class="help-section">
+                <div class="help-card">
+                    <div class="help-icon">💡</div>
+                    <div class="help-content">
+                        <h4>Need Help?</h4>
+                        <ul>
+                            <li>Make sure PostgreSQL is running and accessible</li>
+                            <li>Check your connection string in appsettings.json</li>
+                            <li>Ensure you have sufficient database permissions</li>
+                            <li>Backup your data before re-installing</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+@code {
+    private string GetDatabaseStatusClass()
     {
-        <p>Initialized game version: <span class="badge bg-warning text-dark">No initialized data found!</span></p>
-    }
-    else
-    {
-        <p>Initialized game version: <span class="badge bg-success">@this._gameClientVersion</span></p>
+        if (!this.SetupService.CanConnectToDatabase)
+            return "status-error";
+        if (!this.SetupService.IsInstalled)
+            return "status-warning";
+        if (this.SetupService.IsUpdateRequired)
+            return "status-warning";
+        return "status-success";
     }
 
-    <button class="btn bg-warning text-dark" @onclick="this.OnReInstallClickAsync">Re-install</button>
+    private string GetDatabaseIcon()
+    {
+        if (!this.SetupService.CanConnectToDatabase)
+            return "❌";
+        if (!this.SetupService.IsInstalled)
+            return "⚠️";
+        if (this.SetupService.IsUpdateRequired)
+            return "⚠️";
+        return "✅";
+    }
 }

@@ -7,68 +7,129 @@
 <PageTitle>OpenMU: Servers</PageTitle>
 <Breadcrumb IsFirstFromRoot="true" Caption="Servers"/>
 
-<div class="page-header">
-    <div class="page-title-group">
-        <h1>🖥️ Server Management</h1>
-        <p class="text-muted">Manage and monitor all OpenMU servers</p>
+<div class="servers-modern-page">
+    <div class="servers-header">
+        <div class="header-content">
+            <div class="title-section">
+                <h1 class="page-title">
+                    <span class="title-icon">🖥️</span>
+                    Server Management
+                </h1>
+                <p class="page-subtitle">Manage and monitor all OpenMU servers in real-time</p>
+            </div>
+            
+            @if (this.ServerInstanceManager is not null && _servers != null)
+            {
+                <div class="header-actions">
+                    @if (this._isRestarting)
+                    {
+                        <button type="button" class="btn btn-lg btn-warning" disabled="disabled">
+                            <div class="spinner-border spinner-border-sm me-2"></div>
+                            <span>Restarting All Servers...</span>
+                        </button>
+                    }
+                    else
+                    {
+                        <button type="button" class="btn btn-lg btn-restart" @onclick="this.OnReloadAndRestartClickAsync">
+                            <span class="btn-icon">🔄</span>
+                            <span>Reload & Restart All</span>
+                        </button>
+                    }
+                </div>
+            }
+        </div>
     </div>
-    @if (this.ServerInstanceManager is not null && _servers != null)
+
+    @if (_servers == null)
     {
-        <div class="page-actions">
-            @if (this._isRestarting)
-            {
-                <button type="button" class="btn btn-warning" disabled="disabled">
-                    <div class="spinner"></div>
-                    <span>Restarting...</span>
-                </button>
-            }
-            else
-            {
-                <button type="button" class="btn btn-warning" @onclick="this.OnReloadAndRestartClickAsync">
-                    <span class="btn-icon">🔄</span> Reload & Restart All
-                </button>
-            }
+        <div class="loading-state">
+            <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+            <p class="loading-text">Loading server infrastructure...</p>
+        </div>
+    }
+    else
+    {
+        <div class="servers-dashboard">
+            <!-- Stats Overview -->
+            <div class="stats-section">
+                <div class="stat-card stat-card-primary">
+                    <div class="stat-icon">🌐</div>
+                    <div class="stat-details">
+                        <div class="stat-value">@_servers.Count(s => s.ServerState == ServerState.Started)</div>
+                        <div class="stat-label">Active Servers</div>
+                    </div>
+                </div>
+                
+                <div class="stat-card stat-card-success">
+                    <div class="stat-icon">👥</div>
+                    <div class="stat-details">
+                        <div class="stat-value">@_servers.Sum(s => s.CurrentConnections)</div>
+                        <div class="stat-label">Online Players</div>
+                    </div>
+                </div>
+                
+                <div class="stat-card stat-card-info">
+                    <div class="stat-icon">🎮</div>
+                    <div class="stat-details">
+                        <div class="stat-value">@_servers.Count(s => s.Type == ServerType.GameServer)</div>
+                        <div class="stat-label">Game Servers</div>
+                    </div>
+                </div>
+                
+                <div class="stat-card stat-card-warning">
+                    <div class="stat-icon">🔗</div>
+                    <div class="stat-details">
+                        <div class="stat-value">@_servers.Count(s => s.Type == ServerType.ConnectServer)</div>
+                        <div class="stat-label">Connect Servers</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick Actions -->
+            <div class="quick-actions-section">
+                <div class="section-header">
+                    <h2>⚡ Quick Actions</h2>
+                </div>
+                <div class="action-cards">
+                    <NavLink class="action-card action-card-primary" href="create-game-server">
+                        <div class="action-icon">🎮</div>
+                        <div class="action-content">
+                            <h3>Create Game Server</h3>
+                            <p>Add a new game server instance</p>
+                        </div>
+                        <div class="action-arrow">→</div>
+                    </NavLink>
+                    
+                    <NavLink class="action-card action-card-secondary" href="create-connect-server">
+                        <div class="action-icon">🔗</div>
+                        <div class="action-content">
+                            <h3>Create Connect Server</h3>
+                            <p>Add a new connection server</p>
+                        </div>
+                        <div class="action-arrow">→</div>
+                    </NavLink>
+                </div>
+            </div>
+
+            <!-- Server List -->
+            <div class="servers-list-section">
+                <div class="section-header">
+                    <h2>🖥️ Server Instances</h2>
+                    <span class="server-count">@_servers.Count Total</span>
+                </div>
+                
+                <div class="servers-grid">
+                    @foreach (var server in this._servers.OrderBy(s => s.Type).ThenBy(s => s.Description))
+                    {
+                        <ServerItem Server=@server/>
+                    }
+                </div>
+            </div>
         </div>
     }
 </div>
-
-@if (_servers == null)
-{
-    <div class="loading-container">
-        <div class="spinner"></div>
-        <p>Loading servers...</p>
-    </div>
-}
-else
-{
-<div class="servers-page">
-    <div class="servers-header">
-        <SectionCard Title="Server Overview" Icon="📊">
-            <TotalOnlineCounter Servers=@_servers />
-        </SectionCard>
-    </div>
-
-    <div class="servers-actions">
-        <ModernCard Title="Quick Actions" Icon="⚡" CssClass="actions-card">
-            <div class="action-buttons">
-                <NavLink class="btn btn-primary" href="create-game-server">
-                    <span class="btn-icon">🎮</span> Create Game Server
-                </NavLink>
-                <NavLink class="btn btn-primary" href="create-connect-server">
-                    <span class="btn-icon">🔗</span> Create Connect Server
-                </NavLink>
-            </div>
-        </ModernCard>
-    </div>
-
-    <div class="servers-list">
-        @foreach (var server in this._servers.OrderBy(s => s.Type).ThenBy(s => s.Description))
-        {
-            <ServerItem Server=@server/>
-        }
-    </div>
-</div>
-}
 
 @code {
     private IList<IManageableServer>? _servers;
