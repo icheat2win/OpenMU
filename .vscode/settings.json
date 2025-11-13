@@ -3,6 +3,10 @@
     "omnisharp.dotnetPath": "/home/asgerh/.dotnet/dotnet",
     "dotnet.server.useOmnisharp": false,
     "dotnet.preferCSharpExtension": true,
+    "terminal.integrated.env.linux": {
+        "DOTNET_ROOT": "/home/asgerh/.dotnet",
+        "PATH": "${env:PATH}:/home/asgerh/.dotnet:/home/asgerh/.dotnet/tools"
+    },
     "files.exclude": {
         "**/bin": true,
         "**/obj": true
