@@ -1,6 +1,6 @@
 /*
  * OpenMU Admin Panel - Theme Switcher
- * Handles theme switching and persistence
+ * Handles theme switching and persistence for Tailwind CSS v4
  */
 
 (function() {
@@ -12,9 +12,19 @@
         setTheme(savedTheme);
     }
 
-    // Set theme on document root
+    // Set theme on document root (uses class for Tailwind CSS v4)
     window.setTheme = function(theme) {
-        document.documentElement.setAttribute('data-theme', theme);
+        const html = document.documentElement;
+        
+        // Tailwind v4 uses the 'dark' class on <html>
+        if (theme === 'dark') {
+            html.classList.add('dark');
+        } else {
+            html.classList.remove('dark');
+        }
+        
+        // Keep data-theme for backwards compatibility
+        html.setAttribute('data-theme', theme);
         localStorage.setItem('theme', theme);
         
         // Update meta theme-color for mobile browsers
@@ -26,7 +36,8 @@
 
     // Get current theme
     window.getTheme = function() {
-        return document.documentElement.getAttribute('data-theme') || 'dark';
+        const html = document.documentElement;
+        return html.classList.contains('dark') ? 'dark' : 'light';
     };
 
     // Toggle theme
