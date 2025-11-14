@@ -228,6 +228,18 @@
             <p class="text-blue-100">@Character.Name • Level @CurrentLevel</p>
         </div>
 
+        @if (_isCheckingOnlineStatus)
+        {
+            <div class="bg-yellow-100 border-l-4 border-yellow-500 text-yellow-700 p-6 mb-6 rounded-lg shadow-lg">
+                <div class="flex items-center gap-3">
+                    <span class="text-3xl animate-pulse">⏳</span>
+                    <div>
+                        <p class="font-bold text-lg">Checking online status...</p>
+                        <p class="text-sm">Please wait while we verify if the character is logged in.</p>
+                    </div>
+                </div>
+            </div>
+        }
         @if (IsCharacterOnline)
         {
             <div class="bg-red-100 border-l-4 border-red-500 text-red-700 p-6 mb-6 rounded-lg shadow-lg">
@@ -721,6 +733,7 @@
     public IContext PersistenceContext { get; set; } = null!;
 
     private bool _isCharacterOnline = false;
+    private bool _isCheckingOnlineStatus = true;
 
     /// <summary>
     /// Gets whether the character is currently online by checking game servers' in-memory player list.
@@ -1099,7 +1112,21 @@
     {
         await base.OnInitializedAsync();
         await ReloadCharacterFromDatabaseAsync();
-        await CheckIfCharacterIsOnlineAsync();
+    }
+
+    /// <summary>
+    /// Called after the component has finished rendering.
+    /// We check online status here to ensure it happens after the page loads.
+    /// </summary>
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        await base.OnAfterRenderAsync(firstRender);
+        
+        if (firstRender)
+        {
+            await CheckIfCharacterIsOnlineAsync();
+            StateHasChanged(); // Force re-render to show online status
+        }
     }
 
     /// <summary>
@@ -1110,35 +1137,48 @@
     /// </summary>
     private async Task CheckIfCharacterIsOnlineAsync()
     {
+        _isCheckingOnlineStatus = true;
+        _isCharacterOnline = false;
+
         if (Character == null || string.IsNullOrEmpty(Character.Name))
         {
-            _isCharacterOnline = false;
+            _isCheckingOnlineStatus = false;
             return;
         }
 
         try
         {
+            Console.WriteLine($"[CharacterEdit] Checking online status for: {Character.Name}");
             var response = await HttpClient.GetStringAsync("/api/status");
+            Console.WriteLine($"[CharacterEdit] API Response: {response}");
             
-            // Parse JSON: {"state":"Online","players":1,"playersList":["Agge"]}
-            using var doc = JsonDocument.Parse(response);
-            if (doc.RootElement.TryGetProperty("playersList", out var playersListElement))
+            // API returns double-serialized JSON, parse it
+            var jsonString = JsonSerializer.Deserialize<string>(response);
+            if (jsonString != null)
             {
-                var playersList = playersListElement.EnumerateArray()
-                    .Select(p => p.GetString())
-                    .ToList();
-                
-                _isCharacterOnline = playersList.Contains(Character.Name, StringComparer.OrdinalIgnoreCase);
-            }
-            else
-            {
-                _isCharacterOnline = false;
+                using var doc = JsonDocument.Parse(jsonString);
+                if (doc.RootElement.TryGetProperty("playersList", out var playersListElement))
+                {
+                    var playersList = playersListElement.EnumerateArray()
+                        .Select(p => p.GetString())
+                        .Where(p => !string.IsNullOrEmpty(p))
+                        .ToList();
+                    
+                    Console.WriteLine($"[CharacterEdit] Players online: {string.Join(", ", playersList)}");
+                    _isCharacterOnline = playersList.Contains(Character.Name, StringComparer.OrdinalIgnoreCase);
+                    Console.WriteLine($"[CharacterEdit] Is '{Character.Name}' online? {_isCharacterOnline}");
+                }
             }
         }
-        catch
+        catch (Exception ex)
         {
+            Console.WriteLine($"[CharacterEdit] Error checking online status: {ex.Message}");
             // If we can't check, assume offline to allow editing
             _isCharacterOnline = false;
+        }
+        finally
+        {
+            _isCheckingOnlineStatus = false;
         }
     }
 
