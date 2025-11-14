@@ -9,22 +9,137 @@
 
 @inherits NotifyableInputBase<ItemStorage>
 
+<style>
+    /* Modern ItemStorage styling */
+    .item-storage-container {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        border-radius: 1rem;
+        padding: 1.5rem;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    }
+    
+    .equipped-box {
+        background: linear-gradient(to bottom, #1e1e2e, #2a2a3e);
+        padding: 0.5rem;
+        border-radius: 0.5rem;
+        border: 2px solid #4a4a6a;
+        margin-bottom: 0.5rem;
+    }
+    
+    .storage-grid {
+        background: linear-gradient(to bottom, #2a2a3e, #1e1e2e);
+        border: 2px solid #4a4a6a;
+        border-radius: 0.5rem;
+        padding: 0.25rem;
+    }
+    
+    .extension-header {
+        width: 100%;
+        background: linear-gradient(to right, #1e1e2e, #2a2a3e);
+        color: #fbbf24;
+        text-align: center;
+        border-top: 1px dashed #fbbf24;
+        padding: 0.5rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        font-size: 0.875rem;
+        letter-spacing: 0.05em;
+        margin-top: 0.5rem;
+        border-radius: 0.25rem;
+    }
+    
+    .action-buttons {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+        padding: 0 0.75rem;
+    }
+    
+    .action-buttons button {
+        width: 100%;
+        padding: 0.75rem 1rem;
+        border-radius: 0.5rem;
+        font-weight: 600;
+        border: none;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+    }
+    
+    .btn-create {
+        background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+        color: white;
+        box-shadow: 0 4px 12px rgba(16, 185, 129, 0.4);
+    }
+    
+    .btn-create:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 16px rgba(16, 185, 129, 0.6);
+    }
+    
+    .btn-delete {
+        background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+        color: white;
+        box-shadow: 0 4px 12px rgba(239, 68, 68, 0.4);
+    }
+    
+    .btn-delete:hover:not(:disabled) {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 16px rgba(239, 68, 68, 0.6);
+    }
+    
+    .btn-delete:disabled {
+        background: linear-gradient(135deg, #9ca3af 0%, #6b7280 100%);
+        cursor: not-allowed;
+        opacity: 0.5;
+        box-shadow: none;
+    }
+    
+    .item-editor-panel {
+        background: white;
+        border: 2px solid #e5e7eb;
+        border-radius: 0.75rem;
+        padding: 1.5rem;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+    
+    .item-editor-panel h3 {
+        color: #1e293b;
+        font-size: 1.25rem;
+        font-weight: 700;
+        margin-bottom: 1rem;
+        padding-bottom: 0.75rem;
+        border-bottom: 2px solid #e5e7eb;
+    }
+    
+    /* Icon styling */
+    .oi {
+        font-size: 1.125rem;
+    }
+</style>
+
 @if (this.CurrentValue is null)
 {
     return;
 }
 
-<div>
+<div class="item-storage-container">
     @if (!this.HideLabel)
     {
-        <FieldLabel Text="@Label" ValueExpression="@this.ValueExpression"/>
+        <div class="mb-4">
+            <FieldLabel Text="@Label" ValueExpression="@this.ValueExpression"/>
+        </div>
     }
-    <div class="container mx-auto" id="@this.FieldIdentifier.FieldName">
-        <div class="flex flex-nowrap w-full">
-            <div class="min-w-[336px] max-w-[336px] px-0 h-max">
+    <div id="@this.FieldIdentifier.FieldName">
+        <div class="flex flex-nowrap w-full gap-4">
+            <!-- Left Column: Inventory Grid -->
+            <div class="min-w-[336px] max-w-[336px]">
                 @if (this._storageType == StorageType.Inventory)
                 {
-                    <div class="bg-slate-900 pl-1.5">
+                    <div class="equipped-box mb-2">
                         <EquippedItems
                             @bind-Value="@CurrentValue"
                             SelectedItem="@this._selectedItem"
@@ -32,54 +147,96 @@
                     </div>
                 }
                 
-                <div>
+                <div class="storage-grid">
                     <MuItemStorage
                         @bind-Value="@CurrentValue"
                         class="@CssClass"
                         StorageType="@this._storageType"
-                                   NumberOfExtensions="@this._numberOfExtensions"
+                        NumberOfExtensions="@this._numberOfExtensions"
                         SelectedItem="@this._selectedItem"
                         SelectedItemChanged="this.OnSelectedItemChanged"/>
                 </div>
+                
                 @for (byte i = 0; i < this._numberOfExtensions; i++)
                 {
-                    <div class="w-full bg-slate-900 text-amber-200 text-center border-t border-dashed border-amber-200">Extension @(i+1)</div>
-                    <MuItemStorage
-                        @bind-Value="@CurrentValue"
-                        StorageType="@(this._storageType == StorageType.Inventory ? StorageType.InventoryExtension : StorageType.VaultExtension)"
-                        NumberOfExtensions="@this._numberOfExtensions"
-                        ExtensionIndex="@i"
-                        SelectedItem="@this._selectedItem"
-                        SelectedItemChanged="this.OnSelectedItemChanged"/>
+                    <div class="extension-header">
+                        <span class="inline-flex items-center gap-2">
+                            <span class="text-xl">📦</span>
+                            Extension @(i+1)
+                        </span>
+                    </div>
+                    <div class="storage-grid mt-2">
+                        <MuItemStorage
+                            @bind-Value="@CurrentValue"
+                            StorageType="@(this._storageType == StorageType.Inventory ? StorageType.InventoryExtension : StorageType.VaultExtension)"
+                            NumberOfExtensions="@this._numberOfExtensions"
+                            ExtensionIndex="@i"
+                            SelectedItem="@this._selectedItem"
+                            SelectedItemChanged="this.OnSelectedItemChanged"/>
+                    </div>
                 }
+                
                 @if (this._storageType == StorageType.Inventory)
                 {
-                    <div class="w-full bg-slate-900 text-amber-200 text-center border-t border-dashed border-amber-200">Personal Store</div>
-                    <MuItemStorage
-                        @bind-Value="@CurrentValue"
-                        StorageType="StorageType.PersonalStore"
-                        NumberOfExtensions="@this._numberOfExtensions"
-                        SelectedItem="@this._selectedItem"
-                        SelectedItemChanged="this.OnSelectedItemChanged"/>
+                    <div class="extension-header">
+                        <span class="inline-flex items-center gap-2">
+                            <span class="text-xl">🏪</span>
+                            Personal Store
+                        </span>
+                    </div>
+                    <div class="storage-grid mt-2">
+                        <MuItemStorage
+                            @bind-Value="@CurrentValue"
+                            StorageType="StorageType.PersonalStore"
+                            NumberOfExtensions="@this._numberOfExtensions"
+                            SelectedItem="@this._selectedItem"
+                            SelectedItemChanged="this.OnSelectedItemChanged"/>
+                    </div>
                 }
             </div>
-            <div class="max-w-[45px] min-w-[45px] px-2.5">
-                <button type="button" class="px-4 py-2 bg-blue-500 text-white rounded mb-1 hover:bg-blue-600" @onclick="@this.OnCreateItemClickAsync" title="Create"><span class="oi oi-plus"></span></button>
+            
+            <!-- Middle Column: Action Buttons -->
+            <div class="action-buttons">
+                <button type="button" class="btn-create" @onclick="@this.OnCreateItemClickAsync" title="Create New Item">
+                    <span class="oi oi-plus"></span>
+                    <span>Create</span>
+                </button>
                 @if (this._selectedItem is null)
                 {
-                    <button type="button" class="px-4 py-2 bg-amber-300 text-slate-800 rounded mb-1 opacity-50 cursor-not-allowed" disabled title="Delete"><span class="oi oi-trash"></span></button>
+                    <button type="button" class="btn-delete" disabled title="Select an item to delete">
+                        <span class="oi oi-trash"></span>
+                        <span>Delete</span>
+                    </button>
                 }
                 else
                 {
-                    <button type="button" class="px-4 py-2 bg-amber-500 text-white rounded mb-1 hover:bg-amber-600" @onclick="this.OnItemDeleteClickAsync" title="Delete"><span class="oi oi-trash"></span></button>
+                    <button type="button" class="btn-delete" @onclick="this.OnItemDeleteClickAsync" title="Delete Selected Item">
+                        <span class="oi oi-trash"></span>
+                        <span>Delete</span>
+                    </button>
                 }
             </div>
-            <div class="flex-1 pr-0">
+            
+            <!-- Right Column: Item Editor -->
+            <div class="flex-1">
                 @if (this._selectedItem is { })
                 {
-                    <div class="bg-slate-100 border border-slate-300 rounded-lg p-4">
-                        <h3 class="text-xl font-bold text-slate-900 mb-4">@(this._selectedItem.Definition?.Name ?? @"<Please select a definition>")</h3>
+                    <div class="item-editor-panel">
+                        <h3>
+                            <span class="inline-flex items-center gap-2">
+                                <span>✨</span>
+                                @(this._selectedItem.Definition?.Name ?? "Select Item Definition")
+                            </span>
+                        </h3>
                         <ItemEdit Item="@this._selectedItem" ItemChanged="this.StateHasChanged"></ItemEdit>
+                    </div>
+                }
+                else
+                {
+                    <div class="item-editor-panel text-center py-12">
+                        <span class="text-6xl block mb-4 opacity-50">👆</span>
+                        <p class="text-lg text-slate-600">Click an item to edit</p>
+                        <p class="text-sm text-slate-500 mt-2">or click Create to add a new item</p>
                     </div>
                 }
             </div>
@@ -90,7 +247,9 @@
 </div>
 @if (this._storageType != StorageType.Merchant)
 {
-    <NumberField @bind-Value="@this.CurrentValue.Money" />
+    <div class="mt-4">
+        <NumberField @bind-Value="@this.CurrentValue.Money" />
+    </div>
 }
 
 @code {
@@ -147,16 +306,15 @@
     /// <inheritdoc />
     protected override bool TryParseValueFromString(string? value, [MaybeNullWhen(false)] out ItemStorage result, [NotNullWhen(false)] out string? validationErrorMessage)
     {
-        throw new NotImplementedException();
-        
-        validationErrorMessage = null;
-        return true;
+        result = null;
+        validationErrorMessage = "Direct string parsing is not supported for ItemStorage";
+        return false;
     }
 
     /// <inheritdoc />
     protected override string FormatValueAsString(ItemStorage? value)
     {
-        return value is null ? string.Empty : string.Join(';', value);
+        return value is null ? string.Empty : $"{value.Items?.Count ?? 0} items, {value.Money} zen";
     }
 
     private void OnSelectedItemChanged(Item? item)
