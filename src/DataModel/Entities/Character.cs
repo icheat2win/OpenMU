@@ -244,7 +244,7 @@ public class Character
     /// Gets or sets the learned skills.
     /// </summary>
     [MemberOfAggregate]
-    public virtual ICollection<SkillEntry> LearnedSkills { get; protected set; } = null!;
+    public virtual ICollection<SkillEntry> LearnedSkills { get; set; } = null!;
 
     /// <summary>
     /// Gets or sets the inventory.
@@ -261,13 +261,13 @@ public class Character
     /// <summary>
     /// Gets or sets the drop item groups.
     /// </summary>
-    public virtual ICollection<DropItemGroup> DropItemGroups { get; protected set; } = null!;
+    public virtual ICollection<DropItemGroup> DropItemGroups { get; set; } = null!;
 
     /// <summary>
     /// Gets or sets the quest states.
     /// </summary>
     [MemberOfAggregate]
-    public virtual ICollection<CharacterQuestState> QuestStates { get; protected set; } = null!;
+    public virtual ICollection<CharacterQuestState> QuestStates { get; set; } = null!;
 
     /// <inheritdoc />
     public override string ToString()
