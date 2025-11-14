@@ -1258,10 +1258,24 @@
 
             Logger.LogInformation("Successfully got Database object");
 
-            var getDbConnectionMethod = databaseObj.GetType().GetMethod("GetDbConnection");
-            if (getDbConnectionMethod?.Invoke(databaseObj, null) is not System.Data.Common.DbConnection connection)
+            // Get DbConnection - Database is a DatabaseFacade type
+            var databaseFacadeType = databaseObj.GetType();
+            Logger.LogInformation("Database object type: {Type}", databaseFacadeType.FullName);
+            
+            var getDbConnectionMethod = databaseFacadeType.GetMethod("GetDbConnection", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.Public);
+            if (getDbConnectionMethod == null)
             {
-                Logger.LogError("Failed to get DbConnection");
+                Logger.LogError("GetDbConnection method not found on Database object");
+                Logger.LogError("Available methods: {Methods}", string.Join(", ", databaseFacadeType.GetMethods().Select(m => m.Name)));
+                return;
+            }
+            
+            var connectionObj = getDbConnectionMethod.Invoke(databaseObj, null);
+            Logger.LogInformation("GetDbConnection returned: {Result}", connectionObj?.GetType().FullName ?? "null");
+            
+            if (connectionObj is not System.Data.Common.DbConnection connection)
+            {
+                Logger.LogError("Failed to get DbConnection - returned type is not DbConnection");
                 return;
             }
 
