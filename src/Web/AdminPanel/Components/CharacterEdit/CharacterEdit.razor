@@ -1135,8 +1135,19 @@
     /// </summary>
     protected override async Task OnInitializedAsync()
     {
+        Logger.LogInformation("=== OnInitializedAsync START ===");
+        Logger.LogInformation("Character is null: {IsNull}", Character == null);
+        Logger.LogInformation("PersistenceContext is null: {IsNull}", PersistenceContext == null);
+        
+        if (Character != null)
+        {
+            Logger.LogInformation("Character Name: {CharacterName}, ID: {CharacterId}", Character.Name, Character.GetId());
+        }
+        
         await base.OnInitializedAsync();
+        Logger.LogInformation("About to call ReloadCharacterFromDatabaseAsync");
         await ReloadCharacterFromDatabaseAsync();
+        Logger.LogInformation("=== OnInitializedAsync END ===");
     }
 
     /// <summary>
