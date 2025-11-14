@@ -409,11 +409,19 @@ public class GameContext : AsyncDisposable, IGameContext
         var expression = new Expression(experienceFormula);
         expression.addArguments(argument);
 
+        // Create cumulative experience table
+        long cumulative = 0;
         return Enumerable.Range(0, maximumLevel + 2)
             .Select(level =>
             {
+                if (level == 0)
+                {
+                    return 0L;
+                }
+                
                 argument.setArgumentValue(level);
-                return (long)expression.calculate();
+                cumulative += (long)expression.calculate();
+                return cumulative;
             })
             .ToArray();
     }
