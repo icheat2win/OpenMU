@@ -253,7 +253,7 @@
             </div>
         }
 
-        <EditForm Model="Character" OnValidSubmit="OnValidSubmit">
+        <EditForm Model="Character" OnValidSubmit="HandleValidSubmit">
             <DataAnnotationsValidator />
             
             <fieldset disabled="@IsCharacterOnline">
@@ -1101,6 +1101,29 @@
             Character.Inventory = PersistenceContext.CreateNew<ItemStorage>();
             StateHasChanged();
         }
+    }
+
+    /// <summary>
+    /// Handles form submission by first checking if character is online.
+    /// If online, prevents save and shows warning.
+    /// If offline, proceeds with the original OnValidSubmit callback.
+    /// </summary>
+    private async Task HandleValidSubmit()
+    {
+        // Re-check online status before saving
+        await CheckIfCharacterIsOnlineAsync();
+        
+        if (_isCharacterOnline)
+        {
+            Console.WriteLine($"[CharacterEdit] SAVE BLOCKED - Character '{Character.Name}' is online!");
+            // Force UI update to show the red warning banner
+            StateHasChanged();
+            return;
+        }
+        
+        Console.WriteLine($"[CharacterEdit] Character '{Character.Name}' is offline, proceeding with save...");
+        // Character is offline, proceed with save
+        await OnValidSubmit.InvokeAsync();
     }
 
     /// <summary>
