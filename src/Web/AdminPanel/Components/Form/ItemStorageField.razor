@@ -19,12 +19,12 @@
     {
         <FieldLabel Text="@Label" ValueExpression="@this.ValueExpression"/>
     }
-    <div class="container editor-container" id="@this.FieldIdentifier.FieldName">
-        <div class="row editor-row">
-            <div class="col-4 left-column">
+    <div class="container mx-auto" id="@this.FieldIdentifier.FieldName">
+        <div class="flex flex-nowrap w-full">
+            <div class="min-w-[336px] max-w-[336px] px-0 h-max">
                 @if (this._storageType == StorageType.Inventory)
                 {
-                    <div class="equipped-box">
+                    <div class="bg-slate-900 pl-1.5">
                         <EquippedItems
                             @bind-Value="@CurrentValue"
                             SelectedItem="@this._selectedItem"
@@ -43,7 +43,7 @@
                 </div>
                 @for (byte i = 0; i < this._numberOfExtensions; i++)
                 {
-                    <div class="extension-header">Extension @(i+1)</div>
+                    <div class="w-full bg-slate-900 text-amber-200 text-center border-t border-dashed border-amber-200">Extension @(i+1)</div>
                     <MuItemStorage
                         @bind-Value="@CurrentValue"
                         StorageType="@(this._storageType == StorageType.Inventory ? StorageType.InventoryExtension : StorageType.VaultExtension)"
@@ -54,7 +54,7 @@
                 }
                 @if (this._storageType == StorageType.Inventory)
                 {
-                    <div class="extension-header">Personal Store</div>
+                    <div class="w-full bg-slate-900 text-amber-200 text-center border-t border-dashed border-amber-200">Personal Store</div>
                     <MuItemStorage
                         @bind-Value="@CurrentValue"
                         StorageType="StorageType.PersonalStore"
@@ -63,22 +63,22 @@
                         SelectedItemChanged="this.OnSelectedItemChanged"/>
                 }
             </div>
-            <div class="col-1 middle-column">
-                <button type="button" class="btn-info mb-1" @onclick="@this.OnCreateItemClickAsync" title="Create"><span class="oi oi-plus"></span></button>
+            <div class="max-w-[45px] min-w-[45px] px-2.5">
+                <button type="button" class="px-4 py-2 bg-blue-500 text-white rounded mb-1 hover:bg-blue-600" @onclick="@this.OnCreateItemClickAsync" title="Create"><span class="oi oi-plus"></span></button>
                 @if (this._selectedItem is null)
                 {
-                    <button type="button" class="btn-warning mb-1 disabled" title="Delete"><span class="oi oi-trash"></span></button>
+                    <button type="button" class="px-4 py-2 bg-amber-300 text-slate-800 rounded mb-1 opacity-50 cursor-not-allowed" disabled title="Delete"><span class="oi oi-trash"></span></button>
                 }
                 else
                 {
-                    <button type="button" class="btn-warning mb-1" @onclick="this.OnItemDeleteClickAsync" title="Delete"><span class="oi oi-trash"></span></button>
+                    <button type="button" class="px-4 py-2 bg-amber-500 text-white rounded mb-1 hover:bg-amber-600" @onclick="this.OnItemDeleteClickAsync" title="Delete"><span class="oi oi-trash"></span></button>
                 }
             </div>
-            <div class="col-7 right-column">
+            <div class="flex-1 pr-0">
                 @if (this._selectedItem is { })
                 {
-                    <div class="alert alert-secondary item-edit">
-                        <h3>@(this._selectedItem.Definition?.Name ?? @"<Please select a definition>")</h3>
+                    <div class="bg-slate-100 border border-slate-300 rounded-lg p-4">
+                        <h3 class="text-xl font-bold text-slate-900 mb-4">@(this._selectedItem.Definition?.Name ?? @"<Please select a definition>")</h3>
                         <ItemEdit Item="@this._selectedItem" ItemChanged="this.StateHasChanged"></ItemEdit>
                     </div>
                 }

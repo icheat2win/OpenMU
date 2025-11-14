@@ -43,10 +43,9 @@ public partial class NavMenu : IDisposable
 
     /// <summary>
     /// Gets the class for the entries of the navigation menu.
-    /// "collapse" is a class of bootstrap which hides it.
-    /// In our css we also define to show it anyway, if the width sufficient.
+    /// "hidden lg:flex" hides on mobile, shows on desktop.
     /// </summary>
-    private string NavMenuCssClass => this._collapseNavMenu ? "collapse" : string.Empty;
+    private string NavMenuCssClass => this._collapseNavMenu ? "hidden lg:flex" : string.Empty;
 
     /// <inheritdoc />
     public void Dispose()

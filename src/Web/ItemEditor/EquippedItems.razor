@@ -1,5 +1,29 @@
 ﻿@inherits Microsoft.AspNetCore.Components.Forms.InputBase<MUnique.OpenMU.DataModel.Entities.ItemStorage>
 
+<style>
+    .equipped-container { --boxSize: 42px; background-image: url('/_content/MUnique.OpenMU.Web.ItemEditor/img/equipment_back.png'); width: 325px; height: 323px; display: flex; position: relative; }
+    .equipped-container > div { position: absolute; }
+    .slot-left { width: calc(var(--boxSize) * 2); height: calc(var(--boxSize) * 4); left: 0; top: 96px; }
+    .slot-left ::deep > .w_1 { left: calc(var(--boxSize) * 0.5); }
+    .slot-right { width: calc(var(--boxSize) * 2); height: calc(var(--boxSize) * 4); left: 241px; top: 96px; }
+    .slot-right ::deep > .w_1 { left: calc(var(--boxSize) * 0.5); }
+    .slot-helm { width: calc(var(--boxSize) * 2); height: calc(var(--boxSize) * 2); left: 121px; top: 2px; }
+    .slot-armor { width: calc(var(--boxSize) * 2); height: calc(var(--boxSize) * 3); left: 121px; top: 96px; }
+    .slot-pants { width: calc(var(--boxSize) * 2); height: calc(var(--boxSize) * 2); left: 121px; top: 231px; }
+    .slot-gloves { width: calc(var(--boxSize) * 2); height: calc(var(--boxSize) * 2); left: 0; top: 231px; }
+    .slot-boots { width: calc(var(--boxSize) * 2); height: calc(var(--boxSize) * 2); left: 241px; top: 231px; }
+    .slot-wings { width: calc(var(--boxSize) * 3); height: calc(var(--boxSize) * 2); left: 208px; top: 2px; }
+    .slot-wings ::deep .mu-item img { top: 0; left: 0; max-width: 120%; max-height: 150%; }
+    .slot-wings ::deep > .h_3 { top: calc(var(--boxSize) * -0.5); }
+    .slot-wings ::deep > .w_4, .slot-wings ::deep > .w_5 { width: calc(var(--boxSize) * 3); }
+    .slot-pet { width: var(--boxSize); height: var(--boxSize); left: 0; top: 2px; }
+    .slot-pet ::deep > .w_1 { left: calc(var(--boxSize) * 0.5); }
+    .slot-pet ::deep > .h_1 { top: calc(var(--boxSize) * 0.5); }
+    .slot-pendant { width: var(--boxSize); height: var(--boxSize); left: 82px; top: 96px; }
+    .slot-ring1 { width: var(--boxSize); height: var(--boxSize); left: 82px; top: 231px; }
+    .slot-ring2 { width: var(--boxSize); height: var(--boxSize); left: 203px; top: 231px; }
+</style>
+
 <div class="equipped-container">
     @for (byte slot = InventoryConstants.LeftHandSlot; slot < InventoryConstants.EquippableSlotsCount; slot++)
     {

@@ -5,7 +5,7 @@
     return;
 }
 
-<div class=@($"mu-item-storage storage-rows{this._viewModel.Rows}")>
+<div class="@($"relative flex w-[336px] bg-[url('/_content/MUnique.OpenMU.Web.ItemEditor/img/inventory_back.png')] bg-[length:12.5%] {GetStorageHeightClass()}")">
     @foreach (var item in this._viewModel.Items)
     {
         <MuItem
@@ -15,3 +15,16 @@
             IsSelected="this.SelectedItem == item.Item"/>
     }
 </div>
+
+@code {
+    private string GetStorageHeightClass()
+    {
+        return this._viewModel?.Rows switch
+        {
+            4 => "h-[168px]",
+            8 => "h-[336px]",
+            15 => "h-[630px]",
+            _ => "h-[336px]"
+        };
+    }
+}

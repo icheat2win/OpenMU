@@ -23,6 +23,11 @@
     <!-- Tailwind CSS v4 (Play CDN) -->
     <script src="https://cdn.jsdelivr.net/npm/@@tailwindcss/browser@@4"></script>
     <style type="text/tailwindcss">
+        @@import "tailwindcss";
+        
+        /* Configure dark mode to use class-based toggling */
+        @@custom-variant dark (&:where(.dark, .dark *));
+        
         @@theme {
             --color-primary-50: #eff6ff;
             --color-primary-100: #dbeafe;
@@ -49,7 +54,6 @@
     
     <!-- Minimal App Styles (NO Bootstrap) -->
     <link href="css/site.css" rel="stylesheet" />
-    <link href="css/compatibility-fixes.css" rel="stylesheet" />
     
     <!-- Blazored Components -->
     <link href="_content/Blazored.Typeahead/blazored-typeahead.css" rel="stylesheet" />

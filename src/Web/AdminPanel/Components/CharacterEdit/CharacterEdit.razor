@@ -3,603 +3,226 @@
 @using MUnique.OpenMU.DataModel.Configuration
 @using MUnique.OpenMU.Web.AdminPanel.Components.Form
 @using MUnique.OpenMU.Persistence
+@using System.Data
 
 <PageTitle>Edit Character: @Character.Name</PageTitle>
 
 <style>
-    /* Force dark theme for entire page */
-    body {
-        background-color: #0f172a !important;
-        color: #f1f5f9 !important;
+    /* Ensure all form inputs have dark text on light backgrounds */
+    input, select, textarea, .form-control {
+        color: #0f172a !important;
     }
     
-    .character-edit-container {
-        max-width: 1400px;
-        margin: 0 auto;
-        padding: 20px;
-        background-color: #0f172a;
-        min-height: 100vh;
-    }
-    
-    .character-header {
-        background: linear-gradient(135deg, #1e3a8a 0%, #7c3aed 100%);
-        border: 1px solid rgba(255, 255, 255, 0.2);
-        border-radius: 16px;
-        padding: 24px;
-        margin-bottom: 24px;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
-    }
-    
-    .character-header h1 {
-        font-size: 2rem;
-        font-weight: 600;
-        color: #f1f5f9;
-        margin: 0 0 8px 0;
-    }
-    
-    .character-header p {
-        color: #94a3b8;
-        margin: 0;
-        font-size: 0.875rem;
-    }
-    
-    .section-card {
-        background: #1e293b;
-        border: 1px solid rgba(255, 255, 255, 0.15);
-        border-radius: 16px;
-        padding: 24px;
-        margin-bottom: 20px;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
-    }
-    
-    .section-header {
-        display: flex;
-        align-items: center;
-        gap: 8px;
-        font-size: 1.125rem;
-        font-weight: 600;
-        color: #f1f5f9;
-        margin-bottom: 20px;
-        padding-bottom: 12px;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-    }
-    
-    .section-icon {
-        color: #06b6d4;
-    }
-    
-    .form-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-        gap: 20px;
-    }
-    
-    .form-field {
-        margin-bottom: 0;
-    }
-    
-    .form-field label {
-        display: block;
-        font-size: 0.75rem;
-        font-weight: 500;
-        color: #94a3b8;
-        text-transform: uppercase;
-        letter-spacing: 0.05em;
-        margin-bottom: 8px;
-    }
-    
-    .form-field input,
-    .form-field select,
-    .form-field .form-control {
-        width: 100% !important;
-        padding: 12px 16px !important;
-        background: rgba(0, 0, 0, 0.3) !important;
-        border: 1px solid rgba(255, 255, 255, 0.1) !important;
-        border-radius: 12px !important;
-        color: #f1f5f9 !important;
-        font-size: 0.875rem !important;
-        transition: all 0.2s !important;
-        height: auto !important;
-    }
-    
-    .form-field input:focus,
-    .form-field select:focus,
-    .form-field .form-control:focus {
-        outline: none !important;
-        border-color: rgba(6, 182, 212, 0.6) !important;
-        box-shadow: 0 0 0 3px rgba(6, 182, 212, 0.1) !important;
-        background: rgba(0, 0, 0, 0.4) !important;
-    }
-    
-    /* Override Bootstrap placeholder color */
-    .form-field input::placeholder,
-    .form-field .form-control::placeholder {
+    /* Style helper text */
+    small {
         color: #64748b !important;
-        opacity: 1 !important;
-    }
-    
-    /* Style BlazoredTypeahead dropdowns */
-    .form-field .blazored-typeahead__input {
-        width: 100% !important;
-        padding: 12px 16px !important;
-        background: rgba(0, 0, 0, 0.3) !important;
-        border: 1px solid rgba(255, 255, 255, 0.1) !important;
-        border-radius: 12px !important;
-        color: #f1f5f9 !important;
-        font-size: 0.875rem !important;
-    }
-    
-    .form-field .blazored-typeahead__input:focus {
-        outline: none !important;
-        border-color: rgba(6, 182, 212, 0.6) !important;
-        box-shadow: 0 0 0 3px rgba(6, 182, 212, 0.1) !important;
-        background: rgba(0, 0, 0, 0.4) !important;
-    }
-    
-    .form-field small {
-        display: block;
-        margin-top: 6px;
-        font-size: 0.75rem;
-        color: #64748b;
-    }
-    
-    .checkbox-field {
-        display: flex;
-        align-items: center;
-        gap: 8px;
-        padding: 12px 16px;
-        background: rgba(0, 0, 0, 0.2);
-        border: 1px solid rgba(255, 255, 255, 0.1);
-        border-radius: 12px;
-    }
-    
-    .checkbox-field input[type="checkbox"] {
-        width: auto;
-        margin: 0;
-    }
-    
-    .checkbox-field label {
-        margin: 0;
-        font-size: 0.875rem;
-        color: #e2e8f0;
-        text-transform: none;
-        letter-spacing: normal;
-    }
-    
-    .action-buttons {
-        display: flex;
-        gap: 12px;
-        justify-content: flex-end;
-        margin-top: 24px;
-    }
-    
-    .btn-save {
-        background: linear-gradient(135deg, #06b6d4 0%, #3b82f6 100%);
-        border: none;
-        color: white;
-        padding: 12px 32px;
-        border-radius: 12px;
-        font-weight: 600;
-        font-size: 0.875rem;
-        cursor: pointer;
-        transition: all 0.2s;
-        box-shadow: 0 4px 12px rgba(6, 182, 212, 0.25);
-    }
-    
-    .btn-save:hover {
-        transform: translateY(-1px);
-        box-shadow: 0 6px 16px rgba(6, 182, 212, 0.35);
-        filter: brightness(1.1);
-    }
-    
-    .btn-cancel {
-        background: transparent;
-        border: 1px solid rgba(255, 255, 255, 0.1);
-        color: #cbd5e1;
-        padding: 12px 24px;
-        border-radius: 12px;
-        font-weight: 600;
-        font-size: 0.875rem;
-        cursor: pointer;
-        transition: all 0.2s;
-    }
-    
-    .btn-cancel:hover {
-        background: rgba(255, 255, 255, 0.05);
-        border-color: #64748b;
-    }
-    
-    .stats-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-        gap: 16px;
-    }
-
-    /* Inventory Styles */
-    .inventory-section {
-        display: flex;
-        flex-direction: column;
-        gap: 20px;
-    }
-
-    .inventory-stats {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-        gap: 12px;
-        padding: 16px;
-        background: rgba(0, 0, 0, 0.2);
-        border-radius: 12px;
-    }
-
-    .stat-badge {
-        display: flex;
-        flex-direction: column;
-        gap: 4px;
-    }
-
-    .stat-badge .stat-label {
-        font-size: 0.75rem;
-        color: #94a3b8;
-        text-transform: uppercase;
-        letter-spacing: 0.05em;
-    }
-
-    .stat-badge .stat-value {
-        font-size: 1.5rem;
-        font-weight: 700;
-        color: #06b6d4;
-    }
-
-    .inventory-grid {
-        display: flex;
-        flex-direction: column;
-        gap: 8px;
-    }
-
-    .inventory-header {
-        display: grid;
-        grid-template-columns: 2fr 1fr 1fr 1.5fr 100px;
-        gap: 12px;
-        padding: 12px 16px;
-        background: rgba(0, 0, 0, 0.3);
-        border-radius: 8px;
-        font-size: 0.75rem;
-        font-weight: 600;
-        color: #94a3b8;
-        text-transform: uppercase;
-        letter-spacing: 0.05em;
-    }
-
-    .inventory-item {
-        display: grid;
-        grid-template-columns: 2fr 1fr 1fr 1.5fr 100px;
-        gap: 12px;
-        padding: 12px 16px;
-        background: rgba(0, 0, 0, 0.2);
-        border: 1px solid rgba(255, 255, 255, 0.1);
-        border-radius: 8px;
-        align-items: center;
-        transition: all 0.2s;
-    }
-
-    .inventory-item:hover {
-        background: rgba(0, 0, 0, 0.3);
-        border-color: rgba(6, 182, 212, 0.5);
-        transform: translateX(4px);
-    }
-
-    .item-name {
-        display: flex;
-        align-items: center;
-        gap: 8px;
-        font-weight: 500;
-    }
-
-    .item-icon {
-        font-size: 1.2rem;
-    }
-
-    .item-level .badge {
-        font-size: 0.875rem;
-        padding: 4px 8px;
-    }
-
-    .item-slot {
-        color: #94a3b8;
-        font-size: 0.875rem;
-    }
-
-    .item-options .badge {
-        font-size: 0.75rem;
-        padding: 4px 8px;
-    }
-
-    .item-actions {
-        display: flex;
-        gap: 8px;
-        justify-content: center;
-    }
-
-    .btn-icon {
-        padding: 6px 10px;
-        border: none;
-        border-radius: 6px;
-        cursor: pointer;
-        transition: all 0.2s;
-        font-size: 1rem;
-        background: rgba(255, 255, 255, 0.1);
-    }
-
-    .btn-icon:hover {
-        transform: scale(1.1);
-    }
-
-    .btn-danger-sm {
-        background: rgba(239, 68, 68, 0.2);
-        border: 1px solid rgba(239, 68, 68, 0.3);
-    }
-
-    .btn-danger-sm:hover {
-        background: rgba(239, 68, 68, 0.4);
-        border-color: rgba(239, 68, 68, 0.6);
-    }
-
-    .empty-state {
-        text-align: center;
-        padding: 48px 24px;
-        color: #64748b;
-    }
-
-    .empty-icon {
-        font-size: 4rem;
-        display: block;
-        margin-bottom: 16px;
-        opacity: 0.5;
-    }
-
-    .empty-state p {
-        margin: 0;
-        font-size: 1.125rem;
-    }
-
-    .inventory-actions {
-        display: flex;
-        justify-content: center;
-        padding-top: 12px;
-    }
-
-    .btn-add-item {
-        background: linear-gradient(135deg, #06b6d4 0%, #0891b2 100%);
-        color: white;
-        box-shadow: 0 4px 14px rgba(6, 182, 212, 0.3);
-        padding: 14px 32px;
-        border: none;
-        border-radius: 12px;
-        font-weight: 600;
-        font-size: 1rem;
-        cursor: pointer;
-        transition: all 0.2s;
-        display: flex;
-        align-items: center;
-        gap: 8px;
-    }
-
-    .btn-add-item:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 6px 20px rgba(6, 182, 212, 0.4);
-    }
-
-    .badge {
-        display: inline-block;
-        padding: 4px 12px;
-        border-radius: 6px;
-        font-size: 0.75rem;
-        font-weight: 600;
-        text-transform: uppercase;
-        letter-spacing: 0.05em;
-    }
-
-    .badge-info {
-        background: rgba(6, 182, 212, 0.2);
-        color: #06b6d4;
-        border: 1px solid rgba(6, 182, 212, 0.3);
-    }
-
-    .badge-success {
-        background: rgba(16, 185, 129, 0.2);
-        color: #10b981;
-        border: 1px solid rgba(16, 185, 129, 0.3);
-    }
-
-    .text-muted {
-        color: #64748b;
+        font-size: 0.75rem !important;
+        display: block !important;
+        margin-top: 0.25rem !important;
     }
 </style>
 
-<div class="character-edit-container">
-    <div class="character-header">
-        <h1>✏️ Edit Character</h1>
-        <p>@Character.Name • Level @(Character.Attributes?.FirstOrDefault(a => a.Definition?.Designation == "Level")?.Value ?? 0)</p>
-    </div>
-
-    <EditForm Model="Character" OnValidSubmit="OnValidSubmit">
-        <DataAnnotationsValidator />
-        
-        <!-- Basic Information -->
-        <div class="section-card">
-            <div class="section-header">
-                <span class="section-icon">📋</span>
-                <span>Basic Information</span>
-            </div>
-            
-            <div class="form-grid">
-                <div class="form-field">
-                    <label>Character Name</label>
-                    <InputText @bind-Value="@Character.Name" />
-                    <ValidationMessage For="@(() => Character.Name)" />
-                </div>
-
-                <div class="form-field">
-                    <label>Character Class</label>
-                    <LookupField @bind-Value="@Character.CharacterClass" />
-                    <ValidationMessage For="@(() => Character.CharacterClass)" />
-                </div>
-
-                <div class="form-field">
-                    <label>Character Slot</label>
-                    <InputByte @bind-Value="@Character.CharacterSlot" Min="0" Max="4" />
-                    <ValidationMessage For="@(() => Character.CharacterSlot)" />
-                </div>
-            </div>
+<div class="min-h-screen bg-slate-50 py-6 px-4">
+    <div class="max-w-7xl mx-auto">
+        <!-- Character Header -->
+        <div class="bg-gradient-to-r from-blue-600 to-purple-600 rounded-xl shadow-lg p-8 mb-6 text-white">
+            <h1 class="text-3xl font-bold mb-2">✏️ Edit Character</h1>
+            <p class="text-blue-100">@Character.Name • Level @CurrentLevel</p>
         </div>
+
+        @if (IsCharacterOnline)
+        {
+            <div class="bg-red-100 border-l-4 border-red-500 text-red-700 p-6 mb-6 rounded-lg shadow-lg">
+                <div class="flex items-center gap-3">
+                    <span class="text-3xl">⚠️</span>
+                    <div>
+                        <p class="font-bold text-lg">Character is currently ONLINE</p>
+                        <p class="text-sm">Editing while online may cause issues. Please log out the character first, then refresh this page.</p>
+                    </div>
+                </div>
+            </div>
+        }
+
+        <EditForm Model="Character" OnValidSubmit="OnValidSubmit">
+            <DataAnnotationsValidator />
+            
+            <fieldset disabled="@IsCharacterOnline">
+            
+            <!-- Basic Information -->
+            <div class="bg-white rounded-xl shadow-lg border border-slate-200 p-6 mb-6">
+                <div class="flex items-center gap-3 text-2xl font-bold text-slate-900 mb-6 pb-4 border-b-2 border-blue-200">
+                    <span>📋</span>
+                    <span>Basic Information</span>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <div>
+                        <label class="block text-sm font-semibold text-slate-700 mb-2 uppercase tracking-wide">Character Name</label>
+                        <InputText @bind-Value="@Character.Name" class="w-full px-4 py-3 bg-slate-50 border border-slate-300 rounded-lg text-slate-900 focus:outline-none focus:border-blue-500 transition-colors" />
+                        <ValidationMessage For="@(() => Character.Name)" />
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-semibold text-slate-700 mb-2 uppercase tracking-wide">Character Class</label>
+                        <LookupField @bind-Value="@Character.CharacterClass" />
+                        <ValidationMessage For="@(() => Character.CharacterClass)" />
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-semibold text-slate-700 mb-2 uppercase tracking-wide">Character Slot</label>
+                        <InputByte @bind-Value="@Character.CharacterSlot" Min="0" Max="4" class="w-full px-4 py-3 bg-slate-50 border border-slate-300 rounded-lg text-slate-900 focus:outline-none focus:border-blue-500 transition-colors" />
+                        <ValidationMessage For="@(() => Character.CharacterSlot)" />
+                    </div>
+                </div>
+            </div>
         
         <!-- Location & Position -->
-        <div class="section-card">
-            <div class="section-header">
-                <span class="section-icon">🗺️</span>
+        <div class="bg-white rounded-xl shadow-lg border border-slate-200 p-6 mb-6">
+            <div class="flex items-center gap-3 text-2xl font-bold text-slate-900 mb-6 pb-4 border-b-2 border-blue-200">
+                <span class="">🗺️</span>
                 <span>Location & Position</span>
             </div>
             
-            <div class="form-grid">
-                <div class="form-field">
-                    <label>Current Map</label>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="">
+                    <label class="block text-sm font-semibold text-slate-700 mb-2 uppercase tracking-wide">Current Map</label>
                     <LookupField @bind-Value="@Character.CurrentMap" />
                     <ValidationMessage For="@(() => Character.CurrentMap)" />
                 </div>
 
-                <div class="form-field">
-                    <label>Position X</label>
-                    <InputByte @bind-Value="@Character.PositionX" Min="0" Max="255" />
+                <div class="">
+                    <label class="block text-sm font-semibold text-slate-700 mb-2 uppercase tracking-wide">Position X</label>
+                    <InputByte @bind-Value="@Character.PositionX" Min="0" Max="255" class="w-full px-4 py-3 bg-slate-50 border border-slate-300 rounded-lg text-slate-900 focus:outline-none focus:border-blue-500 transition-colors" />
                     <ValidationMessage For="@(() => Character.PositionX)" />
                 </div>
 
-                <div class="form-field">
-                    <label>Position Y</label>
-                    <InputByte @bind-Value="@Character.PositionY" Min="0" Max="255" />
+                <div class="">
+                    <label class="block text-sm font-semibold text-slate-700 mb-2 uppercase tracking-wide">Position Y</label>
+                    <InputByte @bind-Value="@Character.PositionY" Min="0" Max="255" class="w-full px-4 py-3 bg-slate-50 border border-slate-300 rounded-lg text-slate-900 focus:outline-none focus:border-blue-500 transition-colors" />
                     <ValidationMessage For="@(() => Character.PositionY)" />
                 </div>
             </div>
         </div>
 
         <!-- Experience & Level -->
-        <div class="section-card">
-            <div class="section-header">
-                <span class="section-icon">⚡</span>
+        <div class="bg-white rounded-xl shadow-lg border border-slate-200 p-6 mb-6">
+            <div class="flex items-center gap-3 text-2xl font-bold text-slate-900 mb-6 pb-4 border-b-2 border-blue-200">
+                <span class="">⚡</span>
                 <span>Experience & Level</span>
             </div>
             
-            <div class="form-grid">
-                <div class="form-field">
-                    <label>Level</label>
-                    <InputNumber @bind-Value="@CurrentLevel" min="1" max="400" />
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="">
+                    <label class="block text-sm font-semibold text-slate-700 mb-2 uppercase tracking-wide">Level</label>
+                    <InputNumber @bind-Value="@CurrentLevel" min="1" max="400" class="w-full px-4 py-3 bg-slate-50 border border-slate-300 rounded-lg text-slate-900 focus:outline-none focus:border-blue-500 transition-colors" />
                     <small>Character level (1-400)</small>
                 </div>
 
-                <div class="form-field">
-                    <label>Experience</label>
-                    <InputNumber @bind-Value="@Character.Experience" min="0" />
+                <div class="">
+                    <label class="block text-sm font-semibold text-slate-700 mb-2 uppercase tracking-wide">Experience</label>
+                    <InputNumber @bind-Value="@Character.Experience" min="0" class="w-full px-4 py-3 bg-slate-50 border border-slate-300 rounded-lg text-slate-900 focus:outline-none focus:border-blue-500 transition-colors" />
                     <ValidationMessage For="@(() => Character.Experience)" />
                 </div>
 
-                <div class="form-field">
-                    <label>Level Up Points</label>
-                    <InputNumber @bind-Value="@Character.LevelUpPoints" min="0" />
+                <div class="">
+                    <label class="block text-sm font-semibold text-slate-700 mb-2 uppercase tracking-wide">Level Up Points</label>
+                    <InputNumber @bind-Value="@Character.LevelUpPoints" min="0" class="w-full px-4 py-3 bg-slate-50 border border-slate-300 rounded-lg text-slate-900 focus:outline-none focus:border-blue-500 transition-colors" />
                     <ValidationMessage For="@(() => Character.LevelUpPoints)" />
                 </div>
 
-                <div class="form-field">
-                    <label>Master Level</label>
-                    <InputNumber @bind-Value="@CurrentMasterLevel" min="0" max="400" />
+                <div class="">
+                    <label class="block text-sm font-semibold text-slate-700 mb-2 uppercase tracking-wide">Master Level</label>
+                    <InputNumber @bind-Value="@CurrentMasterLevel" min="0" max="400" class="w-full px-4 py-3 bg-slate-50 border border-slate-300 rounded-lg text-slate-900 focus:outline-none focus:border-blue-500 transition-colors" />
                     <small>Master level (0-400)</small>
                 </div>
 
-                <div class="form-field">
-                    <label>Master Experience</label>
-                    <InputNumber @bind-Value="@Character.MasterExperience" min="0" />
+                <div class="">
+                    <label class="block text-sm font-semibold text-slate-700 mb-2 uppercase tracking-wide">Master Experience</label>
+                    <InputNumber @bind-Value="@Character.MasterExperience" min="0" class="w-full px-4 py-3 bg-slate-50 border border-slate-300 rounded-lg text-slate-900 focus:outline-none focus:border-blue-500 transition-colors" />
                     <ValidationMessage For="@(() => Character.MasterExperience)" />
                 </div>
 
-                <div class="form-field">
-                    <label>Master Level Up Points</label>
-                    <InputNumber @bind-Value="@Character.MasterLevelUpPoints" min="0" />
+                <div class="">
+                    <label class="block text-sm font-semibold text-slate-700 mb-2 uppercase tracking-wide">Master Level Up Points</label>
+                    <InputNumber @bind-Value="@Character.MasterLevelUpPoints" min="0" class="w-full px-4 py-3 bg-slate-50 border border-slate-300 rounded-lg text-slate-900 focus:outline-none focus:border-blue-500 transition-colors" />
                     <ValidationMessage For="@(() => Character.MasterLevelUpPoints)" />
                 </div>
             </div>
         </div>
 
         <!-- Character Stats -->
-        <div class="section-card">
-            <div class="section-header">
-                <span class="section-icon">💪</span>
+        <div class="bg-white rounded-xl shadow-lg border border-slate-200 p-6 mb-6">
+            <div class="flex items-center gap-3 text-2xl font-bold text-slate-900 mb-6 pb-4 border-b-2 border-blue-200">
+                <span class="">💪</span>
                 <span>Character Stats</span>
             </div>
             
-            <div class="form-grid">
-                <div class="form-field">
-                    <label>Strength</label>
-                    <InputNumber @bind-Value="@Strength" min="0" max="65000" />
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="">
+                    <label class="block text-sm font-semibold text-slate-700 mb-2 uppercase tracking-wide">Strength</label>
+                    <InputNumber @bind-Value="@Strength" min="0" max="65000" class="w-full px-4 py-3 bg-slate-50 border border-slate-300 rounded-lg text-slate-900 focus:outline-none focus:border-blue-500 transition-colors" />
                     <small>Base strength attribute</small>
                 </div>
 
-                <div class="form-field">
-                    <label>Agility</label>
-                    <InputNumber @bind-Value="@Agility" min="0" max="65000" />
+                <div class="">
+                    <label class="block text-sm font-semibold text-slate-700 mb-2 uppercase tracking-wide">Agility</label>
+                    <InputNumber @bind-Value="@Agility" min="0" max="65000" class="w-full px-4 py-3 bg-slate-50 border border-slate-300 rounded-lg text-slate-900 focus:outline-none focus:border-blue-500 transition-colors" />
                     <small>Base agility attribute</small>
                 </div>
 
-                <div class="form-field">
-                    <label>Vitality</label>
-                    <InputNumber @bind-Value="@Vitality" min="0" max="65000" />
+                <div class="">
+                    <label class="block text-sm font-semibold text-slate-700 mb-2 uppercase tracking-wide">Vitality</label>
+                    <InputNumber @bind-Value="@Vitality" min="0" max="65000" class="w-full px-4 py-3 bg-slate-50 border border-slate-300 rounded-lg text-slate-900 focus:outline-none focus:border-blue-500 transition-colors" />
                     <small>Base vitality attribute</small>
                 </div>
 
-                <div class="form-field">
-                    <label>Energy</label>
-                    <InputNumber @bind-Value="@Energy" min="0" max="65000" />
+                <div class="">
+                    <label class="block text-sm font-semibold text-slate-700 mb-2 uppercase tracking-wide">Energy</label>
+                    <InputNumber @bind-Value="@Energy" min="0" max="65000" class="w-full px-4 py-3 bg-slate-50 border border-slate-300 rounded-lg text-slate-900 focus:outline-none focus:border-blue-500 transition-colors" />
                     <small>Base energy attribute</small>
                 </div>
 
-                <div class="form-field">
-                    <label>Command</label>
-                    <InputNumber @bind-Value="@Command" min="0" max="65000" />
+                <div class="">
+                    <label class="block text-sm font-semibold text-slate-700 mb-2 uppercase tracking-wide">Command</label>
+                    <InputNumber @bind-Value="@Command" min="0" max="65000" class="w-full px-4 py-3 bg-slate-50 border border-slate-300 rounded-lg text-slate-900 focus:outline-none focus:border-blue-500 transition-colors" />
                     <small>Command points for summoner</small>
                 </div>
             </div>
         </div>
 
         <!-- Money & Currency -->
-        <div class="section-card">
-            <div class="section-header">
-                <span class="section-icon">💰</span>
+        <div class="bg-white rounded-xl shadow-lg border border-slate-200 p-6 mb-6">
+            <div class="flex items-center gap-3 text-2xl font-bold text-slate-900 mb-6 pb-4 border-b-2 border-blue-200">
+                <span class="">💰</span>
                 <span>Money & Currency</span>
             </div>
             
-            <div class="form-grid">
-                <div class="form-field">
-                    <label>Inventory Zen (Money)</label>
-                    <InputNumber @bind-Value="@InventoryMoney" min="0" />
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="">
+                    <label class="block text-sm font-semibold text-slate-700 mb-2 uppercase tracking-wide">Inventory Zen (Money)</label>
+                    <InputNumber @bind-Value="@InventoryMoney" min="0" class="w-full px-4 py-3 bg-slate-50 border border-slate-300 rounded-lg text-slate-900 focus:outline-none focus:border-blue-500 transition-colors" />
                     <small>Current zen in character inventory</small>
                 </div>
 
-                <div class="form-field">
-                    <label>Vault Zen (Bank)</label>
-                    <InputNumber @bind-Value="@VaultMoney" min="0" />
+                <div class="">
+                    <label class="block text-sm font-semibold text-slate-700 mb-2 uppercase tracking-wide">Vault Zen (Bank)</label>
+                    <InputNumber @bind-Value="@VaultMoney" min="0" class="w-full px-4 py-3 bg-slate-50 border border-slate-300 rounded-lg text-slate-900 focus:outline-none focus:border-blue-500 transition-colors" />
                     <small>Zen stored in account vault</small>
                 </div>
             </div>
         </div>
 
         <!-- Character State -->
-        <div class="section-card">
-            <div class="section-header">
-                <span class="section-icon">💫</span>
+        <div class="bg-white rounded-xl shadow-lg border border-slate-200 p-6 mb-6">
+            <div class="flex items-center gap-3 text-2xl font-bold text-slate-900 mb-6 pb-4 border-b-2 border-blue-200">
+                <span class="">💫</span>
                 <span>Character State</span>
             </div>
             
-            <div class="form-grid">
-                <div class="form-field">
-                    <label>Hero State</label>
-                    <InputSelect @bind-Value="@Character.State">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="">
+                    <label class="block text-sm font-semibold text-slate-700 mb-2 uppercase tracking-wide">Hero State</label>
+                    <InputSelect @bind-Value="@Character.State" class="w-full px-4 py-3 bg-slate-50 border border-slate-300 rounded-lg text-slate-900 focus:outline-none focus:border-blue-500 transition-colors">
                         @foreach (var state in Enum.GetValues<HeroState>())
                         {
                             <option value="@state">@state</option>
@@ -608,15 +231,15 @@
                     <ValidationMessage For="@(() => Character.State)" />
                 </div>
 
-                <div class="form-field">
-                    <label>State Remaining Seconds</label>
-                    <InputNumber @bind-Value="@Character.StateRemainingSeconds" min="0" />
+                <div class="">
+                    <label class="block text-sm font-semibold text-slate-700 mb-2 uppercase tracking-wide">State Remaining Seconds</label>
+                    <InputNumber @bind-Value="@Character.StateRemainingSeconds" min="0" class="w-full px-4 py-3 bg-slate-50 border border-slate-300 rounded-lg text-slate-900 focus:outline-none focus:border-blue-500 transition-colors" />
                     <ValidationMessage For="@(() => Character.StateRemainingSeconds)" />
                 </div>
 
-                <div class="form-field">
-                    <label>Character Status</label>
-                    <InputSelect @bind-Value="@Character.CharacterStatus">
+                <div class="">
+                    <label class="block text-sm font-semibold text-slate-700 mb-2 uppercase tracking-wide">Character Status</label>
+                    <InputSelect @bind-Value="@Character.CharacterStatus" class="w-full px-4 py-3 bg-slate-50 border border-slate-300 rounded-lg text-slate-900 focus:outline-none focus:border-blue-500 transition-colors">
                         @foreach (var status in Enum.GetValues<CharacterStatus>())
                         {
                             <option value="@status">@status</option>
@@ -625,9 +248,9 @@
                     <ValidationMessage For="@(() => Character.CharacterStatus)" />
                 </div>
 
-                <div class="form-field">
-                    <label>Pose</label>
-                    <InputSelect @bind-Value="@Character.Pose">
+                <div class="">
+                    <label class="block text-sm font-semibold text-slate-700 mb-2 uppercase tracking-wide">Pose</label>
+                    <InputSelect @bind-Value="@Character.Pose" class="w-full px-4 py-3 bg-slate-50 border border-slate-300 rounded-lg text-slate-900 focus:outline-none focus:border-blue-500 transition-colors">
                         @foreach (var pose in Enum.GetValues<CharacterPose>())
                         {
                             <option value="@pose">@pose</option>
@@ -636,37 +259,55 @@
                     <ValidationMessage For="@(() => Character.Pose)" />
                 </div>
 
-                <div class="form-field">
-                    <label>Player Kill Count</label>
-                    <InputNumber @bind-Value="@Character.PlayerKillCount" min="0" />
+                <div class="">
+                    <label class="block text-sm font-semibold text-slate-700 mb-2 uppercase tracking-wide">Create Date</label>
+                    <InputDate @bind-Value="@Character.CreateDate" class="w-full px-4 py-3 bg-slate-50 border border-slate-300 rounded-lg text-slate-900 focus:outline-none focus:border-blue-500 transition-colors" />
+                    <small>Character creation timestamp</small>
+                    <ValidationMessage For="@(() => Character.CreateDate)" />
+                </div>
+            </div>
+        </div>
+
+        <!-- PK (Player Kill) System -->
+        <div class="bg-white rounded-xl shadow-lg border border-slate-200 p-6 mb-6">
+            <div class="flex items-center gap-3 text-2xl font-bold text-slate-900 mb-6 pb-4 border-b-2 border-blue-200">
+                <span>⚔️</span>
+                <span>PK (Player Kill) System</span>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="">
+                    <label class="block text-sm font-semibold text-slate-700 mb-2 uppercase tracking-wide">Player Kill Count</label>
+                    <InputNumber @bind-Value="@Character.PlayerKillCount" min="0" class="w-full px-4 py-3 bg-slate-50 border border-slate-300 rounded-lg text-slate-900 focus:outline-none focus:border-blue-500 transition-colors" />
+                    <small>Total number of player kills</small>
                     <ValidationMessage For="@(() => Character.PlayerKillCount)" />
                 </div>
             </div>
         </div>
 
         <!-- Fruit Points & Inventory -->
-        <div class="section-card">
-            <div class="section-header">
-                <span class="section-icon">🎒</span>
+        <div class="bg-white rounded-xl shadow-lg border border-slate-200 p-6 mb-6">
+            <div class="flex items-center gap-3 text-2xl font-bold text-slate-900 mb-6 pb-4 border-b-2 border-blue-200">
+                <span class="">🎒</span>
                 <span>Fruit Points & Inventory</span>
             </div>
             
-            <div class="form-grid">
-                <div class="form-field">
-                    <label>Used Fruit Points</label>
-                    <InputNumber @bind-Value="@Character.UsedFruitPoints" min="0" />
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="">
+                    <label class="block text-sm font-semibold text-slate-700 mb-2 uppercase tracking-wide">Used Fruit Points</label>
+                    <InputNumber @bind-Value="@Character.UsedFruitPoints" min="0" class="w-full px-4 py-3 bg-slate-50 border border-slate-300 rounded-lg text-slate-900 focus:outline-none focus:border-blue-500 transition-colors" />
                     <ValidationMessage For="@(() => Character.UsedFruitPoints)" />
                 </div>
 
-                <div class="form-field">
-                    <label>Used Negative Fruit Points</label>
-                    <InputNumber @bind-Value="@Character.UsedNegFruitPoints" min="0" />
+                <div class="">
+                    <label class="block text-sm font-semibold text-slate-700 mb-2 uppercase tracking-wide">Used Negative Fruit Points</label>
+                    <InputNumber @bind-Value="@Character.UsedNegFruitPoints" min="0" class="w-full px-4 py-3 bg-slate-50 border border-slate-300 rounded-lg text-slate-900 focus:outline-none focus:border-blue-500 transition-colors" />
                     <ValidationMessage For="@(() => Character.UsedNegFruitPoints)" />
                 </div>
 
-                <div class="form-field">
-                    <label>Inventory Extensions</label>
-                    <InputNumber @bind-Value="@Character.InventoryExtensions" min="0" max="4" />
+                <div class="">
+                    <label class="block text-sm font-semibold text-slate-700 mb-2 uppercase tracking-wide">Inventory Extensions</label>
+                    <InputNumber @bind-Value="@Character.InventoryExtensions" min="0" max="4" class="w-full px-4 py-3 bg-slate-50 border border-slate-300 rounded-lg text-slate-900 focus:outline-none focus:border-blue-500 transition-colors" />
                     <small>Season 6+ feature (0-4 extensions)</small>
                     <ValidationMessage For="@(() => Character.InventoryExtensions)" />
                 </div>
@@ -674,45 +315,45 @@
         </div>
 
         <!-- Personal Store -->
-        <div class="section-card">
-            <div class="section-header">
-                <span class="section-icon">🏪</span>
+        <div class="bg-white rounded-xl shadow-lg border border-slate-200 p-6 mb-6">
+            <div class="flex items-center gap-3 text-2xl font-bold text-slate-900 mb-6 pb-4 border-b-2 border-blue-200">
+                <span class="">🏪</span>
                 <span>Personal Store</span>
             </div>
             
-            <div class="form-grid">
-                <div class="form-field">
-                    <label>Store Name</label>
-                    <InputText @bind-Value="@Character.StoreName" />
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="">
+                    <label class="block text-sm font-semibold text-slate-700 mb-2 uppercase tracking-wide">Store Name</label>
+                    <InputText @bind-Value="@Character.StoreName" class="w-full px-4 py-3 bg-slate-50 border border-slate-300 rounded-lg text-slate-900 focus:outline-none focus:border-blue-500 transition-colors" />
                     <ValidationMessage For="@(() => Character.StoreName)" />
                 </div>
 
-                <div class="checkbox-field">
-                    <InputCheckbox @bind-Value="@Character.IsStoreOpened" />
-                    <label>Store is Open</label>
+                <div class="flex items-center gap-3 p-4 bg-slate-50 rounded-lg border border-slate-200 hover:border-blue-300 transition-colors cursor-pointer">
+                    <InputCheckbox @bind-Value="@Character.IsStoreOpened" class="w-5 h-5" />
+                    <label class="text-sm font-medium text-slate-900 cursor-pointer">Store is Open</label>
                 </div>
             </div>
         </div>
 
         <!-- Inventory Management -->
-        <div class="section-card">
-            <div class="section-header">
-                <span class="section-icon">🎒</span>
+        <div class="bg-white rounded-xl shadow-lg border border-slate-200 p-6 mb-6">
+            <div class="flex items-center gap-3 text-2xl font-bold text-slate-900 mb-6 pb-4 border-b-2 border-blue-200">
+                <span class="">🎒</span>
                 <span>Inventory & Equipment</span>
             </div>
             
-            <div class="inventory-stats">
-                <div class="stat-badge">
-                    <span class="stat-label">Total Items:</span>
-                    <span class="stat-value">@(Character.Inventory?.Items?.Count ?? 0)</span>
+            <div class="grid grid-cols-3 gap-4 p-4 bg-slate-50 rounded-lg mb-6">
+                <div class="flex flex-col gap-1">
+                    <span class="text-xs text-slate-600 uppercase tracking-wide font-semibold">Total Items:</span>
+                    <span class="text-2xl font-bold text-cyan-500">@(Character.Inventory?.Items?.Count ?? 0)</span>
                 </div>
-                <div class="stat-badge">
-                    <span class="stat-label">Current Zen:</span>
-                    <span class="stat-value">@(Character.Inventory?.Money ?? 0)</span>
+                <div class="flex flex-col gap-1">
+                    <span class="text-xs text-slate-600 uppercase tracking-wide font-semibold">Current Zen:</span>
+                    <span class="text-2xl font-bold text-cyan-500">@(Character.Inventory?.Money ?? 0)</span>
                 </div>
-                <div class="stat-badge">
-                    <span class="stat-label">Extensions:</span>
-                    <span class="stat-value">@Character.InventoryExtensions / 4</span>
+                <div class="flex flex-col gap-1">
+                    <span class="text-xs text-slate-600 uppercase tracking-wide font-semibold">Extensions:</span>
+                    <span class="text-2xl font-bold text-cyan-500">@Character.InventoryExtensions / 4</span>
                 </div>
             </div>
 
@@ -722,10 +363,10 @@
             }
             else
             {
-                <div class="empty-state">
-                    <span class="empty-icon">📭</span>
-                    <p>No inventory storage available</p>
-                    <button type="button" class="btn-add-item" @onclick="CreateInventory">
+                <div class="text-center py-12">
+                    <span class="text-6xl block mb-4 opacity-50">📭</span>
+                    <p class="text-lg text-slate-600 mb-6">No inventory storage available</p>
+                    <button type="button" class="px-6 py-3 bg-gradient-to-r from-emerald-500 to-green-500 text-white rounded-lg font-semibold hover:shadow-lg transition-all" @onclick="CreateInventory">
                         Create Inventory
                     </button>
                 </div>
@@ -735,20 +376,20 @@
         <!-- Vault Storage -->
         @if (Account?.Vault != null)
         {
-            <div class="section-card">
-                <div class="section-header">
-                    <span class="section-icon">🏦</span>
+            <div class="bg-white rounded-xl shadow-lg border border-slate-200 p-6 mb-6">
+                <div class="flex items-center gap-3 text-2xl font-bold text-slate-900 mb-6 pb-4 border-b-2 border-blue-200">
+                    <span class="">🏦</span>
                     <span>Vault Storage</span>
                 </div>
                 
-                <div class="inventory-stats">
-                    <div class="stat-badge">
-                        <span class="stat-label">Vault Items:</span>
-                        <span class="stat-value">@(Account.Vault.Items?.Count ?? 0)</span>
+                <div class="grid grid-cols-2 gap-4 p-4 bg-slate-50 rounded-lg mb-6">
+                    <div class="flex flex-col gap-1">
+                        <span class="text-xs text-slate-600 uppercase tracking-wide font-semibold">Vault Items:</span>
+                        <span class="text-2xl font-bold text-cyan-500">@(Account.Vault.Items?.Count ?? 0)</span>
                     </div>
-                    <div class="stat-badge">
-                        <span class="stat-label">Vault Zen:</span>
-                        <span class="stat-value">@Account.Vault.Money</span>
+                    <div class="flex flex-col gap-1">
+                        <span class="text-xs text-slate-600 uppercase tracking-wide font-semibold">Vault Zen:</span>
+                        <span class="text-2xl font-bold text-cyan-500">@Account.Vault.Money</span>
                     </div>
                 </div>
 
@@ -756,10 +397,92 @@
             </div>
         }
 
+        <!-- Learned Skills -->
+        <div class="bg-white rounded-xl shadow-lg border border-slate-200 p-6 mb-6">
+            <div class="flex items-center gap-3 text-2xl font-bold text-slate-900 mb-6 pb-4 border-b-2 border-blue-200">
+                <span>📜</span>
+                <span>Learned Skills</span>
+            </div>
+            
+            <div class="p-4 bg-slate-50 rounded-lg mb-4">
+                <div class="flex items-center justify-between">
+                    <span class="text-sm font-semibold text-slate-700">Total Skills: <span class="text-cyan-500">@(Character.LearnedSkills?.Count ?? 0)</span></span>
+                </div>
+            </div>
+
+            @if (Character.LearnedSkills != null && Character.LearnedSkills.Any())
+            {
+                <ItemTable Value="@Character.LearnedSkills" Label="Skills" />
+            }
+            else
+            {
+                <div class="text-center py-8">
+                    <p class="text-slate-500">No skills learned yet</p>
+                </div>
+            }
+        </div>
+
+        <!-- Quest States -->
+        <div class="bg-white rounded-xl shadow-lg border border-slate-200 p-6 mb-6">
+            <div class="flex items-center gap-3 text-2xl font-bold text-slate-900 mb-6 pb-4 border-b-2 border-blue-200">
+                <span>🗺️</span>
+                <span>Quest Progress</span>
+            </div>
+            
+            <div class="p-4 bg-slate-50 rounded-lg mb-4">
+                <div class="flex items-center justify-between">
+                    <span class="text-sm font-semibold text-slate-700">Active Quests: <span class="text-cyan-500">@(Character.QuestStates?.Count ?? 0)</span></span>
+                </div>
+            </div>
+
+            @if (Character.QuestStates != null && Character.QuestStates.Any())
+            {
+                <ItemTable Value="@Character.QuestStates" Label="Quests" />
+            }
+            else
+            {
+                <div class="text-center py-8">
+                    <p class="text-slate-500">No active quests</p>
+                </div>
+            }
+        </div>
+
+        <!-- Drop Item Groups -->
+        <div class="bg-white rounded-xl shadow-lg border border-slate-200 p-6 mb-6">
+            <div class="flex items-center gap-3 text-2xl font-bold text-slate-900 mb-6 pb-4 border-b-2 border-blue-200">
+                <span>🎁</span>
+                <span>Drop Item Groups</span>
+            </div>
+            
+            <div class="p-4 bg-slate-50 rounded-lg mb-4">
+                <div class="flex items-center justify-between">
+                    <span class="text-sm font-semibold text-slate-700">Total Groups: <span class="text-cyan-500">@(Character.DropItemGroups?.Count ?? 0)</span></span>
+                </div>
+            </div>
+
+            @if (Character.DropItemGroups != null && Character.DropItemGroups.Any())
+            {
+                <div class="space-y-2">
+                    @foreach (var dropGroup in Character.DropItemGroups)
+                    {
+                        <div class="p-3 bg-white border border-slate-200 rounded-lg">
+                            <span class="text-sm font-medium text-slate-900">@(dropGroup.Description ?? $"Drop Group {dropGroup.GetId()}")</span>
+                        </div>
+                    }
+                </div>
+            }
+            else
+            {
+                <div class="text-center py-8">
+                    <p class="text-slate-500">No special drop item groups</p>
+                </div>
+            }
+        </div>
+
         <!-- Other -->
-        <div class="section-card">
-            <div class="form-field">
-                <label>Create Date</label>
+        <div class="bg-white rounded-xl shadow-lg border border-slate-200 p-6 mb-6">
+            <div class="">
+                <label class="block text-sm font-semibold text-slate-700 mb-2 uppercase tracking-wide">Create Date</label>
                 <InputDate @bind-Value="@Character.CreateDate" />
                 <ValidationMessage For="@(() => Character.CreateDate)" />
             </div>
@@ -767,14 +490,17 @@
 
         <ValidationSummary />
         
-        <div class="action-buttons">
+        </fieldset>
+        
+        <div class="flex gap-4 justify-end mt-6">
             @if (OnCancel.HasDelegate)
             {
-                <button type="button" class="btn-cancel" @onclick="OnCancel">Cancel</button>
+                <button type="button" class="px-8 py-3 bg-slate-200 text-slate-700 rounded-lg font-semibold hover:bg-slate-300 transition-colors" @onclick="OnCancel">Cancel</button>
             }
-            <button type="submit" class="btn-save">💾 Save Changes</button>
+            <button type="submit" class="px-8 py-3 bg-gradient-to-r from-blue-500 to-purple-500 text-white rounded-lg font-semibold hover:shadow-xl hover:-translate-y-0.5 transition-all" disabled="@IsCharacterOnline">💾 Save Changes</button>
         </div>
     </EditForm>
+    </div>
 </div>
 
 @code {
@@ -798,6 +524,12 @@
     public IContext PersistenceContext { get; set; } = null!;
 
     /// <summary>
+    /// Gets whether the character is currently online (State != 0).
+    /// Editing online characters should be avoided as it can cause issues.
+    /// </summary>
+    private bool IsCharacterOnline => Character?.State != 0;
+
+    /// <summary>
     /// Gets or sets the <see cref="EditForm.OnValidSubmit"/> event callback.
     /// </summary>
     [Parameter]
@@ -812,6 +544,8 @@
     /// <summary>
     /// Gets or sets the current character level.
     /// This property reads from and writes to the Character.Attributes collection.
+    /// Also updates Character.Experience to match the level.
+    /// Auto-syncs Experience field when mismatch detected (e.g., after in-game reset).
     /// </summary>
     private int CurrentLevel
     {
@@ -820,18 +554,50 @@
             if (Character?.Attributes == null)
                 return 1;
             
-            var levelAttr = Character.Attributes.FirstOrDefault(a => a.Definition?.Designation == "Level");
-            return levelAttr != null ? (int)levelAttr.Value : 1;
+            // Try by ID first (560931ad-0901-4342-b7f4-fd2e2fcc0563), then fallback to Designation
+            var levelAttr = Character.Attributes.FirstOrDefault(a => 
+                a.Definition?.Id == Guid.Parse("560931ad-0901-4342-b7f4-fd2e2fcc0563"))
+                ?? Character.Attributes.FirstOrDefault(a => a.Definition?.Designation == "Level");
+            
+            var currentLevel = levelAttr != null ? (int)levelAttr.Value : 1;
+            
+            // Auto-sync Experience if mismatch detected (e.g., after in-game reset)
+            if (Character != null)
+            {
+                long expectedExp = currentLevel == 400 ? 3973617750 : (long)(Math.Pow(currentLevel, 3) * 10000);
+                if (Character.Experience != expectedExp)
+                {
+                    Character.Experience = expectedExp;
+                }
+            }
+            
+            return currentLevel;
         }
         set
         {
             if (Character?.Attributes == null)
                 return;
             
-            var levelAttr = Character.Attributes.FirstOrDefault(a => a.Definition?.Designation == "Level");
+            var clampedLevel = Math.Clamp(value, 1, 400);
+            
+            var levelAttr = Character.Attributes.FirstOrDefault(a => 
+                a.Definition?.Id == Guid.Parse("560931ad-0901-4342-b7f4-fd2e2fcc0563"))
+                ?? Character.Attributes.FirstOrDefault(a => a.Definition?.Designation == "Level");
             if (levelAttr != null)
             {
-                levelAttr.Value = Math.Clamp(value, 1, 400);
+                levelAttr.Value = clampedLevel;
+            }
+            
+            // Update Experience to match the level
+            // Level 400 requires ~3,973,617,750 exp, use formula: level^3 * 10000 (approximate)
+            if (Character != null && clampedLevel == 400)
+            {
+                Character.Experience = 3973617750; // Experience required for level 400
+            }
+            else if (Character != null)
+            {
+                // For other levels, use approximate formula
+                Character.Experience = (long)(Math.Pow(clampedLevel, 3) * 10000);
             }
         }
     }
@@ -839,6 +605,8 @@
     /// <summary>
     /// Gets or sets the current character master level.
     /// This property reads from and writes to the Character.Attributes collection.
+    /// Also updates Character.MasterExperience to match the master level.
+    /// Auto-syncs MasterExperience field when mismatch detected (e.g., after in-game reset).
     /// </summary>
     private int CurrentMasterLevel
     {
@@ -847,18 +615,49 @@
             if (Character?.Attributes == null)
                 return 0;
             
-            var masterLevelAttr = Character.Attributes.FirstOrDefault(a => a.Definition?.Designation == "Master Level");
-            return masterLevelAttr != null ? (int)masterLevelAttr.Value : 0;
+            // Try by ID first (70cd8c10-391a-4c51-9aa4-a854600e3a9f), then fallback to Designation
+            var masterLevelAttr = Character.Attributes.FirstOrDefault(a => 
+                a.Definition?.Id == Guid.Parse("70cd8c10-391a-4c51-9aa4-a854600e3a9f"))
+                ?? Character.Attributes.FirstOrDefault(a => a.Definition?.Designation == "Master Level");
+            
+            var currentMasterLevel = masterLevelAttr != null ? (int)masterLevelAttr.Value : 0;
+            
+            // Auto-sync MasterExperience if mismatch detected (e.g., after in-game reset)
+            if (Character != null)
+            {
+                long expectedMasterExp = currentMasterLevel > 0 ? (long)(Math.Pow(currentMasterLevel, 3) * 5000) : 0;
+                if (Character.MasterExperience != expectedMasterExp)
+                {
+                    Character.MasterExperience = expectedMasterExp;
+                }
+            }
+            
+            return currentMasterLevel;
         }
         set
         {
             if (Character?.Attributes == null)
                 return;
             
-            var masterLevelAttr = Character.Attributes.FirstOrDefault(a => a.Definition?.Designation == "Master Level");
+            var clampedLevel = Math.Clamp(value, 0, 400);
+            
+            var masterLevelAttr = Character.Attributes.FirstOrDefault(a => 
+                a.Definition?.Id == Guid.Parse("70cd8c10-391a-4c51-9aa4-a854600e3a9f"))
+                ?? Character.Attributes.FirstOrDefault(a => a.Definition?.Designation == "Master Level");
             if (masterLevelAttr != null)
             {
-                masterLevelAttr.Value = Math.Clamp(value, 0, 400);
+                masterLevelAttr.Value = clampedLevel;
+            }
+            
+            // Update MasterExperience to match the master level
+            if (Character != null && clampedLevel > 0)
+            {
+                // Master level experience formula: level^3 * 5000 (approximate)
+                Character.MasterExperience = (long)(Math.Pow(clampedLevel, 3) * 5000);
+            }
+            else if (Character != null)
+            {
+                Character.MasterExperience = 0;
             }
         }
     }
@@ -874,9 +673,10 @@
             if (Character?.Attributes == null)
                 return 0;
             
-            // Use Guid ID: 123282fe-fead-448e-ad2c-baece939b4b1 for Base Strength
+            // Try by ID first, then fallback to Designation
             var strengthAttr = Character.Attributes.FirstOrDefault(a => 
-                a.Definition?.Id == Guid.Parse("123282fe-fead-448e-ad2c-baece939b4b1"));
+                a.Definition?.Id == Guid.Parse("123282fe-fead-448e-ad2c-baece939b4b1"))
+                ?? Character.Attributes.FirstOrDefault(a => a.Definition?.Designation == "Base Strength");
             return strengthAttr != null ? (int)strengthAttr.Value : 0;
         }
         set
@@ -885,7 +685,8 @@
                 return;
             
             var strengthAttr = Character.Attributes.FirstOrDefault(a => 
-                a.Definition?.Id == Guid.Parse("123282fe-fead-448e-ad2c-baece939b4b1"));
+                a.Definition?.Id == Guid.Parse("123282fe-fead-448e-ad2c-baece939b4b1"))
+                ?? Character.Attributes.FirstOrDefault(a => a.Definition?.Designation == "Base Strength");
             if (strengthAttr != null)
             {
                 strengthAttr.Value = Math.Clamp(value, 0, 65000);
@@ -904,9 +705,10 @@
             if (Character?.Attributes == null)
                 return 0;
             
-            // Use Guid ID: 1ae9c014-e3cd-4703-bd05-1b65f5f94ceb for Base Agility
+            // Try by ID first, then fallback to Designation
             var agilityAttr = Character.Attributes.FirstOrDefault(a => 
-                a.Definition?.Id == Guid.Parse("1ae9c014-e3cd-4703-bd05-1b65f5f94ceb"));
+                a.Definition?.Id == Guid.Parse("1ae9c014-e3cd-4703-bd05-1b65f5f94ceb"))
+                ?? Character.Attributes.FirstOrDefault(a => a.Definition?.Designation == "Base Agility");
             return agilityAttr != null ? (int)agilityAttr.Value : 0;
         }
         set
@@ -915,7 +717,8 @@
                 return;
             
             var agilityAttr = Character.Attributes.FirstOrDefault(a => 
-                a.Definition?.Id == Guid.Parse("1ae9c014-e3cd-4703-bd05-1b65f5f94ceb"));
+                a.Definition?.Id == Guid.Parse("1ae9c014-e3cd-4703-bd05-1b65f5f94ceb"))
+                ?? Character.Attributes.FirstOrDefault(a => a.Definition?.Designation == "Base Agility");
             if (agilityAttr != null)
             {
                 agilityAttr.Value = Math.Clamp(value, 0, 65000);
@@ -934,9 +737,10 @@
             if (Character?.Attributes == null)
                 return 0;
             
-            // Use Guid ID: 6ca5c3a6-b109-45a5-87a7-fdcb107b4982 for Base Vitality
+            // Try by ID first, then fallback to Designation
             var vitalityAttr = Character.Attributes.FirstOrDefault(a => 
-                a.Definition?.Id == Guid.Parse("6ca5c3a6-b109-45a5-87a7-fdcb107b4982"));
+                a.Definition?.Id == Guid.Parse("6ca5c3a6-b109-45a5-87a7-fdcb107b4982"))
+                ?? Character.Attributes.FirstOrDefault(a => a.Definition?.Designation == "Base Vitality");
             return vitalityAttr != null ? (int)vitalityAttr.Value : 0;
         }
         set
@@ -945,7 +749,8 @@
                 return;
             
             var vitalityAttr = Character.Attributes.FirstOrDefault(a => 
-                a.Definition?.Id == Guid.Parse("6ca5c3a6-b109-45a5-87a7-fdcb107b4982"));
+                a.Definition?.Id == Guid.Parse("6ca5c3a6-b109-45a5-87a7-fdcb107b4982"))
+                ?? Character.Attributes.FirstOrDefault(a => a.Definition?.Designation == "Base Vitality");
             if (vitalityAttr != null)
             {
                 vitalityAttr.Value = Math.Clamp(value, 0, 65000);
@@ -964,9 +769,10 @@
             if (Character?.Attributes == null)
                 return 0;
             
-            // Use Guid ID: 01b0ef28-f7a0-46b5-97ba-2b624a54cd75 for Base Energy
+            // Try by ID first, then fallback to Designation
             var energyAttr = Character.Attributes.FirstOrDefault(a => 
-                a.Definition?.Id == Guid.Parse("01b0ef28-f7a0-46b5-97ba-2b624a54cd75"));
+                a.Definition?.Id == Guid.Parse("01b0ef28-f7a0-46b5-97ba-2b624a54cd75"))
+                ?? Character.Attributes.FirstOrDefault(a => a.Definition?.Designation == "Base Energy");
             return energyAttr != null ? (int)energyAttr.Value : 0;
         }
         set
@@ -975,7 +781,8 @@
                 return;
             
             var energyAttr = Character.Attributes.FirstOrDefault(a => 
-                a.Definition?.Id == Guid.Parse("01b0ef28-f7a0-46b5-97ba-2b624a54cd75"));
+                a.Definition?.Id == Guid.Parse("01b0ef28-f7a0-46b5-97ba-2b624a54cd75"))
+                ?? Character.Attributes.FirstOrDefault(a => a.Definition?.Designation == "Base Energy");
             if (energyAttr != null)
             {
                 energyAttr.Value = Math.Clamp(value, 0, 65000);
@@ -994,9 +801,10 @@
             if (Character?.Attributes == null)
                 return 0;
             
-            // Use Guid ID: 6af2c9df-3ae4-4721-8462-9a8ec7f56fe4 for Base Leadership
+            // Try by ID first, then fallback to Designation
             var commandAttr = Character.Attributes.FirstOrDefault(a => 
-                a.Definition?.Id == Guid.Parse("6af2c9df-3ae4-4721-8462-9a8ec7f56fe4"));
+                a.Definition?.Id == Guid.Parse("6af2c9df-3ae4-4721-8462-9a8ec7f56fe4"))
+                ?? Character.Attributes.FirstOrDefault(a => a.Definition?.Designation == "Base Leadership");
             return commandAttr != null ? (int)commandAttr.Value : 0;
         }
         set
@@ -1005,7 +813,8 @@
                 return;
             
             var commandAttr = Character.Attributes.FirstOrDefault(a => 
-                a.Definition?.Id == Guid.Parse("6af2c9df-3ae4-4721-8462-9a8ec7f56fe4"));
+                a.Definition?.Id == Guid.Parse("6af2c9df-3ae4-4721-8462-9a8ec7f56fe4"))
+                ?? Character.Attributes.FirstOrDefault(a => a.Definition?.Designation == "Base Leadership");
             if (commandAttr != null)
             {
                 commandAttr.Value = Math.Clamp(value, 0, 65000);
@@ -1078,6 +887,101 @@
         {
             Character.Inventory = PersistenceContext.CreateNew<ItemStorage>();
             StateHasChanged();
+        }
+    }
+
+    /// <summary>
+    /// Reloads character data directly from the database, bypassing Entity Framework caching.
+    /// This ensures we always have fresh data, especially after in-game resets.
+    /// </summary>
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+        await ReloadCharacterFromDatabaseAsync();
+    }
+
+    /// <summary>
+    /// Reloads critical character fields directly from database to bypass EF caching.
+    /// </summary>
+    private async Task ReloadCharacterFromDatabaseAsync()
+    {
+        if (Character == null || PersistenceContext == null)
+            return;
+
+        try
+        {
+            // Get the underlying DbContext from the persistence context using reflection
+            var contextType = PersistenceContext.GetType();
+            var contextProperty = contextType.GetProperty("Context");
+            if (contextProperty?.GetValue(PersistenceContext) is not object dbContextObj)
+                return;
+
+            // Query database directly for fresh data using reflection
+            var dbContextType = dbContextObj.GetType();
+            var databaseProperty = dbContextType.GetProperty("Database");
+            if (databaseProperty?.GetValue(dbContextObj) is not object databaseObj)
+                return;
+
+            var getDbConnectionMethod = databaseObj.GetType().GetMethod("GetDbConnection");
+            if (getDbConnectionMethod?.Invoke(databaseObj, null) is not System.Data.Common.DbConnection connection)
+                return;
+
+            var characterId = Character.GetId();
+
+            if (connection.State != System.Data.ConnectionState.Open)
+                await connection.OpenAsync();
+
+            // Reload Experience values
+            using (var command = connection.CreateCommand())
+            {
+                command.CommandText = $@"
+                    SELECT ""Experience"", ""MasterExperience"" 
+                    FROM data.""Character"" 
+                    WHERE ""Id"" = '{characterId}'";
+
+                using var reader = await command.ExecuteReaderAsync();
+                if (await reader.ReadAsync())
+                {
+                    Character.Experience = reader.GetInt64(0);
+                    Character.MasterExperience = reader.GetInt64(1);
+                }
+            }
+
+            // Reload StatAttribute values for Level and all stats
+            using (var command = connection.CreateCommand())
+            {
+                command.CommandText = $@"
+                    SELECT ad.""Id"", sa.""Value""
+                    FROM data.""StatAttribute"" sa
+                    JOIN config.""AttributeDefinition"" ad ON ad.""Id"" = sa.""DefinitionId""
+                    WHERE sa.""CharacterId"" = '{characterId}'
+                    AND ad.""Id"" IN (
+                        '560931ad-0901-4342-b7f4-fd2e2fcc0563',
+                        '70cd8c10-391a-4c51-9aa4-a854600e3a9f',
+                        '123282fe-fead-448e-ad2c-baece939b4b1',
+                        '1ae9c014-e3cd-4703-bd05-1b65f5f94ceb',
+                        '6ca5c3a6-b109-45a5-87a7-fdcb107b4982',
+                        '01b0ef28-f7a0-46b5-97ba-2b624a54cd75'
+                    )";
+
+                using var reader = await command.ExecuteReaderAsync();
+                while (await reader.ReadAsync())
+                {
+                    var definitionId = reader.GetGuid(0);
+                    var value = reader.GetFloat(1);
+
+                    // Find the attribute in the collection and update it
+                    var attr = Character.Attributes?.FirstOrDefault(a => a.Definition?.Id == definitionId);
+                    if (attr != null)
+                    {
+                        attr.Value = value;
+                    }
+                }
+            }
+        }
+        catch (Exception)
+        {
+            // Silently fail - we'll use cached data as fallback
         }
     }
 }

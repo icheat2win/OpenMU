@@ -20,12 +20,12 @@
     <QuickGrid Items="@this.ViewModels" Pagination="@_pagination" Theme="none" >
         <PropertyColumn Property="@(c => c.Name)" Sortable="true">
             <HeaderTemplate>
-                <button type="button" class="col-title" onclick="@(() => context.Grid.SortByColumnAsync(context))">
-                    <div class="col-title-text">@context.Title</div>
+                <button type="button" class="min-w-0 flex flex-grow p-0" onclick="@(() => context.Grid.SortByColumnAsync(context))">
+                    <div class="font-bold">@context.Title</div>
                     <div class="sort-indicator" aria-hidden="true"></div>
                 </button>
-                <div class="col-search ml-5">
-                    <input class="small" type="search" autofocus @bind="@NameFilter" @bind:event="oninput" placeholder="Search ..."/>
+                <div class="w-1/2 ml-5">
+                    <input class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:outline-none focus:border-blue-500" type="search" autofocus @bind="@NameFilter" @bind:event="oninput" placeholder="Search ..."/>
                 </div>
             </HeaderTemplate>
         </PropertyColumn>
@@ -34,11 +34,11 @@
             @{
                 var targetUrl = $"edit-config/{this.TypeString}/" + context.Id;
             }
-            <a href="@(targetUrl)" class="btn btn-info">Edit</a>
-            <button type="button" class="btn-danger" @onclick="@(() => this.OnDeleteButtonClickAsync(context))"><span class="oi oi-trash"></span> Delete</button>
+            <a href="@(targetUrl)" class="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 inline-block">Edit</a>
+            <button type="button" class="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 ml-2" @onclick="@(() => this.OnDeleteButtonClickAsync(context))"><span class="oi oi-trash"></span> Delete</button>
         </TemplateColumn>
     </QuickGrid>
 </div>
 <Paginator State="@_pagination" />
-<hr />
-<button type="button" class="btn-outline-primary" @onclick="OnCreateButtonClickAsync"><span class="oi oi-plus"></span> Add New</button>
+<hr class="my-6 border-slate-300" />
+<button type="button" class="px-6 py-3 border-2 border-blue-500 text-blue-500 rounded-lg hover:bg-blue-50" @onclick="OnCreateButtonClickAsync"><span class="oi oi-plus"></span> Add New</button>

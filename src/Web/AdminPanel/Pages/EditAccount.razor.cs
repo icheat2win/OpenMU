@@ -39,6 +39,18 @@ public partial class EditAccount : EditBase
     protected override IDataSource EditDataSource => this._dataSourceWrapper ??= new AccountDataSourceWrapper(this.AccountData, this.AccountId);
 
     /// <inheritdoc />
+    public override async Task SetParametersAsync(ParameterView parameters)
+    {
+        // Reset the data source wrapper when parameters change to force fresh data load
+        this._dataSourceWrapper = null;
+        
+        // Force the underlying AccountData source to discard cached data and reload from database
+        await this.AccountData.DiscardChangesAsync().ConfigureAwait(true);
+        
+        await base.SetParametersAsync(parameters).ConfigureAwait(true);
+    }
+
+    /// <inheritdoc />
     protected override async ValueTask LoadOwnerAsync(CancellationToken cancellationToken)
     {
         await this.AccountData.GetOwnerAsync(this.AccountId, cancellationToken).ConfigureAwait(true);
