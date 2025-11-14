@@ -4,6 +4,10 @@
 @using MUnique.OpenMU.Web.AdminPanel.Components.Form
 @using MUnique.OpenMU.Persistence
 @using System.Data
+@using System.Net.Http
+@using System.Text.Json
+
+@inject HttpClient HttpClient
 
 <PageTitle>Edit Character: @Character.Name</PageTitle>
 
@@ -687,11 +691,14 @@
     [CascadingParameter]
     public IContext PersistenceContext { get; set; } = null!;
 
+    private bool _isCharacterOnline = false;
+
     /// <summary>
-    /// Gets whether the character is currently online (State != 0).
+    /// Gets whether the character is currently online by checking game servers' in-memory player list.
+    /// The State field in the database is not reliable as it's only updated on logout.
     /// Editing online characters should be avoided as it can cause issues.
     /// </summary>
-    private bool IsCharacterOnline => Character?.State != 0;
+    private bool IsCharacterOnline => _isCharacterOnline;
 
     /// <summary>
     /// Gets or sets the <see cref="EditForm.OnValidSubmit"/> event callback.
@@ -1057,11 +1064,53 @@
     /// <summary>
     /// Reloads character data directly from the database, bypassing Entity Framework caching.
     /// This ensures we always have fresh data, especially after in-game resets.
+    /// Also checks if the character is currently online in any game server.
     /// </summary>
     protected override async Task OnInitializedAsync()
     {
         await base.OnInitializedAsync();
         await ReloadCharacterFromDatabaseAsync();
+        await CheckIfCharacterIsOnlineAsync();
+    }
+
+    /// <summary>
+    /// Checks if the character is currently online by querying the /api/status endpoint.
+    /// This is the only reliable way to check since the database State field 
+    /// is only updated when the character logs out.
+    /// Uses the same API endpoint as the Reset/PK Clear buttons.
+    /// </summary>
+    private async Task CheckIfCharacterIsOnlineAsync()
+    {
+        if (Character == null || string.IsNullOrEmpty(Character.Name))
+        {
+            _isCharacterOnline = false;
+            return;
+        }
+
+        try
+        {
+            var response = await HttpClient.GetStringAsync("/api/status");
+            
+            // Parse JSON: {"state":"Online","players":1,"playersList":["Agge"]}
+            using var doc = JsonDocument.Parse(response);
+            if (doc.RootElement.TryGetProperty("playersList", out var playersListElement))
+            {
+                var playersList = playersListElement.EnumerateArray()
+                    .Select(p => p.GetString())
+                    .ToList();
+                
+                _isCharacterOnline = playersList.Contains(Character.Name, StringComparer.OrdinalIgnoreCase);
+            }
+            else
+            {
+                _isCharacterOnline = false;
+            }
+        }
+        catch
+        {
+            // If we can't check, assume offline to allow editing
+            _isCharacterOnline = false;
+        }
     }
 
     /// <summary>
@@ -1095,11 +1144,11 @@
             if (connection.State != System.Data.ConnectionState.Open)
                 await connection.OpenAsync();
 
-            // Reload Experience values
+            // Reload Experience values and State (online status)
             using (var command = connection.CreateCommand())
             {
                 command.CommandText = $@"
-                    SELECT ""Experience"", ""MasterExperience"" 
+                    SELECT ""Experience"", ""MasterExperience"", ""State"" 
                     FROM data.""Character"" 
                     WHERE ""Id"" = '{characterId}'";
 
@@ -1108,6 +1157,7 @@
                 {
                     Character.Experience = reader.GetInt64(0);
                     Character.MasterExperience = reader.GetInt64(1);
+                    Character.State = (HeroState)reader.GetInt32(2);
                 }
             }
 
