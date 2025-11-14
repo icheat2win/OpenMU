@@ -24,6 +24,26 @@
         background-color: white !important;
     }
     
+    /* Fix Blazored Typeahead INPUT field */
+    .blazored-typeahead input,
+    .blazored-typeahead input[type="search"],
+    input.blazored-typeahead__input {
+        color: #0f172a !important;
+        background-color: #f8fafc !important;
+        border: 1px solid #cbd5e1 !important;
+        padding: 0.75rem 1rem !important;
+        border-radius: 0.5rem !important;
+        font-size: 1rem !important;
+        width: 100% !important;
+    }
+    
+    .blazored-typeahead input:focus,
+    .blazored-typeahead input[type="search"]:focus {
+        outline: none !important;
+        border-color: #3b82f6 !important;
+        box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1) !important;
+    }
+    
     /* Fix Blazored Typeahead dropdown items */
     .blazored-typeahead__results,
     .blazored-typeahead__result,
@@ -42,6 +62,15 @@
         background-color: white !important;
         border: 1px solid #cbd5e1 !important;
         box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1) !important;
+        border-radius: 0.5rem !important;
+        margin-top: 0.25rem !important;
+        max-height: 300px !important;
+        overflow-y: auto !important;
+    }
+    
+    /* Ensure wrapper doesn't override */
+    .blazored-typeahead {
+        width: 100% !important;
     }
     
     /* Style helper text */
