@@ -8,6 +8,8 @@
 @using System.Text.Json
 @using Microsoft.Extensions.Logging
 
+@implements IDisposable
+
 @inject HttpClient HttpClient
 @inject ILogger<CharacterEdit> Logger
 
@@ -255,7 +257,28 @@
             </div>
         }
 
-        <EditForm Model="Character" OnValidSubmit="HandleValidSubmit">
+        @if (!string.IsNullOrEmpty(_saveMessage))
+        {
+            <div class="@_saveMessageClass backdrop-blur-sm border-l-4 px-6 py-4 mb-6 rounded-xl shadow-2xl sticky top-0 z-50 transition-all duration-300 ease-in-out">
+                <div class="flex items-center justify-between gap-4">
+                    <div class="flex items-center gap-3">
+                        <span class="text-3xl filter drop-shadow-md">@(_saveMessage.Contains("✅") ? "✅" : _saveMessage.Contains("💾") ? "💾" : "⚠️")</span>
+                        <div class="flex flex-col">
+                            <p class="font-semibold text-lg tracking-wide">@_saveMessage.Replace("✅", "").Replace("💾", "").Replace("⚠️", "").Trim()</p>
+                            <p class="text-sm opacity-75 mt-0.5">@(_saveMessage.Contains("✅") ? "Auto-saved at " + DateTime.Now.ToString("HH:mm:ss") : _saveMessage.Contains("💾") ? "Processing..." : "Action required")</p>
+                        </div>
+                    </div>
+                    @if (_saveMessage.Contains("✅"))
+                    {
+                        <svg class="w-6 h-6 animate-bounce" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                        </svg>
+                    }
+                </div>
+            </div>
+        }
+
+        <EditForm Model="Character">
             <DataAnnotationsValidator />
             
             <fieldset disabled="@IsCharacterOnline">
@@ -326,37 +349,37 @@
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 <div class="">
                     <label class="block text-sm font-semibold text-slate-700 mb-2 uppercase tracking-wide">Level</label>
-                    <InputNumber @bind-Value="@CurrentLevel" min="1" max="400" class="w-full px-4 py-3 bg-slate-50 border border-slate-300 rounded-lg text-slate-900 focus:outline-none focus:border-blue-500 transition-colors" />
-                    <small>Character level (1-400)</small>
+                    <InputNumber @bind-Value="@CurrentLevel" @bind-Value:after="AutoSaveAsync" min="1" max="400" class="w-full px-4 py-3 bg-slate-50 border border-slate-300 rounded-lg text-slate-900 focus:outline-none focus:border-blue-500 transition-colors" />
+                    <small>Character level (1-400, auto-saves)</small>
                 </div>
 
                 <div class="">
                     <label class="block text-sm font-semibold text-slate-700 mb-2 uppercase tracking-wide">Experience</label>
-                    <InputNumber @bind-Value="@Character.Experience" min="0" class="w-full px-4 py-3 bg-slate-50 border border-slate-300 rounded-lg text-slate-900 focus:outline-none focus:border-blue-500 transition-colors" />
+                    <InputNumber @bind-Value="@Character.Experience" @bind-Value:after="AutoSaveAsync" min="0" class="w-full px-4 py-3 bg-slate-50 border border-slate-300 rounded-lg text-slate-900 focus:outline-none focus:border-blue-500 transition-colors" />
                     <ValidationMessage For="@(() => Character.Experience)" />
                 </div>
 
                 <div class="">
                     <label class="block text-sm font-semibold text-slate-700 mb-2 uppercase tracking-wide">Level Up Points</label>
-                    <InputNumber @bind-Value="@Character.LevelUpPoints" min="0" max="32767" class="w-full px-4 py-3 bg-slate-50 border border-slate-300 rounded-lg text-slate-900 focus:outline-none focus:border-blue-500 transition-colors" />
+                    <InputNumber @bind-Value="@Character.LevelUpPoints" @bind-Value:after="AutoSaveAsync" min="0" max="32767" class="w-full px-4 py-3 bg-slate-50 border border-slate-300 rounded-lg text-slate-900 focus:outline-none focus:border-blue-500 transition-colors" />
                     <ValidationMessage For="@(() => Character.LevelUpPoints)" />
                 </div>
 
                 <div class="">
                     <label class="block text-sm font-semibold text-slate-700 mb-2 uppercase tracking-wide">Master Level</label>
-                    <InputNumber @bind-Value="@CurrentMasterLevel" min="0" max="200" class="w-full px-4 py-3 bg-slate-50 border border-slate-300 rounded-lg text-slate-900 focus:outline-none focus:border-blue-500 transition-colors" />
-                    <small>Master level (0-200, maximum allowed)</small>
+                    <InputNumber @bind-Value="@CurrentMasterLevel" @bind-Value:after="AutoSaveAsync" min="0" max="200" class="w-full px-4 py-3 bg-slate-50 border border-slate-300 rounded-lg text-slate-900 focus:outline-none focus:border-blue-500 transition-colors" />
+                    <small>Master level (0-200, auto-saves on change)</small>
                 </div>
 
                 <div class="">
                     <label class="block text-sm font-semibold text-slate-700 mb-2 uppercase tracking-wide">Master Experience</label>
-                    <InputNumber @bind-Value="@Character.MasterExperience" min="0" class="w-full px-4 py-3 bg-slate-50 border border-slate-300 rounded-lg text-slate-900 focus:outline-none focus:border-blue-500 transition-colors" />
+                    <InputNumber @bind-Value="@Character.MasterExperience" @bind-Value:after="AutoSaveAsync" min="0" class="w-full px-4 py-3 bg-slate-50 border border-slate-300 rounded-lg text-slate-900 focus:outline-none focus:border-blue-500 transition-colors" />
                     <ValidationMessage For="@(() => Character.MasterExperience)" />
                 </div>
 
                 <div class="">
                     <label class="block text-sm font-semibold text-slate-700 mb-2 uppercase tracking-wide">Master Level Up Points</label>
-                    <InputNumber @bind-Value="@Character.MasterLevelUpPoints" min="0" max="32767" class="w-full px-4 py-3 bg-slate-50 border border-slate-300 rounded-lg text-slate-900 focus:outline-none focus:border-blue-500 transition-colors" />
+                    <InputNumber @bind-Value="@Character.MasterLevelUpPoints" @bind-Value:after="AutoSaveAsync" min="0" max="32767" class="w-full px-4 py-3 bg-slate-50 border border-slate-300 rounded-lg text-slate-900 focus:outline-none focus:border-blue-500 transition-colors" />
                     <ValidationMessage For="@(() => Character.MasterLevelUpPoints)" />
                 </div>
             </div>
@@ -372,32 +395,32 @@
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 <div class="">
                     <label class="block text-sm font-semibold text-slate-700 mb-2 uppercase tracking-wide">Strength</label>
-                    <InputNumber @bind-Value="@Strength" min="0" max="65000" class="w-full px-4 py-3 bg-slate-50 border border-slate-300 rounded-lg text-slate-900 focus:outline-none focus:border-blue-500 transition-colors" />
-                    <small>Base strength attribute</small>
+                    <InputNumber @bind-Value="@Strength" @bind-Value:after="AutoSaveAsync" min="0" max="65000" class="w-full px-4 py-3 bg-slate-50 border border-slate-300 rounded-lg text-slate-900 focus:outline-none focus:border-blue-500 transition-colors" />
+                    <small>Base strength attribute (auto-saves)</small>
                 </div>
 
                 <div class="">
                     <label class="block text-sm font-semibold text-slate-700 mb-2 uppercase tracking-wide">Agility</label>
-                    <InputNumber @bind-Value="@Agility" min="0" max="65000" class="w-full px-4 py-3 bg-slate-50 border border-slate-300 rounded-lg text-slate-900 focus:outline-none focus:border-blue-500 transition-colors" />
-                    <small>Base agility attribute</small>
+                    <InputNumber @bind-Value="@Agility" @bind-Value:after="AutoSaveAsync" min="0" max="65000" class="w-full px-4 py-3 bg-slate-50 border border-slate-300 rounded-lg text-slate-900 focus:outline-none focus:border-blue-500 transition-colors" />
+                    <small>Base agility attribute (auto-saves)</small>
                 </div>
 
                 <div class="">
                     <label class="block text-sm font-semibold text-slate-700 mb-2 uppercase tracking-wide">Vitality</label>
-                    <InputNumber @bind-Value="@Vitality" min="0" max="65000" class="w-full px-4 py-3 bg-slate-50 border border-slate-300 rounded-lg text-slate-900 focus:outline-none focus:border-blue-500 transition-colors" />
-                    <small>Base vitality attribute</small>
+                    <InputNumber @bind-Value="@Vitality" @bind-Value:after="AutoSaveAsync" min="0" max="65000" class="w-full px-4 py-3 bg-slate-50 border border-slate-300 rounded-lg text-slate-900 focus:outline-none focus:border-blue-500 transition-colors" />
+                    <small>Base vitality attribute (auto-saves)</small>
                 </div>
 
                 <div class="">
                     <label class="block text-sm font-semibold text-slate-700 mb-2 uppercase tracking-wide">Energy</label>
-                    <InputNumber @bind-Value="@Energy" min="0" max="65000" class="w-full px-4 py-3 bg-slate-50 border border-slate-300 rounded-lg text-slate-900 focus:outline-none focus:border-blue-500 transition-colors" />
-                    <small>Base energy attribute</small>
+                    <InputNumber @bind-Value="@Energy" @bind-Value:after="AutoSaveAsync" min="0" max="65000" class="w-full px-4 py-3 bg-slate-50 border border-slate-300 rounded-lg text-slate-900 focus:outline-none focus:border-blue-500 transition-colors" />
+                    <small>Base energy attribute (auto-saves)</small>
                 </div>
 
                 <div class="">
                     <label class="block text-sm font-semibold text-slate-700 mb-2 uppercase tracking-wide">Command</label>
-                    <InputNumber @bind-Value="@Command" min="0" max="65000" class="w-full px-4 py-3 bg-slate-50 border border-slate-300 rounded-lg text-slate-900 focus:outline-none focus:border-blue-500 transition-colors" />
-                    <small>Command points for summoner</small>
+                    <InputNumber @bind-Value="@Command" @bind-Value:after="AutoSaveAsync" min="0" max="65000" class="w-full px-4 py-3 bg-slate-50 border border-slate-300 rounded-lg text-slate-900 focus:outline-none focus:border-blue-500 transition-colors" />
+                    <small>Command points for summoner (auto-saves)</small>
                 </div>
             </div>
         </div>
@@ -412,14 +435,14 @@
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 <div class="">
                     <label class="block text-sm font-semibold text-slate-700 mb-2 uppercase tracking-wide">Inventory Zen (Money)</label>
-                    <InputNumber @bind-Value="@InventoryMoney" min="0" class="w-full px-4 py-3 bg-slate-50 border border-slate-300 rounded-lg text-slate-900 focus:outline-none focus:border-blue-500 transition-colors" />
-                    <small>Current zen in character inventory</small>
+                    <InputNumber @bind-Value="@InventoryMoney" @bind-Value:after="AutoSaveAsync" min="0" class="w-full px-4 py-3 bg-slate-50 border border-slate-300 rounded-lg text-slate-900 focus:outline-none focus:border-blue-500 transition-colors" />
+                    <small>Current zen in character inventory (auto-saves)</small>
                 </div>
 
                 <div class="">
                     <label class="block text-sm font-semibold text-slate-700 mb-2 uppercase tracking-wide">Vault Zen (Bank)</label>
-                    <InputNumber @bind-Value="@VaultMoney" min="0" class="w-full px-4 py-3 bg-slate-50 border border-slate-300 rounded-lg text-slate-900 focus:outline-none focus:border-blue-500 transition-colors" />
-                    <small>Zen stored in account vault</small>
+                    <InputNumber @bind-Value="@VaultMoney" @bind-Value:after="AutoSaveAsync" min="0" class="w-full px-4 py-3 bg-slate-50 border border-slate-300 rounded-lg text-slate-900 focus:outline-none focus:border-blue-500 transition-colors" />
+                    <small>Zen stored in account vault (auto-saves)</small>
                 </div>
             </div>
         </div>
@@ -703,13 +726,12 @@
         
         </fieldset>
         
-        <div class="flex gap-4 justify-end mt-6">
-            @if (OnCancel.HasDelegate)
-            {
+        @if (OnCancel.HasDelegate)
+        {
+            <div class="flex gap-4 justify-end mt-6">
                 <button type="button" class="px-8 py-3 bg-slate-200 text-slate-700 rounded-lg font-semibold hover:bg-slate-300 transition-colors" @onclick="OnCancel">Cancel</button>
-            }
-            <button type="submit" class="px-8 py-3 bg-gradient-to-r from-blue-500 to-purple-500 text-white rounded-lg font-semibold hover:shadow-xl hover:-translate-y-0.5 transition-all" disabled="@IsCharacterOnline">💾 Save Changes</button>
-        </div>
+            </div>
+        }
     </EditForm>
     </div>
 </div>
@@ -736,6 +758,9 @@
 
     private bool _isCharacterOnline = false;
     private bool _isCheckingOnlineStatus = true;
+    private string _saveMessage = string.Empty;
+    private string _saveMessageClass = string.Empty;
+    private System.Threading.Timer? _messageTimer;
 
     /// <summary>
     /// Gets whether the character is currently online by checking game servers' in-memory player list.
@@ -878,6 +903,62 @@
                 Character.MasterExperience = 0;
             }
         }
+    }
+
+    /// <summary>
+    /// Auto-saves changes after a field is modified, but only if character is offline.
+    /// </summary>
+    private async Task AutoSaveAsync()
+    {
+        if (Character == null)
+            return;
+
+        Logger.LogInformation("🔄 Auto-save triggered for character {Name}", Character.Name);
+
+        // Check if character is online
+        await CheckIfCharacterIsOnlineAsync();
+        if (_isCharacterOnline)
+        {
+            ShowMessage("⚠️ Cannot save - Character is ONLINE! Please log out first.", "bg-red-100 border-red-500 text-red-700");
+            Logger.LogWarning("❌ Cannot auto-save - character {Name} is online", Character.Name);
+            return;
+        }
+
+        // Save the changes
+        try
+        {
+            ShowMessage("💾 Saving changes...", "bg-blue-100 border-blue-500 text-blue-700");
+            Logger.LogInformation("💾 Saving character {Name} to database...", Character.Name);
+            await PersistenceContext.SaveChangesAsync();
+            ShowMessage("✅ Changes saved successfully!", "bg-green-100 border-green-500 text-green-700");
+            Logger.LogInformation("✅ Auto-saved changes for character {Name}", Character.Name);
+            
+            // Auto-hide success message after 5 seconds
+            _messageTimer?.Dispose();
+            _messageTimer = new System.Threading.Timer(_ =>
+            {
+                InvokeAsync(() =>
+                {
+                    _saveMessage = string.Empty;
+                    StateHasChanged();
+                });
+            }, null, 5000, System.Threading.Timeout.Infinite);
+        }
+        catch (Exception ex)
+        {
+            ShowMessage($"❌ Failed to save: {ex.Message}", "bg-red-100 border-red-500 text-red-700");
+            Logger.LogError(ex, "❌ Failed to auto-save for character {Name}", Character.Name);
+        }
+    }
+
+    /// <summary>
+    /// Shows a save status message.
+    /// </summary>
+    private void ShowMessage(string message, string cssClass)
+    {
+        _saveMessage = message;
+        _saveMessageClass = cssClass;
+        InvokeAsync(StateHasChanged);
     }
 
     /// <summary>
@@ -1111,26 +1192,6 @@
     /// <summary>
     /// Handles form submission by first checking if character is online.
     /// If online, prevents save and shows warning.
-    /// If offline, proceeds with the original OnValidSubmit callback.
-    /// </summary>
-    private async Task HandleValidSubmit()
-    {
-        // Re-check online status before saving
-        await CheckIfCharacterIsOnlineAsync();
-        
-        if (_isCharacterOnline)
-        {
-            Logger.LogWarning("SAVE BLOCKED - Character '{CharacterName}' is online!", Character.Name);
-            // Force UI update to show the red warning banner
-            StateHasChanged();
-            return;
-        }
-        
-        Logger.LogInformation("Character '{CharacterName}' is offline, proceeding with save...", Character.Name);
-        // Character is offline, proceed with save
-        await OnValidSubmit.InvokeAsync();
-    }
-
     /// <summary>
     /// Reloads character data directly from the database, bypassing Entity Framework caching.
     /// This ensures we always have fresh data, especially after in-game resets.
@@ -1388,6 +1449,11 @@
         {
             Logger.LogError(ex, "ERROR during ReloadCharacterFromDatabaseAsync for character {CharacterName}", Character?.Name ?? "Unknown");
         }
+    }
+
+    public void Dispose()
+    {
+        _messageTimer?.Dispose();
     }
 }
 

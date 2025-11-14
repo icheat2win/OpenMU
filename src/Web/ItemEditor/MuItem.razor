@@ -1,10 +1,13 @@
 ﻿
 <style>
     .mu-item { --boxSize: 42px; display: block; position: absolute; }
-    .mu-item img { position: relative; left: -38px; top: -42px; user-select: none; }
-    .mu-item-selector { z-index: 100; opacity: 0; }
+    .mu-item img { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); width: 180%; height: 180%; object-fit: contain; user-select: none; pointer-events: none; }
+    .mu-item-selector { z-index: 100; opacity: 0; cursor: grab; transition: all 0.2s ease; }
+    .mu-item-selector:active { cursor: grabbing; }
     .mu-item-selector:hover { background-color: cornflowerblue; opacity: 0.333; }
     .mu-item-selector.highlighted { background-color: greenyellow; opacity: 0.333; }
+    .mu-item-selector.dragging { opacity: 0.4; cursor: grabbing; transform: scale(1.05); box-shadow: 0 8px 16px rgba(0,0,0,0.3); z-index: 200; }
+    .mu-item-selector.drag-over-occupied { background-color: rgba(255, 0, 0, 0.4); cursor: not-allowed !important; box-shadow: inset 0 0 0 2px rgba(255, 0, 0, 0.8); }
     .undefined-item { height: 100%; width: 100%; background-color: greenyellow; }
     .mu-item-move-arrow { position: absolute; z-index: 101; background-color: black; opacity: 0.7; }
     .mu-item-move-arrow:hover { opacity: 0.95; }
@@ -61,7 +64,13 @@
 </div>
 
 <div title=@this.Model.Item
-    class=@($"mu-item {(this.IsSelected ? "highlighted" : "")} mu-item-selector c_{this.Model.Column} r_{this.Model.Row} w_{this.Width} h_{this.Height}")
+    class=@($"mu-item {(this.IsSelected ? "highlighted" : "")} {(this._isDragging ? "dragging" : "")} mu-item-selector c_{this.Model.Column} r_{this.Model.Row} w_{this.Width} h_{this.Height}")
+     draggable="true"
+     @ondragstart="OnDragStart"
+     @ondragend="OnDragEnd"
+     @ondragover="OnDragOver"
+     @ondragover:preventDefault
+     @ondrop="OnDropAsync"
      @onclick="this.OnClick"
     tabindex="@(this.IsSelected ? 0 : -1)"
     autofocus="@(this.IsSelected ? "true" : null)" 

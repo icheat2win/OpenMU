@@ -1,5 +1,6 @@
 ﻿@using System.ComponentModel.DataAnnotations
 @using System.Diagnostics.CodeAnalysis
+@using Microsoft.Extensions.Logging
 @using MUnique.OpenMU.DataModel
 @using MUnique.OpenMU.DataModel.Configuration
 @using MUnique.OpenMU.DataModel.Entities
@@ -127,6 +128,26 @@
 }
 
 <div class="item-storage-container">
+    @if (!string.IsNullOrEmpty(_saveMessage))
+    {
+        <div class="@_saveMessageClass backdrop-blur-sm border-l-4 px-6 py-4 mb-4 rounded-xl shadow-2xl sticky top-0 z-50 transition-all duration-300">
+            <div class="flex items-center gap-3">
+                <span class="text-2xl filter drop-shadow-md">@(_saveMessage.Contains("✅") ? "✅" : _saveMessage.Contains("💾") ? "💾" : "⚠️")</span>
+                <p class="font-semibold text-lg">@_saveMessage</p>
+            </div>
+        </div>
+    }
+    
+    @if (!string.IsNullOrEmpty(this._overlappingItemsWarning))
+    {
+        <div class="bg-red-100 border-l-4 border-red-500 text-red-700 px-6 py-4 mb-4 rounded-lg shadow-lg animate-pulse sticky top-0 z-50">
+            <div class="flex items-center gap-3">
+                <span class="text-2xl">⚠️</span>
+                <p class="font-bold text-lg">@_overlappingItemsWarning</p>
+            </div>
+        </div>
+    }
+    
     @if (!this.HideLabel)
     {
         <div class="mb-4">
@@ -154,7 +175,7 @@
                         StorageType="@this._storageType"
                         NumberOfExtensions="@this._numberOfExtensions"
                         SelectedItem="@this._selectedItem"
-                        SelectedItemChanged="this.OnSelectedItemChanged"/>
+                        SelectedItemChanged="this.OnSelectedItemChangedAsync"/>
                 </div>
                 
                 @for (byte i = 0; i < this._numberOfExtensions; i++)
@@ -172,7 +193,7 @@
                             NumberOfExtensions="@this._numberOfExtensions"
                             ExtensionIndex="@i"
                             SelectedItem="@this._selectedItem"
-                            SelectedItemChanged="this.OnSelectedItemChanged"/>
+                            SelectedItemChanged="this.OnSelectedItemChangedAsync"/>
                     </div>
                 }
                 
@@ -190,7 +211,7 @@
                             StorageType="StorageType.PersonalStore"
                             NumberOfExtensions="@this._numberOfExtensions"
                             SelectedItem="@this._selectedItem"
-                            SelectedItemChanged="this.OnSelectedItemChanged"/>
+                            SelectedItemChanged="this.OnSelectedItemChangedAsync"/>
                     </div>
                 }
             </div>
@@ -273,11 +294,25 @@
     [CascadingParameter]
     public IContext PersistenceContext { get; set; } = null!;
 
+    /// <summary>
+    /// Gets or sets the logger.
+    /// </summary>
+    [Inject]
+    public ILogger<ItemStorageField> Logger { get; set; } = null!;
+
     private Item? _selectedItem;
 
     private StorageType _storageType;
 
     private byte _numberOfExtensions;
+    
+    private string? _overlappingItemsWarning;
+    
+    private string? _saveMessage;
+    
+    private string? _saveMessageClass;
+    
+    private System.Threading.Timer? _messageTimer;
 
     /// <inheritdoc />
     protected override void OnParametersSet()
@@ -301,6 +336,20 @@
             default:
                 throw new NotImplementedException($"Unknown owner ({model}) of storage.");
         }
+        
+        // Check for overlapping items whenever parameters are set
+        if (this.Value?.Items != null)
+        {
+            var hasOverlap = this.HasOverlappingItems(this.Value.Items);
+            if (hasOverlap)
+            {
+                this._overlappingItemsWarning = "⚠️ WARNING: Two or more items are overlapping! This will prevent the client from starting. Please fix the item positions.";
+            }
+            else
+            {
+                this._overlappingItemsWarning = null;
+            }
+        }
     }
 
     /// <inheritdoc />
@@ -321,6 +370,121 @@
     {
         this._selectedItem = item;
         this.StateHasChanged();
+    }
+
+    private async Task OnSelectedItemChangedAsync(Item? item)
+    {
+        this._selectedItem = item;
+        
+        // Auto-save when item is moved
+        if (item != null && this.PersistenceContext != null)
+        {
+            try
+            {
+                // Validate for overlapping items
+                if (this.Value?.Items != null && this.HasOverlappingItems(this.Value.Items))
+                {
+                    this._overlappingItemsWarning = "⚠️ WARNING: Two or more items are overlapping! This will prevent the client from starting. Please fix the item positions.";
+                    ShowMessage("⚠️ Cannot save - Items are overlapping!", "bg-red-100 border-red-500 text-red-700");
+                    Logger.LogWarning("❌ Cannot save inventory - items are overlapping");
+                    this.StateHasChanged();
+                    return;
+                }
+
+                this._overlappingItemsWarning = null;
+                ShowMessage("💾 Saving item changes...", "bg-blue-100 border-blue-500 text-blue-700");
+                Logger.LogInformation("💾 Saving inventory changes...");
+                
+                await this.PersistenceContext.SaveChangesAsync();
+                
+                ShowMessage("✅ Items saved successfully!", "bg-green-100 border-green-500 text-green-700");
+                Logger.LogInformation("✅ Inventory saved successfully");
+                
+                // Auto-hide success message after 3 seconds
+                _messageTimer?.Dispose();
+                _messageTimer = new System.Threading.Timer(_ =>
+                {
+                    InvokeAsync(() =>
+                    {
+                        _saveMessage = string.Empty;
+                        StateHasChanged();
+                    });
+                }, null, 3000, System.Threading.Timeout.Infinite);
+            }
+            catch (Exception ex)
+            {
+                ShowMessage($"❌ Failed to save: {ex.Message}", "bg-red-100 border-red-500 text-red-700");
+                Logger.LogError(ex, "❌ Failed to save inventory changes");
+            }
+        }
+        
+        this.StateHasChanged();
+    }
+
+    private void ShowMessage(string message, string cssClass)
+    {
+        _saveMessage = message;
+        _saveMessageClass = cssClass;
+        InvokeAsync(StateHasChanged);
+    }
+
+    private bool HasOverlappingItems(IEnumerable<Item> items)
+    {
+        var occupiedSlots = new Dictionary<byte, Item>();
+        var hasOverlap = false;
+        
+        foreach (var item in items)
+        {
+            if (item.Definition == null) continue;
+            
+            var width = item.Definition.Width;
+            var height = item.Definition.Height;
+            var baseSlot = item.ItemSlot;
+            
+            // For equipped items (slot >= 0xC0), just check the single slot
+            if (baseSlot >= InventoryConstants.FirstEquippableItemSlotIndex)
+            {
+                if (occupiedSlots.ContainsKey(baseSlot))
+                {
+                    Logger.LogWarning($"⚠️ Overlap detected at equipped slot {baseSlot}: {item.Definition.Name} overlaps with {occupiedSlots[baseSlot].Definition?.Name}");
+                    hasOverlap = true;
+                }
+                else
+                {
+                    occupiedSlots[baseSlot] = item;
+                }
+                continue;
+            }
+            
+            // For inventory items, check all occupied cells based on width/height
+            var x = (byte)(baseSlot % InventoryConstants.RowSize);
+            var y = (byte)(baseSlot / InventoryConstants.RowSize);
+            
+            Logger.LogInformation($"🔍 Checking item '{item.Definition.Name}' at slot {baseSlot} (x:{x}, y:{y}) size: {width}x{height}");
+            
+            for (byte dx = 0; dx < width; dx++)
+            {
+                for (byte dy = 0; dy < height; dy++)
+                {
+                    var checkX = (byte)(x + dx);
+                    var checkY = (byte)(y + dy);
+                    var checkSlot = (byte)(checkY * InventoryConstants.RowSize + checkX);
+                    
+                    if (occupiedSlots.ContainsKey(checkSlot))
+                    {
+                        Logger.LogWarning($"⚠️⚠️ OVERLAP DETECTED at slot {checkSlot} (x:{checkX}, y:{checkY}): '{item.Definition.Name}' overlaps with '{occupiedSlots[checkSlot].Definition?.Name}'");
+                        hasOverlap = true;
+                    }
+                    else
+                    {
+                        occupiedSlots[checkSlot] = item;
+                    }
+                }
+            }
+        }
+        
+        Logger.LogInformation($"Overlap check complete: {(hasOverlap ? "❌ OVERLAPS FOUND" : "✅ No overlaps")}");
+        return hasOverlap;
     }
 
     private async Task OnItemDeleteClickAsync()
@@ -346,5 +510,10 @@
             itemStorage.Items.Add(item);
             this._selectedItem = item;
         }
+    }
+
+    public void Dispose()
+    {
+        _messageTimer?.Dispose();
     }
 }

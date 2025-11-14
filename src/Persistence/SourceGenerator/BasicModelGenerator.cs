@@ -179,7 +179,7 @@ public partial class {className} : {fullName}, IIdentifiable, IConvertibleTo<{cl
     public override {originalPropertyTypeName} {property.Name}
     {{
         get => base.{property.Name} ??= new {adapterClass}<{originalClassName}, {persistentClassName}>(this.Raw{property.Name});
-        protected set
+        {(property.GetSetMethod() is null ? "protected " : null)}set
         {{
             this.{property.Name}.Clear();
             foreach (var item in value)

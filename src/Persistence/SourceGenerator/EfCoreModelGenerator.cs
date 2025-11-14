@@ -434,7 +434,7 @@ public class ExtendedTypeContext : Microsoft.EntityFrameworkCore.DbContext
     public override {originalPropertyTypeName} {property.Name}
     {{
         get => base.{property.Name} ??= new CollectionToStringAdapter<{itemTypeName}>(this.Raw{property.Name}, newString => this.Raw{property.Name} = newString);
-        protected set
+        {(property.GetSetMethod() is null ? "protected " : null)}set
         {{
             this.{property.Name}.Clear();
             foreach (var item in value)

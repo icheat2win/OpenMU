@@ -38,6 +38,9 @@ public partial class MuItem
     [Parameter]
     public bool IsSelected { get; set; }
 
+    private static ItemViewModel? _draggedItem;
+    private bool _isDragging;
+
     private int TotalRows => this.Model.Parent?.Rows ?? 0;
     private int Height => this.Model.Item.Definition?.Height ?? 1;
     private int Width => this.Model.Item.Definition?.Width ?? 1;
@@ -46,7 +49,18 @@ public partial class MuItem
     private bool CanMoveLeft => this.Model.Column > 0;
     private bool CanMoveRight => this.Model.Column + this.Width < 8;
     private bool CanJumpDown => this.Model.Parent?.StorageType is StorageType.Inventory or StorageType.InventoryExtension;
-    private bool CanJumpUp => (this.Model.Parent?.StorageType is StorageType.InventoryExtension or StorageType.PersonalStore);
+    private bool CanJumpUp => this.Model.Parent?.StorageType is StorageType.InventoryExtension or StorageType.PersonalStore;
+
+    /// <summary>
+    /// Gets the currently dragged item.
+    /// </summary>
+    /// <returns>The dragged item view model, or null if no item is being dragged.</returns>
+    public static ItemViewModel? GetDraggedItem() => _draggedItem;
+
+    /// <summary>
+    /// Clears the dragged item.
+    /// </summary>
+    public static void ClearDraggedItem() => _draggedItem = null;
 
     private async Task OnKeyPressAsync(KeyboardEventArgs obj)
     {
@@ -136,5 +150,28 @@ public partial class MuItem
         {
             await this.OnItemMoved.InvokeAsync().ConfigureAwait(true);
         }
+    }
+
+    private void OnDragStart(DragEventArgs e)
+    {
+        _draggedItem = this.Model;
+        this._isDragging = true;
+    }
+
+    private void OnDragEnd(DragEventArgs e)
+    {
+        this._isDragging = false;
+    }
+
+    private void OnDragOver(DragEventArgs e)
+    {
+        // Prevent dropping on occupied cells
+        e.DataTransfer.DropEffect = "none";
+    }
+
+    private async Task OnDropAsync(DragEventArgs e)
+    {
+        // Don't allow dropping on other items
+        return;
     }
 }
