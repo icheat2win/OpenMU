@@ -75,7 +75,7 @@ public partial class Character : MUnique.OpenMU.DataModel.Entities.Character, II
     public override ICollection<MUnique.OpenMU.DataModel.Entities.SkillEntry> LearnedSkills
     {
         get => base.LearnedSkills ??= new CollectionAdapter<MUnique.OpenMU.DataModel.Entities.SkillEntry, SkillEntry>(this.RawLearnedSkills);
-        protected set
+        set
         {
             this.LearnedSkills.Clear();
             foreach (var item in value)
@@ -96,7 +96,7 @@ public partial class Character : MUnique.OpenMU.DataModel.Entities.Character, II
     public override ICollection<MUnique.OpenMU.DataModel.Configuration.DropItemGroup> DropItemGroups
     {
         get => base.DropItemGroups ??= new CollectionAdapter<MUnique.OpenMU.DataModel.Configuration.DropItemGroup, DropItemGroup>(this.RawDropItemGroups);
-        protected set
+        set
         {
             this.DropItemGroups.Clear();
             foreach (var item in value)
@@ -117,7 +117,7 @@ public partial class Character : MUnique.OpenMU.DataModel.Entities.Character, II
     public override ICollection<MUnique.OpenMU.DataModel.Entities.CharacterQuestState> QuestStates
     {
         get => base.QuestStates ??= new CollectionAdapter<MUnique.OpenMU.DataModel.Entities.CharacterQuestState, CharacterQuestState>(this.RawQuestStates);
-        protected set
+        set
         {
             this.QuestStates.Clear();
             foreach (var item in value)
