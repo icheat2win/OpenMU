@@ -838,9 +838,12 @@
             var currentMasterLevel = masterLevelAttr != null ? (int)masterLevelAttr.Value : 0;
             
             // Auto-sync MasterExperience if mismatch detected (e.g., after in-game reset)
+            // Uses correct formula: (505 * level^3) + (35278500 * level) + (228045 * level^2)
             if (Character != null)
             {
-                long expectedMasterExp = currentMasterLevel > 0 ? (long)(Math.Pow(currentMasterLevel, 3) * 5000) : 0;
+                long expectedMasterExp = currentMasterLevel > 0 
+                    ? (long)((505 * Math.Pow(currentMasterLevel, 3)) + (35278500 * currentMasterLevel) + (228045 * Math.Pow(currentMasterLevel, 2)))
+                    : 0;
                 if (Character.MasterExperience != expectedMasterExp)
                 {
                     Character.MasterExperience = expectedMasterExp;
@@ -865,10 +868,10 @@
             }
             
             // Update MasterExperience to match the master level
+            // Uses correct formula: (505 * level^3) + (35278500 * level) + (228045 * level^2)
             if (Character != null && clampedLevel > 0)
             {
-                // Master level experience formula: level^3 * 5000 (approximate)
-                Character.MasterExperience = (long)(Math.Pow(clampedLevel, 3) * 5000);
+                Character.MasterExperience = (long)((505 * Math.Pow(clampedLevel, 3)) + (35278500 * clampedLevel) + (228045 * Math.Pow(clampedLevel, 2)));
             }
             else if (Character != null)
             {
