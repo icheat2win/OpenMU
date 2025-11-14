@@ -1175,22 +1175,18 @@
             var response = await HttpClient.GetStringAsync("/api/status");
             Console.WriteLine($"[CharacterEdit] API Response: {response}");
             
-            // API returns double-serialized JSON, parse it
-            var jsonString = JsonSerializer.Deserialize<string>(response);
-            if (jsonString != null)
+            // Parse JSON directly: {"state":"Online","players":1,"playersList":["Agge"]}
+            using var doc = JsonDocument.Parse(response);
+            if (doc.RootElement.TryGetProperty("playersList", out var playersListElement))
             {
-                using var doc = JsonDocument.Parse(jsonString);
-                if (doc.RootElement.TryGetProperty("playersList", out var playersListElement))
-                {
-                    var playersList = playersListElement.EnumerateArray()
-                        .Select(p => p.GetString())
-                        .Where(p => !string.IsNullOrEmpty(p))
-                        .ToList();
-                    
-                    Console.WriteLine($"[CharacterEdit] Players online: {string.Join(", ", playersList)}");
-                    _isCharacterOnline = playersList.Contains(Character.Name, StringComparer.OrdinalIgnoreCase);
-                    Console.WriteLine($"[CharacterEdit] Is '{Character.Name}' online? {_isCharacterOnline}");
-                }
+                var playersList = playersListElement.EnumerateArray()
+                    .Select(p => p.GetString())
+                    .Where(p => !string.IsNullOrEmpty(p))
+                    .ToList();
+                
+                Console.WriteLine($"[CharacterEdit] Players online: {string.Join(", ", playersList)}");
+                _isCharacterOnline = playersList.Contains(Character.Name, StringComparer.OrdinalIgnoreCase);
+                Console.WriteLine($"[CharacterEdit] Is '{Character.Name}' online? {_isCharacterOnline}");
             }
         }
         catch (Exception ex)
