@@ -11,6 +11,33 @@
     /* Ensure all form inputs have dark text on light backgrounds */
     input, select, textarea, .form-control {
         color: #0f172a !important;
+        background-color: #f8fafc !important;
+    }
+    
+    /* Fix dropdown/select option text visibility */
+    select option {
+        color: #0f172a !important;
+        background-color: white !important;
+    }
+    
+    /* Fix Blazored Typeahead dropdown items */
+    .blazored-typeahead__results,
+    .blazored-typeahead__result,
+    .blazored-typeahead__result-selected {
+        color: #0f172a !important;
+        background-color: white !important;
+    }
+    
+    .blazored-typeahead__result:hover {
+        background-color: #e0f2fe !important;
+        color: #0c4a6e !important;
+    }
+    
+    /* Style dropdown container */
+    .blazored-typeahead__results-container {
+        background-color: white !important;
+        border: 1px solid #cbd5e1 !important;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1) !important;
     }
     
     /* Style helper text */
@@ -19,6 +46,144 @@
         font-size: 0.75rem !important;
         display: block !important;
         margin-top: 0.25rem !important;
+    }
+    
+    /* ItemTable modern styling */
+    .card {
+        background: white;
+        border-radius: 0.75rem;
+        border: 1px solid #e2e8f0;
+        box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+    }
+    
+    .card-header {
+        background: linear-gradient(to right, #f8fafc, #f1f5f9);
+        border-bottom: 2px solid #cbd5e1;
+        padding: 1rem 1.5rem;
+        font-weight: 600;
+        color: #1e293b;
+    }
+    
+    .card-body {
+        padding: 1.5rem;
+    }
+    
+    .card-text table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+    
+    .card-text table thead tr {
+        background: linear-gradient(to right, #f1f5f9, #e2e8f0);
+        border-bottom: 2px solid #cbd5e1;
+    }
+    
+    .card-text table thead th {
+        padding: 0.75rem 1rem;
+        text-align: left;
+        font-weight: 600;
+        color: #475569;
+        font-size: 0.875rem;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+    }
+    
+    .card-text table tbody tr {
+        border-bottom: 1px solid #e2e8f0;
+        transition: background-color 0.15s ease;
+    }
+    
+    .card-text table tbody tr:hover {
+        background-color: #f8fafc;
+    }
+    
+    .card-text table tbody td {
+        padding: 1rem;
+        color: #1e293b;
+    }
+    
+    .card-text table tfooter tr {
+        background: #f8fafc;
+        border-top: 2px solid #cbd5e1;
+    }
+    
+    .card-text table tfooter td {
+        padding: 1rem 1.5rem;
+    }
+    
+    /* Button styling for ItemTable */
+    .btn-primary, .primary-button {
+        background: linear-gradient(to right, #3b82f6, #8b5cf6);
+        color: white;
+        padding: 0.5rem 1.25rem;
+        border-radius: 0.5rem;
+        font-weight: 600;
+        border: none;
+        cursor: pointer;
+        transition: all 0.2s ease;
+    }
+    
+    .btn-primary:hover, .primary-button:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
+    }
+    
+    .btn-info {
+        background: linear-gradient(to right, #06b6d4, #0ea5e9);
+        color: white;
+        padding: 0.5rem 1rem;
+        border-radius: 0.5rem;
+        font-weight: 500;
+        border: none;
+        cursor: pointer;
+        transition: all 0.2s ease;
+    }
+    
+    .btn-info:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px rgba(6, 182, 212, 0.4);
+    }
+    
+    .btn-danger, .btn-warning {
+        background: linear-gradient(to right, #ef4444, #dc2626);
+        color: white;
+        padding: 0.5rem 1rem;
+        border-radius: 0.5rem;
+        font-weight: 500;
+        border: none;
+        cursor: pointer;
+        transition: all 0.2s ease;
+    }
+    
+    .btn-danger:hover, .btn-warning:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px rgba(239, 68, 68, 0.4);
+    }
+    
+    .btn-outline-info {
+        background: white;
+        color: #0ea5e9;
+        padding: 0.5rem 1rem;
+        border-radius: 0.5rem;
+        font-weight: 500;
+        border: 2px solid #0ea5e9;
+        cursor: pointer;
+        transition: all 0.2s ease;
+    }
+    
+    .btn-outline-info:hover {
+        background: #0ea5e9;
+        color: white;
+    }
+    
+    /* Collapse button spacing */
+    .ml-3 {
+        margin-left: 0.75rem;
+    }
+    
+    .mb-1 {
+        margin-bottom: 0.25rem;
     }
 </style>
 
@@ -399,82 +564,81 @@
 
         <!-- Learned Skills -->
         <div class="bg-white rounded-xl shadow-lg border border-slate-200 p-6 mb-6">
-            <div class="flex items-center gap-3 text-2xl font-bold text-slate-900 mb-6 pb-4 border-b-2 border-blue-200">
-                <span>📜</span>
+            <div class="flex items-center gap-3 text-2xl font-bold text-slate-900 mb-6 pb-4 border-b-2 border-purple-200">
+                <span class="">⚔️</span>
                 <span>Learned Skills</span>
             </div>
             
-            <div class="p-4 bg-slate-50 rounded-lg mb-4">
-                <div class="flex items-center justify-between">
-                    <span class="text-sm font-semibold text-slate-700">Total Skills: <span class="text-cyan-500">@(Character.LearnedSkills?.Count ?? 0)</span></span>
-                </div>
-            </div>
-
-            @if (Character.LearnedSkills != null && Character.LearnedSkills.Any())
+            @if (Character.LearnedSkills != null)
             {
-                <ItemTable Value="@Character.LearnedSkills" Label="Skills" />
+                <div class="mb-4 p-4 bg-purple-50 rounded-lg border border-purple-200">
+                    <div class="flex items-center gap-2">
+                        <span class="text-xs text-purple-600 uppercase tracking-wide font-semibold">Total Skills:</span>
+                        <span class="text-2xl font-bold text-purple-600">@Character.LearnedSkills.Count</span>
+                    </div>
+                </div>
+                
+                <ItemTable Value="@Character.LearnedSkills" Label="" ValueExpression="@(() => Character.LearnedSkills)" />
             }
             else
             {
-                <div class="text-center py-8">
-                    <p class="text-slate-500">No skills learned yet</p>
+                <div class="text-center py-12">
+                    <span class="text-6xl block mb-4 opacity-50">📚</span>
+                    <p class="text-lg text-slate-600">No skills learned yet</p>
                 </div>
             }
         </div>
 
         <!-- Quest States -->
         <div class="bg-white rounded-xl shadow-lg border border-slate-200 p-6 mb-6">
-            <div class="flex items-center gap-3 text-2xl font-bold text-slate-900 mb-6 pb-4 border-b-2 border-blue-200">
-                <span>🗺️</span>
+            <div class="flex items-center gap-3 text-2xl font-bold text-slate-900 mb-6 pb-4 border-b-2 border-amber-200">
+                <span class="">📜</span>
                 <span>Quest Progress</span>
             </div>
             
-            <div class="p-4 bg-slate-50 rounded-lg mb-4">
-                <div class="flex items-center justify-between">
-                    <span class="text-sm font-semibold text-slate-700">Active Quests: <span class="text-cyan-500">@(Character.QuestStates?.Count ?? 0)</span></span>
-                </div>
-            </div>
-
-            @if (Character.QuestStates != null && Character.QuestStates.Any())
+            @if (Character.QuestStates != null)
             {
-                <ItemTable Value="@Character.QuestStates" Label="Quests" />
+                <div class="mb-4 p-4 bg-amber-50 rounded-lg border border-amber-200">
+                    <div class="flex items-center gap-2">
+                        <span class="text-xs text-amber-600 uppercase tracking-wide font-semibold">Active Quests:</span>
+                        <span class="text-2xl font-bold text-amber-600">@Character.QuestStates.Count</span>
+                    </div>
+                </div>
+                
+                <ItemTable Value="@Character.QuestStates" Label="" ValueExpression="@(() => Character.QuestStates)" />
             }
             else
             {
-                <div class="text-center py-8">
-                    <p class="text-slate-500">No active quests</p>
+                <div class="text-center py-12">
+                    <span class="text-6xl block mb-4 opacity-50">🗺️</span>
+                    <p class="text-lg text-slate-600">No quest progress recorded</p>
                 </div>
             }
         </div>
 
         <!-- Drop Item Groups -->
         <div class="bg-white rounded-xl shadow-lg border border-slate-200 p-6 mb-6">
-            <div class="flex items-center gap-3 text-2xl font-bold text-slate-900 mb-6 pb-4 border-b-2 border-blue-200">
-                <span>🎁</span>
+            <div class="flex items-center gap-3 text-2xl font-bold text-slate-900 mb-6 pb-4 border-b-2 border-emerald-200">
+                <span class="">💎</span>
                 <span>Drop Item Groups</span>
             </div>
             
-            <div class="p-4 bg-slate-50 rounded-lg mb-4">
-                <div class="flex items-center justify-between">
-                    <span class="text-sm font-semibold text-slate-700">Total Groups: <span class="text-cyan-500">@(Character.DropItemGroups?.Count ?? 0)</span></span>
-                </div>
-            </div>
-
-            @if (Character.DropItemGroups != null && Character.DropItemGroups.Any())
+            @if (Character.DropItemGroups != null)
             {
-                <div class="space-y-2">
-                    @foreach (var dropGroup in Character.DropItemGroups)
-                    {
-                        <div class="p-3 bg-white border border-slate-200 rounded-lg">
-                            <span class="text-sm font-medium text-slate-900">@(dropGroup.Description ?? $"Drop Group {dropGroup.GetId()}")</span>
-                        </div>
-                    }
+                <div class="mb-4 p-4 bg-emerald-50 rounded-lg border border-emerald-200">
+                    <div class="flex items-center gap-2">
+                        <span class="text-xs text-emerald-600 uppercase tracking-wide font-semibold">Custom Drop Groups:</span>
+                        <span class="text-2xl font-bold text-emerald-600">@Character.DropItemGroups.Count</span>
+                    </div>
                 </div>
+                
+                <ItemTable Value="@Character.DropItemGroups" Label="" ValueExpression="@(() => Character.DropItemGroups)" />
             }
             else
             {
-                <div class="text-center py-8">
-                    <p class="text-slate-500">No special drop item groups</p>
+                <div class="text-center py-12">
+                    <span class="text-6xl block mb-4 opacity-50">🎁</span>
+                    <p class="text-lg text-slate-600">Using default drop tables</p>
                 </div>
             }
         </div>
