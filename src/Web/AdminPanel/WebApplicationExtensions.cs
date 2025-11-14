@@ -73,6 +73,9 @@ public static class WebApplicationExtensions
         services.AddScoped<LoggedInAccountService>();
         services.AddScoped<IDataService<LoggedInAccount>>(serviceProvider => serviceProvider.GetService<LoggedInAccountService>()!);
 
+        // Add HttpClient for API calls (e.g., checking online status)
+        services.AddHttpClient();
+
         StaticWebAssetsLoader.UseStaticWebAssets(builder.Environment, builder.Configuration);
         return builder;
     }
