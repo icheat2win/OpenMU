@@ -5,6 +5,7 @@
 namespace MUnique.OpenMU.Web.AdminPanel;
 
 using System.IO;
+using System.Net.Http;
 using Blazored.Modal;
 using Blazored.Toast;
 using Microsoft.AspNetCore.Builder;
@@ -74,7 +75,12 @@ public static class WebApplicationExtensions
         services.AddScoped<IDataService<LoggedInAccount>>(serviceProvider => serviceProvider.GetService<LoggedInAccountService>()!);
 
         // Add HttpClient for API calls (e.g., checking online status)
-        services.AddHttpClient();
+        services.AddHttpClient("ApiClient", (serviceProvider, client) =>
+        {
+            // Configure base address to localhost since we're server-side
+            client.BaseAddress = new Uri("http://localhost:8080");
+        });
+        services.AddScoped(sp => sp.GetRequiredService<IHttpClientFactory>().CreateClient("ApiClient"));
 
         StaticWebAssetsLoader.UseStaticWebAssets(builder.Environment, builder.Configuration);
         return builder;
