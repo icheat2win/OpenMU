@@ -1214,7 +1214,13 @@
     private async Task ReloadCharacterFromDatabaseAsync()
     {
         if (Character == null || PersistenceContext == null)
+        {
+            Logger.LogWarning("ReloadCharacterFromDatabaseAsync: Character or PersistenceContext is null");
             return;
+        }
+
+        Logger.LogInformation("=== START RELOAD CHARACTER FROM DATABASE ===");
+        Logger.LogInformation("Character: {CharacterName} (ID: {CharacterId})", Character.Name, Character.GetId());
 
         try
         {
@@ -1222,22 +1228,37 @@
             var contextType = PersistenceContext.GetType();
             var contextProperty = contextType.GetProperty("Context");
             if (contextProperty?.GetValue(PersistenceContext) is not object dbContextObj)
+            {
+                Logger.LogError("Failed to get DbContext from PersistenceContext");
                 return;
+            }
 
             // Query database directly for fresh data using reflection
             var dbContextType = dbContextObj.GetType();
             var databaseProperty = dbContextType.GetProperty("Database");
             if (databaseProperty?.GetValue(dbContextObj) is not object databaseObj)
+            {
+                Logger.LogError("Failed to get Database from DbContext");
                 return;
+            }
 
             var getDbConnectionMethod = databaseObj.GetType().GetMethod("GetDbConnection");
             if (getDbConnectionMethod?.Invoke(databaseObj, null) is not System.Data.Common.DbConnection connection)
+            {
+                Logger.LogError("Failed to get DbConnection");
                 return;
+            }
 
             var characterId = Character.GetId();
 
             if (connection.State != System.Data.ConnectionState.Open)
                 await connection.OpenAsync();
+
+            Logger.LogInformation("Database connection opened successfully");
+
+            // Log BEFORE values
+            Logger.LogInformation("BEFORE RELOAD - Experience: {Exp}, MasterExp: {MasterExp}, State: {State}", 
+                Character.Experience, Character.MasterExperience, Character.State);
 
             // Reload Experience values and State (online status)
             using (var command = connection.CreateCommand())
@@ -1247,14 +1268,34 @@
                     FROM data.""Character"" 
                     WHERE ""Id"" = '{characterId}'";
 
+                Logger.LogInformation("Executing query: {Query}", command.CommandText);
+
                 using var reader = await command.ExecuteReaderAsync();
                 if (await reader.ReadAsync())
                 {
-                    Character.Experience = reader.GetInt64(0);
-                    Character.MasterExperience = reader.GetInt64(1);
-                    Character.State = (HeroState)reader.GetInt32(2);
+                    var dbExp = reader.GetInt64(0);
+                    var dbMasterExp = reader.GetInt64(1);
+                    var dbState = reader.GetInt32(2);
+
+                    Logger.LogInformation("DATABASE VALUES - Experience: {DbExp}, MasterExp: {DbMasterExp}, State: {DbState}", 
+                        dbExp, dbMasterExp, dbState);
+
+                    Character.Experience = dbExp;
+                    Character.MasterExperience = dbMasterExp;
+                    Character.State = (HeroState)dbState;
+
+                    Logger.LogInformation("AFTER UPDATE - Experience: {Exp}, MasterExp: {MasterExp}, State: {State}", 
+                        Character.Experience, Character.MasterExperience, Character.State);
+                }
+                else
+                {
+                    Logger.LogWarning("No character found in database with ID: {CharacterId}", characterId);
                 }
             }
+
+            // Log attribute count before reload
+            var attrCount = Character.Attributes?.Count() ?? 0;
+            Logger.LogInformation("Character has {AttrCount} attributes", attrCount);
 
             // Reload StatAttribute values for Level and all stats
             using (var command = connection.CreateCommand())
@@ -1273,24 +1314,41 @@
                         '01b0ef28-f7a0-46b5-97ba-2b624a54cd75'
                     )";
 
+                Logger.LogInformation("Querying StatAttributes for character");
+
                 using var reader = await command.ExecuteReaderAsync();
+                int updatedCount = 0;
                 while (await reader.ReadAsync())
                 {
                     var definitionId = reader.GetGuid(0);
                     var value = reader.GetFloat(1);
 
+                    Logger.LogInformation("StatAttribute from DB - Definition: {DefinitionId}, Value: {Value}", 
+                        definitionId, value);
+
                     // Find the attribute in the collection and update it
                     var attr = Character.Attributes?.FirstOrDefault(a => a.Definition?.Id == definitionId);
                     if (attr != null)
                     {
+                        Logger.LogInformation("Found attribute in collection, updating from {OldValue} to {NewValue}", 
+                            attr.Value, value);
                         attr.Value = value;
+                        updatedCount++;
+                    }
+                    else
+                    {
+                        Logger.LogWarning("Attribute with Definition {DefinitionId} NOT FOUND in Character.Attributes collection!", 
+                            definitionId);
                     }
                 }
+                Logger.LogInformation("Updated {UpdatedCount} attributes from database", updatedCount);
             }
+
+            Logger.LogInformation("=== RELOAD COMPLETE ===");
         }
-        catch (Exception)
+        catch (Exception ex)
         {
-            // Silently fail - we'll use cached data as fallback
+            Logger.LogError(ex, "ERROR during ReloadCharacterFromDatabaseAsync for character {CharacterName}", Character?.Name ?? "Unknown");
         }
     }
 }
