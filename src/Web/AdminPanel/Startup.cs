@@ -90,6 +90,9 @@ public class Startup
         
         // Add circuit handler to handle disconnections gracefully
         services.AddScoped<CircuitHandler, CircuitHandlerService>();
+        
+        // Add HttpClient for API calls (e.g., checking online status)
+        services.AddHttpClient();
     }
 
     /// <summary>
