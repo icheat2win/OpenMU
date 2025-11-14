@@ -6,8 +6,10 @@
 @using System.Data
 @using System.Net.Http
 @using System.Text.Json
+@using Microsoft.Extensions.Logging
 
 @inject HttpClient HttpClient
+@inject ILogger<CharacterEdit> Logger
 
 <PageTitle>Edit Character: @Character.Name</PageTitle>
 
@@ -1115,13 +1117,13 @@
         
         if (_isCharacterOnline)
         {
-            Console.WriteLine($"[CharacterEdit] SAVE BLOCKED - Character '{Character.Name}' is online!");
+            Logger.LogWarning("SAVE BLOCKED - Character '{CharacterName}' is online!", Character.Name);
             // Force UI update to show the red warning banner
             StateHasChanged();
             return;
         }
         
-        Console.WriteLine($"[CharacterEdit] Character '{Character.Name}' is offline, proceeding with save...");
+        Logger.LogInformation("Character '{CharacterName}' is offline, proceeding with save...", Character.Name);
         // Character is offline, proceed with save
         await OnValidSubmit.InvokeAsync();
     }
@@ -1165,15 +1167,16 @@
 
         if (Character == null || string.IsNullOrEmpty(Character.Name))
         {
+            Logger.LogWarning("Character is null or has no name, cannot check online status");
             _isCheckingOnlineStatus = false;
             return;
         }
 
         try
         {
-            Console.WriteLine($"[CharacterEdit] Checking online status for: {Character.Name}");
+            Logger.LogInformation("Checking online status for character: {CharacterName}", Character.Name);
             var response = await HttpClient.GetStringAsync("/api/status");
-            Console.WriteLine($"[CharacterEdit] API Response: {response}");
+            Logger.LogInformation("API Response: {Response}", response);
             
             // Parse JSON directly: {"state":"Online","players":1,"playersList":["Agge"]}
             using var doc = JsonDocument.Parse(response);
@@ -1184,14 +1187,18 @@
                     .Where(p => !string.IsNullOrEmpty(p))
                     .ToList();
                 
-                Console.WriteLine($"[CharacterEdit] Players online: {string.Join(", ", playersList)}");
+                Logger.LogInformation("Players online: {PlayersList}", string.Join(", ", playersList));
                 _isCharacterOnline = playersList.Contains(Character.Name, StringComparer.OrdinalIgnoreCase);
-                Console.WriteLine($"[CharacterEdit] Is '{Character.Name}' online? {_isCharacterOnline}");
+                Logger.LogInformation("Is '{CharacterName}' online? {IsOnline}", Character.Name, _isCharacterOnline);
+            }
+            else
+            {
+                Logger.LogWarning("No 'playersList' property found in API response");
             }
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"[CharacterEdit] Error checking online status: {ex.Message}");
+            Logger.LogError(ex, "Error checking online status for character: {CharacterName}", Character?.Name ?? "Unknown");
             // If we can't check, assume offline to allow editing
             _isCharacterOnline = false;
         }

@@ -1,0 +1,185 @@
+/*
+ * OpenMU Admin Panel - Compatibility Fixes
+ * Adds vendor prefixes and fixes for cross-browser compatibility
+ * Date: November 13, 2025
+ */
+
+/* Fix user-select compatibility */
+.user-select-all {
+  -webkit-user-select: all !important;
+  -moz-user-select: all !important;
+  -ms-user-select: all !important;
+  user-select: all !important;
+}
+
+.user-select-auto {
+  -webkit-user-select: auto !important;
+  -moz-user-select: auto !important;
+  -ms-user-select: auto !important;
+  user-select: auto !important;
+}
+
+.user-select-none {
+  -webkit-user-select: none !important;
+  -moz-user-select: none !important;
+  -ms-user-select: none !important;
+  user-select: none !important;
+}
+
+/* Fix appearance property */
+button,
+[type="button"],
+[type="reset"],
+[type="submit"] {
+  -webkit-appearance: button;
+  -moz-appearance: button;
+  appearance: button;
+}
+
+[type="number"]::-webkit-inner-spin-button,
+[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+}
+
+[type="search"] {
+  -webkit-appearance: textfield;
+  -moz-appearance: textfield;
+  appearance: textfield;
+}
+
+/* Fix print color-adjust */
+@media print {
+  *,
+  *::before,
+  *::after {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+}
+
+/* Fix text-align match-parent */
+.text-align-inherit {
+  text-align: -webkit-match-parent;
+  text-align: match-parent;
+}
+
+/* Fix transform vendor prefixes */
+.transform {
+  -webkit-transform: var(--transform-value);
+  -moz-transform: var(--transform-value);
+  -ms-transform: var(--transform-value);
+  transform: var(--transform-value);
+}
+
+/* Fix transitions */
+.transition {
+  -webkit-transition: var(--transition-value);
+  -moz-transition: var(--transition-value);
+  -ms-transition: var(--transition-value);
+  transition: var(--transition-value);
+}
+
+/* Fix smooth scrolling */
+html {
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Fix button focus outline */
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+  outline: 2px solid var(--color-accent-blue, #3b82f6);
+  outline-offset: 2px;
+}
+
+/* Ensure all interactive elements have discernible text */
+button:empty::after,
+a:empty::after {
+  content: attr(aria-label);
+  content: attr(title);
+}
+
+/* Accessibility improvements */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+/* Focus indicators */
+:focus-visible {
+  outline: 2px solid var(--color-accent-blue, #3b82f6);
+  outline-offset: 2px;
+}
+
+/* Reduce motion for users who prefer it */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  :root {
+    --color-border-primary: currentColor;
+  }
+}
+
+/* Dark mode preference detection */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme]) {
+    color-scheme: dark;
+  }
+}
+
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme]) {
+    color-scheme: light;
+  }
+}
+
+/* Top Row Layout with Theme Toggle - Enhanced without conflicts */
+.main .top-row {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+/* Ensure breadcrumb takes available space */
+.main .top-row .breadcrumb-nav {
+    flex: 1 1 auto;
+    min-width: 0;
+}
+
+/* Theme toggle positioning */
+.main .top-row .theme-toggle-wrapper {
+    flex: 0 0 auto;
+    order: 2;
+}
+
+/* About link positioning */
+.main .top-row > a[href*="munique.net"] {
+    flex: 0 0 auto;
+    order: 3;
+    margin-left: 0.5rem !important;
+}
