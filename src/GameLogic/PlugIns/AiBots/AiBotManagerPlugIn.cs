@@ -15,9 +15,11 @@ using MUnique.OpenMU.PlugIns;
 /// <summary>
 /// Plugin that manages AI bots in the game to make it feel more alive.
 /// Spawns bots that walk around, attack monsters, and interact with the world.
+/// DISABLED: Needs proper spawn area configuration for Crywolf Fortress map.
 /// </summary>
 [Guid("A1B2C3D4-E5F6-7890-ABCD-EF1234567890")]
-[PlugIn(nameof(AiBotManagerPlugIn), "Manages AI bots that make the game feel alive")]
+
+// [PlugIn(nameof(AiBotManagerPlugIn), "Manages AI bots that make the game feel alive")] // DISABLED - Spawn errors
 public class AiBotManagerPlugIn : IPeriodicTaskPlugIn, ISupportCustomConfiguration<AiBotConfiguration>, ISupportDefaultCustomConfiguration
 {
     private readonly Dictionary<GameMap, List<Monster>> _botsByMap = new();

@@ -379,6 +379,38 @@ document.documentElement.classList.toggle('dark', theme === 'dark');
 
 ---
 
+## 🔧 Known Issues & Future Improvements
+
+### 1. AI Bot System (DISABLED - Needs Implementation)
+**Issue:** AI bot spawn system throwing errors on "Crywolf Fortress" map
+```
+Error spawning AI bot on map "Crywolf Fortress"
+System.InvalidOperationException: No valid spawn point found. Spawn area might not contain valid points.
+```
+
+**Status:** Currently generating spam in logs
+**Action Needed:** 
+- AI bot plugin needs proper spawn area configuration for Crywolf Fortress map
+- Alternative: Disable AI bot plugin until spawn areas are properly configured
+- Location: `src/GameLogic/PlugIns/AiBots/AiBotManagerPlugIn.cs`
+
+### 2. Character Edit Page - Database Reload Issue (IN PROGRESS)
+**Issue:** Character stats showing incorrect/cached values after in-game reset
+- Database has correct values (e.g., Strength: 18)
+- UI shows wrong cached values (e.g., Strength: 32000)
+- Database reload method failing to access DbContext
+
+**Root Cause:** Reflection cannot access internal `Context` property on `EntityFrameworkContextBase`
+**Status:** Fix in progress - need to use `BindingFlags.NonPublic` to access internal property
+
+**Action Items:**
+- ✅ Added comprehensive logging to identify issue
+- ✅ Found root cause: Failed to get DbContext from PersistenceContext
+- 🔄 Implementing fix: Use BindingFlags to access internal Context property
+- ⏳ Test database reload after fix deployment
+
+---
+
 ## ✅ Completion Status
 
 - **Server:** Production Ready ✅
@@ -388,6 +420,7 @@ document.documentElement.classList.toggle('dark', theme === 'dark');
 - **Theme:** Dark/Light mode working ✅
 - **Navigation:** Smart sidebar on all pages ✅
 - **API:** Public server status endpoint ✅
+- **Online Status Protection:** Character edit blocked when online ✅
 - **Deployment:** Live at connect.globalmu.org ✅
 
 **Overall Project Status:** 🎉 **PRODUCTION READY AND DEPLOYED** 🚀
@@ -395,3 +428,4 @@ document.documentElement.classList.toggle('dark', theme === 'dark');
 ---
 
 *This document consolidates all previous session summaries, enhancement reports, and current work. Old MD files have been archived.*
+

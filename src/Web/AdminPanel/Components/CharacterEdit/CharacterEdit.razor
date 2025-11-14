@@ -1237,12 +1237,15 @@
         {
             // Get the underlying DbContext from the persistence context using reflection
             var contextType = PersistenceContext.GetType();
-            var contextProperty = contextType.GetProperty("Context");
+            var contextProperty = contextType.GetProperty("Context", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Public);
             if (contextProperty?.GetValue(PersistenceContext) is not object dbContextObj)
             {
-                Logger.LogError("Failed to get DbContext from PersistenceContext");
+                Logger.LogError("Failed to get DbContext from PersistenceContext - Property: {PropertyFound}", contextProperty != null ? "Found" : "NotFound");
+                Logger.LogError("PersistenceContext type: {Type}", contextType.FullName);
                 return;
             }
+
+            Logger.LogInformation("Successfully got DbContext: {DbContextType}", dbContextObj.GetType().Name);
 
             // Query database directly for fresh data using reflection
             var dbContextType = dbContextObj.GetType();
@@ -1253,12 +1256,16 @@
                 return;
             }
 
+            Logger.LogInformation("Successfully got Database object");
+
             var getDbConnectionMethod = databaseObj.GetType().GetMethod("GetDbConnection");
             if (getDbConnectionMethod?.Invoke(databaseObj, null) is not System.Data.Common.DbConnection connection)
             {
                 Logger.LogError("Failed to get DbConnection");
                 return;
             }
+
+            Logger.LogInformation("Successfully got DbConnection");
 
             var characterId = Character.GetId();
 
