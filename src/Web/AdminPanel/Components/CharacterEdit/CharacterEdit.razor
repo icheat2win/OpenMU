@@ -1258,28 +1258,32 @@
 
             Logger.LogInformation("Successfully got Database object");
 
-            // Get DbConnection - Database is a DatabaseFacade type
-            var databaseFacadeType = databaseObj.GetType();
-            Logger.LogInformation("Database object type: {Type}", databaseFacadeType.FullName);
-            
-            var getDbConnectionMethod = databaseFacadeType.GetMethod("GetDbConnection", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.Public);
-            if (getDbConnectionMethod == null)
+            // Get DbConnection - need to use extension method from EF Core
+            // DatabaseFacade.GetDbConnection() is an extension method, so we need to use the static method directly
+            var relationalExtensionsType = Type.GetType("Microsoft.EntityFrameworkCore.RelationalDatabaseFacadeExtensions, Microsoft.EntityFrameworkCore.Relational");
+            if (relationalExtensionsType == null)
             {
-                Logger.LogError("GetDbConnection method not found on Database object");
-                Logger.LogError("Available methods: {Methods}", string.Join(", ", databaseFacadeType.GetMethods().Select(m => m.Name)));
+                Logger.LogError("Could not find RelationalDatabaseFacadeExtensions type");
                 return;
             }
-            
-            var connectionObj = getDbConnectionMethod.Invoke(databaseObj, null);
-            Logger.LogInformation("GetDbConnection returned: {Result}", connectionObj?.GetType().FullName ?? "null");
-            
+
+            var getDbConnectionMethod = relationalExtensionsType.GetMethod("GetDbConnection", System.Reflection.BindingFlags.Static | System.Reflection.BindingFlags.Public);
+            if (getDbConnectionMethod == null)
+            {
+                Logger.LogError("GetDbConnection extension method not found");
+                return;
+            }
+
+            Logger.LogInformation("Found GetDbConnection extension method");
+
+            var connectionObj = getDbConnectionMethod.Invoke(null, new[] { databaseObj });
             if (connectionObj is not System.Data.Common.DbConnection connection)
             {
                 Logger.LogError("Failed to get DbConnection - returned type is not DbConnection");
                 return;
             }
 
-            Logger.LogInformation("Successfully got DbConnection");
+            Logger.LogInformation("Successfully got DbConnection: {ConnectionType}", connection.GetType().Name);
 
             var characterId = Character.GetId();
 
