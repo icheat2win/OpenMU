@@ -50,12 +50,22 @@
         color: #0f172a !important;
     }
     
-    /* Make sure selected value is visible */
+    /* Make sure selected value is visible - CRITICAL FIX */
     .blazored-typeahead span,
     .blazored-typeahead a,
-    .blazored-typeahead__selected-item {
+    .blazored-typeahead__selected-item,
+    .blazored-typeahead .blazored-typeahead__input,
+    .blazored-typeahead__controls > *,
+    .blazored-typeahead__controls span,
+    .blazored-typeahead__controls a {
         color: #0f172a !important;
         text-decoration: none !important;
+        font-weight: 500 !important;
+    }
+    
+    /* Force all child elements to have dark text */
+    .blazored-typeahead * {
+        color: #0f172a !important;
     }
     
     .blazored-typeahead input:focus,
@@ -95,14 +105,19 @@
         width: 100% !important;
     }
     
-    /* Fix any NavLink in the typeahead */
+    /* Fix any NavLink in the typeahead - FORCE DARK TEXT */
     .blazored-typeahead a.nav-link,
-    .blazored-typeahead a {
+    .blazored-typeahead a,
+    .blazored-typeahead__controls a,
+    .blazored-typeahead__controls a.nav-link,
+    a.nav-link {
         color: #0f172a !important;
         font-weight: 500 !important;
+        text-decoration: none !important;
     }
     
-    .blazored-typeahead a:hover {
+    .blazored-typeahead a:hover,
+    .blazored-typeahead a.nav-link:hover {
         color: #1e40af !important;
         text-decoration: underline !important;
     }
