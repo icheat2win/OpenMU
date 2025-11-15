@@ -20,34 +20,8 @@
     
     <script>(function(){var t=localStorage.getItem('theme')||'dark';var h=document.documentElement;if(t==='dark'){h.classList.add('dark')}else{h.classList.remove('dark')}h.setAttribute('data-theme',t)})();</script>
     
-    <!-- Tailwind CSS v4 (Play CDN) -->
-    <script src="https://cdn.jsdelivr.net/npm/@@tailwindcss/browser@@4"></script>
-    <style type="text/tailwindcss">
-        @@import "tailwindcss";
-        
-        /* Configure dark mode using Tailwind v4 syntax */
-        @@variant dark (html.dark &);
-        
-        @@theme {
-            --color-primary-50: #eff6ff;
-            --color-primary-100: #dbeafe;
-            --color-primary-200: #bfdbfe;
-            --color-primary-300: #93c5fd;
-            --color-primary-400: #60a5fa;
-            --color-primary-500: #3b82f6;
-            --color-primary-600: #2563eb;
-            --color-primary-700: #1d4ed8;
-            --color-primary-800: #1e40af;
-            --color-primary-900: #1e3a8a;
-            --color-primary-950: #172554;
-            
-            --color-accent-cyan: #06b6d4;
-            --color-accent-blue: #3b82f6;
-            --color-accent-purple: #7c3aed;
-            
-            --font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-        }
-    </style>
+    <!-- Tailwind CSS (Local Build - Production Ready) -->
+    <link href="css/tailwind.min.css" rel="stylesheet" />
     
     <!-- Open Iconic Font -->
     <link href="css/open-iconic/font/css/open-iconic-bootstrap.min.css" rel="stylesheet" />
