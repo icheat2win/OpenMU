@@ -2,7 +2,7 @@
 
 **Last Updated:** November 15, 2025  
 **Project Status:** Production Ready ✅  
-**Latest Commit:** ff078a477  
+**Latest Commit:** 804de5343  
 **Branch:** master  
 **Server URL:** http://connect.globalmu.org/ (http://192.168.4.71/)  
 **Admin Panel:** http://192.168.4.71:8080/  
@@ -11,43 +11,56 @@
 
 ---
 
-## 🎯 Latest Update: Character Edit Dropdown Fix (November 15, 2025 - Session 4d)
+## 🎯 Latest Update: Dropdown Selected Value Text Fix (November 15, 2025 - Session 4e)
 
-**Status:** ✅ Dropdown Text Visibility Fixed
+**Status:** ✅ Dropdown Selected Values Now Visible
 
-Fixed critical UX issue where dropdown fields in Character Edit page showed no text.
+Fixed critical UX issue where selected values in dropdown fields were invisible until text selection (Ctrl+A).
 
 ### Problem Reported
 **User Issue:**
-- Character Class dropdown - no visible text
-- Current Map dropdown - no visible text
-- All BlazoredTypeahead fields showing empty/blank
-- Unable to see selected values
+- Character Class dropdown showed "Grand Master" only when Ctrl+A pressed
+- Current Map dropdown showed "Lorencia" only when text selected
+- Selected values had white/invisible text on white background
+- Blue labels visible but actual values invisible
 
 ### Root Cause
-**CSS Specificity Issue:**
-1. BlazoredTypeahead wrapper elements not styled
-2. Selected item spans and NavLinks had no explicit color
-3. Missing `.blazored-typeahead__input` class styling
-4. `.blazored-typeahead__controls` inheriting transparent color
+**CSS Specificity Insufficient:**
+1. Selected values rendered in nested spans/NavLinks
+2. Previous CSS didn't target all child elements
+3. `.blazored-typeahead *` selector needed for complete coverage
+4. NavLink color not forced with !important
+5. Wrapper controls' children not explicitly styled
 
 ### Solution Implemented
-**Enhanced CSS Rules:**
+**Enhanced CSS with Universal Child Selectors:**
 ```css
-/* Added explicit styling for all BlazoredTypeahead elements */
-- .blazored-typeahead__input (direct input class)
-- .blazored-typeahead__controls (wrapper color)
-- .blazored-typeahead__selected-item (selected value)
-- NavLink elements in typeahead (link color)
-- Wrapper div color inheritance
+/* Force ALL child elements to have dark text */
+.blazored-typeahead * {
+    color: #0f172a !important;
+}
+
+/* Target all nested control elements */
+.blazored-typeahead__controls > *,
+.blazored-typeahead__controls span,
+.blazored-typeahead__controls a {
+    color: #0f172a !important;
+    font-weight: 500 !important;
+}
+
+/* Ensure NavLinks visible */
+.blazored-typeahead__controls a,
+.blazored-typeahead__controls a.nav-link {
+    color: #0f172a !important;
+    text-decoration: none !important;
+}
 ```
 
-**Improvements:**
-- Dark text (#0f172a) on light background
-- Font-weight: 500 for better readability
-- NavLinks styled with hover effects
-- Z-index increased for dropdown visibility
-- All wrapper elements explicitly colored
+**Result:**
+- ✅ Selected values visible immediately (no Ctrl+A needed)
+- ✅ Dark text (#0f172a) on light background
+- ✅ Consistent styling across all dropdown fields
+- ✅ Font-weight 500 for better readability
 
 ### Results
 ✅ **Dropdown Text Visible:**
