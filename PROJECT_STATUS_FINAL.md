@@ -2,7 +2,7 @@
 
 **Last Updated:** November 15, 2025  
 **Project Status:** Production Ready ✅  
-**Latest Commit:** 0acc4633b  
+**Latest Commit:** a9c830ecf  
 **Branch:** master  
 **Server URL:** http://connect.globalmu.org/ (http://192.168.4.71/)  
 **Admin Panel:** http://192.168.4.71:8080/  
@@ -11,7 +11,84 @@
 
 ---
 
-## 🎯 Latest Update: Log Viewer Enhancement (November 15, 2025 - Session 4b)
+## 🎯 Latest Update: Critical Log File Permission Fix (November 15, 2025 - Session 4c)
+
+**Status:** ✅ Logging Restored - Critical Production Issue Resolved
+
+Fixed critical production issue where server logs stopped being created after November 12.
+
+### Problem Discovery
+**User reported:**
+- Log files appeared old (last dated Nov 12)
+- Missing logs for Nov 13, 14, 15
+- Today's date is Nov 15 but no current logs
+
+### Root Cause Analysis
+**Investigation revealed:**
+1. **Permission Denied Error:**
+   ```
+   System.UnauthorizedAccessException: Access to the path '/logs/log20251115.txt' is denied
+   ```
+
+2. **Ownership Mismatch:**
+   - `/logs` directory owned by `root:root`
+   - Application runs as `app:app` user
+   - Volume mounted from host inherited root ownership
+
+3. **Silent Failure:**
+   - Serilog caught exception and continued
+   - No visible error in container output
+   - Only found in Docker container logs
+
+### Solution Implemented
+**1. Created entrypoint.sh Script:**
+- Runs as root on container start
+- Fixes `/logs` ownership to `app:app`
+- Sets proper permissions (755)
+- Switches to app user via `su-exec`
+- Starts application as non-root
+
+**2. Updated Dockerfile:**
+- Added `su-exec` package for secure user switching
+- Copied entrypoint script
+- Made script executable
+- Changed ENTRYPOINT to use script
+
+**3. Updated docker-compose.yml:**
+- Start container as root (`user: "0:0"`)
+- Entrypoint handles permission fix + user switch
+- Maintains security while fixing permissions
+
+### Results
+✅ **Logs Restored:**
+- `log20251115.txt` created successfully
+- Currently 1.5MB, 6,138 lines and growing
+- Real-time logging verified working
+- All game server events being logged
+
+✅ **Permanent Fix:**
+- Automatic on every container start
+- No manual intervention needed
+- Works for new deployments
+- Handles permission drift
+
+### Files Modified
+1. `deploy/all-in-one/entrypoint.sh` (NEW) - Permission fix script
+2. `deploy/all-in-one/Dockerfile` - Added su-exec, entrypoint
+3. `deploy/all-in-one/docker-compose.yml` - Start as root
+
+### Build/Deploy Status
+- Container restarted: ✅
+- Permissions fixed: ✅
+- Logs flowing: ✅
+- No build required (runtime fix)
+
+### Commits
+- `a9c830ecf` - Fix log file permission issues
+
+---
+
+## Previous Update: Log Viewer Enhancement (November 15, 2025 - Session 4b)
 
 **Status:** ✅ Inline Log Viewer Added - Major UX Improvement
 
