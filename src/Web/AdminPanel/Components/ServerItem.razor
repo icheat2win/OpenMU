@@ -35,20 +35,20 @@
             
             <!-- Server Info -->
             <div>
-                <h3 class="text-xl font-bold text-slate-900 mb-2">
+                <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-2">
                     @switch (this.Server.Type)
                     {
                         case ServerType.GameServer:
                             <NavLink href="@("edit-config/" + typeof(GameServerDefinition).FullName + "/" + this.Server.ConfigurationId)" 
-                                     class="hover:text-cyan-500 transition-colors">@this.Server.Description</NavLink>
+                                     class="hover:text-cyan-500 dark:hover:text-cyan-400 transition-colors">@this.Server.Description</NavLink>
                             break;
                         case ServerType.ConnectServer:
                             <NavLink href="@("edit-connectionServer/" + this.Server.ConfigurationId)" 
-                                     class="hover:text-cyan-500 transition-colors">@this.Server.Description</NavLink>
+                                     class="hover:text-cyan-500 dark:hover:text-cyan-400 transition-colors">@this.Server.Description</NavLink>
                             break;
                         case ServerType.ChatServer:
                             <NavLink href="@("edit-config/" + typeof(ChatServerDefinition).FullName + "/" + this.Server.ConfigurationId)" 
-                                     class="hover:text-cyan-500 transition-colors">@this.Server.Description</NavLink>
+                                     class="hover:text-cyan-500 dark:hover:text-cyan-400 transition-colors">@this.Server.Description</NavLink>
                             break;
                         default:
                             @this.Server.Description
@@ -56,7 +56,7 @@
                     }
                 </h3>
                 <div class="flex flex-wrap items-center gap-2">
-                    <span class="px-3 py-1 bg-slate-100 text-slate-700 text-sm font-medium rounded-full">
+                    <span class="px-3 py-1 bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-200 text-sm font-medium rounded-full">
                         @GetServerTypeText()
                     </span>
                     <span class="@GetStatusBadgeClasses() px-3 py-1 text-sm font-medium rounded-full flex items-center gap-1.5">
@@ -82,30 +82,30 @@
 
     <!-- Server Stats -->
     <div class="grid grid-cols-3 gap-4 mb-6">
-        <div class="bg-gradient-to-br from-slate-50 to-slate-100 rounded-lg p-4">
+        <div class="bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-700/50 dark:to-slate-800/50 rounded-lg p-4">
             <div class="flex items-center gap-3">
                 <span class="text-2xl">👥</span>
                 <div>
-                    <div class="text-2xl font-bold text-slate-900">@this.Server.CurrentConnections</div>
-                    <div class="text-sm text-slate-600">Online</div>
+                    <div class="text-2xl font-bold text-slate-900 dark:text-white">@this.Server.CurrentConnections</div>
+                    <div class="text-sm text-slate-600 dark:text-slate-300">Online</div>
                 </div>
             </div>
         </div>
-        <div class="bg-gradient-to-br from-slate-50 to-slate-100 rounded-lg p-4">
+        <div class="bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-700/50 dark:to-slate-800/50 rounded-lg p-4">
             <div class="flex items-center gap-3">
                 <span class="text-2xl">📊</span>
                 <div>
-                    <div class="text-2xl font-bold text-slate-900">@(this.Server.MaximumConnections < int.MaxValue ? this.Server.MaximumConnections.ToString() : "∞")</div>
-                    <div class="text-sm text-slate-600">Capacity</div>
+                    <div class="text-2xl font-bold text-slate-900 dark:text-white">@(this.Server.MaximumConnections < int.MaxValue ? this.Server.MaximumConnections.ToString() : "∞")</div>
+                    <div class="text-sm text-slate-600 dark:text-slate-300">Capacity</div>
                 </div>
             </div>
         </div>
-        <div class="bg-gradient-to-br from-slate-50 to-slate-100 rounded-lg p-4">
+        <div class="bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-700/50 dark:to-slate-800/50 rounded-lg p-4">
             <div class="flex items-center gap-3">
                 <span class="text-2xl">⚡</span>
                 <div>
-                    <div class="text-2xl font-bold text-slate-900">@GetConnectionPercentage()%</div>
-                    <div class="text-sm text-slate-600">Usage</div>
+                    <div class="text-2xl font-bold text-slate-900 dark:text-white">@GetConnectionPercentage()%</div>
+                    <div class="text-sm text-slate-600 dark:text-slate-300">Usage</div>
                 </div>
             </div>
         </div>
@@ -114,7 +114,7 @@
     <!-- Progress Bar -->
     @if (this.Server.CurrentConnections > 0 && this.Server.MaximumConnections < int.MaxValue)
     {
-        <div class="mb-6 bg-slate-200 rounded-full h-2 overflow-hidden">
+        <div class="mb-6 bg-slate-200 dark:bg-slate-700 rounded-full h-2 overflow-hidden">
             <div class="@GetProgressBarClasses() h-full rounded-full transition-all duration-500" 
                  style="width: @GetConnectionPercentage()%"></div>
         </div>
@@ -333,12 +333,12 @@
     {
         return this.Server.ServerState switch
         {
-            ServerState.Started => "bg-white border-emerald-200 shadow-lg shadow-emerald-500/20",
-            ServerState.Starting => "bg-white border-amber-200 shadow-lg shadow-amber-500/20",
-            ServerState.Stopping => "bg-white border-amber-200 shadow-lg shadow-amber-500/20",
-            ServerState.Stopped => "bg-white border-slate-200 shadow-lg",
-            ServerState.Timeout => "bg-white border-red-200 shadow-lg shadow-red-500/20",
-            _ => "bg-white border-slate-200 shadow-lg"
+            ServerState.Started => "bg-white dark:bg-slate-800 border-emerald-200 dark:border-emerald-700 shadow-lg shadow-emerald-500/20",
+            ServerState.Starting => "bg-white dark:bg-slate-800 border-amber-200 dark:border-amber-700 shadow-lg shadow-amber-500/20",
+            ServerState.Stopping => "bg-white dark:bg-slate-800 border-amber-200 dark:border-amber-700 shadow-lg shadow-amber-500/20",
+            ServerState.Stopped => "bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-700 shadow-lg",
+            ServerState.Timeout => "bg-white dark:bg-slate-800 border-red-200 dark:border-red-700 shadow-lg shadow-red-500/20",
+            _ => "bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-700 shadow-lg"
         };
     }
 
@@ -357,12 +357,12 @@
     {
         return this.Server.ServerState switch
         {
-            ServerState.Started => "bg-emerald-100 text-emerald-700",
-            ServerState.Starting => "bg-amber-100 text-amber-700",
-            ServerState.Stopping => "bg-amber-100 text-amber-700",
-            ServerState.Stopped => "bg-slate-100 text-slate-700",
-            ServerState.Timeout => "bg-red-100 text-red-700",
-            _ => "bg-slate-100 text-slate-700"
+            ServerState.Started => "bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-300",
+            ServerState.Starting => "bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-300",
+            ServerState.Stopping => "bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-300",
+            ServerState.Stopped => "bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-200",
+            ServerState.Timeout => "bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-300",
+            _ => "bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-200"
         };
     }
 
