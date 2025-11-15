@@ -16,6 +16,7 @@ services:
   openmu-startup:
     image: openmu
     container_name: openmu-startup
+    user: "0:0"  # Start as root to fix permissions, entrypoint will switch to app user
     ports:
       - "192.168.4.71:8080:8080"
       - "192.168.4.71:55901:55901"

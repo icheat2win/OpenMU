@@ -28,9 +28,11 @@ RUN dotnet publish "MUnique.OpenMU.Startup.csproj" -c Release -o /app/publish -p
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
+COPY deploy/all-in-one/entrypoint.sh /entrypoint.sh
 
-RUN mkdir /app/logs
-RUN chmod 777 /app/logs
+RUN mkdir /app/logs && chmod 777 /app/logs && \
+    apk add --no-cache su-exec && \
+    chmod +x /entrypoint.sh
 
 USER $APP_UID
-ENTRYPOINT ["dotnet", "MUnique.OpenMU.Startup.dll", "-autostart"]
+ENTRYPOINT ["/entrypoint.sh", "-autostart"]
