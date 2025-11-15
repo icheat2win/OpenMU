@@ -22,7 +22,13 @@
     .drop-zone-cell {
         pointer-events: none;
         transition: background-color 0.15s ease;
-        border: 1px solid transparent;
+        border: 1px solid rgba(100, 100, 120, 0.4);
+        background: rgba(30, 30, 40, 0.3);
+    }
+    
+    html.dark .drop-zone-cell {
+        border: 1px solid rgba(71, 85, 105, 0.5);
+        background: rgba(15, 23, 42, 0.3);
     }
     
     .drop-zone-cell.drag-over-valid {
