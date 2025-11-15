@@ -2,7 +2,7 @@
 
 **Last Updated:** November 15, 2025  
 **Project Status:** Production Ready ✅  
-**Latest Commit:** f82836c6f  
+**Latest Commit:** 42b5de0fc  
 **Branch:** master  
 **Server URL:** http://connect.globalmu.org/ (http://192.168.4.71/)  
 **Admin Panel:** http://192.168.4.71:8080/  
@@ -68,7 +68,7 @@ Successfully implemented comprehensive dark mode support across all admin panel 
   - Create Inventory button with gradient
   - Cancel button with dark:bg-slate-700 hover effect
 
-**5. Inventory & Equipment Grids** (Commit: f82836c6f)
+**5. Inventory & Equipment Grids** (Commits: f82836c6f, 42b5de0fc)
 - **ItemStorageField Component Dark Mode:**
   - Inventory grids styled to match MU Online game interface
   - Item storage container with deeper purple gradient in dark mode
@@ -82,6 +82,16 @@ Successfully implemented comprehensive dark mode support across all admin panel 
   - **Game-accurate grid backgrounds** visible in both light/dark modes
   - Account Vault storage uses same styling as character inventory
 
+- **MuItemStorage Grid Cells** (Commit: 42b5de0fc):
+  - Added visible grid lines to all inventory cells (8x4, 8x8, 8x15 grids)
+  - Cell borders: `rgba(100, 100, 120, 0.4)` in light mode
+  - Dark mode borders: `rgba(71, 85, 105, 0.5)` for enhanced contrast
+  - Semi-transparent cell backgrounds show grid structure clearly
+  - **Perfect match to MU Online game inventory appearance**
+  - Grid lines visible even when cells are empty
+  - Drag-over states (valid/invalid) maintain visibility
+  - Applied to Character Inventory, Extensions, Personal Store, and Account Vault
+
 ### Technical Achievements
 
 **Innovation & UX:**
@@ -92,6 +102,7 @@ Successfully implemented comprehensive dark mode support across all admin panel 
 - ♿ Enhanced accessibility with proper contrast ratios
 - 🚀 Modern, intuitive interface that feels premium
 - 🎮 **Game-accurate inventory grids** matching MU Online aesthetic
+- 🔲 **Visible grid cells** showing exact slot positions like in-game
 
 **Modern UI Features:**
 - Gradient backgrounds that adapt to theme
@@ -134,7 +145,9 @@ RUN apk add --no-cache nodejs npm && npm install && npm run build:css
 | ecaec9287 | Add dark mode to Accounts pages | 4 files |
 | 84003265a | Add dark mode to Character Edit page | 2 files (-358, +104 lines) |
 | e5242f972 | Update PROJECT_STATUS with Character Edit | 1 file |
-| f82836c6f | **Add dark mode to Inventory & Equipment grids** | 3 files (+65, -28 lines) |
+| f82836c6f | Add dark mode to Inventory & Equipment grids | 3 files (+65, -28 lines) |
+| fffdc7aa1 | Update PROJECT_STATUS with Inventory grids | 1 file |
+| 42b5de0fc | **Add visible grid lines to inventory cells** | 1 file (+7, -1 lines) |
 
 ### Testing Results
 
