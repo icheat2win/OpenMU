@@ -23,6 +23,120 @@
         background: linear-gradient(135deg, #4338ca 0%, #6b21a8 100%);
     }
     
+    /* Toast Notification System */
+    .toast-container {
+        position: fixed;
+        top: 24px;
+        right: 24px;
+        z-index: 9999;
+        pointer-events: none;
+    }
+    
+    .toast {
+        pointer-events: auto;
+        min-width: 320px;
+        max-width: 480px;
+        background: white;
+        border-radius: 12px;
+        box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        padding: 16px 20px;
+        margin-bottom: 12px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        animation: slideInRight 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        border-left: 4px solid;
+        backdrop-filter: blur(12px);
+        background: rgba(255, 255, 255, 0.95);
+    }
+    
+    html.dark .toast {
+        background: rgba(30, 41, 59, 0.95);
+        box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.4), 0 10px 10px -5px rgba(0, 0, 0, 0.2);
+    }
+    
+    .toast-success {
+        border-left-color: #10b981;
+    }
+    
+    .toast-error {
+        border-left-color: #ef4444;
+    }
+    
+    .toast-info {
+        border-left-color: #3b82f6;
+    }
+    
+    .toast-warning {
+        border-left-color: #f59e0b;
+    }
+    
+    .toast-icon {
+        font-size: 24px;
+        line-height: 1;
+        flex-shrink: 0;
+    }
+    
+    .toast-content {
+        flex: 1;
+        font-size: 14px;
+        font-weight: 500;
+        color: #1f2937;
+    }
+    
+    html.dark .toast-content {
+        color: #f1f5f9;
+    }
+    
+    .toast-close {
+        background: transparent;
+        border: none;
+        color: #6b7280;
+        cursor: pointer;
+        font-size: 20px;
+        line-height: 1;
+        padding: 4px;
+        flex-shrink: 0;
+        transition: all 0.2s ease;
+        border-radius: 6px;
+    }
+    
+    .toast-close:hover {
+        background: rgba(0, 0, 0, 0.05);
+        color: #374151;
+    }
+    
+    html.dark .toast-close {
+        color: #9ca3af;
+    }
+    
+    html.dark .toast-close:hover {
+        background: rgba(255, 255, 255, 0.1);
+        color: #d1d5db;
+    }
+    
+    @keyframes slideInRight {
+        from {
+            transform: translateX(400px);
+            opacity: 0;
+        }
+        to {
+            transform: translateX(0);
+            opacity: 1;
+        }
+    }
+    
+    .toast.fade-out {
+        animation: fadeOut 0.3s ease-out forwards;
+    }
+    
+    @keyframes fadeOut {
+        to {
+            opacity: 0;
+            transform: translateX(400px);
+        }
+    }
+    
     .equipped-box {
         background: linear-gradient(to bottom, #1e1e2e, #2a2a3e);
         padding: 0.5rem;
@@ -163,20 +277,22 @@
     return;
 }
 
-<div class="item-storage-container">
+<!-- Toast Notification Container -->
+<div class="toast-container">
     @if (!string.IsNullOrEmpty(_saveMessage))
     {
-        <div class="@_saveMessageClass backdrop-blur-sm border-l-4 px-6 py-4 mb-4 rounded-xl shadow-2xl sticky top-0 z-50 transition-all duration-300">
-            <div class="flex items-center gap-3">
-                <span class="text-2xl filter drop-shadow-md">@(_saveMessage.Contains("✅") ? "✅" : _saveMessage.Contains("💾") ? "💾" : "⚠️")</span>
-                <p class="font-semibold text-lg">@_saveMessage</p>
-            </div>
+        <div class="toast @_toastType @(_isToastClosing ? "fade-out" : "")">
+            <div class="toast-icon">@_toastIcon</div>
+            <div class="toast-content">@_saveMessage</div>
+            <button class="toast-close" @onclick="CloseToast">×</button>
         </div>
     }
-    
+</div>
+
+<div class="item-storage-container">
     @if (!string.IsNullOrEmpty(this._overlappingItemsWarning))
     {
-        <div class="bg-red-100 dark:bg-red-900/30 border-l-4 border-red-500 dark:border-red-600 text-red-700 dark:text-red-300 px-6 py-4 mb-4 rounded-lg shadow-lg animate-pulse sticky top-0 z-50">
+        <div class="bg-red-100 dark:bg-red-900/30 border-l-4 border-red-500 dark:border-red-600 text-red-700 dark:text-red-300 px-6 py-4 mb-4 rounded-lg shadow-lg animate-pulse">
             <div class="flex items-center gap-3">
                 <span class="text-2xl">⚠️</span>
                 <p class="font-bold text-lg">@_overlappingItemsWarning</p>
@@ -348,6 +464,12 @@
     
     private string? _saveMessageClass;
     
+    private string _toastType = "toast-info";
+    
+    private string _toastIcon = "ℹ️";
+    
+    private bool _isToastClosing = false;
+    
     private System.Threading.Timer? _messageTimer;
 
     /// <inheritdoc />
@@ -421,35 +543,24 @@
                 if (this.Value?.Items != null && this.HasOverlappingItems(this.Value.Items))
                 {
                     this._overlappingItemsWarning = "⚠️ WARNING: Two or more items are overlapping! This will prevent the client from starting. Please fix the item positions.";
-                    ShowMessage("⚠️ Cannot save - Items are overlapping!", "bg-red-100 border-red-500 text-red-700");
+                    ShowToast("Cannot save - Items are overlapping!", "error");
                     Logger.LogWarning("❌ Cannot save inventory - items are overlapping");
                     this.StateHasChanged();
                     return;
                 }
 
                 this._overlappingItemsWarning = null;
-                ShowMessage("💾 Saving item changes...", "bg-blue-100 border-blue-500 text-blue-700");
+                ShowToast("Saving changes...", "info");
                 Logger.LogInformation("💾 Saving inventory changes...");
                 
                 await this.PersistenceContext.SaveChangesAsync();
                 
-                ShowMessage("✅ Items saved successfully!", "bg-green-100 border-green-500 text-green-700");
+                ShowToast("Items saved successfully!", "success", 2500);
                 Logger.LogInformation("✅ Inventory saved successfully");
-                
-                // Auto-hide success message after 3 seconds
-                _messageTimer?.Dispose();
-                _messageTimer = new System.Threading.Timer(_ =>
-                {
-                    InvokeAsync(() =>
-                    {
-                        _saveMessage = string.Empty;
-                        StateHasChanged();
-                    });
-                }, null, 3000, System.Threading.Timeout.Infinite);
             }
             catch (Exception ex)
             {
-                ShowMessage($"❌ Failed to save: {ex.Message}", "bg-red-100 border-red-500 text-red-700");
+                ShowToast($"Failed to save: {ex.Message}", "error", 5000);
                 Logger.LogError(ex, "❌ Failed to save inventory changes");
             }
         }
@@ -457,11 +568,82 @@
         this.StateHasChanged();
     }
 
-    private void ShowMessage(string message, string cssClass)
+    private void ShowToast(string message, string type = "info", int autoHideDuration = 3000)
     {
         _saveMessage = message;
-        _saveMessageClass = cssClass;
+        _isToastClosing = false;
+        
+        // Set toast type and icon
+        switch (type)
+        {
+            case "success":
+                _toastType = "toast-success";
+                _toastIcon = "✅";
+                break;
+            case "error":
+                _toastType = "toast-error";
+                _toastIcon = "❌";
+                break;
+            case "warning":
+                _toastType = "toast-warning";
+                _toastIcon = "⚠️";
+                break;
+            default:
+                _toastType = "toast-info";
+                _toastIcon = "💾";
+                break;
+        }
+        
         InvokeAsync(StateHasChanged);
+        
+        // Auto-hide after duration
+        _messageTimer?.Dispose();
+        _messageTimer = new System.Threading.Timer(_ =>
+        {
+            InvokeAsync(() =>
+            {
+                _isToastClosing = true;
+                StateHasChanged();
+                
+                // Wait for fade-out animation, then clear
+                System.Threading.Timer? clearTimer = null;
+                clearTimer = new System.Threading.Timer(__ =>
+                {
+                    _saveMessage = string.Empty;
+                    _isToastClosing = false;
+                    StateHasChanged();
+                    clearTimer?.Dispose();
+                }, null, 300, System.Threading.Timeout.Infinite);
+            });
+        }, null, autoHideDuration, System.Threading.Timeout.Infinite);
+    }
+    
+    private void CloseToast()
+    {
+        _messageTimer?.Dispose();
+        _isToastClosing = true;
+        StateHasChanged();
+        
+        // Wait for animation, then clear
+        System.Threading.Timer? clearTimer = null;
+        clearTimer = new System.Threading.Timer(_ =>
+        {
+            _saveMessage = string.Empty;
+            _isToastClosing = false;
+            StateHasChanged();
+            clearTimer?.Dispose();
+        }, null, 300, System.Threading.Timeout.Infinite);
+    }
+
+    private void ShowMessage(string message, string cssClass)
+    {
+        // Legacy method - redirect to toast
+        string type = "info";
+        if (cssClass.Contains("green")) type = "success";
+        else if (cssClass.Contains("red")) type = "error";
+        else if (cssClass.Contains("yellow") || cssClass.Contains("orange")) type = "warning";
+        
+        ShowToast(message.Replace("✅ ", "").Replace("❌ ", "").Replace("⚠️ ", "").Replace("💾 ", ""), type);
     }
 
     private bool HasOverlappingItems(IEnumerable<Item> items)
