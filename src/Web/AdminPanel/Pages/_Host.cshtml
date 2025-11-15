@@ -25,8 +25,8 @@
     <style type="text/tailwindcss">
         @@import "tailwindcss";
         
-        /* Configure dark mode to use class-based toggling */
-        @@custom-variant dark (&:where(.dark, .dark *));
+        /* Configure dark mode using Tailwind v4 syntax */
+        @@variant dark (html.dark &);
         
         @@theme {
             --color-primary-50: #eff6ff;
