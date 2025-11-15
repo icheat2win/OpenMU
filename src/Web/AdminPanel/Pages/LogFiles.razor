@@ -70,22 +70,21 @@
                         {
                             <tr class="hover:bg-slate-50 dark:hover:bg-slate-700/50 transition-colors">
                                 <td class="px-6 py-4">
-                                    <a href="logs/@entry.Name" 
-                                       class="flex items-center gap-3 text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 font-medium transition-colors" 
-                                       target="_blank">
+                                    <button @onclick="() => ViewLog(entry.Name)"
+                                       class="flex items-center gap-3 text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 font-medium transition-colors text-left w-full">
                                         <span class="flex items-center justify-center w-8 h-8 bg-gradient-to-br from-purple-500 to-violet-600 rounded text-white text-xs font-bold">📄</span>
-                                        <span>@entry.Name</span>
-                                    </a>
+                                        <span class="break-all">@entry.Name</span>
+                                    </button>
                                 </td>
-                                <td class="px-6 py-4 text-slate-600 dark:text-slate-400">
+                                <td class="px-6 py-4">
                                     <div class="flex items-center gap-2">
-                                        <span>@entry.LastWriteTime.ToString("yyyy-MM-dd HH:mm:ss")</span>
+                                        <span class="text-slate-700 dark:text-slate-300 font-medium">@entry.LastWriteTime.ToString("yyyy-MM-dd HH:mm:ss")</span>
                                         <span class="@GetAgeBadgeClass(entry.LastWriteTime)">
                                             @GetRelativeTime(entry.LastWriteTime)
                                         </span>
                                     </div>
                                 </td>
-                                <td class="px-6 py-4 text-slate-600 dark:text-slate-400 font-mono text-sm">
+                                <td class="px-6 py-4 text-slate-700 dark:text-slate-300 font-mono text-sm font-semibold">
                                     @FormatFileSize(entry.Length)
                                 </td>
                             </tr>
@@ -102,6 +101,72 @@
             </div>
         }
     </div>
+
+    <!-- Log Viewer Modal -->
+    @if (_selectedLog is not null)
+    {
+        <div class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4" @onclick="CloseLog">
+            <div class="bg-white dark:bg-slate-800 rounded-xl shadow-2xl max-w-6xl w-full max-h-[90vh] flex flex-col" @onclick:stopPropagation="true">
+                <!-- Modal Header -->
+                <div class="flex items-center justify-between p-6 border-b border-slate-200 dark:border-slate-700">
+                    <div class="flex items-center gap-3">
+                        <span class="text-3xl">📄</span>
+                        <div>
+                            <h2 class="text-2xl font-bold text-slate-900 dark:text-white">@_selectedLog</h2>
+                            <p class="text-sm text-slate-600 dark:text-slate-400">@_logFileSize</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <a href="logs/@_selectedLog" 
+                           download
+                           class="px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg transition-colors flex items-center gap-2 text-sm font-semibold">
+                            <span class="oi oi-data-transfer-download" aria-hidden="true"></span>
+                            <span>Download</span>
+                        </a>
+                        <button @onclick="CloseLog" 
+                                class="p-2 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg transition-colors">
+                            <span class="oi oi-x text-2xl text-slate-600 dark:text-slate-400" aria-hidden="true"></span>
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Search Bar -->
+                <div class="p-4 border-b border-slate-200 dark:border-slate-700">
+                    <div class="relative">
+                        <span class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400">🔍</span>
+                        <input type="text" 
+                               placeholder="Search in log..." 
+                               @bind="@_logSearchTerm" 
+                               @bind:event="oninput"
+                               class="w-full pl-10 pr-4 py-2 bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-600 rounded-lg text-slate-900 dark:text-white placeholder-slate-400 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all" />
+                    </div>
+                </div>
+                
+                <!-- Log Content -->
+                <div class="flex-1 overflow-auto p-6 bg-slate-50 dark:bg-slate-900">
+                    <pre class="text-xs font-mono text-slate-800 dark:text-slate-200 leading-relaxed whitespace-pre-wrap break-words">@GetFilteredLogContent()</pre>
+                </div>
+                
+                <!-- Footer -->
+                <div class="p-4 border-t border-slate-200 dark:border-slate-700 flex items-center justify-between bg-slate-50 dark:bg-slate-800/50">
+                    <div class="text-sm text-slate-600 dark:text-slate-400">
+                        @if (!string.IsNullOrEmpty(_logSearchTerm))
+                        {
+                            <span>Showing filtered results for "<strong class="text-slate-900 dark:text-white">@_logSearchTerm</strong>"</span>
+                        }
+                        else
+                        {
+                            <span>@_logLineCount lines</span>
+                        }
+                    </div>
+                    <button @onclick="CloseLog" 
+                            class="px-4 py-2 bg-slate-200 dark:bg-slate-700 hover:bg-slate-300 dark:hover:bg-slate-600 text-slate-900 dark:text-white rounded-lg transition-colors font-semibold">
+                        Close
+                    </button>
+                </div>
+            </div>
+        </div>
+    }
 </div>
 
 @code {
@@ -109,6 +174,13 @@
     private string _searchTerm = string.Empty;
     private string _sortColumn = "date";
     private bool _sortAscending = false;
+    
+    // Log viewer state
+    private string? _selectedLog;
+    private string _logContent = string.Empty;
+    private string _logSearchTerm = string.Empty;
+    private string _logFileSize = string.Empty;
+    private int _logLineCount = 0;
 
     /// <summary>
     /// Initializes a new instance of class <see cref="LogFiles"/>.
@@ -204,5 +276,49 @@
         if (size < 1024 * 1024) return $"{Math.Round(size / 1024D, 2)} KB";
         if (size < 1024L * 1024 * 1024) return $"{Math.Round(size / (1024D * 1024), 2)} MB";
         return $"{Math.Round(size / (1024D * 1024 * 1024), 2)} GB";
+    }
+    
+    private void ViewLog(string fileName)
+    {
+        try
+        {
+            var logsPath = Environment.GetEnvironmentVariable("LOGS_PATH") ?? Path.Combine(Directory.GetCurrentDirectory(), "logs");
+            var filePath = Path.Combine(logsPath, fileName);
+            
+            if (File.Exists(filePath))
+            {
+                var fileInfo = new FileInfo(filePath);
+                _selectedLog = fileName;
+                _logFileSize = FormatFileSize(fileInfo.Length);
+                _logContent = File.ReadAllText(filePath);
+                _logLineCount = _logContent.Split('\n').Length;
+                _logSearchTerm = string.Empty;
+            }
+        }
+        catch (Exception ex)
+        {
+            _logContent = $"Error loading log file: {ex.Message}";
+        }
+    }
+    
+    private void CloseLog()
+    {
+        _selectedLog = null;
+        _logContent = string.Empty;
+        _logSearchTerm = string.Empty;
+        _logFileSize = string.Empty;
+        _logLineCount = 0;
+    }
+    
+    private string GetFilteredLogContent()
+    {
+        if (string.IsNullOrWhiteSpace(_logSearchTerm))
+        {
+            return _logContent;
+        }
+        
+        var lines = _logContent.Split('\n');
+        var filteredLines = lines.Where(line => line.Contains(_logSearchTerm, StringComparison.OrdinalIgnoreCase));
+        return string.Join('\n', filteredLines);
     }
 }
