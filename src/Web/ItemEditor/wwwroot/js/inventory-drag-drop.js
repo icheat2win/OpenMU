@@ -9,26 +9,39 @@ class InventoryDragDrop {
         this.dropZones = [];
         this.cellSize = 42;
         this.gridColumns = 8;
+        this.debug = true; // Enable detailed logging
         
+        console.log('🎮 InventoryDragDrop: Constructor called');
         this.init();
     }
 
     init() {
+        console.log('🎮 InventoryDragDrop: Initializing...');
         this.setupEventListeners();
         this.createDropZoneOverlay();
+        console.log('🎮 InventoryDragDrop: Initialization complete');
     }
 
     setupEventListeners() {
+        console.log('🎮 InventoryDragDrop: Setting up event listeners');
         // Use event delegation for better performance
         document.addEventListener('mousedown', (e) => this.handleMouseDown(e));
         document.addEventListener('mousemove', (e) => this.handleMouseMove(e));
         document.addEventListener('mouseup', (e) => this.handleMouseUp(e));
+        console.log('🎮 InventoryDragDrop: Event listeners attached');
     }
 
     handleMouseDown(e) {
         // Find if we clicked on an item
         const itemElement = e.target.closest('.mu-item-selector');
-        if (!itemElement) return;
+        if (!itemElement) {
+            if (this.debug && e.target.closest('.mu-item-storage')) {
+                console.log('🖱️ MouseDown: Clicked in inventory but not on item', e.target);
+            }
+            return;
+        }
+        
+        console.log('🖱️ MouseDown: Item clicked!', itemElement);
 
         // Prevent default drag behavior
         e.preventDefault();
@@ -38,16 +51,21 @@ class InventoryDragDrop {
             left: itemElement.style.left,
             top: itemElement.style.top
         };
+        
+        console.log('🖱️ MouseDown: Original position:', this.originalPosition);
 
         // Add dragging class for visual feedback
         itemElement.classList.add('dragging-js');
         document.body.style.cursor = 'grabbing';
+        console.log('🖱️ MouseDown: Added dragging-js class, cursor set to grabbing');
 
         // Extract item data from classes
         this.draggedItem = this.extractItemData(itemElement);
+        console.log('🖱️ MouseDown: Item data extracted:', this.draggedItem);
 
         // Show drop zones
         this.showDropZones();
+        console.log('🖱️ MouseDown: Drop zones shown');
     }
 
     handleMouseMove(e) {
@@ -57,7 +75,10 @@ class InventoryDragDrop {
 
         // Move the element with the mouse
         const storage = this.draggedElement.closest('.mu-item-storage');
-        if (!storage) return;
+        if (!storage) {
+            if (this.debug) console.log('⚠️ MouseMove: No storage container found');
+            return;
+        }
 
         const rect = storage.getBoundingClientRect();
         const x = e.clientX - rect.left;
@@ -66,6 +87,10 @@ class InventoryDragDrop {
         // Calculate grid position
         const col = Math.floor(x / this.cellSize);
         const row = Math.floor(y / this.cellSize);
+        
+        if (this.debug && Math.random() < 0.1) { // Log 10% of moves to avoid spam
+            console.log('🖱️ MouseMove: Grid position:', { col, row, x, y });
+        }
 
         // Update drop zone highlights
         this.updateDropZoneHighlights(col, row);
@@ -78,10 +103,12 @@ class InventoryDragDrop {
     handleMouseUp(e) {
         if (!this.draggedElement) return;
 
+        console.log('🖱️ MouseUp: Drop attempt starting');
         e.preventDefault();
 
         const storage = this.draggedElement.closest('.mu-item-storage');
         if (!storage) {
+            console.log('⚠️ MouseUp: No storage container, canceling drag');
             this.cancelDrag();
             return;
         }
@@ -93,12 +120,16 @@ class InventoryDragDrop {
         const targetCol = Math.floor(x / this.cellSize);
         const targetRow = Math.floor(y / this.cellSize);
         const targetSlot = targetRow * this.gridColumns + targetCol;
+        
+        console.log('🖱️ MouseUp: Target position:', { targetCol, targetRow, targetSlot });
 
         // Check if drop is valid
         if (this.canPlaceItem(targetCol, targetRow, storage)) {
+            console.log('✅ MouseUp: Drop is valid, moving item to slot', targetSlot);
             // Call Blazor interop to update the item position
             this.moveItemToSlot(targetSlot);
         } else {
+            console.log('❌ MouseUp: Drop is invalid, canceling drag');
             // Invalid drop - return to original position
             this.cancelDrag();
         }
@@ -116,22 +147,38 @@ class InventoryDragDrop {
             if (cls.startsWith('c_')) col = parseInt(cls.substring(2));
             if (cls.startsWith('r_')) row = parseInt(cls.substring(2));
         });
-
-        return { width, height, col, row, element };
+        
+        const itemData = { width, height, col, row, element };
+        console.log('📦 extractItemData:', itemData);
+        return itemData;
     }
 
     canPlaceItem(targetCol, targetRow, storage) {
-        if (!this.draggedItem) return false;
+        console.log('🔍 canPlaceItem: Checking placement at', { targetCol, targetRow });
+        if (!this.draggedItem) {
+            console.log('⚠️ canPlaceItem: No draggedItem data');
+            return false;
+        }
 
         const { width, height } = this.draggedItem;
         const storageRows = this.getStorageRows(storage);
+        
+        console.log('🔍 canPlaceItem: Item size:', { width, height, storageRows });
 
         // Check bounds
-        if (targetCol < 0 || targetCol + width > this.gridColumns) return false;
-        if (targetRow < 0 || targetRow + height > storageRows) return false;
+        if (targetCol < 0 || targetCol + width > this.gridColumns) {
+            console.log('❌ canPlaceItem: Out of bounds (column)', { targetCol, width, gridColumns: this.gridColumns });
+            return false;
+        }
+        if (targetRow < 0 || targetRow + height > storageRows) {
+            console.log('❌ canPlaceItem: Out of bounds (row)', { targetRow, height, storageRows });
+            return false;
+        }
 
         // Check collisions with other items
         const allItems = storage.querySelectorAll('.mu-item-selector');
+        console.log('🔍 canPlaceItem: Checking collisions with', allItems.length, 'items');
+        
         for (const item of allItems) {
             if (item === this.draggedElement) continue;
 
@@ -142,10 +189,12 @@ class InventoryDragDrop {
                 targetCol, targetRow, width, height,
                 itemData.col, itemData.row, itemData.width, itemData.height
             )) {
+                console.log('❌ canPlaceItem: Collision detected with item at', { col: itemData.col, row: itemData.row });
                 return false;
             }
         }
 
+        console.log('✅ canPlaceItem: Placement is valid');
         return true;
     }
 
@@ -161,14 +210,20 @@ class InventoryDragDrop {
     }
 
     showDropZones() {
+        console.log('🎨 showDropZones: Creating drop zone overlay');
         const storage = this.draggedElement?.closest('.mu-item-storage');
-        if (!storage) return;
+        if (!storage) {
+            console.log('⚠️ showDropZones: No storage container found');
+            return;
+        }
 
         const storageRows = this.getStorageRows(storage);
+        console.log('🎨 showDropZones: Storage has', storageRows, 'rows');
         
         // Create drop zone overlay if it doesn't exist
         let overlay = storage.querySelector('.drop-zone-overlay-js');
         if (!overlay) {
+            console.log('🎨 showDropZones: Creating new overlay');
             overlay = document.createElement('div');
             overlay.className = 'drop-zone-overlay-js';
             overlay.style.cssText = `
@@ -186,6 +241,7 @@ class InventoryDragDrop {
         overlay.innerHTML = '';
 
         // Create grid cells
+        let cellCount = 0;
         for (let row = 0; row < storageRows; row++) {
             for (let col = 0; col < this.gridColumns; col++) {
                 const cell = document.createElement('div');
@@ -201,13 +257,20 @@ class InventoryDragDrop {
                     transition: background-color 0.1s ease, box-shadow 0.1s ease;
                 `;
                 overlay.appendChild(cell);
+                cellCount++;
             }
         }
+        console.log('🎨 showDropZones: Created', cellCount, 'drop zone cells');
     }
 
     updateDropZoneHighlights(hoveredCol, hoveredRow) {
         const overlay = this.draggedElement?.closest('.mu-item-storage')?.querySelector('.drop-zone-overlay-js');
-        if (!overlay) return;
+        if (!overlay) {
+            if (this.debug && Math.random() < 0.1) {
+                console.log('⚠️ updateDropZoneHighlights: No overlay found');
+            }
+            return;
+        }
 
         const cells = overlay.querySelectorAll('.drop-zone-cell-js');
         const storage = this.draggedElement.closest('.mu-item-storage');
@@ -244,10 +307,13 @@ class InventoryDragDrop {
     }
 
     moveItemToSlot(targetSlot) {
+        console.log('🚀 moveItemToSlot: Moving to slot', targetSlot);
         // Update visual position immediately for smooth UX
         if (this.draggedElement) {
             const targetCol = targetSlot % this.gridColumns;
             const targetRow = Math.floor(targetSlot / this.gridColumns);
+            
+            console.log('🚀 moveItemToSlot: Target grid position', { targetCol, targetRow });
             
             // Update position classes
             this.updatePositionClasses(this.draggedElement, targetCol, targetRow);
@@ -299,6 +365,8 @@ class InventoryDragDrop {
             }
         }
         
+        console.log('⌨️ simulateKeyboardMoves: Generated key sequence:', moveSequence.join(''));
+        
         // Execute moves sequentially with small delays
         this.executeKeySequence(moveSequence, 0);
     }
@@ -313,6 +381,7 @@ class InventoryDragDrop {
             cancelable: true
         });
         
+        console.log('⌨️ executeKeySequence: Dispatching key', sequence[index]);
         this.draggedElement.dispatchEvent(keyEvent);
         
         // Continue with next key after short delay
@@ -322,6 +391,7 @@ class InventoryDragDrop {
     }
 
     updatePositionClasses(element, col, row) {
+        console.log('🔄 updatePositionClasses:', { col, row });
         // Remove old position classes
         const classes = element.className.split(' ');
         const newClasses = classes.filter(c => !c.startsWith('c_') && !c.startsWith('r_'));
@@ -329,9 +399,11 @@ class InventoryDragDrop {
         // Add new position classes
         newClasses.push(`c_${col}`, `r_${row}`);
         element.className = newClasses.join(' ');
+        console.log('🔄 updatePositionClasses: New classes:', element.className);
     }
 
     cancelDrag() {
+        console.log('❌ cancelDrag: Reverting to original position');
         if (this.draggedElement && this.originalPosition) {
             this.draggedElement.style.left = this.originalPosition.left;
             this.draggedElement.style.top = this.originalPosition.top;
@@ -339,6 +411,7 @@ class InventoryDragDrop {
     }
 
     cleanup() {
+        console.log('🧹 cleanup: Removing drag state');
         if (this.draggedElement) {
             this.draggedElement.classList.remove('dragging-js');
         }
@@ -356,10 +429,16 @@ class InventoryDragDrop {
 }
 
 // Initialize when DOM is ready
+console.log('🎮 InventoryDragDrop script loaded, readyState:', document.readyState);
+
 if (document.readyState === 'loading') {
+    console.log('🎮 Waiting for DOMContentLoaded...');
     document.addEventListener('DOMContentLoaded', () => {
+        console.log('🎮 DOMContentLoaded fired, initializing InventoryDragDrop');
         window.inventoryDragDrop = new InventoryDragDrop();
     });
 } else {
+    console.log('🎮 DOM already loaded, initializing InventoryDragDrop immediately');
     window.inventoryDragDrop = new InventoryDragDrop();
 }
+
