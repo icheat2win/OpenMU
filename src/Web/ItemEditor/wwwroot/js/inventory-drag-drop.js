@@ -91,7 +91,8 @@ class InventoryDragDrop {
             console.log('🖱️ MouseMove: Grid position:', { col, row, x, y });
         }
 
-        // Removed drop zone highlights - not needed for functionality
+        // Show visual feedback on the dragged item
+        this.updateDragVisual(col, row, storage);
     }
 
     handleMouseUp(e) {
@@ -203,6 +204,22 @@ class InventoryDragDrop {
         return 8; // default
     }
 
+    updateDragVisual(col, row, storage) {
+        // Check if the drop would be valid
+        const isValid = this.canPlaceItem(col, row, storage);
+        
+        // Update the dragged item's visual appearance
+        if (isValid) {
+            // Green glow for valid placement
+            this.draggedElement.style.boxShadow = '0 0 20px 5px rgba(124, 252, 0, 0.8)';
+            this.draggedElement.style.border = '2px solid rgba(124, 252, 0, 0.9)';
+        } else {
+            // Red glow for invalid placement
+            this.draggedElement.style.boxShadow = '0 0 20px 5px rgba(255, 0, 0, 0.8)';
+            this.draggedElement.style.border = '2px solid rgba(255, 0, 0, 0.9)';
+        }
+    }
+
     moveItemToSlot(targetSlot) {
         console.log('🚀 moveItemToSlot: Moving to slot', targetSlot);
         // Update visual position immediately for smooth UX
@@ -311,6 +328,9 @@ class InventoryDragDrop {
         console.log('🧹 cleanup: Removing drag state');
         if (this.draggedElement) {
             this.draggedElement.classList.remove('dragging-js');
+            // Remove visual feedback styling
+            this.draggedElement.style.boxShadow = '';
+            this.draggedElement.style.border = '';
         }
 
         document.body.style.cursor = '';
