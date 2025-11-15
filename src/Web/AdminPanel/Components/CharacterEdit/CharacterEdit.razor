@@ -368,18 +368,18 @@
                 <span>Inventory & Equipment</span>
             </div>
             
-            <div class="grid grid-cols-3 gap-4 p-4 bg-slate-50 rounded-lg mb-6">
+            <div class="grid grid-cols-3 gap-4 p-4 bg-slate-50 dark:bg-slate-900/50 rounded-lg mb-6">
                 <div class="flex flex-col gap-1">
-                    <span class="text-xs text-slate-600 uppercase tracking-wide font-semibold">Total Items:</span>
-                    <span class="text-2xl font-bold text-cyan-500">@(Character.Inventory?.Items?.Count ?? 0)</span>
+                    <span class="text-xs text-slate-600 dark:text-slate-400 uppercase tracking-wide font-semibold">Total Items:</span>
+                    <span class="text-2xl font-bold text-cyan-500 dark:text-cyan-400">@(Character.Inventory?.Items?.Count ?? 0)</span>
                 </div>
                 <div class="flex flex-col gap-1">
-                    <span class="text-xs text-slate-600 uppercase tracking-wide font-semibold">Current Zen:</span>
-                    <span class="text-2xl font-bold text-cyan-500">@(Character.Inventory?.Money ?? 0)</span>
+                    <span class="text-xs text-slate-600 dark:text-slate-400 uppercase tracking-wide font-semibold">Current Zen:</span>
+                    <span class="text-2xl font-bold text-cyan-500 dark:text-cyan-400">@(Character.Inventory?.Money ?? 0)</span>
                 </div>
                 <div class="flex flex-col gap-1">
-                    <span class="text-xs text-slate-600 uppercase tracking-wide font-semibold">Extensions:</span>
-                    <span class="text-2xl font-bold text-cyan-500">@Character.InventoryExtensions / 4</span>
+                    <span class="text-xs text-slate-600 dark:text-slate-400 uppercase tracking-wide font-semibold">Extensions:</span>
+                    <span class="text-2xl font-bold text-cyan-500 dark:text-cyan-400">@Character.InventoryExtensions / 4</span>
                 </div>
             </div>
 
@@ -391,7 +391,7 @@
             {
                 <div class="text-center py-12">
                     <span class="text-6xl block mb-4 opacity-50">📭</span>
-                    <p class="text-lg text-slate-600 mb-6">No inventory storage available</p>
+                    <p class="text-lg text-slate-600 dark:text-slate-400 mb-6">No inventory storage available</p>
                     <button type="button" class="px-6 py-3 bg-gradient-to-r from-emerald-500 to-green-500 text-white rounded-lg font-semibold hover:shadow-lg transition-all" @onclick="CreateInventory">
                         Create Inventory
                     </button>
@@ -408,14 +408,14 @@
                     <span>Vault Storage</span>
                 </div>
                 
-                <div class="grid grid-cols-2 gap-4 p-4 bg-slate-50 rounded-lg mb-6">
+                <div class="grid grid-cols-2 gap-4 p-4 bg-slate-50 dark:bg-slate-900/50 rounded-lg mb-6">
                     <div class="flex flex-col gap-1">
-                        <span class="text-xs text-slate-600 uppercase tracking-wide font-semibold">Vault Items:</span>
-                        <span class="text-2xl font-bold text-cyan-500">@(Account.Vault.Items?.Count ?? 0)</span>
+                        <span class="text-xs text-slate-600 dark:text-slate-400 uppercase tracking-wide font-semibold">Vault Items:</span>
+                        <span class="text-2xl font-bold text-cyan-500 dark:text-cyan-400">@(Account.Vault.Items?.Count ?? 0)</span>
                     </div>
                     <div class="flex flex-col gap-1">
-                        <span class="text-xs text-slate-600 uppercase tracking-wide font-semibold">Vault Zen:</span>
-                        <span class="text-2xl font-bold text-cyan-500">@Account.Vault.Money</span>
+                        <span class="text-xs text-slate-600 dark:text-slate-400 uppercase tracking-wide font-semibold">Vault Zen:</span>
+                        <span class="text-2xl font-bold text-cyan-500 dark:text-cyan-400">@Account.Vault.Money</span>
                     </div>
                 </div>
 
@@ -425,17 +425,17 @@
 
         <!-- Learned Skills -->
         <div class="bg-white dark:bg-slate-800 rounded-xl shadow-lg border border-slate-200 dark:border-slate-700 p-6 mb-6">
-            <div class="flex items-center gap-3 text-2xl font-bold text-slate-900 mb-6 pb-4 border-b-2 border-purple-200">
+            <div class="flex items-center gap-3 text-2xl font-bold text-slate-900 dark:text-white mb-6 pb-4 border-b-2 border-purple-200 dark:border-purple-700">
                 <span class="">⚔️</span>
                 <span>Learned Skills</span>
             </div>
             
             @if (Character.LearnedSkills != null)
             {
-                <div class="mb-4 p-4 bg-purple-50 rounded-lg border border-purple-200">
+                <div class="mb-4 p-4 bg-purple-50 dark:bg-purple-900/20 rounded-lg border border-purple-200 dark:border-purple-700">
                     <div class="flex items-center gap-2">
-                        <span class="text-xs text-purple-600 uppercase tracking-wide font-semibold">Total Skills:</span>
-                        <span class="text-2xl font-bold text-purple-600">@Character.LearnedSkills.Count</span>
+                        <span class="text-xs text-purple-600 dark:text-purple-400 uppercase tracking-wide font-semibold">Total Skills:</span>
+                        <span class="text-2xl font-bold text-purple-600 dark:text-purple-400">@Character.LearnedSkills.Count</span>
                     </div>
                 </div>
                 
@@ -452,17 +452,17 @@
 
         <!-- Quest States -->
         <div class="bg-white dark:bg-slate-800 rounded-xl shadow-lg border border-slate-200 dark:border-slate-700 p-6 mb-6">
-            <div class="flex items-center gap-3 text-2xl font-bold text-slate-900 mb-6 pb-4 border-b-2 border-amber-200">
+            <div class="flex items-center gap-3 text-2xl font-bold text-slate-900 dark:text-white mb-6 pb-4 border-b-2 border-amber-200 dark:border-amber-700">
                 <span class="">📜</span>
                 <span>Quest Progress</span>
             </div>
             
             @if (Character.QuestStates != null)
             {
-                <div class="mb-4 p-4 bg-amber-50 rounded-lg border border-amber-200">
+                <div class="mb-4 p-4 bg-amber-50 dark:bg-amber-900/20 rounded-lg border border-amber-200 dark:border-amber-700">
                     <div class="flex items-center gap-2">
-                        <span class="text-xs text-amber-600 uppercase tracking-wide font-semibold">Active Quests:</span>
-                        <span class="text-2xl font-bold text-amber-600">@Character.QuestStates.Count</span>
+                        <span class="text-xs text-amber-600 dark:text-amber-400 uppercase tracking-wide font-semibold">Active Quests:</span>
+                        <span class="text-2xl font-bold text-amber-600 dark:text-amber-400">@Character.QuestStates.Count</span>
                     </div>
                 </div>
                 
@@ -479,17 +479,17 @@
 
         <!-- Drop Item Groups -->
         <div class="bg-white dark:bg-slate-800 rounded-xl shadow-lg border border-slate-200 dark:border-slate-700 p-6 mb-6">
-            <div class="flex items-center gap-3 text-2xl font-bold text-slate-900 mb-6 pb-4 border-b-2 border-emerald-200">
+            <div class="flex items-center gap-3 text-2xl font-bold text-slate-900 dark:text-white mb-6 pb-4 border-b-2 border-emerald-200 dark:border-emerald-700">
                 <span class="">💎</span>
                 <span>Drop Item Groups</span>
             </div>
             
             @if (Character.DropItemGroups != null)
             {
-                <div class="mb-4 p-4 bg-emerald-50 rounded-lg border border-emerald-200">
+                <div class="mb-4 p-4 bg-emerald-50 dark:bg-emerald-900/20 rounded-lg border border-emerald-200 dark:border-emerald-700">
                     <div class="flex items-center gap-2">
-                        <span class="text-xs text-emerald-600 uppercase tracking-wide font-semibold">Custom Drop Groups:</span>
-                        <span class="text-2xl font-bold text-emerald-600">@Character.DropItemGroups.Count</span>
+                        <span class="text-xs text-emerald-600 dark:text-emerald-400 uppercase tracking-wide font-semibold">Custom Drop Groups:</span>
+                        <span class="text-2xl font-bold text-emerald-600 dark:text-emerald-400">@Character.DropItemGroups.Count</span>
                     </div>
                 </div>
                 

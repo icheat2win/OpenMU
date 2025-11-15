@@ -11,12 +11,16 @@
 @inherits NotifyableInputBase<ItemStorage>
 
 <style>
-    /* Modern ItemStorage styling */
+    /* Modern ItemStorage styling with Dark Mode */
     .item-storage-container {
         background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
         border-radius: 1rem;
         padding: 1.5rem;
         box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    }
+    
+    html.dark .item-storage-container {
+        background: linear-gradient(135deg, #4338ca 0%, #6b21a8 100%);
     }
     
     .equipped-box {
@@ -27,11 +31,21 @@
         margin-bottom: 0.5rem;
     }
     
+    html.dark .equipped-box {
+        background: linear-gradient(to bottom, #0f172a, #1e293b);
+        border: 2px solid #475569;
+    }
+    
     .storage-grid {
         background: linear-gradient(to bottom, #2a2a3e, #1e1e2e);
         border: 2px solid #4a4a6a;
         border-radius: 0.5rem;
         padding: 0.25rem;
+    }
+    
+    html.dark .storage-grid {
+        background: linear-gradient(to bottom, #1e293b, #0f172a);
+        border: 2px solid #475569;
     }
     
     .extension-header {
@@ -47,6 +61,11 @@
         letter-spacing: 0.05em;
         margin-top: 0.5rem;
         border-radius: 0.25rem;
+    }
+    
+    html.dark .extension-header {
+        background: linear-gradient(to right, #0f172a, #1e293b);
+        color: #fbbf24;
     }
     
     .action-buttons {
@@ -81,6 +100,10 @@
         box-shadow: 0 6px 16px rgba(16, 185, 129, 0.6);
     }
     
+    html.dark .btn-create {
+        background: linear-gradient(135deg, #059669 0%, #047857 100%);
+    }
+    
     .btn-delete {
         background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
         color: white;
@@ -99,12 +122,21 @@
         box-shadow: none;
     }
     
+    html.dark .btn-delete:disabled {
+        background: linear-gradient(135deg, #475569 0%, #334155 100%);
+    }
+    
     .item-editor-panel {
         background: white;
         border: 2px solid #e5e7eb;
         border-radius: 0.75rem;
         padding: 1.5rem;
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+    
+    html.dark .item-editor-panel {
+        background: #1e293b;
+        border: 2px solid #475569;
     }
     
     .item-editor-panel h3 {
@@ -114,6 +146,11 @@
         margin-bottom: 1rem;
         padding-bottom: 0.75rem;
         border-bottom: 2px solid #e5e7eb;
+    }
+    
+    html.dark .item-editor-panel h3 {
+        color: #f1f5f9;
+        border-bottom: 2px solid #475569;
     }
     
     /* Icon styling */
@@ -140,7 +177,7 @@
     
     @if (!string.IsNullOrEmpty(this._overlappingItemsWarning))
     {
-        <div class="bg-red-100 border-l-4 border-red-500 text-red-700 px-6 py-4 mb-4 rounded-lg shadow-lg animate-pulse sticky top-0 z-50">
+        <div class="bg-red-100 dark:bg-red-900/30 border-l-4 border-red-500 dark:border-red-600 text-red-700 dark:text-red-300 px-6 py-4 mb-4 rounded-lg shadow-lg animate-pulse sticky top-0 z-50">
             <div class="flex items-center gap-3">
                 <span class="text-2xl">⚠️</span>
                 <p class="font-bold text-lg">@_overlappingItemsWarning</p>
