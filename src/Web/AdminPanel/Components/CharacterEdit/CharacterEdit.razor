@@ -28,10 +28,11 @@
         background-color: white !important;
     }
     
-    /* Fix Blazored Typeahead INPUT field */
+    /* Fix Blazored Typeahead INPUT field - CRITICAL FIX */
     .blazored-typeahead input,
     .blazored-typeahead input[type="search"],
-    input.blazored-typeahead__input {
+    input.blazored-typeahead__input,
+    .blazored-typeahead__input {
         color: #0f172a !important;
         background-color: #f8fafc !important;
         border: 1px solid #cbd5e1 !important;
@@ -39,6 +40,22 @@
         border-radius: 0.5rem !important;
         font-size: 1rem !important;
         width: 100% !important;
+        font-weight: 500 !important;
+    }
+    
+    /* Fix the wrapper that might hide text */
+    .blazored-typeahead,
+    .blazored-typeahead > div,
+    .blazored-typeahead__controls {
+        color: #0f172a !important;
+    }
+    
+    /* Make sure selected value is visible */
+    .blazored-typeahead span,
+    .blazored-typeahead a,
+    .blazored-typeahead__selected-item {
+        color: #0f172a !important;
+        text-decoration: none !important;
     }
     
     .blazored-typeahead input:focus,
@@ -70,11 +87,24 @@
         margin-top: 0.25rem !important;
         max-height: 300px !important;
         overflow-y: auto !important;
+        z-index: 1000 !important;
     }
     
     /* Ensure wrapper doesn't override */
     .blazored-typeahead {
         width: 100% !important;
+    }
+    
+    /* Fix any NavLink in the typeahead */
+    .blazored-typeahead a.nav-link,
+    .blazored-typeahead a {
+        color: #0f172a !important;
+        font-weight: 500 !important;
+    }
+    
+    .blazored-typeahead a:hover {
+        color: #1e40af !important;
+        text-decoration: underline !important;
     }
     
     /* Style helper text */
