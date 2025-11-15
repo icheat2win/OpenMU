@@ -63,9 +63,8 @@ class InventoryDragDrop {
         this.draggedItem = this.extractItemData(itemElement);
         console.log('🖱️ MouseDown: Item data extracted:', this.draggedItem);
 
-        // Show drop zones
-        this.showDropZones();
-        console.log('🖱️ MouseDown: Drop zones shown');
+        // Removed drop zone overlay - drag & drop works without visual grid
+        console.log('🖱️ MouseDown: Ready to drag (no overlay needed)');
     }
 
     handleMouseMove(e) {
@@ -92,12 +91,7 @@ class InventoryDragDrop {
             console.log('🖱️ MouseMove: Grid position:', { col, row, x, y });
         }
 
-        // Update drop zone highlights
-        this.updateDropZoneHighlights(col, row);
-
-        // Optional: Move the item visually (can be disabled for less distraction)
-        // this.draggedElement.style.left = `${col * this.cellSize}px`;
-        // this.draggedElement.style.top = `${row * this.cellSize}px`;
+        // Removed drop zone highlights - not needed for functionality
     }
 
     handleMouseUp(e) {
@@ -207,103 +201,6 @@ class InventoryDragDrop {
         if (storage.classList.contains('storage-rows8')) return 8;
         if (storage.classList.contains('storage-rows15')) return 15;
         return 8; // default
-    }
-
-    showDropZones() {
-        console.log('🎨 showDropZones: Creating drop zone overlay');
-        const storage = this.draggedElement?.closest('.mu-item-storage');
-        if (!storage) {
-            console.log('⚠️ showDropZones: No storage container found');
-            return;
-        }
-
-        const storageRows = this.getStorageRows(storage);
-        console.log('🎨 showDropZones: Storage has', storageRows, 'rows');
-        
-        // Create drop zone overlay if it doesn't exist
-        let overlay = storage.querySelector('.drop-zone-overlay-js');
-        if (!overlay) {
-            console.log('🎨 showDropZones: Creating new overlay');
-            overlay = document.createElement('div');
-            overlay.className = 'drop-zone-overlay-js';
-            overlay.style.cssText = `
-                position: absolute;
-                top: 0;
-                left: 0;
-                width: 100%;
-                height: 100%;
-                pointer-events: none;
-                z-index: 60;
-            `;
-            storage.appendChild(overlay);
-        }
-
-        overlay.innerHTML = '';
-
-        // Create grid cells
-        let cellCount = 0;
-        for (let row = 0; row < storageRows; row++) {
-            for (let col = 0; col < this.gridColumns; col++) {
-                const cell = document.createElement('div');
-                cell.className = 'drop-zone-cell-js';
-                cell.dataset.col = col;
-                cell.dataset.row = row;
-                cell.style.cssText = `
-                    position: absolute;
-                    left: ${col * this.cellSize}px;
-                    top: ${row * this.cellSize}px;
-                    width: ${this.cellSize}px;
-                    height: ${this.cellSize}px;
-                    transition: background-color 0.1s ease, box-shadow 0.1s ease;
-                `;
-                overlay.appendChild(cell);
-                cellCount++;
-            }
-        }
-        console.log('🎨 showDropZones: Created', cellCount, 'drop zone cells');
-    }
-
-    updateDropZoneHighlights(hoveredCol, hoveredRow) {
-        const overlay = this.draggedElement?.closest('.mu-item-storage')?.querySelector('.drop-zone-overlay-js');
-        if (!overlay) {
-            if (this.debug && Math.random() < 0.1) {
-                console.log('⚠️ updateDropZoneHighlights: No overlay found');
-            }
-            return;
-        }
-
-        const cells = overlay.querySelectorAll('.drop-zone-cell-js');
-        const storage = this.draggedElement.closest('.mu-item-storage');
-
-        cells.forEach(cell => {
-            const col = parseInt(cell.dataset.col);
-            const row = parseInt(cell.dataset.row);
-            const { width, height } = this.draggedItem;
-
-            // Check if this cell would be occupied by the dragged item
-            const wouldOccupy = (
-                col >= hoveredCol && 
-                col < hoveredCol + width &&
-                row >= hoveredRow && 
-                row < hoveredRow + height
-            );
-
-            if (wouldOccupy) {
-                // Check if placement is valid
-                const isValid = this.canPlaceItem(hoveredCol, hoveredRow, storage);
-                
-                if (isValid) {
-                    cell.style.backgroundColor = 'rgba(124, 252, 0, 0.4)';
-                    cell.style.boxShadow = 'inset 0 0 0 2px rgba(124, 252, 0, 0.9)';
-                } else {
-                    cell.style.backgroundColor = 'rgba(255, 0, 0, 0.4)';
-                    cell.style.boxShadow = 'inset 0 0 0 2px rgba(255, 0, 0, 0.9)';
-                }
-            } else {
-                cell.style.backgroundColor = '';
-                cell.style.boxShadow = '';
-            }
-        });
     }
 
     moveItemToSlot(targetSlot) {
