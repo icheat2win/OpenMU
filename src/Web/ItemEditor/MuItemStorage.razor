@@ -5,107 +5,13 @@
     return;
 }
 
-<style>
-    .drop-zone-grid {
-        display: grid;
-        grid-template-columns: repeat(8, 42px);
-        grid-auto-rows: 42px;
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        z-index: 50;
-        pointer-events: none;
-    }
-    
-    .drop-zone-cell {
-        pointer-events: none;
-        transition: background-color 0.15s ease;
-        border: 1px solid transparent;
-        background: transparent;
-    }
-    
-    html.dark .drop-zone-cell {
-        border: 1px solid transparent;
-        background: transparent;
-    }
-    
-    .drop-zone-cell.drag-over-valid {
-        background-color: rgba(124, 252, 0, 0.5) !important;
-        box-shadow: inset 0 0 0 3px rgba(124, 252, 0, 1) !important;
-        border: 2px solid rgba(124, 252, 0, 1) !important;
-        z-index: 95;
-    }
-    
-    .drop-zone-cell.occupied {
-        pointer-events: all;
-    }
-    
-    .drop-zone-cell.drag-over-invalid {
-        background-color: rgba(255, 0, 0, 0.5) !important;
-        box-shadow: inset 0 0 0 3px rgba(255, 0, 0, 1) !important;
-        cursor: not-allowed !important;
-        border: 2px solid rgba(255, 0, 0, 1) !important;
-        z-index: 95;
-    }
-    
-    .inventory-container {
-        position: relative;
-    }
-</style>
-
-<div class="@($"relative flex w-[336px] bg-[url('/_content/MUnique.OpenMU.Web.ItemEditor/img/inventory_back.png')] bg-[length:12.5%] {GetStorageHeightClass()}")"
-     style="position: relative;">
-    
-    @* Drop zone grid overlay *@
-    <div class="drop-zone-grid">
-        @for (int row = 0; row < (_viewModel?.Rows ?? 0); row++)
-        {
-            @for (int col = 0; col < 8; col++)
-            {
-                var currentRow = row;
-                var currentCol = col;
-                var cellSlot = (byte)((currentRow * 8) + currentCol);
-                var isOccupied = IsCellOccupied(cellSlot);
-                
-                <div class="@($"drop-zone-cell {(isOccupied ? "occupied" : "")}")"
-                     data-row="@currentRow"
-                     data-col="@currentCol"
-                     data-slot="@cellSlot"
-                     @ondragenter="@((e) => { if (isOccupied) ((DragEventArgs)e).DataTransfer.DropEffect = "none"; })"
-                     @ondragover="@((e) => OnCellDragOver(e, isOccupied))"
-                     @ondragover:preventDefault
-                     @ondragleave="OnCellDragLeave"
-                     @ondrop="@(async (e) => await OnCellDropAsync(e, cellSlot, isOccupied))">
-                </div>
-            }
-        }
-    </div>
-    
-    @* Items layer *@
-    @if (this._viewModel?.Items is not null)
+<div class=@($"mu-item-storage storage-rows{this._viewModel.Rows}")>
+    @foreach (var item in this._viewModel.Items)
     {
-        @foreach (var item in this._viewModel.Items)
-        {
-            <MuItem
-                Model="item"
-                OnClick="async () => await this.SetSelectedItemAsync(item)"
-                OnItemMoved="this.OnItemMovedAsync"
-                IsSelected="this.SelectedItem == item.Item"/>
-        }
+        <MuItem
+            Model="item"
+            OnClick="async () => await this.SetSelectedItemAsync(item)"
+            OnItemMoved="this.OnItemMovedAsync"
+            IsSelected="this.SelectedItem == item.Item"/>
     }
 </div>
-
-@code {
-    private string GetStorageHeightClass()
-    {
-        return this._viewModel?.Rows switch
-        {
-            4 => "h-[168px]",
-            8 => "h-[336px]",
-            15 => "h-[630px]",
-            _ => "h-[336px]"
-        };
-    }
-}
