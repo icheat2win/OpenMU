@@ -101,7 +101,7 @@ public static class ItemExtensions
     /// <returns>
     ///   <c>true</c> if the specified item can have a skill; otherwise, <c>false</c>.
     /// </returns>
-    public static bool CanHaveSkill(this Item item) => item.IsWearable() && item.Definition?.Skill != null && item.Definition.QualifiedCharacters.Any();
+    public static bool CanHaveSkill(this Item item) => item.IsWearable() && item.Definition?.WearableSkill != null && item.Definition.QualifiedCharacters.Any();
 
     /// <summary>
     /// Determines whether this item is wearable.

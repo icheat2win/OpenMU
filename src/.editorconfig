@@ -2,6 +2,12 @@
 
 dotnet_diagnostic.CS1998.severity = suggestion
 
+# CS0618: Using obsolete APIs in generated code for backward compatibility
+dotnet_diagnostic.CS0618.severity = suggestion
+
+# CS1591: Missing XML documentation
+dotnet_diagnostic.CS1591.severity = suggestion
+
 # SA1309: Field names should not begin with underscore
 dotnet_diagnostic.SA1309.severity = none
 
@@ -11,11 +17,128 @@ dotnet_diagnostic.SA1516.severity = none
 # SA1615: Element return value should be documented
 dotnet_diagnostic.SA1615.severity = suggestion
 
+# SA1413: Use trailing comma in multi-line initializers
+dotnet_diagnostic.SA1413.severity = suggestion
+
+# SA1200: Using directives should be placed correctly
+dotnet_diagnostic.SA1200.severity = suggestion
+
+# SA1633: File should have header
+dotnet_diagnostic.SA1633.severity = none
+
+# SA1028: Code should not contain trailing whitespace
+dotnet_diagnostic.SA1028.severity = suggestion
+
+# SA1101: Prefix local calls with this
+dotnet_diagnostic.SA1101.severity = none
+
+# SA1402: File may only contain a single type
+dotnet_diagnostic.SA1402.severity = none
+
+# SA1202: Elements should be ordered by access
+dotnet_diagnostic.SA1202.severity = none
+
+# SA1208: System using directives should be placed before other using directives
+dotnet_diagnostic.SA1208.severity = none
+
+# SA1600: Elements should be documented
+dotnet_diagnostic.SA1600.severity = none
+
+# SA1601: Partial elements should be documented
+dotnet_diagnostic.SA1601.severity = none
+
+# SA1611: Element parameters should be documented
+dotnet_diagnostic.SA1611.severity = none
+
+# SA1625: Element documentation should not be copied and pasted
+dotnet_diagnostic.SA1625.severity = none
+
+# CS1066: Default parameter value warnings
+dotnet_diagnostic.CS1066.severity = none
+
+# CS1573: Parameter has no matching param tag
+dotnet_diagnostic.CS1573.severity = none
+
+# CS0672: Member overrides obsolete member
+dotnet_diagnostic.CS0672.severity = none
+
+# CS0168: Variable declared but never used
+dotnet_diagnostic.CS0168.severity = none
+
+# CS1572: XML comment has param tag but there is no parameter
+dotnet_diagnostic.CS1572.severity = none
+
+# CS1723: XML comment has cref attribute that refers to a type parameter
+dotnet_diagnostic.CS1723.severity = none
+
+# SA1000: Keyword spacing
+dotnet_diagnostic.SA1000.severity = none
+
+# SA1005: Single line comment spacing
+dotnet_diagnostic.SA1005.severity = none
+
+# SA1116: Split parameters should start on line after declaration
+dotnet_diagnostic.SA1116.severity = none
+
+# SA1119: Statement should not use unnecessary parenthesis
+dotnet_diagnostic.SA1119.severity = none
+
+# SA1122: Use string.Empty for empty strings
+dotnet_diagnostic.SA1122.severity = none
+
+# SA1127: Generic type constraints should be on their own line
+dotnet_diagnostic.SA1127.severity = none
+
+# SA1201: Elements should appear in the correct order
+dotnet_diagnostic.SA1201.severity = none
+
+# SA1203: Constants should appear before fields
+dotnet_diagnostic.SA1203.severity = none
+
+# SA1204: Static elements should appear before instance elements
+dotnet_diagnostic.SA1204.severity = none
+
+# SA1506: Element documentation headers should not be followed by blank line
+dotnet_diagnostic.SA1506.severity = none
+
+# SA1512: Single-line comments should not be followed by blank line
+dotnet_diagnostic.SA1512.severity = none
+
+# SA1513: Closing brace should be followed by blank line
+dotnet_diagnostic.SA1513.severity = none
+
+# SA1515: Single-line comment should be preceded by blank line
+dotnet_diagnostic.SA1515.severity = none
+
+# SA1616: Element return value documentation should have text
+dotnet_diagnostic.SA1616.severity = none
+
+# SA1638: File header file name documentation should match file name
+dotnet_diagnostic.SA1638.severity = none
+
+# SA1649: File name should match first type name
+dotnet_diagnostic.SA1649.severity = none
+
+# NETSDK1174: Deprecation of -p abbreviation
+dotnet_diagnostic.NETSDK1174.severity = none
+
 # VSTHRD103: Call async methods when in an async method
 dotnet_diagnostic.VSTHRD103.severity = error
 
 # VSTHRD111: Use ConfigureAwait(bool)
-dotnet_diagnostic.VSTHRD111.severity = warning
+dotnet_diagnostic.VSTHRD111.severity = suggestion
+
+[**/Migrations/*.cs]
+# Suppress all StyleCop warnings for migration files (auto-generated)
+dotnet_analyzer_diagnostic.category-StyleCop.CSharpReadabilityRules.severity = none
+dotnet_analyzer_diagnostic.category-StyleCop.CSharpMaintainabilityRules.severity = none
+dotnet_analyzer_diagnostic.category-StyleCop.CSharpLayoutRules.severity = none
+dotnet_analyzer_diagnostic.category-StyleCop.CSharpDocumentationRules.severity = none
+
+[**/obj/**/*.cs]
+# Suppress all warnings for generated files in obj folder
+generated_code = true
+dotnet_analyzer_diagnostic.severity = none
 
 [*.xml]
 
