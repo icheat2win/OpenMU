@@ -2,7 +2,7 @@
 
 **Last Updated:** November 15, 2025  
 **Project Status:** Production Ready ✅  
-**Latest Commit:** 38fdadff5  
+**Latest Commit:** af6b8e72e  
 **Branch:** master  
 **Server URL:** http://connect.globalmu.org/ (http://192.168.4.71/)  
 **Admin Panel:** http://192.168.4.71:8080/  
@@ -82,15 +82,15 @@ Successfully implemented comprehensive dark mode support across all admin panel 
   - **Game-accurate grid backgrounds** visible in both light/dark modes
   - Account Vault storage uses same styling as character inventory
 
-- **MuItemStorage Grid Cells** (Commits: 42b5de0fc, 38fdadff5):
-  - Added visible grid lines to all inventory cells (8x4, 8x8, 8x15 grids)
-  - **Enhanced visibility:** Dark borders `rgba(0, 0, 0, 0.6)` in light mode
-  - **Dark mode borders:** `rgba(0, 0, 0, 0.8)` for maximum contrast
-  - Cell backgrounds: `rgba(20, 25, 30, 0.5)` matching game texture
-  - Added inset box-shadow for depth effect exactly like in-game
-  - **Pixel-perfect match to MU Online game inventory appearance**
-  - Grid lines prominently visible even when cells are empty
-  - Drag-over states (valid/invalid) maintain visibility
+- **MuItemStorage Grid Cells** (Commits: 42b5de0fc, 38fdadff5, af6b8e72e):
+  - **Uses original inventory_back.png background image** like MUnique/OpenMU
+  - Cells now transparent to show background image through
+  - Grid pattern provided by the background image (not CSS borders)
+  - **Extension headers now clearly visible** with black background and wheat color
+  - **Personal Store text properly visible** in both light and dark modes
+  - Removed custom borders that were hiding the background texture
+  - Drag-over states (valid/invalid) still work with colored highlights
+  - **Matches original OpenMU implementation exactly**
   - Applied to Character Inventory, Extensions, Personal Store, and Account Vault
 
 ### Technical Achievements
@@ -150,7 +150,9 @@ RUN apk add --no-cache nodejs npm && npm install && npm run build:css
 | fffdc7aa1 | Update PROJECT_STATUS with Inventory grids | 1 file |
 | 42b5de0fc | Add visible grid lines to inventory cells | 1 file (+7, -1 lines) |
 | 940425b3a | Update PROJECT_STATUS with visible grid cells | 1 file |
-| 38fdadff5 | **Enhance grid visibility to match MU Online exactly** | 1 file (+6, -4 lines) |
+| 38fdadff5 | Enhance grid visibility to match MU Online exactly | 1 file (+6, -4 lines) |
+| 97ef3f0c5 | Update PROJECT_STATUS with enhanced grid visibility | 1 file |
+| af6b8e72e | **Use original inventory background image** | 2 files (+10, -12 lines) |
 
 ### Testing Results
 
