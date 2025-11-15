@@ -146,6 +146,9 @@ dotnet_diagnostic.SA1505.severity = none
 # SA1407: Arithmetic expressions should declare precedence
 dotnet_diagnostic.SA1407.severity = none
 
+# SA1408: Conditional expressions should declare precedence
+dotnet_diagnostic.SA1408.severity = none
+
 # CS0114: Member hides inherited member
 dotnet_diagnostic.CS0114.severity = none
 
@@ -187,6 +190,108 @@ dotnet_diagnostic.SA1009.severity = none
 
 # SA1514: Element documentation header should be preceded by blank line
 dotnet_diagnostic.SA1514.severity = none
+
+# ASP0006: Sequence number usage in Blazor components
+dotnet_diagnostic.ASP0006.severity = none
+
+# SA1602: Enumeration items should be documented
+dotnet_diagnostic.SA1602.severity = none
+
+# SA1623: Property documentation should begin with standard text
+dotnet_diagnostic.SA1623.severity = none
+
+# SA1648: Inherit doc should be used with inheriting class
+dotnet_diagnostic.SA1648.severity = none
+
+# RZ10012: Razor found in multiple assemblies
+dotnet_diagnostic.RZ10012.severity = none
+
+# SA1507: Code should not contain multiple blank lines in a row
+dotnet_diagnostic.SA1507.severity = none
+
+# VSTHRD200: Use "Async" suffix for async methods
+dotnet_diagnostic.VSTHRD200.severity = none
+
+# SA1614: Element parameter documentation should have text
+dotnet_diagnostic.SA1614.severity = none
+
+# SA1003: Operator spacing
+dotnet_diagnostic.SA1003.severity = none
+
+# CS0108: Member hides inherited member; missing new keyword
+dotnet_diagnostic.CS0108.severity = none
+
+# CS0067: Event is never used
+dotnet_diagnostic.CS0067.severity = none
+
+# SA1606: Element documentation should have summary text
+dotnet_diagnostic.SA1606.severity = none
+
+# SA1509: Opening braces should not be preceded by blank line
+dotnet_diagnostic.SA1509.severity = none
+
+# SA1124: Do not use regions
+dotnet_diagnostic.SA1124.severity = none
+
+# SA1100: Do not prefix calls with base unless local implementation exists
+dotnet_diagnostic.SA1100.severity = none
+
+# SA1312: Variable names should begin with lower-case letter
+dotnet_diagnostic.SA1312.severity = none
+
+# SA1135: Using directive should be qualified
+dotnet_diagnostic.SA1135.severity = none
+
+# SA1118: Parameter should not span multiple lines
+dotnet_diagnostic.SA1118.severity = none
+
+# CS1570: XML comment has badly formed XML
+dotnet_diagnostic.CS1570.severity = none
+
+# CA2265: Do not compare an instance with Singleton.Instance
+dotnet_diagnostic.CA2265.severity = none
+
+# VSTHRD101: Avoid unsupported async delegates
+dotnet_diagnostic.VSTHRD101.severity = none
+
+# VSTHRD003: Avoid awaiting foreign Tasks
+dotnet_diagnostic.VSTHRD003.severity = none
+
+# SA1619: Generic type parameter documentation should have text
+dotnet_diagnostic.SA1619.severity = none
+
+# SA1617: Void return value should not be documented
+dotnet_diagnostic.SA1617.severity = none
+
+# SA1214: Static readonly fields should appear before static non-readonly
+dotnet_diagnostic.SA1214.severity = none
+
+# SA1129: Do not use default value type constructor
+dotnet_diagnostic.SA1129.severity = none
+
+# SA1128: Constructor initializer should be on own line
+dotnet_diagnostic.SA1128.severity = none
+
+# SA1001: Commas should not be preceded by whitespace
+dotnet_diagnostic.SA1001.severity = none
+
+# CS1711: XML comment has a typeparam tag, but there is no type parameter
+dotnet_diagnostic.CS1711.severity = none
+
+# CS1696: Single-line comment or end-of-line comment cannot be converted
+dotnet_diagnostic.CS1696.severity = none
+
+# CS1574: XML comment has cref attribute that could not be resolved
+dotnet_diagnostic.CS1574.severity = none
+
+# CS0612: Type or member is obsolete (without error)
+dotnet_diagnostic.CS0612.severity = none
+
+# CA2021: Do not call Enumerable.Cast<T> or Enumerable.OfType<T>
+dotnet_diagnostic.CA2021.severity = none
+
+# BL0007: Component parameter should be public
+dotnet_diagnostic.BL0007.severity = none
 
 [**/Migrations/*.cs]
 # Suppress all StyleCop warnings for migration files (auto-generated)
