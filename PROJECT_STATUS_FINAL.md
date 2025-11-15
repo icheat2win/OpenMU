@@ -2,7 +2,7 @@
 
 **Last Updated:** November 15, 2025  
 **Project Status:** Production Ready ✅  
-**Latest Commit:** 406697453  
+**Latest Commit:** 7e7dd9840  
 **Branch:** master  
 **Server URL:** http://connect.globalmu.org/ (http://192.168.4.71/)  
 **Admin Panel:** http://192.168.4.71:8080/  
@@ -11,7 +11,136 @@
 
 ---
 
-## 🎯 Latest Update: Edit Config Pages Modernization (November 15, 2025 - Session 5b)
+## 🎯 Latest Update: Dark Mode & Form Layout Critical Fixes (November 15, 2025 - Session 5c)
+
+**Status:** ✅ Dark Mode Toggle Working + Form Fields Properly Styled
+
+Fixed two critical issues affecting user experience across the entire admin panel.
+
+### Problems Reported
+**User Issues:**
+1. Dark/light mode toggle button not working on any pages
+2. System Configuration form fields overlapping and hard to read
+3. Form layout appearing broken
+
+### Root Causes
+
+**Issue 1: Dark Mode Not Working**
+- Incorrect Tailwind v4 dark mode variant syntax in _Host.cshtml
+- Used: `@custom-variant dark (&:where(.dark, .dark *))`
+- Should be: `@variant dark (html.dark &)`
+- Tailwind v4 requires specific variant syntax for class-based dark mode
+
+**Issue 2: Form Fields Overlapping**
+- AutoFields component generates `.field-group` classes
+- No CSS styling existed for these classes
+- Form inputs had no consistent styling
+- Labels and inputs lacked proper spacing
+- Dark mode colors not defined for forms
+
+### Solutions Implemented
+
+**1. _Host.cshtml - Dark Mode Variant Fix:**
+```css
+/* OLD (incorrect for Tailwind v4): */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* NEW (correct Tailwind v4 syntax): */
+@variant dark (html.dark &);
+```
+
+**2. site.css - Comprehensive Form Styling:**
+
+**Field Groups (Collapsible Sections):**
+- `.field-group` - Card with border, rounded corners, white bg
+- `.field-group-header` - Purple gradient with ▼ indicator
+- `.field-group-content` - Proper padding (1.5rem)
+- Hover effects and smooth transitions
+- Dark mode: Slate backgrounds and borders
+
+**Form Inputs (All Types):**
+```css
+input[type="text"], input[type="number"], 
+input[type="email"], input[type="password"],
+input[type="date"], input[type="datetime-local"],
+input[type="time"], textarea, select
+```
+- Full width with padding
+- Border with focus states
+- Purple focus ring (#9333ea)
+- Light mode: White bg, dark text
+- Dark mode: Slate-800 bg, light text
+- Disabled states: Reduced opacity, muted colors
+
+**Form Labels:**
+- Font size: 0.875rem (14px)
+- Font weight: 600 (semibold)
+- Light mode: Slate-700 (#334155)
+- Dark mode: Slate-300 (#cbd5e1)
+- Margin bottom: 0.5rem
+
+**Checkboxes:**
+- Size: 1.25rem × 1.25rem
+- Purple accent color
+- Focus ring with purple theme
+- Dark mode compatible
+
+### Visual Improvements
+
+**Form Layout:**
+- Collapsible field groups with gradient headers
+- Proper vertical spacing between fields (1rem)
+- Consistent padding in containers (1.5rem)
+- Clear visual separation with borders
+
+**Color Scheme:**
+- **Light Mode:**
+  - Background: White (#ffffff)
+  - Text: Slate-900 (#0f172a)
+  - Borders: Slate-300 (#cbd5e1)
+  - Focus: Purple-500 (#9333ea)
+
+- **Dark Mode:**
+  - Background: Slate-800 (#1e293b)
+  - Text: Slate-100 (#f1f5f9)
+  - Borders: Slate-600 (#475569)
+  - Focus: Purple-500 (#9333ea)
+
+**Interactive States:**
+- Hover: Darker gradient on headers
+- Focus: Purple ring on inputs
+- Disabled: Muted colors, reduced opacity
+- Transitions: 200ms smooth animations
+
+### Build Results
+```
+Build succeeded.
+    7 Warning(s) (source generator - suppressed)
+    0 Error(s)
+Time Elapsed 00:00:52.26
+```
+
+### Files Modified
+1. `src/Web/AdminPanel/Pages/_Host.cshtml` - Fixed dark mode variant syntax
+2. `src/Web/AdminPanel/wwwroot/css/site.css` - Added comprehensive form styling
+
+### Testing Checklist
+✅ Dark mode toggle button responds to clicks
+✅ Page switches between light and dark themes
+✅ System Configuration fields properly spaced
+✅ Form inputs have proper borders and backgrounds
+✅ Labels visible in both themes
+✅ Checkboxes styled correctly
+✅ Focus states working
+✅ Disabled states show visual feedback
+✅ All form pages (Monster Definitions, Skills, Items, etc.) properly styled
+
+### Commits
+- `7e7dd9840` - Fix dark mode toggle and form field styling
+
+---
+
+## Previous Update: Edit Config Pages Modernization (November 15, 2025 - Session 5b)
 
 **Status:** ✅ System Configuration & All Edit-Config Pages Fixed
 
