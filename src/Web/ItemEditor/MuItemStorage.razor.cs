@@ -5,6 +5,7 @@
 namespace MUnique.OpenMU.Web.ItemEditor;
 
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Web;
 
 /// <summary>
 /// Component for a item box.
@@ -89,5 +90,194 @@ public partial class MuItemStorage
         {
             await this.SelectedItemChanged.InvokeAsync(this.SelectedItem).ConfigureAwait(true);
         }
+    }
+
+    private void OnDragOver(DragEventArgs e)
+    {
+        // Allow drop on storage
+        e.DataTransfer.DropEffect = "move";
+    }
+
+    private bool IsCellOccupied(byte cellSlot)
+    {
+        if (this._viewModel?.Items == null)
+        {
+            return false;
+        }
+
+        foreach (var item in this._viewModel.Items)
+        {
+            if (item.Item.Definition == null)
+            {
+                continue;
+            }
+
+            var itemSlot = item.Item.ItemSlot;
+            
+            // For equipped items (slot >= 0xC0), just check the single slot
+            if (itemSlot >= InventoryConstants.FirstEquippableItemSlotIndex)
+            {
+                if (itemSlot == cellSlot)
+                {
+                    return true;
+                }
+                continue;
+            }
+
+            // For inventory items, check all occupied cells based on width×height
+            var itemX = (byte)(itemSlot % InventoryConstants.RowSize);
+            var itemY = (byte)(itemSlot / InventoryConstants.RowSize);
+            var width = item.Item.Definition.Width;
+            var height = item.Item.Definition.Height;
+
+            var cellX = (byte)(cellSlot % InventoryConstants.RowSize);
+            var cellY = (byte)(cellSlot / InventoryConstants.RowSize);
+
+            // Check if cell is within the item's bounds
+            if (cellX >= itemX && cellX < (itemX + width) &&
+                cellY >= itemY && cellY < (itemY + height))
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private void OnCellDragOver(DragEventArgs e, byte targetSlot, bool isOccupied)
+    {
+        var draggedItem = MuItem.GetDraggedItem();
+        if (draggedItem == null)
+        {
+            e.DataTransfer.DropEffect = "none";
+            return;
+        }
+
+        // Check if the item can be placed at this position
+        if (CanPlaceItemAt(targetSlot, draggedItem.Item))
+        {
+            e.DataTransfer.DropEffect = "move";
+        }
+        else
+        {
+            e.DataTransfer.DropEffect = "none";
+        }
+    }
+
+    private async Task OnCellDropAsync(DragEventArgs e, byte targetSlot, bool isOccupied)
+    {
+        var draggedItem = MuItem.GetDraggedItem();
+        if (draggedItem == null)
+        {
+            return;
+        }
+
+        // Check if the item can be placed at this position
+        if (!CanPlaceItemAt(targetSlot, draggedItem.Item))
+        {
+            return;
+        }
+
+        // Move the dragged item to the target slot
+        draggedItem.Item.ItemSlot = targetSlot;
+
+        MuItem.ClearDraggedItem();
+
+        await this.OnItemMovedAsync().ConfigureAwait(true);
+    }
+
+    private bool CanPlaceItemAt(byte targetSlot, Item item)
+    {
+        if (item.Definition == null)
+        {
+            return false;
+        }
+
+        var targetX = (byte)(targetSlot % InventoryConstants.RowSize);
+        var targetY = (byte)(targetSlot / InventoryConstants.RowSize);
+        var width = item.Definition.Width;
+        var height = item.Definition.Height;
+
+        // Check if item would go out of bounds
+        if (targetX + width > InventoryConstants.RowSize)
+        {
+            return false;
+        }
+
+        if (targetY + height > (this._viewModel?.Rows ?? 0))
+        {
+            return false;
+        }
+
+        // Check if any cell in the target area is occupied by another item
+        for (byte dy = 0; dy < height; dy++)
+        {
+            for (byte dx = 0; dx < width; dx++)
+            {
+                var checkSlot = (byte)((targetY + dy) * InventoryConstants.RowSize + (targetX + dx));
+                
+                // Check if this cell is occupied by a different item
+                if (IsCellOccupiedByOtherItem(checkSlot, item))
+                {
+                    return false;
+                }
+            }
+        }
+
+        return true;
+    }
+
+    private bool IsCellOccupiedByOtherItem(byte cellSlot, Item itemToPlace)
+    {
+        if (this._viewModel?.Items == null)
+        {
+            return false;
+        }
+
+        foreach (var item in this._viewModel.Items)
+        {
+            // Skip the item we're trying to place
+            if (item.Item == itemToPlace)
+            {
+                continue;
+            }
+
+            if (item.Item.Definition == null)
+            {
+                continue;
+            }
+
+            var itemSlot = item.Item.ItemSlot;
+
+            // For equipped items (not in inventory grid)
+            if (itemSlot >= InventoryConstants.FirstEquippableItemSlotIndex)
+            {
+                if (itemSlot == cellSlot)
+                {
+                    return true;
+                }
+                continue;
+            }
+
+            // For inventory items, check all cells occupied by width × height
+            var itemX = (byte)(itemSlot % InventoryConstants.RowSize);
+            var itemY = (byte)(itemSlot / InventoryConstants.RowSize);
+            var width = item.Item.Definition.Width;
+            var height = item.Item.Definition.Height;
+
+            for (byte dy = 0; dy < height; dy++)
+            {
+                for (byte dx = 0; dx < width; dx++)
+                {
+                    var occupiedSlot = (byte)((itemY + dy) * InventoryConstants.RowSize + (itemX + dx));
+                    if (occupiedSlot == cellSlot)
+                    {
+                        return true;
+                    }
+                }
+            }
+        }
+
+        return false;
     }
 }

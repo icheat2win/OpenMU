@@ -2,7 +2,7 @@
 
 **Last Updated:** November 15, 2025  
 **Project Status:** Production Ready ✅  
-**Latest Commit:** af6b8e72e  
+**Latest Commit:** ab96865ac  
 **Branch:** master  
 **Server URL:** http://connect.globalmu.org/ (http://192.168.4.71/)  
 **Admin Panel:** http://192.168.4.71:8080/  
@@ -11,11 +11,44 @@
 
 ---
 
-## 🎯 Latest Update: Complete Dark Mode Implementation (November 15, 2025)
+## 🎯 Latest Update: Dark Mode + Drag & Drop (November 15, 2025)
 
-**Status:** ✅ Full Dark Mode Coverage - Production Ready
+**Status:** ✅ Full Dark Mode + Interactive Inventory Management - Production Ready
 
-Successfully implemented comprehensive dark mode support across all admin panel pages. The application now features a modern, intuitive interface with seamless light/dark theme switching, including game-accurate inventory grids.
+Successfully implemented comprehensive dark mode support across all admin panel pages AND modern drag & drop functionality for inventory management with collision detection and visual feedback.
+
+### New Features
+
+**1. Drag & Drop Inventory Management** (Commit: TBD)
+- **✨ Modern UX Innovation:**
+  - Click-and-drag items with mouse for intuitive repositioning
+  - Real-time visual feedback during drag operations
+  - Smart collision detection prevents item overlap
+  - Size-aware placement validation (accounts for item width×height)
+  - Boundary checking prevents items from going out of grid
+  
+- **🎨 Visual Feedback:**
+  - Items show "grabbing" cursor and scale effect when dragged
+  - Drop zones highlight in **green** for valid positions
+  - Drop zones highlight in **red** for invalid positions (occupied/out of bounds)
+  - Smooth transitions and animations for professional feel
+  - Drop zones only visible during active drag operation
+  
+- **🔒 Collision Detection:**
+  - Rectangle overlap algorithm checks all item dimensions
+  - Multi-cell items (2×3, 1×2, etc.) properly validated
+  - Cannot drop items on occupied cells
+  - Checks all cells that would be occupied by item width×height
+  - Prevents items from exceeding grid boundaries
+  
+- **⚙️ Technical Implementation:**
+  - HTML5 Drag & Drop API for native browser support
+  - Static field `_draggedItem` in MuItem class for state management
+  - `CanPlaceItemAt()` validates placement with bounds and collision checks
+  - `IsCellOccupiedByOtherItem()` checks for overlapping items
+  - Drop zone grid overlay with individual cell event handlers
+  - Works seamlessly with existing keyboard navigation (WASD keys)
+  - Compatible with equipped items (slot >= 0xC0) and inventory items
 
 ### Pages Updated with Dark Mode
 
@@ -68,13 +101,13 @@ Successfully implemented comprehensive dark mode support across all admin panel 
   - Create Inventory button with gradient
   - Cancel button with dark:bg-slate-700 hover effect
 
-**5. Inventory & Equipment Grids** (Commits: f82836c6f, 42b5de0fc)
+**5. Inventory & Equipment Grids** (Commits: f82836c6f, 42b5de0fc, 7962d016e, 2178802cf)
 - **ItemStorageField Component Dark Mode:**
   - Inventory grids styled to match MU Online game interface
   - Item storage container with deeper purple gradient in dark mode
   - Equipped items box with slate-900/slate-800 background
-  - Storage grids with dark slate backgrounds matching game aesthetic
-  - Extension headers (Extension 1-4, Personal Store) with golden text
+  - Storage grids with transparent backgrounds showing game texture
+  - Extension headers (Extension 1-4, Personal Store) with black bg + wheat text
   - All borders updated to slate-500 for visibility
   - Item editor panel background changed to slate-800
   - Warning messages with dark:bg-red-900/30 styling
@@ -82,15 +115,15 @@ Successfully implemented comprehensive dark mode support across all admin panel 
   - **Game-accurate grid backgrounds** visible in both light/dark modes
   - Account Vault storage uses same styling as character inventory
 
-- **MuItemStorage Grid Cells** (Commits: 42b5de0fc, 38fdadff5, af6b8e72e):
+- **MuItemStorage Grid Cells** (Commits: 42b5de0fc, 38fdadff5, af6b8e72e, 7962d016e):
   - **Uses original inventory_back.png background image** like MUnique/OpenMU
   - Cells now transparent to show background image through
   - Grid pattern provided by the background image (not CSS borders)
   - **Extension headers now clearly visible** with black background and wheat color
   - **Personal Store text properly visible** in both light and dark modes
   - Removed custom borders that were hiding the background texture
-  - Drag-over states (valid/invalid) still work with colored highlights
-  - **Matches original OpenMU implementation exactly**
+  - **Drag & drop overlay** with green/red visual feedback
+  - **Matches original OpenMU implementation** with enhanced UX
   - Applied to Character Inventory, Extensions, Personal Store, and Account Vault
 
 ### Technical Achievements
@@ -98,6 +131,9 @@ Successfully implemented comprehensive dark mode support across all admin panel 
 **Innovation & UX:**
 - 🎨 Consistent color palette across light/dark themes
 - ⚡ Instant theme switching without page reload
+- 🖱️ **Modern drag & drop with smart collision detection**
+- ✨ **Real-time visual feedback for drag operations**
+- 🎯 **Intuitive inventory management** matching modern game standards
 - 🔄 Smooth transitions between theme modes
 - 📱 Responsive design maintained in both themes
 - ♿ Enhanced accessibility with proper contrast ratios
