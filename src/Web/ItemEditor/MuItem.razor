@@ -2,11 +2,11 @@
 <style>
     .mu-item { --boxSize: 42px; display: block; position: absolute; }
     .mu-item img { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); width: 180%; height: 180%; object-fit: contain; user-select: none; pointer-events: none; }
-    .mu-item-selector { z-index: 100; opacity: 0; cursor: grab; transition: all 0.2s ease; }
-    .mu-item-selector:active { cursor: grabbing; }
-    .mu-item-selector:hover { background-color: cornflowerblue; opacity: 0.333; }
+    .mu-item-selector { z-index: 100; opacity: 0; cursor: grab !important; transition: all 0.2s ease; }
+    .mu-item-selector:active { cursor: grabbing !important; }
+    .mu-item-selector:hover { background-color: cornflowerblue; opacity: 0.333; cursor: grab !important; }
     .mu-item-selector.highlighted { background-color: greenyellow; opacity: 0.333; }
-    .mu-item-selector.dragging { opacity: 0.4; cursor: grabbing; transform: scale(1.05); box-shadow: 0 8px 16px rgba(0,0,0,0.3); z-index: 200; }
+    .mu-item-selector.dragging { opacity: 0.4; cursor: grabbing !important; transform: scale(1.05); box-shadow: 0 8px 16px rgba(0,0,0,0.3); z-index: 200; }
     .mu-item-selector.dragging-js { opacity: 0.6; cursor: grabbing !important; transform: scale(1.1); box-shadow: 0 12px 24px rgba(0,0,0,0.4); z-index: 200; transition: transform 0.1s ease, opacity 0.1s ease; }
     .mu-item-selector.drag-over-occupied { background-color: rgba(255, 0, 0, 0.4); cursor: not-allowed !important; box-shadow: inset 0 0 0 2px rgba(255, 0, 0, 0.8); }
     .undefined-item { height: 100%; width: 100%; background-color: greenyellow; }

@@ -430,15 +430,29 @@ class InventoryDragDrop {
 
 // Initialize when DOM is ready
 console.log('🎮 InventoryDragDrop script loaded, readyState:', document.readyState);
+console.log('🎮 Script location: inventory-drag-drop.js');
+
+// Add a visible alert to confirm script is loading
+console.warn('⚡ DRAG & DROP SCRIPT LOADED - Check console for logs');
 
 if (document.readyState === 'loading') {
     console.log('🎮 Waiting for DOMContentLoaded...');
     document.addEventListener('DOMContentLoaded', () => {
         console.log('🎮 DOMContentLoaded fired, initializing InventoryDragDrop');
+        console.log('🎮 Looking for .mu-item-selector elements...');
+        const items = document.querySelectorAll('.mu-item-selector');
+        console.log('🎮 Found', items.length, 'item selector elements');
+        
         window.inventoryDragDrop = new InventoryDragDrop();
+        console.warn('✅ InventoryDragDrop instance created and attached to window');
     });
 } else {
     console.log('🎮 DOM already loaded, initializing InventoryDragDrop immediately');
+    console.log('🎮 Looking for .mu-item-selector elements...');
+    const items = document.querySelectorAll('.mu-item-selector');
+    console.log('🎮 Found', items.length, 'item selector elements');
+    
     window.inventoryDragDrop = new InventoryDragDrop();
+    console.warn('✅ InventoryDragDrop instance created and attached to window');
 }
 
