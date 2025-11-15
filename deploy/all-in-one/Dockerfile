@@ -19,6 +19,13 @@ COPY ["src/SharedGlobalUsings.cs", "src/"]
 COPY ["src/stylecop.json", "src/"]
 RUN dotnet restore "src/Startup/MUnique.OpenMU.Startup.csproj"
 COPY . .
+
+# Build Tailwind CSS
+WORKDIR "/src/src/Web/AdminPanel"
+RUN apk add --no-cache nodejs npm && \
+    npm install && \
+    npm run build:css
+
 WORKDIR "/src/src/Startup"
 RUN dotnet build "MUnique.OpenMU.Startup.csproj" -c Release -o /app/build -p:ci=true
 

@@ -15,6 +15,13 @@ WORKDIR /src
 COPY ["Startup/MUnique.OpenMU.Startup.csproj", "Startup/"]
 RUN dotnet restore "Startup/MUnique.OpenMU.Startup.csproj"
 COPY . .
+
+# Build Tailwind CSS before building the app
+WORKDIR "/src/Web/AdminPanel"
+RUN apk add --no-cache nodejs npm && \
+    npm install && \
+    npm run build:css
+
 WORKDIR "/src/Startup"
 RUN dotnet build "MUnique.OpenMU.Startup.csproj" -c Release -o /app/build -p:ci=true
 
