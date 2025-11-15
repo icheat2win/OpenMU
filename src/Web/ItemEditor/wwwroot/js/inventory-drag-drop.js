@@ -91,6 +91,12 @@ class InventoryDragDrop {
             console.log('🖱️ MouseMove: Grid position:', { col, row, x, y });
         }
 
+        // Move the item visually to follow the mouse (snap to grid)
+        this.draggedElement.style.left = `${col * this.cellSize}px`;
+        this.draggedElement.style.top = `${row * this.cellSize}px`;
+        this.draggedElement.style.position = 'absolute';
+        this.draggedElement.style.zIndex = '1000';
+
         // Show visual feedback on the dragged item
         this.updateDragVisual(col, row, storage);
     }
@@ -208,15 +214,17 @@ class InventoryDragDrop {
         // Check if the drop would be valid
         const isValid = this.canPlaceItem(col, row, storage);
         
-        // Update the dragged item's visual appearance
+        // Update the dragged item's visual appearance with stronger glow
         if (isValid) {
             // Green glow for valid placement
-            this.draggedElement.style.boxShadow = '0 0 20px 5px rgba(124, 252, 0, 0.8)';
-            this.draggedElement.style.border = '2px solid rgba(124, 252, 0, 0.9)';
+            this.draggedElement.style.boxShadow = '0 0 30px 8px rgba(124, 252, 0, 0.9), inset 0 0 20px rgba(124, 252, 0, 0.3)';
+            this.draggedElement.style.border = '3px solid rgba(124, 252, 0, 1)';
+            this.draggedElement.style.backgroundColor = 'rgba(124, 252, 0, 0.2)';
         } else {
             // Red glow for invalid placement
-            this.draggedElement.style.boxShadow = '0 0 20px 5px rgba(255, 0, 0, 0.8)';
-            this.draggedElement.style.border = '2px solid rgba(255, 0, 0, 0.9)';
+            this.draggedElement.style.boxShadow = '0 0 30px 8px rgba(255, 0, 0, 0.9), inset 0 0 20px rgba(255, 0, 0, 0.3)';
+            this.draggedElement.style.border = '3px solid rgba(255, 0, 0, 1)';
+            this.draggedElement.style.backgroundColor = 'rgba(255, 0, 0, 0.2)';
         }
     }
 
@@ -331,6 +339,8 @@ class InventoryDragDrop {
             // Remove visual feedback styling
             this.draggedElement.style.boxShadow = '';
             this.draggedElement.style.border = '';
+            this.draggedElement.style.backgroundColor = '';
+            this.draggedElement.style.zIndex = '';
         }
 
         document.body.style.cursor = '';
