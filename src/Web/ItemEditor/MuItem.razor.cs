@@ -156,22 +156,27 @@ public partial class MuItem
     {
         _draggedItem = this.Model;
         this._isDragging = true;
+        e.DataTransfer.DropEffect = "move";
+        e.DataTransfer.EffectAllowed = "move";
     }
 
     private void OnDragEnd(DragEventArgs e)
     {
         this._isDragging = false;
+        _draggedItem = null;
     }
 
     private void OnDragOver(DragEventArgs e)
     {
-        // Prevent dropping on occupied cells
+        // Always prevent default to allow drop
         e.DataTransfer.DropEffect = "none";
     }
 
     private async Task OnDropAsync(DragEventArgs e)
     {
-        // Don't allow dropping on other items
-        return;
+        // Items cannot be dropped on other items
+        // They can only be dropped on empty cells via the storage component
+        e.DataTransfer.DropEffect = "none";
+        await Task.CompletedTask;
     }
 }

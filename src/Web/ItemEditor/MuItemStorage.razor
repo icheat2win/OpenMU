@@ -5,7 +5,34 @@
     return;
 }
 
-<div class=@($"mu-item-storage storage-rows{this._viewModel.Rows}")>
+<div class=@($"mu-item-storage storage-rows{this._viewModel.Rows}")
+     @ondragover="OnDragOver"
+     @ondragover:preventDefault
+     @ondragleave="OnDragLeave"
+     @ondrop="OnDropAsync">
+    
+    @* Render drop zones as overlay *@
+    <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 50;">
+        @for (int row = 0; row < _viewModel.Rows; row++)
+        {
+            @for (int col = 0; col < 8; col++)
+            {
+                var currentRow = row;
+                var currentCol = col;
+                var cellClass = GetCellClass(currentRow, currentCol);
+                
+                <div class="@cellClass"
+                     style="position: absolute; left: @(col * 42)px; top: @(row * 42)px; width: 42px; height: 42px; pointer-events: auto;"
+                     data-row="@currentRow"
+                     data-col="@currentCol"
+                     @ondragenter="@((e) => OnCellDragEnter(e, currentRow, currentCol))"
+                     @ondragleave="OnCellDragLeave">
+                </div>
+            }
+        }
+    </div>
+    
+    @* Render items *@
     @foreach (var item in this._viewModel.Items)
     {
         <MuItem
