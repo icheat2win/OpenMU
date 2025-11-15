@@ -6,6 +6,7 @@
     <WarningsAsErrors>nullable;CS4014;VSTHRD110;VSTHRD100</WarningsAsErrors>
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <NoWarn>RZ10012;CS1570</NoWarn>
   </PropertyGroup>
 
   <ItemGroup>
