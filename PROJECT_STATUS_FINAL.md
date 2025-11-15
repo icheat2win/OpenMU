@@ -2,7 +2,7 @@
 
 **Last Updated:** November 15, 2025  
 **Project Status:** Production Ready ✅  
-**Latest Commit:** 804de5343  
+**Latest Commit:** 2a76f7ad2  
 **Branch:** master  
 **Server URL:** http://connect.globalmu.org/ (http://192.168.4.71/)  
 **Admin Panel:** http://192.168.4.71:8080/  
@@ -11,7 +11,103 @@
 
 ---
 
-## 🎯 Latest Update: Dropdown Selected Value Text Fix (November 15, 2025 - Session 4e)
+## 🎯 Latest Update: Tailwind v4 Conversion - Phase 2 (November 15, 2025 - Session 5)
+
+**Status:** ✅ 3 More Pages Converted to Tailwind v4
+
+Completed second phase of Tailwind v4 conversion, modernizing Merchants, Plugins, and MapPage.
+
+### Pages Converted
+
+**1. Merchants.razor (Admin Panel):**
+- ✅ Replaced Bootstrap classes: `btn-info` → gradient blue buttons
+- ✅ Replaced `btn-lg btn-outline-dark` → Tailwind border buttons
+- ✅ Added modern gradient header (purple-600 to violet-600)
+- ✅ Enhanced loading state with animated spinner
+- ✅ Improved merchant list card with shadows and rounded corners
+- ✅ Modernized Edit button with blue gradient and hover effects
+- ✅ Enhanced Back button with better spacing and transitions
+- ✅ Improved Save button with green gradient
+- ✅ Better form layout with proper spacing
+
+**2. Plugins.razor (Admin Panel):**
+- ✅ Replaced `btn-warning` → amber/orange gradient for Deactivate
+- ✅ Replaced `btn-success` → green/emerald gradient for Activate
+- ✅ Replaced `btn-secondary` → slate gradient for Configure
+- ✅ Added gradient table header (purple-600 to violet-600)
+- ✅ Enhanced filter row with styled search inputs
+- ✅ Improved table cell styling with proper padding
+- ✅ Added hover effects and smooth transitions
+- ✅ Better dark mode color support
+- ✅ Action buttons grouped with flexbox layout
+
+**3. MapPage.razor (Live Map View):**
+- ✅ Enhanced breadcrumb navigation with home icon
+- ✅ Added hover states for links (purple theme)
+- ✅ Improved spacing and layout consistency
+- ✅ Added card container for map component
+- ✅ Better visual hierarchy with proper typography
+- ✅ Dark mode color adjustments
+
+### Technical Changes
+
+**Bootstrap → Tailwind Mappings:**
+```css
+/* Old Bootstrap */
+.btn-info → bg-gradient-to-r from-blue-500 to-blue-600
+.btn-success → bg-gradient-to-r from-green-500 to-emerald-600
+.btn-warning → bg-gradient-to-r from-amber-500 to-orange-600
+.btn-secondary → bg-gradient-to-r from-slate-500 to-slate-600
+.btn-lg → px-5 py-3 text-lg
+.btn-outline-dark → border-2 border-slate-300
+.d-flex flex-row → flex items-center space-x-4
+```
+
+**Design Improvements:**
+- Consistent purple/violet gradient theme across all pages
+- Enhanced hover effects with scale and shadow transitions
+- Better loading states with animated spinners
+- Improved button hierarchy (primary, secondary, danger)
+- Dark mode support throughout
+- Consistent spacing using Tailwind's spacing scale
+- Better typography with proper font weights
+
+### Build Results
+```
+Build succeeded.
+    7 Warning(s) (source generator - suppressed)
+    0 Error(s)
+Time Elapsed 00:01:25.79
+```
+
+### Progress Summary
+
+**Total Pages Converted to Tailwind v4: 13** 
+1. ✅ Index.razor (Session 1)
+2. ✅ Accounts.razor (Session 1)
+3. ✅ Servers.razor (Session 1)
+4. ✅ SystemConfiguration.razor (Session 2)
+5. ✅ MapCards.razor component (Session 3)
+6. ✅ LiveView.razor (Session 3)
+7. ✅ AdminUsers.razor (Session 4)
+8. ✅ GameServer.razor (Session 4)
+9. ✅ LogFiles.razor (Session 4)
+10. ✅ Updates.razor (Session 4)
+11. ✅ **Merchants.razor (Session 5)** 🆕
+12. ✅ **Plugins.razor (Session 5)** 🆕
+13. ✅ **MapPage.razor (Session 5)** 🆕
+
+### Files Modified
+1. `src/Web/AdminPanel/Pages/Merchants.razor` - Complete Tailwind conversion
+2. `src/Web/AdminPanel/Pages/Plugins.razor` - Complete Tailwind conversion
+3. `src/Web/AdminPanel/Pages/MapPage.razor` - Complete Tailwind conversion
+
+### Commits
+- `2a76f7ad2` - Convert Merchants, Plugins, and MapPage to Tailwind v4
+
+---
+
+## Previous Update: Dropdown Selected Value Text Fix (November 15, 2025 - Session 4e)
 
 **Status:** ✅ Dropdown Selected Values Now Visible
 
