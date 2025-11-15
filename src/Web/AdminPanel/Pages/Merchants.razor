@@ -6,43 +6,92 @@
 <PageTitle>OpenMU: Merchants</PageTitle>
 <Breadcrumb IsFirstFromRoot="true" Caption="Merchants"/>
 
-<h1>Merchants</h1>
-
-
-@if (this.ViewModels is null)
-{
-    <span class="spinner-border" role="status" aria-hidden="true"></span>
-    <span class="sr-only">Loading...</span>
-    return;
-}
-
-@if (this._selectedMerchant is null)
-{
-    <div>
-        <QuickGrid Items="@this.ViewModels" Pagination="@_merchantPagination" Theme="none">
-            <PropertyColumn Title="Name" Property="@(c => c.Name)" Sortable="true">
-            </PropertyColumn>
-
-            <TemplateColumn Align="Align.Center">
-                <button type="button" class="btn-info" @onclick="@(() => this.OnMerchantEditClickAsync(context))">Edit</button>
-            </TemplateColumn>
-        </QuickGrid>
+<!-- Page Header -->
+<div class="min-h-screen bg-white dark:bg-slate-900 py-6 px-4 max-w-7xl mx-auto">
+    <div class="mb-8">
+        <h1 class="text-4xl font-bold bg-gradient-to-r from-purple-600 to-violet-600 bg-clip-text text-transparent mb-2">
+            Merchants
+        </h1>
+        <p class="text-slate-600 dark:text-slate-400">Manage merchant inventories and items</p>
     </div>
-    <Paginator State="@_merchantPagination"/>
-}
-else
-{
-    <div class="d-flex flex-row">
-        <button type="button" class="btn-lg btn-outline-dark mr-3" @onclick="this.OnBackButtonClickAsync">&lt; Back</button>
-        <h2>@this._selectedMerchant.Merchant.Designation</h2>
-    </div>
-    <hr/>
-    <CascadingValue TValue="IContext" Value="this._persistenceContext">
-        <EditForm Model="this._selectedMerchant.Merchant" OnValidSubmit="this.OnSaveButtonClickAsync">
-            <ItemStorageField @bind-Value="this._selectedMerchant.Merchant.MerchantStore" HideLabel="true"/>
-            <hr />
-            <button type="submit" class="primary-button">Save changes</button>
-            <button type="button" class="cancel-button" @onclick="this.OnCancelButtonClickAsync">Discard changes</button>
-        </EditForm>
-    </CascadingValue>
-}
+
+    @if (this.ViewModels is null)
+    {
+        <!-- Loading State -->
+        <div class="flex items-center justify-center py-16">
+            <div class="flex items-center space-x-3">
+                <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-purple-600"></div>
+                <span class="text-slate-700 dark:text-slate-300 font-medium">Loading merchants...</span>
+            </div>
+        </div>
+        return;
+    }
+
+    @if (this._selectedMerchant is null)
+    {
+        <!-- Merchant List View -->
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-lg overflow-hidden border border-slate-200 dark:border-slate-700">
+            <QuickGrid Items="@this.ViewModels" Pagination="@_merchantPagination" Theme="none">
+                <PropertyColumn Title="Name" Property="@(c => c.Name)" Sortable="true">
+                </PropertyColumn>
+
+                <TemplateColumn Align="Align.Center">
+                    <button type="button" 
+                            class="px-4 py-2 bg-gradient-to-r from-blue-500 to-blue-600 text-white font-medium rounded-lg hover:from-blue-600 hover:to-blue-700 transition-all duration-200 shadow-sm hover:shadow-md"
+                            @onclick="@(() => this.OnMerchantEditClickAsync(context))">
+                        <span class="oi oi-pencil mr-1"></span> Edit
+                    </button>
+                </TemplateColumn>
+            </QuickGrid>
+        </div>
+        <div class="mt-4">
+            <Paginator State="@_merchantPagination"/>
+        </div>
+    }
+    else
+    {
+        <!-- Merchant Edit View -->
+        <div class="space-y-6">
+            <!-- Back Button and Title -->
+            <div class="flex items-center space-x-4">
+                <button type="button" 
+                        class="px-5 py-3 border-2 border-slate-300 dark:border-slate-600 text-slate-700 dark:text-slate-300 font-semibold rounded-lg hover:bg-slate-50 dark:hover:bg-slate-700 transition-all duration-200 flex items-center space-x-2"
+                        @onclick="this.OnBackButtonClickAsync">
+                    <span class="text-xl">&larr;</span>
+                    <span>Back to List</span>
+                </button>
+                <h2 class="text-3xl font-bold text-slate-800 dark:text-slate-100">
+                    @this._selectedMerchant.Merchant.Designation
+                </h2>
+            </div>
+
+            <!-- Separator -->
+            <div class="border-t border-slate-200 dark:border-slate-700"></div>
+
+            <!-- Edit Form -->
+            <div class="bg-white dark:bg-slate-800 rounded-xl shadow-lg p-6 border border-slate-200 dark:border-slate-700">
+                <CascadingValue TValue="IContext" Value="this._persistenceContext">
+                    <EditForm Model="this._selectedMerchant.Merchant" OnValidSubmit="this.OnSaveButtonClickAsync">
+                        <div class="mb-6">
+                            <ItemStorageField @bind-Value="this._selectedMerchant.Merchant.MerchantStore" HideLabel="true"/>
+                        </div>
+
+                        <!-- Action Buttons -->
+                        <div class="flex space-x-3 pt-6 border-t border-slate-200 dark:border-slate-700">
+                            <button type="submit" 
+                                    class="px-6 py-3 bg-gradient-to-r from-green-500 to-emerald-600 text-white font-semibold rounded-lg hover:from-green-600 hover:to-emerald-700 transition-all duration-200 shadow-md hover:shadow-lg flex items-center space-x-2">
+                                <span class="oi oi-check"></span>
+                                <span>Save Changes</span>
+                            </button>
+                            <button type="button" 
+                                    class="px-6 py-3 border-2 border-slate-300 dark:border-slate-600 text-slate-700 dark:text-slate-300 font-semibold rounded-lg hover:bg-slate-50 dark:hover:bg-slate-700 transition-all duration-200"
+                                    @onclick="this.OnCancelButtonClickAsync">
+                                <span class="oi oi-x mr-1"></span> Discard Changes
+                            </button>
+                        </div>
+                    </EditForm>
+                </CascadingValue>
+            </div>
+        </div>
+    }
+</div>

@@ -9,19 +9,31 @@
 <PageTitle>OpenMU: Live Map</PageTitle>
 <Breadcrumb Caption="Live Map"/>
 
-@if (this._gameServer is not null)
-{
-    <div>
-        <NavLink href="" Match="NavLinkMatch.All">
-            <span>All</span>
-        </NavLink>
-        <span> / @this._map?.MapName</span>
-    </div>
+<!-- Page Container -->
+<div class="min-h-screen bg-white dark:bg-slate-900 py-6 px-4">
+    @if (this._gameServer is not null)
+    {
+        <!-- Navigation Breadcrumb -->
+        <div class="mb-6 flex items-center space-x-2 text-sm">
+            <NavLink href="" Match="NavLinkMatch.All" 
+                     class="text-purple-600 dark:text-purple-400 hover:text-purple-700 dark:hover:text-purple-300 font-medium transition-colors duration-200">
+                <span class="flex items-center space-x-1">
+                    <span class="oi oi-home"></span>
+                    <span>All Servers</span>
+                </span>
+            </NavLink>
+            <span class="text-slate-400 dark:text-slate-500">/</span>
+            <span class="text-slate-700 dark:text-slate-300 font-semibold">@this._map?.MapName</span>
+        </div>
 
-    <CascadingValue Value="@_gameServer">
-        <Map Server="@_gameServer" MapId="@MapId"></Map>
-    </CascadingValue>
-}
+        <!-- Map Container -->
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-lg overflow-hidden border border-slate-200 dark:border-slate-700">
+            <CascadingValue Value="@_gameServer">
+                <Map Server="@_gameServer" MapId="@MapId"></Map>
+            </CascadingValue>
+        </div>
+    }
+</div>
 
 @code {
     internal const string LiveMapRoute = "map/";

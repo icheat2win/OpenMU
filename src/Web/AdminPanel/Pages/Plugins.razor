@@ -6,53 +6,97 @@
 
 <PageTitle>Plugins</PageTitle>
 <Breadcrumb IsFirstFromRoot="true" Caption="Plugins"/>
-<h1>Plugins</h1>
 
-<div>
-    <DataTable TItem=@PlugInConfigurationViewItem>
-        <TableHeader>
-            <th class="col-1">Extension Point</th>
-            <th class="col-1">Plugin Name</th>
-            <th class="col-1">Plugin Type</th>
-            <th class="col-1">Action</th>
-        </TableHeader>
-        <FilterHeader>
-            <th><PlugInExtensionPointSelection SelectedPointId="@this._plugInController.PointFilter" ExtensionPoints="@this._plugInController.ExtensionPoints" OnSelectionChanged="@this.OnPlugInPointSelected" /></th>
-            <th><input type="search" placeholder="Search" @bind="@this._plugInController.NameFilter" @bind:event="oninput"/></th>
-            <th><input type="search" placeholder="Search" @bind="@this._plugInController.TypeFilter" @bind:event="oninput"/></th>
-            <th></th>
-        </FilterHeader>
-        <ItemTemplate Context="item">
-            <td title=@item.PlugInPointDescription>@item.PlugInPointName</td>
-            <td title=@item.PlugInDescription>
-                <MarkedText Marked=@this._plugInController.NameFilter Text=@item.PlugInName />
-            </td>
-            <td title=@item.TypeId>
-                <MarkedText Marked=@this._plugInController.TypeFilter Text=@item.TypeName />
-            </td>
-            <td>
-                @if (item.IsActive)
-                {
-                    <Button class="btn-warning" @onclick="async () => await this._plugInController.DeactivateAsync(item)">Deactivate</Button>
-                }
-                else
-                {
-                    <Button class="btn-success" @onclick="async () => await this._plugInController.ActivateAsync(item)">Activate</Button>
-                }
+<!-- Page Container -->
+<div class="min-h-screen bg-white dark:bg-slate-900 py-6 px-4 max-w-7xl mx-auto">
+    <!-- Page Header -->
+    <div class="mb-8">
+        <h1 class="text-4xl font-bold bg-gradient-to-r from-purple-600 to-violet-600 bg-clip-text text-transparent mb-2">
+            Plugins
+        </h1>
+        <p class="text-slate-600 dark:text-slate-400">Manage plugin activation and configuration</p>
+    </div>
 
-                @if (item.ConfigurationType is { })
-                {
-                    <Button class="btn-secondary" @onclick="() => this._plugInController.ShowPlugInConfigAsync(item)"><span class="oi oi-cog" aria-hidden="true"></span></Button>
-                }
-            </td>
-        </ItemTemplate>
-        <TableFooter>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-        </TableFooter>
-    </DataTable>
+    <!-- Data Table Card -->
+    <div class="bg-white dark:bg-slate-800 rounded-xl shadow-lg overflow-hidden border border-slate-200 dark:border-slate-700">
+        <DataTable TItem=@PlugInConfigurationViewItem>
+            <TableHeader>
+                <th class="px-6 py-4 text-left text-xs font-bold text-white uppercase tracking-wider bg-gradient-to-r from-purple-600 to-violet-600">Extension Point</th>
+                <th class="px-6 py-4 text-left text-xs font-bold text-white uppercase tracking-wider bg-gradient-to-r from-purple-600 to-violet-600">Plugin Name</th>
+                <th class="px-6 py-4 text-left text-xs font-bold text-white uppercase tracking-wider bg-gradient-to-r from-purple-600 to-violet-600">Plugin Type</th>
+                <th class="px-6 py-4 text-center text-xs font-bold text-white uppercase tracking-wider bg-gradient-to-r from-purple-600 to-violet-600">Actions</th>
+            </TableHeader>
+            <FilterHeader>
+                <th class="px-6 py-3 bg-slate-50 dark:bg-slate-700">
+                    <PlugInExtensionPointSelection SelectedPointId="@this._plugInController.PointFilter" 
+                                                  ExtensionPoints="@this._plugInController.ExtensionPoints" 
+                                                  OnSelectionChanged="@this.OnPlugInPointSelected" 
+                                                  class="w-full px-3 py-2 text-sm border border-slate-300 dark:border-slate-600 rounded-lg focus:outline-none focus:border-purple-500 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300"/>
+                </th>
+                <th class="px-6 py-3 bg-slate-50 dark:bg-slate-700">
+                    <input type="search" 
+                           placeholder="Search name..." 
+                           @bind="@this._plugInController.NameFilter" 
+                           @bind:event="oninput"
+                           class="w-full px-3 py-2 text-sm border border-slate-300 dark:border-slate-600 rounded-lg focus:outline-none focus:border-purple-500 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 placeholder-slate-400"/>
+                </th>
+                <th class="px-6 py-3 bg-slate-50 dark:bg-slate-700">
+                    <input type="search" 
+                           placeholder="Search type..." 
+                           @bind="@this._plugInController.TypeFilter" 
+                           @bind:event="oninput"
+                           class="w-full px-3 py-2 text-sm border border-slate-300 dark:border-slate-600 rounded-lg focus:outline-none focus:border-purple-500 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 placeholder-slate-400"/>
+                </th>
+                <th class="px-6 py-3 bg-slate-50 dark:bg-slate-700"></th>
+            </FilterHeader>
+            <ItemTemplate Context="item">
+                <td class="px-6 py-4 text-slate-700 dark:text-slate-300" title=@item.PlugInPointDescription>
+                    <span class="font-medium">@item.PlugInPointName</span>
+                </td>
+                <td class="px-6 py-4 text-slate-700 dark:text-slate-300" title=@item.PlugInDescription>
+                    <MarkedText Marked=@this._plugInController.NameFilter Text=@item.PlugInName />
+                </td>
+                <td class="px-6 py-4 text-slate-700 dark:text-slate-300 font-mono text-xs" title=@item.TypeId>
+                    <MarkedText Marked=@this._plugInController.TypeFilter Text=@item.TypeName />
+                </td>
+                <td class="px-6 py-4 text-center">
+                    <div class="flex items-center justify-center space-x-2">
+                        @if (item.IsActive)
+                        {
+                            <button type="button"
+                                    class="px-4 py-2 bg-gradient-to-r from-amber-500 to-orange-600 text-white font-medium rounded-lg hover:from-amber-600 hover:to-orange-700 transition-all duration-200 shadow-sm hover:shadow-md" 
+                                    @onclick="async () => await this._plugInController.DeactivateAsync(item)">
+                                <span class="oi oi-power-standby mr-1"></span> Deactivate
+                            </button>
+                        }
+                        else
+                        {
+                            <button type="button"
+                                    class="px-4 py-2 bg-gradient-to-r from-green-500 to-emerald-600 text-white font-medium rounded-lg hover:from-green-600 hover:to-emerald-700 transition-all duration-200 shadow-sm hover:shadow-md" 
+                                    @onclick="async () => await this._plugInController.ActivateAsync(item)">
+                                <span class="oi oi-check mr-1"></span> Activate
+                            </button>
+                        }
+
+                        @if (item.ConfigurationType is { })
+                        {
+                            <button type="button"
+                                    class="px-3 py-2 bg-gradient-to-r from-slate-500 to-slate-600 text-white font-medium rounded-lg hover:from-slate-600 hover:to-slate-700 transition-all duration-200 shadow-sm hover:shadow-md" 
+                                    @onclick="() => this._plugInController.ShowPlugInConfigAsync(item)">
+                                <span class="oi oi-cog" aria-hidden="true"></span>
+                            </button>
+                        }
+                    </div>
+                </td>
+            </ItemTemplate>
+            <TableFooter>
+                <td class="px-6 py-4 bg-slate-50 dark:bg-slate-800"></td>
+                <td class="px-6 py-4 bg-slate-50 dark:bg-slate-800"></td>
+                <td class="px-6 py-4 bg-slate-50 dark:bg-slate-800"></td>
+                <td class="px-6 py-4 bg-slate-50 dark:bg-slate-800"></td>
+            </TableFooter>
+        </DataTable>
+    </div>
 </div>
 
 @code {
