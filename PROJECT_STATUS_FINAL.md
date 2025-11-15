@@ -2,7 +2,7 @@
 
 **Last Updated:** November 15, 2025  
 **Project Status:** Production Ready ✅  
-**Latest Commit:** 84003265a  
+**Latest Commit:** f82836c6f  
 **Branch:** master  
 **Server URL:** http://connect.globalmu.org/ (http://192.168.4.71/)  
 **Admin Panel:** http://192.168.4.71:8080/  
@@ -15,7 +15,7 @@
 
 **Status:** ✅ Full Dark Mode Coverage - Production Ready
 
-Successfully implemented comprehensive dark mode support across all admin panel pages. The application now features a modern, intuitive interface with seamless light/dark theme switching.
+Successfully implemented comprehensive dark mode support across all admin panel pages. The application now features a modern, intuitive interface with seamless light/dark theme switching, including game-accurate inventory grids.
 
 ### Pages Updated with Dark Mode
 
@@ -68,6 +68,20 @@ Successfully implemented comprehensive dark mode support across all admin panel 
   - Create Inventory button with gradient
   - Cancel button with dark:bg-slate-700 hover effect
 
+**5. Inventory & Equipment Grids** (Commit: f82836c6f)
+- **ItemStorageField Component Dark Mode:**
+  - Inventory grids styled to match MU Online game interface
+  - Item storage container with deeper purple gradient in dark mode
+  - Equipped items box with slate-900/slate-800 background
+  - Storage grids with dark slate backgrounds matching game aesthetic
+  - Extension headers (Extension 1-4, Personal Store) with golden text
+  - All borders updated to slate-500 for visibility
+  - Item editor panel background changed to slate-800
+  - Warning messages with dark:bg-red-900/30 styling
+  - Create/Delete buttons maintain contrast in both themes
+  - **Game-accurate grid backgrounds** visible in both light/dark modes
+  - Account Vault storage uses same styling as character inventory
+
 ### Technical Achievements
 
 **Innovation & UX:**
@@ -77,6 +91,7 @@ Successfully implemented comprehensive dark mode support across all admin panel 
 - 📱 Responsive design maintained in both themes
 - ♿ Enhanced accessibility with proper contrast ratios
 - 🚀 Modern, intuitive interface that feels premium
+- 🎮 **Game-accurate inventory grids** matching MU Online aesthetic
 
 **Modern UI Features:**
 - Gradient backgrounds that adapt to theme
@@ -118,6 +133,8 @@ RUN apk add --no-cache nodejs npm && npm install && npm run build:css
 | 9b167cf46 | Add dark mode to Servers page | 3 files |
 | ecaec9287 | Add dark mode to Accounts pages | 4 files |
 | 84003265a | Add dark mode to Character Edit page | 2 files (-358, +104 lines) |
+| e5242f972 | Update PROJECT_STATUS with Character Edit | 1 file |
+| f82836c6f | **Add dark mode to Inventory & Equipment grids** | 3 files (+65, -28 lines) |
 
 ### Testing Results
 
