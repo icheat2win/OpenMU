@@ -179,7 +179,17 @@ public abstract class EditBase : ComponentBase, IAsyncDisposable
         var downloadMarkup = this.GetDownloadMarkup();
         var editorsMarkup = this.GetEditorsMarkup();
 
-        builder.AddMarkupContent(10, $"<h1>Edit {CaptionHelper.GetTypeCaption(this.Type!)}</h1>{downloadMarkup}{editorsMarkup}\r\n");
+        // Modern Tailwind v4 styled page container
+        builder.AddMarkupContent(10, 
+            $@"<div class=""min-h-screen bg-white dark:bg-slate-900 py-6 px-4 max-w-7xl mx-auto"">
+                <div class=""mb-8"">
+                    <h1 class=""text-4xl font-bold bg-gradient-to-r from-purple-600 to-violet-600 bg-clip-text text-transparent mb-2"">
+                        Edit {CaptionHelper.GetTypeCaption(this.Type!)}
+                    </h1>
+                    {downloadMarkup}
+                    {editorsMarkup}
+                </div>");
+        
         builder.OpenComponent<CascadingValue<IContext>>(11);
         builder.AddAttribute(12, nameof(CascadingValue<IContext>.Value), this._persistenceContext);
         builder.AddAttribute(13, nameof(CascadingValue<IContext>.IsFixed), this._isOwningContext);
@@ -190,6 +200,9 @@ public abstract class EditBase : ComponentBase, IAsyncDisposable
         }));
 
         builder.CloseComponent();
+        
+        // Close container div
+        builder.AddMarkupContent(15, "</div>");
     }
 
     /// <inheritdoc />
@@ -310,7 +323,13 @@ public abstract class EditBase : ComponentBase, IAsyncDisposable
         if (this.Type is not null && GenericControllerFeatureProvider.SupportedTypes.Any(t => t.Item1 == this.Type))
         {
             var uri = $"/download/{this.Type.Name}/{this.Type.Name}_{this.Id}.json";
-            return $"<p>Download as json: <a href=\"{uri}\" download><span class=\"oi oi-data-transfer-download\"></span></a></p>";
+            return $@"<p class=""text-slate-600 dark:text-slate-400 text-sm mb-2"">
+                        Download as JSON: 
+                        <a href=""{uri}"" download class=""text-purple-600 dark:text-purple-400 hover:text-purple-700 dark:hover:text-purple-300 font-medium transition-colors duration-200 inline-flex items-center"">
+                            <span class=""oi oi-data-transfer-download mr-1""></span>
+                            <span>Download</span>
+                        </a>
+                      </p>";
         }
 
         return null;
