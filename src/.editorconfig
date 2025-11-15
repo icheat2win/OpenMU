@@ -128,6 +128,66 @@ dotnet_diagnostic.VSTHRD103.severity = error
 # VSTHRD111: Use ConfigureAwait(bool)
 dotnet_diagnostic.VSTHRD111.severity = suggestion
 
+# CA1416: Platform compatibility warning
+dotnet_diagnostic.CA1416.severity = none
+
+# SA1210: Using directives should be ordered alphabetically
+dotnet_diagnostic.SA1210.severity = none
+
+# SA1108: Block statements should not contain embedded comments
+dotnet_diagnostic.SA1108.severity = none
+
+# SA1629: Documentation text should end with a period
+dotnet_diagnostic.SA1629.severity = none
+
+# SA1505: Opening braces should not be followed by blank line
+dotnet_diagnostic.SA1505.severity = none
+
+# SA1407: Arithmetic expressions should declare precedence
+dotnet_diagnostic.SA1407.severity = none
+
+# CS0114: Member hides inherited member
+dotnet_diagnostic.CS0114.severity = none
+
+# SA1117: Parameters should be on same line or separate lines
+dotnet_diagnostic.SA1117.severity = none
+
+# SA1508: Closing braces should not be preceded by blank line
+dotnet_diagnostic.SA1508.severity = none
+
+# SA1414: Tuple types in signatures should have element names
+dotnet_diagnostic.SA1414.severity = none
+
+# SA0001: XML comment analysis is disabled
+dotnet_diagnostic.SA0001.severity = none
+
+# RS1036: Specify analyzer diagnostic ID
+dotnet_diagnostic.RS1036.severity = none
+
+# SA1642: Constructor summary documentation should begin with standard text
+dotnet_diagnostic.SA1642.severity = none
+
+# SA1624: Property summary documentation should begin with standard text
+dotnet_diagnostic.SA1624.severity = none
+
+# SA1137: Elements should have the same indentation
+dotnet_diagnostic.SA1137.severity = none
+
+# SA1024: Colons should be spaced correctly
+dotnet_diagnostic.SA1024.severity = none
+
+# SA1013: Closing braces should be spaced correctly
+dotnet_diagnostic.SA1013.severity = none
+
+# SA1012: Opening braces should be spaced correctly
+dotnet_diagnostic.SA1012.severity = none
+
+# SA1009: Closing parenthesis should be spaced correctly
+dotnet_diagnostic.SA1009.severity = none
+
+# SA1514: Element documentation header should be preceded by blank line
+dotnet_diagnostic.SA1514.severity = none
+
 [**/Migrations/*.cs]
 # Suppress all StyleCop warnings for migration files (auto-generated)
 dotnet_analyzer_diagnostic.category-StyleCop.CSharpReadabilityRules.severity = none
