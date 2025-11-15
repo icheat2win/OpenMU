@@ -5,31 +5,7 @@
     return;
 }
 
-<div class=@($"mu-item-storage storage-rows{this._viewModel.Rows}")
-     @ondragover="OnDragOver"
-     @ondragover:preventDefault>
-    
-    @* Drop zone grid overlay *@
-    @for (byte row = 0; row < _viewModel.Rows; row++)
-    {
-        @for (byte col = 0; col < 8; col++)
-        {
-            var cellSlot = (byte)(row * 8 + col);
-            var isOccupied = IsCellOccupied(cellSlot);
-            var draggedItem = MuItem.GetDraggedItem();
-            var canPlace = draggedItem != null && CanPlaceItemAt(cellSlot, draggedItem.Item);
-            var cellClass = draggedItem != null ? (canPlace ? "drag-over-valid" : "drag-over-invalid") : "";
-            
-            <div class=@($"drop-zone-cell {cellClass}")
-                 style="position: absolute; left: @(col * 42)px; top: @(row * 42)px; width: 42px; height: 42px; pointer-events: auto; z-index: 50;"
-                 @ondragover="@((e) => OnCellDragOver(e, cellSlot, isOccupied))"
-                 @ondragover:preventDefault
-                 @ondrop="@((e) => OnCellDropAsync(e, cellSlot, isOccupied))">
-            </div>
-        }
-    }
-    
-    @* Items rendered on top *@
+<div class=@($"mu-item-storage storage-rows{this._viewModel.Rows}")>
     @foreach (var item in this._viewModel.Items)
     {
         <MuItem
