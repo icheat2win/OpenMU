@@ -181,16 +181,14 @@ public abstract class EditBase : ComponentBase, IAsyncDisposable
 
         // Modern Tailwind v4 styled page container
         builder.AddMarkupContent(10, 
-            $@"<div class=""min-h-screen bg-white dark:bg-slate-900 py-6 px-4 max-w-7xl mx-auto"">
+            $@"<div class=""py-6 px-4 max-w-7xl mx-auto"">
                 <div class=""mb-8"">
                     <h1 class=""text-4xl font-bold bg-gradient-to-r from-purple-600 to-violet-600 bg-clip-text text-transparent mb-2"">
-                        Edit {CaptionHelper.GetTypeCaption(this.Type!)}
+                    Edit {CaptionHelper.GetTypeCaption(this.Type!)}
                     </h1>
                     {downloadMarkup}
                     {editorsMarkup}
-                </div>");
-        
-        builder.OpenComponent<CascadingValue<IContext>>(11);
+                </div>");        builder.OpenComponent<CascadingValue<IContext>>(11);
         builder.AddAttribute(12, nameof(CascadingValue<IContext>.Value), this._persistenceContext);
         builder.AddAttribute(13, nameof(CascadingValue<IContext>.IsFixed), this._isOwningContext);
         builder.AddAttribute(14, nameof(CascadingValue<IContext>.ChildContent), (RenderFragment)(builder2 =>
