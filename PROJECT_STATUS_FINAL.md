@@ -2,7 +2,7 @@
 
 **Last Updated:** November 15, 2025  
 **Project Status:** Production Ready ✅  
-**Latest Commit:** cab870ec1  
+**Latest Commit:** 0acc4633b  
 **Branch:** master  
 **Server URL:** http://connect.globalmu.org/ (http://192.168.4.71/)  
 **Admin Panel:** http://192.168.4.71:8080/  
@@ -11,7 +11,68 @@
 
 ---
 
-## 🎯 Latest Update: Tailwind v4 Conversion Progress (November 15, 2025 - Session 4)
+## 🎯 Latest Update: Log Viewer Enhancement (November 15, 2025 - Session 4b)
+
+**Status:** ✅ Inline Log Viewer Added - Major UX Improvement
+
+Added comprehensive inline log viewing functionality based on user feedback:
+
+### Issues Addressed
+1. ❌ Dark mode text readability (timestamps hard to read)
+2. ❌ No inline log viewer (files just downloaded)
+3. ❌ No search functionality within logs
+4. ✅ All fixed with modern modal viewer
+
+### New Features
+**Inline Log Viewer:**
+- Modern modal interface with backdrop blur
+- Click any log file to view content instantly
+- No download required for quick viewing
+- Responsive design (max-w-6xl, 90vh max-height)
+- Smooth animations and transitions
+
+**Search Functionality:**
+- Real-time search/filter within log content
+- Highlights matching lines
+- Search counter shows filtered results
+- Case-insensitive matching
+
+**Better Readability:**
+- Fixed dark mode contrast (slate-600 → slate-300/700)
+- Monospace font for log content
+- Proper line wrapping and spacing
+- Font-medium for timestamps
+- Font-semibold for file sizes
+- Enhanced badge contrast
+
+**Additional Features:**
+- File size display in modal header
+- Line count indicator
+- Download button for offline viewing
+- Escape to close (click outside modal)
+- Clean, modern typography
+
+### Build Verification
+- **Errors:** 0 ✅
+- **Warnings:** 0 ✅  
+- **Build Time:** 34.09 seconds
+- **Container:** Rebuilding with new features
+
+### Files Modified (This Session)
+1. `src/Web/AdminPanel/Pages/LogFiles.razor` - Added modal viewer, search, improved styling
+
+### Commits (This Session)
+- `0acc4633b` - Added inline log viewer and readability improvements
+
+### User Feedback Addressed
+- ✅ Text now readable in dark mode
+- ✅ Modern intuitive log viewing experience
+- ✅ No need to download files for quick reads
+- ✅ Search functionality for finding specific entries
+
+---
+
+## Previous Update: Tailwind v4 Conversion Progress (November 15, 2025 - Session 4)
 
 **Status:** ✅ LogFiles.razor Converted - 3 of 4 Pages Complete
 
