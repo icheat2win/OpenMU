@@ -15,271 +15,17 @@
 
 <PageTitle>Edit Character: @Character.Name</PageTitle>
 
-<style>
-    /* Ensure all form inputs have dark text on light backgrounds */
-    input, select, textarea, .form-control {
-        color: #0f172a !important;
-        background-color: #f8fafc !important;
-    }
-    
-    /* Fix dropdown/select option text visibility */
-    select option {
-        color: #0f172a !important;
-        background-color: white !important;
-    }
-    
-    /* Fix Blazored Typeahead INPUT field - CRITICAL FIX */
-    .blazored-typeahead input,
-    .blazored-typeahead input[type="search"],
-    input.blazored-typeahead__input,
-    .blazored-typeahead__input {
-        color: #0f172a !important;
-        background-color: #f8fafc !important;
-        border: 1px solid #cbd5e1 !important;
-        padding: 0.75rem 1rem !important;
-        border-radius: 0.5rem !important;
-        font-size: 1rem !important;
-        width: 100% !important;
-        font-weight: 500 !important;
-    }
-    
-    /* Fix the wrapper that might hide text */
-    .blazored-typeahead,
-    .blazored-typeahead > div,
-    .blazored-typeahead__controls {
-        color: #0f172a !important;
-    }
-    
-    /* Make sure selected value is visible - CRITICAL FIX */
-    .blazored-typeahead span,
-    .blazored-typeahead a,
-    .blazored-typeahead__selected-item,
-    .blazored-typeahead .blazored-typeahead__input,
-    .blazored-typeahead__controls > *,
-    .blazored-typeahead__controls span,
-    .blazored-typeahead__controls a {
-        color: #0f172a !important;
-        text-decoration: none !important;
-        font-weight: 500 !important;
-    }
-    
-    /* Force all child elements to have dark text */
-    .blazored-typeahead * {
-        color: #0f172a !important;
-    }
-    
-    .blazored-typeahead input:focus,
-    .blazored-typeahead input[type="search"]:focus {
-        outline: none !important;
-        border-color: #3b82f6 !important;
-        box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1) !important;
-    }
-    
-    /* Fix Blazored Typeahead dropdown items */
-    .blazored-typeahead__results,
-    .blazored-typeahead__result,
-    .blazored-typeahead__result-selected {
-        color: #0f172a !important;
-        background-color: white !important;
-    }
-    
-    .blazored-typeahead__result:hover {
-        background-color: #e0f2fe !important;
-        color: #0c4a6e !important;
-    }
-    
-    /* Style dropdown container */
-    .blazored-typeahead__results-container {
-        background-color: white !important;
-        border: 1px solid #cbd5e1 !important;
-        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1) !important;
-        border-radius: 0.5rem !important;
-        margin-top: 0.25rem !important;
-        max-height: 300px !important;
-        overflow-y: auto !important;
-        z-index: 1000 !important;
-    }
-    
-    /* Ensure wrapper doesn't override */
-    .blazored-typeahead {
-        width: 100% !important;
-    }
-    
-    /* Fix any NavLink in the typeahead - FORCE DARK TEXT */
-    .blazored-typeahead a.nav-link,
-    .blazored-typeahead a,
-    .blazored-typeahead__controls a,
-    .blazored-typeahead__controls a.nav-link,
-    a.nav-link {
-        color: #0f172a !important;
-        font-weight: 500 !important;
-        text-decoration: none !important;
-    }
-    
-    .blazored-typeahead a:hover,
-    .blazored-typeahead a.nav-link:hover {
-        color: #1e40af !important;
-        text-decoration: underline !important;
-    }
-    
-    /* Style helper text */
-    small {
-        color: #64748b !important;
-        font-size: 0.75rem !important;
-        display: block !important;
-        margin-top: 0.25rem !important;
-    }
-    
-    /* ItemTable modern styling */
-    .card {
-        background: white;
-        border-radius: 0.75rem;
-        border: 1px solid #e2e8f0;
-        box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
-        overflow: hidden;
-    }
-    
-    .card-header {
-        background: linear-gradient(to right, #f8fafc, #f1f5f9);
-        border-bottom: 2px solid #cbd5e1;
-        padding: 1rem 1.5rem;
-        font-weight: 600;
-        color: #1e293b;
-    }
-    
-    .card-body {
-        padding: 1.5rem;
-    }
-    
-    .card-text table {
-        width: 100%;
-        border-collapse: collapse;
-    }
-    
-    .card-text table thead tr {
-        background: linear-gradient(to right, #f1f5f9, #e2e8f0);
-        border-bottom: 2px solid #cbd5e1;
-    }
-    
-    .card-text table thead th {
-        padding: 0.75rem 1rem;
-        text-align: left;
-        font-weight: 600;
-        color: #475569;
-        font-size: 0.875rem;
-        text-transform: uppercase;
-        letter-spacing: 0.05em;
-    }
-    
-    .card-text table tbody tr {
-        border-bottom: 1px solid #e2e8f0;
-        transition: background-color 0.15s ease;
-    }
-    
-    .card-text table tbody tr:hover {
-        background-color: #f8fafc;
-    }
-    
-    .card-text table tbody td {
-        padding: 1rem;
-        color: #1e293b;
-    }
-    
-    .card-text table tfooter tr {
-        background: #f8fafc;
-        border-top: 2px solid #cbd5e1;
-    }
-    
-    .card-text table tfooter td {
-        padding: 1rem 1.5rem;
-    }
-    
-    /* Button styling for ItemTable */
-    .btn-primary, .primary-button {
-        background: linear-gradient(to right, #3b82f6, #8b5cf6);
-        color: white;
-        padding: 0.5rem 1.25rem;
-        border-radius: 0.5rem;
-        font-weight: 600;
-        border: none;
-        cursor: pointer;
-        transition: all 0.2s ease;
-    }
-    
-    .btn-primary:hover, .primary-button:hover {
-        transform: translateY(-1px);
-        box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
-    }
-    
-    .btn-info {
-        background: linear-gradient(to right, #06b6d4, #0ea5e9);
-        color: white;
-        padding: 0.5rem 1rem;
-        border-radius: 0.5rem;
-        font-weight: 500;
-        border: none;
-        cursor: pointer;
-        transition: all 0.2s ease;
-    }
-    
-    .btn-info:hover {
-        transform: translateY(-1px);
-        box-shadow: 0 4px 12px rgba(6, 182, 212, 0.4);
-    }
-    
-    .btn-danger, .btn-warning {
-        background: linear-gradient(to right, #ef4444, #dc2626);
-        color: white;
-        padding: 0.5rem 1rem;
-        border-radius: 0.5rem;
-        font-weight: 500;
-        border: none;
-        cursor: pointer;
-        transition: all 0.2s ease;
-    }
-    
-    .btn-danger:hover, .btn-warning:hover {
-        transform: translateY(-1px);
-        box-shadow: 0 4px 12px rgba(239, 68, 68, 0.4);
-    }
-    
-    .btn-outline-info {
-        background: white;
-        color: #0ea5e9;
-        padding: 0.5rem 1rem;
-        border-radius: 0.5rem;
-        font-weight: 500;
-        border: 2px solid #0ea5e9;
-        cursor: pointer;
-        transition: all 0.2s ease;
-    }
-    
-    .btn-outline-info:hover {
-        background: #0ea5e9;
-        color: white;
-    }
-    
-    /* Collapse button spacing */
-    .ml-3 {
-        margin-left: 0.75rem;
-    }
-    
-    .mb-1 {
-        margin-bottom: 0.25rem;
-    }
-</style>
-
-<div class="min-h-screen bg-slate-50 py-6 px-4">
+<div class="min-h-screen bg-slate-50 dark:bg-slate-900 py-6 px-4">
     <div class="max-w-7xl mx-auto">
         <!-- Character Header -->
-        <div class="bg-gradient-to-r from-blue-600 to-purple-600 rounded-xl shadow-lg p-8 mb-6 text-white">
+        <div class="bg-gradient-to-r from-blue-600 to-purple-600 dark:from-blue-700 dark:to-purple-700 rounded-xl shadow-lg p-8 mb-6 text-white">
             <h1 class="text-3xl font-bold mb-2">✏️ Edit Character</h1>
             <p class="text-blue-100">@Character.Name • Level @CurrentLevel</p>
         </div>
 
         @if (_isCheckingOnlineStatus)
         {
-            <div class="bg-yellow-100 border-l-4 border-yellow-500 text-yellow-700 p-6 mb-6 rounded-lg shadow-lg">
+            <div class="bg-yellow-100 dark:bg-yellow-900/30 border-l-4 border-yellow-500 dark:border-yellow-600 text-yellow-700 dark:text-yellow-300 p-6 mb-6 rounded-lg shadow-lg">
                 <div class="flex items-center gap-3">
                     <span class="text-3xl animate-pulse">⏳</span>
                     <div>
@@ -291,7 +37,7 @@
         }
         @if (IsCharacterOnline)
         {
-            <div class="bg-red-100 border-l-4 border-red-500 text-red-700 p-6 mb-6 rounded-lg shadow-lg">
+            <div class="bg-red-100 dark:bg-red-900/30 border-l-4 border-red-500 dark:border-red-600 text-red-700 dark:text-red-300 p-6 mb-6 rounded-lg shadow-lg">
                 <div class="flex items-center gap-3">
                     <span class="text-3xl">⚠️</span>
                     <div>
@@ -329,180 +75,180 @@
             <fieldset disabled="@IsCharacterOnline">
             
             <!-- Basic Information -->
-            <div class="bg-white rounded-xl shadow-lg border border-slate-200 p-6 mb-6">
-                <div class="flex items-center gap-3 text-2xl font-bold text-slate-900 mb-6 pb-4 border-b-2 border-blue-200">
+            <div class="bg-white dark:bg-slate-800 rounded-xl shadow-lg border border-slate-200 dark:border-slate-700 p-6 mb-6">
+                <div class="flex items-center gap-3 text-2xl font-bold text-slate-900 dark:text-white mb-6 pb-4 border-b-2 border-blue-200 dark:border-blue-700">
                     <span>📋</span>
                     <span>Basic Information</span>
                 </div>
                 
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     <div>
-                        <label class="block text-sm font-semibold text-slate-700 mb-2 uppercase tracking-wide">Character Name</label>
-                        <InputText @bind-Value="@Character.Name" class="w-full px-4 py-3 bg-slate-50 border border-slate-300 rounded-lg text-slate-900 focus:outline-none focus:border-blue-500 transition-colors" />
+                        <label class="block text-sm font-semibold text-slate-700 dark:text-slate-200 mb-2 uppercase tracking-wide">Character Name</label>
+                        <InputText @bind-Value="@Character.Name" class="w-full px-4 py-3 bg-slate-50 dark:bg-slate-700 border border-slate-300 dark:border-slate-600 rounded-lg text-slate-900 dark:text-white focus:outline-none focus:border-blue-500 dark:focus:border-blue-400 transition-colors" />
                         <ValidationMessage For="@(() => Character.Name)" />
                     </div>
 
                     <div>
-                        <label class="block text-sm font-semibold text-slate-700 mb-2 uppercase tracking-wide">Character Class</label>
+                        <label class="block text-sm font-semibold text-slate-700 dark:text-slate-200 mb-2 uppercase tracking-wide">Character Class</label>
                         <LookupField @bind-Value="@Character.CharacterClass" />
                         <ValidationMessage For="@(() => Character.CharacterClass)" />
                     </div>
 
                     <div>
-                        <label class="block text-sm font-semibold text-slate-700 mb-2 uppercase tracking-wide">Character Slot</label>
-                        <InputByte @bind-Value="@Character.CharacterSlot" Min="0" Max="4" class="w-full px-4 py-3 bg-slate-50 border border-slate-300 rounded-lg text-slate-900 focus:outline-none focus:border-blue-500 transition-colors" />
+                        <label class="block text-sm font-semibold text-slate-700 dark:text-slate-200 mb-2 uppercase tracking-wide">Character Slot</label>
+                        <InputByte @bind-Value="@Character.CharacterSlot" Min="0" Max="4" class="w-full px-4 py-3 bg-slate-50 dark:bg-slate-700 border border-slate-300 dark:border-slate-600 rounded-lg text-slate-900 dark:text-white focus:outline-none focus:border-blue-500 dark:focus:border-blue-400 transition-colors" />
                         <ValidationMessage For="@(() => Character.CharacterSlot)" />
                     </div>
                 </div>
             </div>
         
         <!-- Location & Position -->
-        <div class="bg-white rounded-xl shadow-lg border border-slate-200 p-6 mb-6">
-            <div class="flex items-center gap-3 text-2xl font-bold text-slate-900 mb-6 pb-4 border-b-2 border-blue-200">
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-lg border border-slate-200 dark:border-slate-700 p-6 mb-6">
+            <div class="flex items-center gap-3 text-2xl font-bold text-slate-900 dark:text-white mb-6 pb-4 border-b-2 border-blue-200 dark:border-blue-700">
                 <span class="">🗺️</span>
                 <span>Location & Position</span>
             </div>
             
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 <div class="">
-                    <label class="block text-sm font-semibold text-slate-700 mb-2 uppercase tracking-wide">Current Map</label>
+                    <label class="block text-sm font-semibold text-slate-700 dark:text-slate-200 mb-2 uppercase tracking-wide">Current Map</label>
                     <LookupField @bind-Value="@Character.CurrentMap" />
                     <ValidationMessage For="@(() => Character.CurrentMap)" />
                 </div>
 
                 <div class="">
-                    <label class="block text-sm font-semibold text-slate-700 mb-2 uppercase tracking-wide">Position X</label>
-                    <InputByte @bind-Value="@Character.PositionX" Min="0" Max="255" class="w-full px-4 py-3 bg-slate-50 border border-slate-300 rounded-lg text-slate-900 focus:outline-none focus:border-blue-500 transition-colors" />
+                    <label class="block text-sm font-semibold text-slate-700 dark:text-slate-200 mb-2 uppercase tracking-wide">Position X</label>
+                    <InputByte @bind-Value="@Character.PositionX" Min="0" Max="255" class="w-full px-4 py-3 bg-slate-50 dark:bg-slate-700 border border-slate-300 dark:border-slate-600 rounded-lg text-slate-900 dark:text-white focus:outline-none focus:border-blue-500 dark:focus:border-blue-400 transition-colors" />
                     <ValidationMessage For="@(() => Character.PositionX)" />
                 </div>
 
                 <div class="">
-                    <label class="block text-sm font-semibold text-slate-700 mb-2 uppercase tracking-wide">Position Y</label>
-                    <InputByte @bind-Value="@Character.PositionY" Min="0" Max="255" class="w-full px-4 py-3 bg-slate-50 border border-slate-300 rounded-lg text-slate-900 focus:outline-none focus:border-blue-500 transition-colors" />
+                    <label class="block text-sm font-semibold text-slate-700 dark:text-slate-200 mb-2 uppercase tracking-wide">Position Y</label>
+                    <InputByte @bind-Value="@Character.PositionY" Min="0" Max="255" class="w-full px-4 py-3 bg-slate-50 dark:bg-slate-700 border border-slate-300 dark:border-slate-600 rounded-lg text-slate-900 dark:text-white focus:outline-none focus:border-blue-500 dark:focus:border-blue-400 transition-colors" />
                     <ValidationMessage For="@(() => Character.PositionY)" />
                 </div>
             </div>
         </div>
 
         <!-- Experience & Level -->
-        <div class="bg-white rounded-xl shadow-lg border border-slate-200 p-6 mb-6">
-            <div class="flex items-center gap-3 text-2xl font-bold text-slate-900 mb-6 pb-4 border-b-2 border-blue-200">
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-lg border border-slate-200 dark:border-slate-700 p-6 mb-6">
+            <div class="flex items-center gap-3 text-2xl font-bold text-slate-900 dark:text-white mb-6 pb-4 border-b-2 border-blue-200 dark:border-blue-700">
                 <span class="">⚡</span>
                 <span>Experience & Level</span>
             </div>
             
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 <div class="">
-                    <label class="block text-sm font-semibold text-slate-700 mb-2 uppercase tracking-wide">Level</label>
-                    <InputNumber @bind-Value="@CurrentLevel" @bind-Value:after="AutoSaveAsync" min="1" max="400" class="w-full px-4 py-3 bg-slate-50 border border-slate-300 rounded-lg text-slate-900 focus:outline-none focus:border-blue-500 transition-colors" />
-                    <small>Character level (1-400, auto-saves)</small>
+                    <label class="block text-sm font-semibold text-slate-700 dark:text-slate-200 mb-2 uppercase tracking-wide">Level</label>
+                    <InputNumber @bind-Value="@CurrentLevel" @bind-Value:after="AutoSaveAsync" min="1" max="400" class="w-full px-4 py-3 bg-slate-50 dark:bg-slate-700 border border-slate-300 dark:border-slate-600 rounded-lg text-slate-900 dark:text-white focus:outline-none focus:border-blue-500 dark:focus:border-blue-400 transition-colors" />
+                    <small class="text-slate-600 dark:text-slate-400">Character level (1-400, auto-saves)</small>
                 </div>
 
                 <div class="">
-                    <label class="block text-sm font-semibold text-slate-700 mb-2 uppercase tracking-wide">Experience</label>
-                    <InputNumber @bind-Value="@Character.Experience" @bind-Value:after="AutoSaveAsync" min="0" class="w-full px-4 py-3 bg-slate-50 border border-slate-300 rounded-lg text-slate-900 focus:outline-none focus:border-blue-500 transition-colors" />
+                    <label class="block text-sm font-semibold text-slate-700 dark:text-slate-200 mb-2 uppercase tracking-wide">Experience</label>
+                    <InputNumber @bind-Value="@Character.Experience" @bind-Value:after="AutoSaveAsync" min="0" class="w-full px-4 py-3 bg-slate-50 dark:bg-slate-700 border border-slate-300 dark:border-slate-600 rounded-lg text-slate-900 dark:text-white focus:outline-none focus:border-blue-500 dark:focus:border-blue-400 transition-colors" />
                     <ValidationMessage For="@(() => Character.Experience)" />
                 </div>
 
                 <div class="">
-                    <label class="block text-sm font-semibold text-slate-700 mb-2 uppercase tracking-wide">Level Up Points</label>
-                    <InputNumber @bind-Value="@Character.LevelUpPoints" @bind-Value:after="AutoSaveAsync" min="0" max="32767" class="w-full px-4 py-3 bg-slate-50 border border-slate-300 rounded-lg text-slate-900 focus:outline-none focus:border-blue-500 transition-colors" />
+                    <label class="block text-sm font-semibold text-slate-700 dark:text-slate-200 mb-2 uppercase tracking-wide">Level Up Points</label>
+                    <InputNumber @bind-Value="@Character.LevelUpPoints" @bind-Value:after="AutoSaveAsync" min="0" max="32767" class="w-full px-4 py-3 bg-slate-50 dark:bg-slate-700 border border-slate-300 dark:border-slate-600 rounded-lg text-slate-900 dark:text-white focus:outline-none focus:border-blue-500 dark:focus:border-blue-400 transition-colors" />
                     <ValidationMessage For="@(() => Character.LevelUpPoints)" />
                 </div>
 
                 <div class="">
-                    <label class="block text-sm font-semibold text-slate-700 mb-2 uppercase tracking-wide">Master Level</label>
-                    <InputNumber @bind-Value="@CurrentMasterLevel" @bind-Value:after="AutoSaveAsync" min="0" max="200" class="w-full px-4 py-3 bg-slate-50 border border-slate-300 rounded-lg text-slate-900 focus:outline-none focus:border-blue-500 transition-colors" />
-                    <small>Master level (0-200, auto-saves on change)</small>
+                    <label class="block text-sm font-semibold text-slate-700 dark:text-slate-200 mb-2 uppercase tracking-wide">Master Level</label>
+                    <InputNumber @bind-Value="@CurrentMasterLevel" @bind-Value:after="AutoSaveAsync" min="0" max="200" class="w-full px-4 py-3 bg-slate-50 dark:bg-slate-700 border border-slate-300 dark:border-slate-600 rounded-lg text-slate-900 dark:text-white focus:outline-none focus:border-blue-500 dark:focus:border-blue-400 transition-colors" />
+                    <small class="text-slate-600 dark:text-slate-400">Master level (0-200, auto-saves on change)</small>
                 </div>
 
                 <div class="">
-                    <label class="block text-sm font-semibold text-slate-700 mb-2 uppercase tracking-wide">Master Experience</label>
-                    <InputNumber @bind-Value="@Character.MasterExperience" @bind-Value:after="AutoSaveAsync" min="0" class="w-full px-4 py-3 bg-slate-50 border border-slate-300 rounded-lg text-slate-900 focus:outline-none focus:border-blue-500 transition-colors" />
+                    <label class="block text-sm font-semibold text-slate-700 dark:text-slate-200 mb-2 uppercase tracking-wide">Master Experience</label>
+                    <InputNumber @bind-Value="@Character.MasterExperience" @bind-Value:after="AutoSaveAsync" min="0" class="w-full px-4 py-3 bg-slate-50 dark:bg-slate-700 border border-slate-300 dark:border-slate-600 rounded-lg text-slate-900 dark:text-white focus:outline-none focus:border-blue-500 dark:focus:border-blue-400 transition-colors" />
                     <ValidationMessage For="@(() => Character.MasterExperience)" />
                 </div>
 
                 <div class="">
-                    <label class="block text-sm font-semibold text-slate-700 mb-2 uppercase tracking-wide">Master Level Up Points</label>
-                    <InputNumber @bind-Value="@Character.MasterLevelUpPoints" @bind-Value:after="AutoSaveAsync" min="0" max="32767" class="w-full px-4 py-3 bg-slate-50 border border-slate-300 rounded-lg text-slate-900 focus:outline-none focus:border-blue-500 transition-colors" />
+                    <label class="block text-sm font-semibold text-slate-700 dark:text-slate-200 mb-2 uppercase tracking-wide">Master Level Up Points</label>
+                    <InputNumber @bind-Value="@Character.MasterLevelUpPoints" @bind-Value:after="AutoSaveAsync" min="0" max="32767" class="w-full px-4 py-3 bg-slate-50 dark:bg-slate-700 border border-slate-300 dark:border-slate-600 rounded-lg text-slate-900 dark:text-white focus:outline-none focus:border-blue-500 dark:focus:border-blue-400 transition-colors" />
                     <ValidationMessage For="@(() => Character.MasterLevelUpPoints)" />
                 </div>
             </div>
         </div>
 
         <!-- Character Stats -->
-        <div class="bg-white rounded-xl shadow-lg border border-slate-200 p-6 mb-6">
-            <div class="flex items-center gap-3 text-2xl font-bold text-slate-900 mb-6 pb-4 border-b-2 border-blue-200">
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-lg border border-slate-200 dark:border-slate-700 p-6 mb-6">
+            <div class="flex items-center gap-3 text-2xl font-bold text-slate-900 dark:text-white mb-6 pb-4 border-b-2 border-blue-200 dark:border-blue-700">
                 <span class="">💪</span>
                 <span>Character Stats</span>
             </div>
             
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 <div class="">
-                    <label class="block text-sm font-semibold text-slate-700 mb-2 uppercase tracking-wide">Strength</label>
-                    <InputNumber @bind-Value="@Strength" @bind-Value:after="AutoSaveAsync" min="0" max="65000" class="w-full px-4 py-3 bg-slate-50 border border-slate-300 rounded-lg text-slate-900 focus:outline-none focus:border-blue-500 transition-colors" />
-                    <small>Base strength attribute (auto-saves)</small>
+                    <label class="block text-sm font-semibold text-slate-700 dark:text-slate-200 mb-2 uppercase tracking-wide">Strength</label>
+                    <InputNumber @bind-Value="@Strength" @bind-Value:after="AutoSaveAsync" min="0" max="65000" class="w-full px-4 py-3 bg-slate-50 dark:bg-slate-700 border border-slate-300 dark:border-slate-600 rounded-lg text-slate-900 dark:text-white focus:outline-none focus:border-blue-500 dark:focus:border-blue-400 transition-colors" />
+                    <small class="text-slate-600 dark:text-slate-400">Base strength attribute (auto-saves)</small>
                 </div>
 
                 <div class="">
-                    <label class="block text-sm font-semibold text-slate-700 mb-2 uppercase tracking-wide">Agility</label>
-                    <InputNumber @bind-Value="@Agility" @bind-Value:after="AutoSaveAsync" min="0" max="65000" class="w-full px-4 py-3 bg-slate-50 border border-slate-300 rounded-lg text-slate-900 focus:outline-none focus:border-blue-500 transition-colors" />
-                    <small>Base agility attribute (auto-saves)</small>
+                    <label class="block text-sm font-semibold text-slate-700 dark:text-slate-200 mb-2 uppercase tracking-wide">Agility</label>
+                    <InputNumber @bind-Value="@Agility" @bind-Value:after="AutoSaveAsync" min="0" max="65000" class="w-full px-4 py-3 bg-slate-50 dark:bg-slate-700 border border-slate-300 dark:border-slate-600 rounded-lg text-slate-900 dark:text-white focus:outline-none focus:border-blue-500 dark:focus:border-blue-400 transition-colors" />
+                    <small class="text-slate-600 dark:text-slate-400">Base agility attribute (auto-saves)</small>
                 </div>
 
                 <div class="">
-                    <label class="block text-sm font-semibold text-slate-700 mb-2 uppercase tracking-wide">Vitality</label>
-                    <InputNumber @bind-Value="@Vitality" @bind-Value:after="AutoSaveAsync" min="0" max="65000" class="w-full px-4 py-3 bg-slate-50 border border-slate-300 rounded-lg text-slate-900 focus:outline-none focus:border-blue-500 transition-colors" />
-                    <small>Base vitality attribute (auto-saves)</small>
+                    <label class="block text-sm font-semibold text-slate-700 dark:text-slate-200 mb-2 uppercase tracking-wide">Vitality</label>
+                    <InputNumber @bind-Value="@Vitality" @bind-Value:after="AutoSaveAsync" min="0" max="65000" class="w-full px-4 py-3 bg-slate-50 dark:bg-slate-700 border border-slate-300 dark:border-slate-600 rounded-lg text-slate-900 dark:text-white focus:outline-none focus:border-blue-500 dark:focus:border-blue-400 transition-colors" />
+                    <small class="text-slate-600 dark:text-slate-400">Base vitality attribute (auto-saves)</small>
                 </div>
 
                 <div class="">
-                    <label class="block text-sm font-semibold text-slate-700 mb-2 uppercase tracking-wide">Energy</label>
-                    <InputNumber @bind-Value="@Energy" @bind-Value:after="AutoSaveAsync" min="0" max="65000" class="w-full px-4 py-3 bg-slate-50 border border-slate-300 rounded-lg text-slate-900 focus:outline-none focus:border-blue-500 transition-colors" />
-                    <small>Base energy attribute (auto-saves)</small>
+                    <label class="block text-sm font-semibold text-slate-700 dark:text-slate-200 mb-2 uppercase tracking-wide">Energy</label>
+                    <InputNumber @bind-Value="@Energy" @bind-Value:after="AutoSaveAsync" min="0" max="65000" class="w-full px-4 py-3 bg-slate-50 dark:bg-slate-700 border border-slate-300 dark:border-slate-600 rounded-lg text-slate-900 dark:text-white focus:outline-none focus:border-blue-500 dark:focus:border-blue-400 transition-colors" />
+                    <small class="text-slate-600 dark:text-slate-400">Base energy attribute (auto-saves)</small>
                 </div>
 
                 <div class="">
-                    <label class="block text-sm font-semibold text-slate-700 mb-2 uppercase tracking-wide">Command</label>
-                    <InputNumber @bind-Value="@Command" @bind-Value:after="AutoSaveAsync" min="0" max="65000" class="w-full px-4 py-3 bg-slate-50 border border-slate-300 rounded-lg text-slate-900 focus:outline-none focus:border-blue-500 transition-colors" />
-                    <small>Command points for summoner (auto-saves)</small>
+                    <label class="block text-sm font-semibold text-slate-700 dark:text-slate-200 mb-2 uppercase tracking-wide">Command</label>
+                    <InputNumber @bind-Value="@Command" @bind-Value:after="AutoSaveAsync" min="0" max="65000" class="w-full px-4 py-3 bg-slate-50 dark:bg-slate-700 border border-slate-300 dark:border-slate-600 rounded-lg text-slate-900 dark:text-white focus:outline-none focus:border-blue-500 dark:focus:border-blue-400 transition-colors" />
+                    <small class="text-slate-600 dark:text-slate-400">Command points for summoner (auto-saves)</small>
                 </div>
             </div>
         </div>
 
         <!-- Money & Currency -->
-        <div class="bg-white rounded-xl shadow-lg border border-slate-200 p-6 mb-6">
-            <div class="flex items-center gap-3 text-2xl font-bold text-slate-900 mb-6 pb-4 border-b-2 border-blue-200">
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-lg border border-slate-200 dark:border-slate-700 p-6 mb-6">
+            <div class="flex items-center gap-3 text-2xl font-bold text-slate-900 dark:text-white mb-6 pb-4 border-b-2 border-blue-200 dark:border-blue-700">
                 <span class="">💰</span>
                 <span>Money & Currency</span>
             </div>
             
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 <div class="">
-                    <label class="block text-sm font-semibold text-slate-700 mb-2 uppercase tracking-wide">Inventory Zen (Money)</label>
-                    <InputNumber @bind-Value="@InventoryMoney" @bind-Value:after="AutoSaveAsync" min="0" class="w-full px-4 py-3 bg-slate-50 border border-slate-300 rounded-lg text-slate-900 focus:outline-none focus:border-blue-500 transition-colors" />
-                    <small>Current zen in character inventory (auto-saves)</small>
+                    <label class="block text-sm font-semibold text-slate-700 dark:text-slate-200 mb-2 uppercase tracking-wide">Inventory Zen (Money)</label>
+                    <InputNumber @bind-Value="@InventoryMoney" @bind-Value:after="AutoSaveAsync" min="0" class="w-full px-4 py-3 bg-slate-50 dark:bg-slate-700 border border-slate-300 dark:border-slate-600 rounded-lg text-slate-900 dark:text-white focus:outline-none focus:border-blue-500 dark:focus:border-blue-400 transition-colors" />
+                    <small class="text-slate-600 dark:text-slate-400">Current zen in character inventory (auto-saves)</small>
                 </div>
 
                 <div class="">
-                    <label class="block text-sm font-semibold text-slate-700 mb-2 uppercase tracking-wide">Vault Zen (Bank)</label>
-                    <InputNumber @bind-Value="@VaultMoney" @bind-Value:after="AutoSaveAsync" min="0" class="w-full px-4 py-3 bg-slate-50 border border-slate-300 rounded-lg text-slate-900 focus:outline-none focus:border-blue-500 transition-colors" />
-                    <small>Zen stored in account vault (auto-saves)</small>
+                    <label class="block text-sm font-semibold text-slate-700 dark:text-slate-200 mb-2 uppercase tracking-wide">Vault Zen (Bank)</label>
+                    <InputNumber @bind-Value="@VaultMoney" @bind-Value:after="AutoSaveAsync" min="0" class="w-full px-4 py-3 bg-slate-50 dark:bg-slate-700 border border-slate-300 dark:border-slate-600 rounded-lg text-slate-900 dark:text-white focus:outline-none focus:border-blue-500 dark:focus:border-blue-400 transition-colors" />
+                    <small class="text-slate-600 dark:text-slate-400">Zen stored in account vault (auto-saves)</small>
                 </div>
             </div>
         </div>
 
         <!-- Character State -->
-        <div class="bg-white rounded-xl shadow-lg border border-slate-200 p-6 mb-6">
-            <div class="flex items-center gap-3 text-2xl font-bold text-slate-900 mb-6 pb-4 border-b-2 border-blue-200">
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-lg border border-slate-200 dark:border-slate-700 p-6 mb-6">
+            <div class="flex items-center gap-3 text-2xl font-bold text-slate-900 dark:text-white mb-6 pb-4 border-b-2 border-blue-200 dark:border-blue-700">
                 <span class="">💫</span>
                 <span>Character State</span>
             </div>
             
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 <div class="">
-                    <label class="block text-sm font-semibold text-slate-700 mb-2 uppercase tracking-wide">Hero State</label>
-                    <InputSelect @bind-Value="@Character.State" class="w-full px-4 py-3 bg-slate-50 border border-slate-300 rounded-lg text-slate-900 focus:outline-none focus:border-blue-500 transition-colors">
+                    <label class="block text-sm font-semibold text-slate-700 dark:text-slate-200 mb-2 uppercase tracking-wide">Hero State</label>
+                    <InputSelect @bind-Value="@Character.State" class="w-full px-4 py-3 bg-slate-50 dark:bg-slate-700 border border-slate-300 dark:border-slate-600 rounded-lg text-slate-900 dark:text-white focus:outline-none focus:border-blue-500 dark:focus:border-blue-400 transition-colors">
                         @foreach (var state in Enum.GetValues<HeroState>())
                         {
                             <option value="@state">@state</option>
@@ -512,14 +258,14 @@
                 </div>
 
                 <div class="">
-                    <label class="block text-sm font-semibold text-slate-700 mb-2 uppercase tracking-wide">State Remaining Seconds</label>
-                    <InputNumber @bind-Value="@Character.StateRemainingSeconds" min="0" class="w-full px-4 py-3 bg-slate-50 border border-slate-300 rounded-lg text-slate-900 focus:outline-none focus:border-blue-500 transition-colors" />
+                    <label class="block text-sm font-semibold text-slate-700 dark:text-slate-200 mb-2 uppercase tracking-wide">State Remaining Seconds</label>
+                    <InputNumber @bind-Value="@Character.StateRemainingSeconds" min="0" class="w-full px-4 py-3 bg-slate-50 dark:bg-slate-700 border border-slate-300 dark:border-slate-600 rounded-lg text-slate-900 dark:text-white focus:outline-none focus:border-blue-500 dark:focus:border-blue-400 transition-colors" />
                     <ValidationMessage For="@(() => Character.StateRemainingSeconds)" />
                 </div>
 
                 <div class="">
-                    <label class="block text-sm font-semibold text-slate-700 mb-2 uppercase tracking-wide">Character Status</label>
-                    <InputSelect @bind-Value="@Character.CharacterStatus" class="w-full px-4 py-3 bg-slate-50 border border-slate-300 rounded-lg text-slate-900 focus:outline-none focus:border-blue-500 transition-colors">
+                    <label class="block text-sm font-semibold text-slate-700 dark:text-slate-200 mb-2 uppercase tracking-wide">Character Status</label>
+                    <InputSelect @bind-Value="@Character.CharacterStatus" class="w-full px-4 py-3 bg-slate-50 dark:bg-slate-700 border border-slate-300 dark:border-slate-600 rounded-lg text-slate-900 dark:text-white focus:outline-none focus:border-blue-500 dark:focus:border-blue-400 transition-colors">
                         @foreach (var status in Enum.GetValues<CharacterStatus>())
                         {
                             <option value="@status">@status</option>
@@ -529,8 +275,8 @@
                 </div>
 
                 <div class="">
-                    <label class="block text-sm font-semibold text-slate-700 mb-2 uppercase tracking-wide">Pose</label>
-                    <InputSelect @bind-Value="@Character.Pose" class="w-full px-4 py-3 bg-slate-50 border border-slate-300 rounded-lg text-slate-900 focus:outline-none focus:border-blue-500 transition-colors">
+                    <label class="block text-sm font-semibold text-slate-700 dark:text-slate-200 mb-2 uppercase tracking-wide">Pose</label>
+                    <InputSelect @bind-Value="@Character.Pose" class="w-full px-4 py-3 bg-slate-50 dark:bg-slate-700 border border-slate-300 dark:border-slate-600 rounded-lg text-slate-900 dark:text-white focus:outline-none focus:border-blue-500 dark:focus:border-blue-400 transition-colors">
                         @foreach (var pose in Enum.GetValues<CharacterPose>())
                         {
                             <option value="@pose">@pose</option>
@@ -540,71 +286,71 @@
                 </div>
 
                 <div class="">
-                    <label class="block text-sm font-semibold text-slate-700 mb-2 uppercase tracking-wide">Create Date</label>
-                    <InputDate @bind-Value="@Character.CreateDate" class="w-full px-4 py-3 bg-slate-50 border border-slate-300 rounded-lg text-slate-900 focus:outline-none focus:border-blue-500 transition-colors" />
-                    <small>Character creation timestamp</small>
+                    <label class="block text-sm font-semibold text-slate-700 dark:text-slate-200 mb-2 uppercase tracking-wide">Create Date</label>
+                    <InputDate @bind-Value="@Character.CreateDate" class="w-full px-4 py-3 bg-slate-50 dark:bg-slate-700 border border-slate-300 dark:border-slate-600 rounded-lg text-slate-900 dark:text-white focus:outline-none focus:border-blue-500 dark:focus:border-blue-400 transition-colors" />
+                    <small class="text-slate-600 dark:text-slate-400">Character creation timestamp</small>
                     <ValidationMessage For="@(() => Character.CreateDate)" />
                 </div>
             </div>
         </div>
 
         <!-- PK (Player Kill) System -->
-        <div class="bg-white rounded-xl shadow-lg border border-slate-200 p-6 mb-6">
-            <div class="flex items-center gap-3 text-2xl font-bold text-slate-900 mb-6 pb-4 border-b-2 border-blue-200">
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-lg border border-slate-200 dark:border-slate-700 p-6 mb-6">
+            <div class="flex items-center gap-3 text-2xl font-bold text-slate-900 dark:text-white mb-6 pb-4 border-b-2 border-blue-200 dark:border-blue-700">
                 <span>⚔️</span>
                 <span>PK (Player Kill) System</span>
             </div>
             
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 <div class="">
-                    <label class="block text-sm font-semibold text-slate-700 mb-2 uppercase tracking-wide">Player Kill Count</label>
-                    <InputNumber @bind-Value="@Character.PlayerKillCount" min="0" class="w-full px-4 py-3 bg-slate-50 border border-slate-300 rounded-lg text-slate-900 focus:outline-none focus:border-blue-500 transition-colors" />
-                    <small>Total number of player kills</small>
+                    <label class="block text-sm font-semibold text-slate-700 dark:text-slate-200 mb-2 uppercase tracking-wide">Player Kill Count</label>
+                    <InputNumber @bind-Value="@Character.PlayerKillCount" min="0" class="w-full px-4 py-3 bg-slate-50 dark:bg-slate-700 border border-slate-300 dark:border-slate-600 rounded-lg text-slate-900 dark:text-white focus:outline-none focus:border-blue-500 dark:focus:border-blue-400 transition-colors" />
+                    <small class="text-slate-600 dark:text-slate-400">Total number of player kills</small>
                     <ValidationMessage For="@(() => Character.PlayerKillCount)" />
                 </div>
             </div>
         </div>
 
         <!-- Fruit Points & Inventory -->
-        <div class="bg-white rounded-xl shadow-lg border border-slate-200 p-6 mb-6">
-            <div class="flex items-center gap-3 text-2xl font-bold text-slate-900 mb-6 pb-4 border-b-2 border-blue-200">
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-lg border border-slate-200 dark:border-slate-700 p-6 mb-6">
+            <div class="flex items-center gap-3 text-2xl font-bold text-slate-900 dark:text-white mb-6 pb-4 border-b-2 border-blue-200 dark:border-blue-700">
                 <span class="">🎒</span>
                 <span>Fruit Points & Inventory</span>
             </div>
             
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 <div class="">
-                    <label class="block text-sm font-semibold text-slate-700 mb-2 uppercase tracking-wide">Used Fruit Points</label>
-                    <InputNumber @bind-Value="@Character.UsedFruitPoints" min="0" class="w-full px-4 py-3 bg-slate-50 border border-slate-300 rounded-lg text-slate-900 focus:outline-none focus:border-blue-500 transition-colors" />
+                    <label class="block text-sm font-semibold text-slate-700 dark:text-slate-200 mb-2 uppercase tracking-wide">Used Fruit Points</label>
+                    <InputNumber @bind-Value="@Character.UsedFruitPoints" min="0" class="w-full px-4 py-3 bg-slate-50 dark:bg-slate-700 border border-slate-300 dark:border-slate-600 rounded-lg text-slate-900 dark:text-white focus:outline-none focus:border-blue-500 dark:focus:border-blue-400 transition-colors" />
                     <ValidationMessage For="@(() => Character.UsedFruitPoints)" />
                 </div>
 
                 <div class="">
-                    <label class="block text-sm font-semibold text-slate-700 mb-2 uppercase tracking-wide">Used Negative Fruit Points</label>
-                    <InputNumber @bind-Value="@Character.UsedNegFruitPoints" min="0" class="w-full px-4 py-3 bg-slate-50 border border-slate-300 rounded-lg text-slate-900 focus:outline-none focus:border-blue-500 transition-colors" />
+                    <label class="block text-sm font-semibold text-slate-700 dark:text-slate-200 mb-2 uppercase tracking-wide">Used Negative Fruit Points</label>
+                    <InputNumber @bind-Value="@Character.UsedNegFruitPoints" min="0" class="w-full px-4 py-3 bg-slate-50 dark:bg-slate-700 border border-slate-300 dark:border-slate-600 rounded-lg text-slate-900 dark:text-white focus:outline-none focus:border-blue-500 dark:focus:border-blue-400 transition-colors" />
                     <ValidationMessage For="@(() => Character.UsedNegFruitPoints)" />
                 </div>
 
                 <div class="">
-                    <label class="block text-sm font-semibold text-slate-700 mb-2 uppercase tracking-wide">Inventory Extensions</label>
-                    <InputNumber @bind-Value="@Character.InventoryExtensions" min="0" max="4" class="w-full px-4 py-3 bg-slate-50 border border-slate-300 rounded-lg text-slate-900 focus:outline-none focus:border-blue-500 transition-colors" />
-                    <small>Season 6+ feature (0-4 extensions)</small>
+                    <label class="block text-sm font-semibold text-slate-700 dark:text-slate-200 mb-2 uppercase tracking-wide">Inventory Extensions</label>
+                    <InputNumber @bind-Value="@Character.InventoryExtensions" min="0" max="4" class="w-full px-4 py-3 bg-slate-50 dark:bg-slate-700 border border-slate-300 dark:border-slate-600 rounded-lg text-slate-900 dark:text-white focus:outline-none focus:border-blue-500 dark:focus:border-blue-400 transition-colors" />
+                    <small class="text-slate-600 dark:text-slate-400">Season 6+ feature (0-4 extensions)</small>
                     <ValidationMessage For="@(() => Character.InventoryExtensions)" />
                 </div>
             </div>
         </div>
 
         <!-- Personal Store -->
-        <div class="bg-white rounded-xl shadow-lg border border-slate-200 p-6 mb-6">
-            <div class="flex items-center gap-3 text-2xl font-bold text-slate-900 mb-6 pb-4 border-b-2 border-blue-200">
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-lg border border-slate-200 dark:border-slate-700 p-6 mb-6">
+            <div class="flex items-center gap-3 text-2xl font-bold text-slate-900 dark:text-white mb-6 pb-4 border-b-2 border-blue-200 dark:border-blue-700">
                 <span class="">🏪</span>
                 <span>Personal Store</span>
             </div>
             
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 <div class="">
-                    <label class="block text-sm font-semibold text-slate-700 mb-2 uppercase tracking-wide">Store Name</label>
-                    <InputText @bind-Value="@Character.StoreName" class="w-full px-4 py-3 bg-slate-50 border border-slate-300 rounded-lg text-slate-900 focus:outline-none focus:border-blue-500 transition-colors" />
+                    <label class="block text-sm font-semibold text-slate-700 dark:text-slate-200 mb-2 uppercase tracking-wide">Store Name</label>
+                    <InputText @bind-Value="@Character.StoreName" class="w-full px-4 py-3 bg-slate-50 dark:bg-slate-700 border border-slate-300 dark:border-slate-600 rounded-lg text-slate-900 dark:text-white focus:outline-none focus:border-blue-500 dark:focus:border-blue-400 transition-colors" />
                     <ValidationMessage For="@(() => Character.StoreName)" />
                 </div>
 
@@ -616,8 +362,8 @@
         </div>
 
         <!-- Inventory Management -->
-        <div class="bg-white rounded-xl shadow-lg border border-slate-200 p-6 mb-6">
-            <div class="flex items-center gap-3 text-2xl font-bold text-slate-900 mb-6 pb-4 border-b-2 border-blue-200">
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-lg border border-slate-200 dark:border-slate-700 p-6 mb-6">
+            <div class="flex items-center gap-3 text-2xl font-bold text-slate-900 dark:text-white mb-6 pb-4 border-b-2 border-blue-200 dark:border-blue-700">
                 <span class="">🎒</span>
                 <span>Inventory & Equipment</span>
             </div>
@@ -656,8 +402,8 @@
         <!-- Vault Storage -->
         @if (Account?.Vault != null)
         {
-            <div class="bg-white rounded-xl shadow-lg border border-slate-200 p-6 mb-6">
-                <div class="flex items-center gap-3 text-2xl font-bold text-slate-900 mb-6 pb-4 border-b-2 border-blue-200">
+            <div class="bg-white dark:bg-slate-800 rounded-xl shadow-lg border border-slate-200 dark:border-slate-700 p-6 mb-6">
+                <div class="flex items-center gap-3 text-2xl font-bold text-slate-900 dark:text-white mb-6 pb-4 border-b-2 border-blue-200 dark:border-blue-700">
                     <span class="">🏦</span>
                     <span>Vault Storage</span>
                 </div>
@@ -678,7 +424,7 @@
         }
 
         <!-- Learned Skills -->
-        <div class="bg-white rounded-xl shadow-lg border border-slate-200 p-6 mb-6">
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-lg border border-slate-200 dark:border-slate-700 p-6 mb-6">
             <div class="flex items-center gap-3 text-2xl font-bold text-slate-900 mb-6 pb-4 border-b-2 border-purple-200">
                 <span class="">⚔️</span>
                 <span>Learned Skills</span>
@@ -699,13 +445,13 @@
             {
                 <div class="text-center py-12">
                     <span class="text-6xl block mb-4 opacity-50">📚</span>
-                    <p class="text-lg text-slate-600">No skills learned yet</p>
+                    <p class="text-lg text-slate-600 dark:text-slate-400">No skills learned yet</p>
                 </div>
             }
         </div>
 
         <!-- Quest States -->
-        <div class="bg-white rounded-xl shadow-lg border border-slate-200 p-6 mb-6">
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-lg border border-slate-200 dark:border-slate-700 p-6 mb-6">
             <div class="flex items-center gap-3 text-2xl font-bold text-slate-900 mb-6 pb-4 border-b-2 border-amber-200">
                 <span class="">📜</span>
                 <span>Quest Progress</span>
@@ -726,13 +472,13 @@
             {
                 <div class="text-center py-12">
                     <span class="text-6xl block mb-4 opacity-50">🗺️</span>
-                    <p class="text-lg text-slate-600">No quest progress recorded</p>
+                    <p class="text-lg text-slate-600 dark:text-slate-400">No quest progress recorded</p>
                 </div>
             }
         </div>
 
         <!-- Drop Item Groups -->
-        <div class="bg-white rounded-xl shadow-lg border border-slate-200 p-6 mb-6">
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-lg border border-slate-200 dark:border-slate-700 p-6 mb-6">
             <div class="flex items-center gap-3 text-2xl font-bold text-slate-900 mb-6 pb-4 border-b-2 border-emerald-200">
                 <span class="">💎</span>
                 <span>Drop Item Groups</span>
@@ -753,15 +499,15 @@
             {
                 <div class="text-center py-12">
                     <span class="text-6xl block mb-4 opacity-50">🎁</span>
-                    <p class="text-lg text-slate-600">Using default drop tables</p>
+                    <p class="text-lg text-slate-600 dark:text-slate-400">Using default drop tables</p>
                 </div>
             }
         </div>
 
         <!-- Other -->
-        <div class="bg-white rounded-xl shadow-lg border border-slate-200 p-6 mb-6">
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-lg border border-slate-200 dark:border-slate-700 p-6 mb-6">
             <div class="">
-                <label class="block text-sm font-semibold text-slate-700 mb-2 uppercase tracking-wide">Create Date</label>
+                <label class="block text-sm font-semibold text-slate-700 dark:text-slate-200 mb-2 uppercase tracking-wide">Create Date</label>
                 <InputDate @bind-Value="@Character.CreateDate" />
                 <ValidationMessage For="@(() => Character.CreateDate)" />
             </div>
@@ -774,7 +520,7 @@
         @if (OnCancel.HasDelegate)
         {
             <div class="flex gap-4 justify-end mt-6">
-                <button type="button" class="px-8 py-3 bg-slate-200 text-slate-700 rounded-lg font-semibold hover:bg-slate-300 transition-colors" @onclick="OnCancel">Cancel</button>
+                <button type="button" class="px-8 py-3 bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-200 rounded-lg font-semibold hover:bg-slate-300 dark:hover:bg-slate-600 transition-colors" @onclick="OnCancel">Cancel</button>
             </div>
         }
     </EditForm>
