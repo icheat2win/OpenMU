@@ -2,7 +2,7 @@
 
 **Last Updated:** November 16, 2025  
 **Project Status:** Production Ready ✅  
-**Latest Commit:** 21de6dcc6  
+**Latest Commit:** 5205614ec  
 **Branch:** master  
 **Server URL:** http://connect.globalmu.org/ (http://192.168.4.71/)  
 **Admin Panel:** http://connect.globalmu.org:8080/  
@@ -12,6 +12,141 @@
 ---
 
 ## 🎯 Latest Updates (November 16, 2025)
+
+### Update 6: Standardized Page Headers - Unified Design Language (Commit: 5205614ec) 🎨
+
+**Status:** ✅ Consistent headers across all admin pages matching Home page design
+
+Implemented a unified design language across all admin panel pages by standardizing headers, layouts, and styling to match the Home page.
+
+**Design Philosophy:**
+- **Consistency First:** All pages now share the same header structure
+- **Professional Icons:** Replaced emojis with OpenIconic (oi-*) icons
+- **Responsive Layout:** Max-width containers with proper padding
+- **Action Buttons:** Contextual buttons (Create, Refresh, Back) on all pages
+- **Visual Hierarchy:** Clear title, subtitle, and action button placement
+
+**Page Standardization:**
+
+**1. Accounts Page (`/accounts`)**
+- **Header:**
+  - Title: "Account Management" with `oi-people` icon
+  - Subtitle: "Manage player accounts, credentials, and user status"
+  - Action: Create Account button (right-aligned)
+- **Stats Cards:**
+  - Updated to match Home page gradient style
+  - Proper icon placement with backdrop-blur effects
+  - Consistent badge styling (TOTAL, ACTIVE, BANNED, TEMP)
+  - Added descriptive text under each metric
+- **Loading State:**
+  - Centered spinner matching Home page style
+  - Consistent animation and colors
+
+**2. Online Accounts Page (`/logged-in`)**
+- **Header:**
+  - Title: "Online Accounts" with `oi-people` icon
+  - Subtitle: "Real-time monitoring of connected players"
+  - Action: Refresh button matching Home page
+- **Card Updates:**
+  - Changed emoji icon to `oi-monitor` for consistency
+  - Updated icon colors to cyan theme
+  - Maintained professional appearance
+
+**3. Configuration Pages (`/edit-config/*`)**
+- **Dynamic Header:**
+  - Title: "{TypeName} Configuration" with `oi-wrench` icon
+  - Subtitle: "Configure and manage system settings"
+  - Action: Back button for easy navigation
+- **Implementation:**
+  - Added header generation in `EditBase.cs`
+  - Automatic type name extraction
+  - Consistent styling across all config types
+- **Examples:**
+  - SystemConfiguration → "SystemConfiguration Configuration"
+  - GameConfiguration → "GameConfiguration Configuration"
+  - ServerDefinition → "ServerDefinition Configuration"
+
+**Technical Implementation:**
+
+**Header Structure (All Pages):**
+```razor
+<div class="mb-8 flex items-center justify-between">
+    <div>
+        <h1 class="text-4xl font-bold text-slate-900 dark:text-white flex items-center gap-3 mb-2">
+            <span class="oi oi-{icon} text-cyan-500" aria-hidden="true"></span>
+            {Title}
+        </h1>
+        <p class="text-slate-600 dark:text-slate-400 text-lg">{Subtitle}</p>
+    </div>
+    <button class="px-4 py-2 bg-white dark:bg-slate-800 border...">
+        {Action Button}
+    </button>
+</div>
+```
+
+**Stats Card Structure (Accounts Page):**
+```razor
+<div class="bg-gradient-to-br from-{color}-500 to-{color}-600 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 p-6 text-white">
+    <div class="flex items-start justify-between mb-4">
+        <div class="p-3 bg-white/20 rounded-lg backdrop-blur-sm">
+            <span class="oi oi-{icon} text-2xl"></span>
+        </div>
+        <span class="px-3 py-1 bg-white/20 rounded-full text-xs font-semibold backdrop-blur-sm">{BADGE}</span>
+    </div>
+    <h3 class="text-4xl font-bold mb-1">{Value}</h3>
+    <p class="{color}-100 font-medium mb-2">{Title}</p>
+    <div class="flex items-center gap-2 text-sm">
+        <span class="oi oi-{icon}"></span>
+        <span>{Description}</span>
+    </div>
+</div>
+```
+
+**Icon Replacements:**
+- 👥 → `oi-people` (Accounts, Online Accounts)
+- 🔧 → `oi-wrench` (Configuration pages)
+- 🎮 → `oi-monitor` (Active players card)
+- 📊 → `oi-people` (Total accounts)
+- ✅ → `oi-circle-check` (Active accounts)
+- 🚫 → `oi-ban` (Banned accounts)
+- ⏱️ → `oi-clock` (Temp banned)
+
+**Layout Consistency:**
+```css
+/* All pages now use: */
+.min-h-screen bg-white dark:bg-slate-900 py-6
+.max-w-7xl mx-auto px-4
+```
+
+**Files Modified:**
+- `src/Web/AdminPanel/Pages/Accounts.razor` - Complete header and stats redesign
+- `src/Web/AdminPanel/Pages/LoggedIn.razor` - Header standardization and icon updates
+- `src/Web/AdminPanel/Pages/EditBase.cs` - Dynamic header generation for config pages
+
+**User Experience Improvements:**
+- **Navigation Clarity:** All pages clearly indicate their purpose
+- **Action Discovery:** Contextual actions visible in header
+- **Visual Consistency:** Users know what to expect on each page
+- **Professional Appearance:** No emojis, consistent icon system
+- **Responsive Design:** Works on all screen sizes
+- **Dark Mode:** Seamless theme support throughout
+
+**Testing:**
+- ✅ Docker build: 218.5s (successful)
+- ✅ All containers running
+- ✅ Accounts page: Header and stats verified
+- ✅ Online Accounts: Header and table verified
+- ✅ Configuration pages: Dynamic headers working
+- ✅ Dark mode: All pages tested
+- ✅ Responsive: Mobile and desktop layouts
+
+**Before vs After:**
+- **Before:** Mixed styles, emoji icons, inconsistent layouts
+- **After:** Unified design, professional icons, consistent structure
+
+User request: "make the pages more look the same with same style/header. use Home as example"
+
+---
 
 ### Update 5: Color Theme Redesign - Dark Blue, Dark Red, Yellow (Commit: 21de6dcc6) 🎨
 
