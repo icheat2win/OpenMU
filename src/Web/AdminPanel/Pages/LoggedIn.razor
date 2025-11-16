@@ -6,57 +6,109 @@
 <PageTitle>OpenMU: Online Accounts</PageTitle>
 <Breadcrumb IsFirstFromRoot="true" Caption="Online Accounts"/>
 
-<div class="min-h-screen bg-slate-50 py-6">
-    <!-- Header -->
-    <div class="mb-8">
-        <h1 class="text-4xl font-bold text-slate-900 flex items-center gap-3 mb-2">
-            <span class="text-3xl">👥</span>
-            Online Accounts
-        </h1>
-        <p class="text-slate-600 text-lg">View and manage currently connected players</p>
+<div class="min-h-screen bg-slate-50 dark:bg-slate-900 py-6 px-4">
+    <!-- Header Section -->
+    <div class="mb-8 max-w-7xl mx-auto">
+        <div class="flex items-center gap-4 mb-3">
+            <div class="w-14 h-14 bg-gradient-to-br from-blue-500 to-cyan-600 dark:from-blue-600 dark:to-cyan-500 rounded-2xl flex items-center justify-center shadow-lg">
+                <span class="text-3xl">👥</span>
+            </div>
+            <div>
+                <h1 class="text-4xl font-bold text-slate-900 dark:text-white">
+                    Online Accounts
+                </h1>
+                <p class="text-slate-600 dark:text-slate-400 text-base mt-1">
+                    Real-time monitoring of connected players
+                </p>
+            </div>
+        </div>
     </div>
 
-    <!-- Online Players Table Card -->
-    <div class="bg-white rounded-xl shadow-lg border border-slate-200 overflow-hidden">
-        <div class="p-6 border-b border-slate-200">
-            <h2 class="text-2xl font-bold text-slate-900 flex items-center gap-2">
-                <span>🎮</span> Active Players
-            </h2>
-        </div>
-        
-        <div class="overflow-x-auto">
-            <DataTable TItem=@LoggedInAccount>
-                <TableHeader>
-                    <th class="px-6 py-4 bg-slate-50 text-left">
-                        <div class="text-sm font-semibold text-slate-700 uppercase tracking-wider">
-                            Login Name
+    <!-- Active Players Card -->
+    <div class="max-w-7xl mx-auto">
+        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-lg border border-slate-200 dark:border-slate-700 overflow-hidden">
+            <!-- Card Header -->
+            <div class="px-6 py-5 border-b border-slate-200 dark:border-slate-700 bg-gradient-to-r from-slate-50 to-white dark:from-slate-800 dark:to-slate-800">
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 bg-blue-500 dark:bg-blue-600 rounded-lg flex items-center justify-center">
+                            <span class="text-xl">🎮</span>
                         </div>
-                    </th>
-                    <th class="px-6 py-4 bg-slate-50 text-left">
-                        <div class="text-sm font-semibold text-slate-700 uppercase tracking-wider">
-                            Server-ID
+                        <div>
+                            <h2 class="text-xl font-bold text-slate-900 dark:text-white">
+                                Active Players
+                            </h2>
+                            <p class="text-sm text-slate-500 dark:text-slate-400">
+                                Currently connected to game servers
+                            </p>
                         </div>
-                    </th>
-                    <th class="px-6 py-4 bg-slate-50 text-right">
-                        <div class="text-sm font-semibold text-slate-700 uppercase tracking-wider">
-                            Actions
-                        </div>
-                    </th>
-                </TableHeader>
-                <ItemTemplate Context="item">
-                    <td class="px-6 py-4 border-b border-slate-200">
-                        <span class="text-slate-900 font-medium">@item.LoginName</span>
-                    </td>
-                    <td class="px-6 py-4 border-b border-slate-200">
-                        <span class="px-3 py-1 bg-blue-100 text-blue-700 rounded-full text-sm font-semibold">@item.Server</span>
-                    </td>
-                    <td class="px-6 py-4 border-b border-slate-200 text-right">
-                        <button class="inline-flex items-center gap-2 px-4 py-2 bg-amber-500 hover:bg-amber-600 text-white rounded-lg font-medium transition-colors" type="button" @onclick="() => this.AccountService.SetAccountOfflineAsync(item)">
-                            <span class="oi oi-bolt" aria-hidden="true" /> Disconnect
-                        </button>
-                    </td>
-                </ItemTemplate>
-            </DataTable>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Table Container -->
+            <div class="overflow-x-auto">
+                <DataTable TItem=@LoggedInAccount>
+                    <TableHeader>
+                        <th class="px-6 py-4 bg-slate-50 dark:bg-slate-900/50 text-left border-b border-slate-200 dark:border-slate-700">
+                            <div class="flex items-center gap-2">
+                                <span class="text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider">
+                                    👤 Login Name
+                                </span>
+                            </div>
+                        </th>
+                        <th class="px-6 py-4 bg-slate-50 dark:bg-slate-900/50 text-left border-b border-slate-200 dark:border-slate-700">
+                            <div class="flex items-center gap-2">
+                                <span class="text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider">
+                                    🖥️ Server ID
+                                </span>
+                            </div>
+                        </th>
+                        <th class="px-6 py-4 bg-slate-50 dark:bg-slate-900/50 text-right border-b border-slate-200 dark:border-slate-700">
+                            <span class="text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider">
+                                ⚡ Actions
+                            </span>
+                        </th>
+                    </TableHeader>
+                    <ItemTemplate Context="item">
+                        <td class="px-6 py-4 border-b border-slate-100 dark:border-slate-700">
+                            <div class="flex items-center gap-3">
+                                <div class="w-8 h-8 bg-gradient-to-br from-blue-500 to-cyan-500 rounded-lg flex items-center justify-center">
+                                    <span class="text-white font-bold text-sm">@item.LoginName.Substring(0, 1).ToUpper()</span>
+                                </div>
+                                <span class="text-slate-900 dark:text-slate-100 font-semibold">@item.LoginName</span>
+                            </div>
+                        </td>
+                        <td class="px-6 py-4 border-b border-slate-100 dark:border-slate-700">
+                            <span class="inline-flex items-center gap-2 px-3 py-1.5 bg-gradient-to-r from-blue-100 to-cyan-100 dark:from-blue-900/30 dark:to-cyan-900/30 text-blue-700 dark:text-blue-300 rounded-lg text-sm font-bold border border-blue-200 dark:border-blue-800">
+                                <span class="w-2 h-2 bg-blue-500 dark:bg-blue-400 rounded-full animate-pulse"></span>
+                                @item.Server
+                            </span>
+                        </td>
+                        <td class="px-6 py-4 border-b border-slate-100 dark:border-slate-700 text-right">
+                            <button class="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 dark:from-red-600 dark:to-red-700 dark:hover:from-red-700 dark:hover:to-red-800 text-white rounded-lg font-semibold transition-all duration-200 shadow-md hover:shadow-lg transform hover:-translate-y-0.5" 
+                                    type="button" 
+                                    @onclick="() => this.AccountService.SetAccountOfflineAsync(item)">
+                                <span class="oi oi-bolt" aria-hidden="true"></span>
+                                <span>Disconnect</span>
+                            </button>
+                        </td>
+                    </ItemTemplate>
+                </DataTable>
+            </div>
+            
+            <!-- Empty State -->
+            <div class="px-6 py-12 text-center" style="display: none;">
+                <div class="inline-flex items-center justify-center w-16 h-16 bg-slate-100 dark:bg-slate-700 rounded-full mb-4">
+                    <span class="text-3xl">😴</span>
+                </div>
+                <h3 class="text-lg font-semibold text-slate-900 dark:text-white mb-2">
+                    No Players Online
+                </h3>
+                <p class="text-slate-500 dark:text-slate-400">
+                    There are currently no players connected to the game servers.
+                </p>
+            </div>
         </div>
     </div>
 </div>
