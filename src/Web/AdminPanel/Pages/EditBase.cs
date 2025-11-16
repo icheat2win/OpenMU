@@ -176,14 +176,38 @@ public abstract class EditBase : ComponentBase, IAsyncDisposable
             return;
         }
 
+        var downloadMarkup = this.GetDownloadMarkup();
         var editorsMarkup = this.GetEditorsMarkup();
 
-        // Modern Tailwind v4 styled page container
+        // Modern Tailwind v4 styled page container with header
+        var typeName = this.Type?.Name ?? "Configuration";
+        var pageHeader = $@"
+            <div class=""mb-8 flex items-center justify-between"">
+                <div>
+                    <h1 class=""text-4xl font-bold text-slate-900 dark:text-white flex items-center gap-3 mb-2"">
+                        <span class=""oi oi-wrench text-cyan-500"" aria-hidden=""true""></span>
+                        {typeName} Configuration
+                    </h1>
+                    <p class=""text-slate-600 dark:text-slate-400 text-lg"">Configure and manage system settings</p>
+                </div>
+                <button 
+                    onclick=""window.history.back()"" 
+                    title=""Go back""
+                    class=""px-4 py-2 bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-600 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors flex items-center gap-2 text-slate-700 dark:text-slate-300"">
+                    <span class=""oi oi-arrow-left"" aria-hidden=""true""></span>
+                    <span class=""hidden md:inline"">Back</span>
+                </button>
+            </div>";
+        
         builder.AddMarkupContent(10, 
             $@"<div class=""py-6 px-4 max-w-7xl mx-auto"">
+                {pageHeader}
                 <div class=""mb-8"">
+                    {downloadMarkup}
                     {editorsMarkup}
-                </div>");        builder.OpenComponent<CascadingValue<IContext>>(11);
+                </div>");
+        
+        builder.OpenComponent<CascadingValue<IContext>>(11);
         builder.AddAttribute(12, nameof(CascadingValue<IContext>.Value), this._persistenceContext);
         builder.AddAttribute(13, nameof(CascadingValue<IContext>.IsFixed), this._isOwningContext);
         builder.AddAttribute(14, nameof(CascadingValue<IContext>.ChildContent), (RenderFragment)(builder2 =>

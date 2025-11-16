@@ -9,73 +9,100 @@
 <PageTitle>OpenMU: Accounts</PageTitle>
 <Breadcrumb IsFirstFromRoot="true" Caption="Accounts" />
 
-<div class="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-slate-50 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900 py-8 px-4">
-    <div class="max-w-7xl mx-auto">
-        <!-- Header -->
-        <div class="mb-8 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+<div class="min-h-screen bg-white dark:bg-slate-900 py-6">
+    <div class="max-w-7xl mx-auto px-4">
+        <!-- Header Section -->
+        <div class="mb-8 flex items-center justify-between">
             <div>
-                <h1 class="text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-cyan-500 dark:from-blue-400 dark:to-cyan-300 flex items-center gap-3 mb-2">
-                    <span class="text-4xl">👥</span>
+                <h1 class="text-4xl font-bold text-slate-900 dark:text-white flex items-center gap-3 mb-2">
+                    <span class="oi oi-people text-cyan-500" aria-hidden="true"></span>
                     Account Management
                 </h1>
-                <p class="text-slate-600 dark:text-slate-300 text-lg">Manage player accounts, credentials, and user status</p>
+                <p class="text-slate-600 dark:text-slate-400 text-lg">Manage player accounts, credentials, and user status</p>
             </div>
             <button type="button" 
-                    class="px-6 py-3 bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white rounded-xl font-bold shadow-lg hover:shadow-2xl transition-all transform hover:scale-105 flex items-center gap-2" 
+                    class="px-4 py-2 bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white rounded-lg shadow-md hover:shadow-lg transition-all flex items-center gap-2 font-semibold" 
                     @onclick="@this._accountService.CreateNewInModalDialogAsync">
-                <span class="text-xl">✨</span> Create New Account
+                <span class="oi oi-plus" aria-hidden="true"></span>
+                <span class="hidden md:inline">Create Account</span>
             </button>
         </div>
 
         @if (_isLoading)
         {
             <!-- Loading State -->
-            <div class="flex flex-col items-center justify-center py-20">
-                <div class="relative">
-                    <div class="w-20 h-20 border-4 border-blue-200 dark:border-blue-900 rounded-full"></div>
-                    <div class="w-20 h-20 border-4 border-blue-600 dark:border-blue-400 border-t-transparent rounded-full animate-spin absolute top-0 left-0"></div>
+            <div class="flex items-center justify-center py-20">
+                <div class="text-center">
+                    <div class="relative inline-block">
+                        <div class="w-16 h-16 border-4 border-slate-200 dark:border-slate-700 rounded-full"></div>
+                        <div class="w-16 h-16 border-4 border-cyan-500 border-t-transparent rounded-full animate-spin absolute top-0 left-0"></div>
+                    </div>
+                    <p class="mt-4 text-slate-600 dark:text-slate-400 font-medium">Loading accounts...</p>
                 </div>
-                <p class="mt-6 text-slate-600 dark:text-slate-400 text-lg font-medium animate-pulse">Loading accounts...</p>
             </div>
         }
         else
         {
             <!-- Stats Cards -->
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-                <div class="bg-gradient-to-br from-blue-500 to-blue-600 dark:from-blue-600 dark:to-blue-700 rounded-2xl shadow-xl p-6 text-white transform hover:scale-105 transition-all">
-                    <div class="flex items-center justify-between mb-2">
-                        <span class="text-3xl">📊</span>
-                        <span class="bg-white/20 px-3 py-1 rounded-full text-sm font-semibold backdrop-blur-sm">Total</span>
+                <div class="bg-gradient-to-br from-blue-500 to-blue-600 dark:from-blue-600 dark:to-blue-700 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 p-6 text-white">
+                    <div class="flex items-start justify-between mb-4">
+                        <div class="p-3 bg-white/20 rounded-lg backdrop-blur-sm">
+                            <span class="oi oi-people text-2xl" aria-hidden="true"></span>
+                        </div>
+                        <span class="px-3 py-1 bg-white/20 rounded-full text-xs font-semibold backdrop-blur-sm">TOTAL</span>
                     </div>
                     <h3 class="text-4xl font-bold mb-1">@_totalAccounts</h3>
-                    <p class="text-blue-100">Total Accounts</p>
+                    <p class="text-blue-100 font-medium mb-2">Total Accounts</p>
+                    <div class="flex items-center gap-2 text-sm text-blue-100">
+                        <span class="oi oi-info" aria-hidden="true"></span>
+                        <span>All registered users</span>
+                    </div>
                 </div>
 
-                <div class="bg-gradient-to-br from-green-500 to-emerald-600 dark:from-green-600 dark:to-emerald-700 rounded-2xl shadow-xl p-6 text-white transform hover:scale-105 transition-all">
-                    <div class="flex items-center justify-between mb-2">
-                        <span class="text-3xl">✅</span>
-                        <span class="bg-white/20 px-3 py-1 rounded-full text-sm font-semibold backdrop-blur-sm">Active</span>
+                <div class="bg-gradient-to-br from-emerald-500 to-emerald-600 dark:from-emerald-600 dark:to-emerald-700 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 p-6 text-white">
+                    <div class="flex items-start justify-between mb-4">
+                        <div class="p-3 bg-white/20 rounded-lg backdrop-blur-sm">
+                            <span class="oi oi-circle-check text-2xl" aria-hidden="true"></span>
+                        </div>
+                        <span class="px-3 py-1 bg-white/20 rounded-full text-xs font-semibold backdrop-blur-sm">ACTIVE</span>
                     </div>
                     <h3 class="text-4xl font-bold mb-1">@_activeAccounts</h3>
-                    <p class="text-green-100">Active Accounts</p>
+                    <p class="text-emerald-100 font-medium mb-2">Active Accounts</p>
+                    <div class="flex items-center gap-2 text-sm text-emerald-100">
+                        <span class="oi oi-check" aria-hidden="true"></span>
+                        <span>Currently active</span>
+                    </div>
                 </div>
 
-                <div class="bg-gradient-to-br from-red-500 to-rose-600 dark:from-red-600 dark:to-rose-700 rounded-2xl shadow-xl p-6 text-white transform hover:scale-105 transition-all">
-                    <div class="flex items-center justify-between mb-2">
-                        <span class="text-3xl">🚫</span>
-                        <span class="bg-white/20 px-3 py-1 rounded-full text-sm font-semibold backdrop-blur-sm">Banned</span>
+                <div class="bg-gradient-to-br from-red-500 to-red-600 dark:from-red-600 dark:to-red-700 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 p-6 text-white">
+                    <div class="flex items-start justify-between mb-4">
+                        <div class="p-3 bg-white/20 rounded-lg backdrop-blur-sm">
+                            <span class="oi oi-ban text-2xl" aria-hidden="true"></span>
+                        </div>
+                        <span class="px-3 py-1 bg-white/20 rounded-full text-xs font-semibold backdrop-blur-sm">BANNED</span>
                     </div>
                     <h3 class="text-4xl font-bold mb-1">@_bannedAccounts</h3>
-                    <p class="text-red-100">Banned Accounts</p>
+                    <p class="text-red-100 font-medium mb-2">Banned Accounts</p>
+                    <div class="flex items-center gap-2 text-sm text-red-100">
+                        <span class="oi oi-x" aria-hidden="true"></span>
+                        <span>Permanently banned</span>
+                    </div>
                 </div>
 
-                <div class="bg-gradient-to-br from-amber-500 to-orange-600 dark:from-amber-600 dark:to-orange-700 rounded-2xl shadow-xl p-6 text-white transform hover:scale-105 transition-all">
-                    <div class="flex items-center justify-between mb-2">
-                        <span class="text-3xl">⏱️</span>
-                        <span class="bg-white/20 px-3 py-1 rounded-full text-sm font-semibold backdrop-blur-sm">Temp</span>
+                <div class="bg-gradient-to-br from-amber-500 to-amber-600 dark:from-amber-600 dark:to-amber-700 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 p-6 text-white">
+                    <div class="flex items-start justify-between mb-4">
+                        <div class="p-3 bg-white/20 rounded-lg backdrop-blur-sm">
+                            <span class="oi oi-clock text-2xl" aria-hidden="true"></span>
+                        </div>
+                        <span class="px-3 py-1 bg-white/20 rounded-full text-xs font-semibold backdrop-blur-sm">TEMP</span>
                     </div>
                     <h3 class="text-4xl font-bold mb-1">@_tempBannedAccounts</h3>
-                    <p class="text-amber-100">Temp Banned</p>
+                    <p class="text-amber-100 font-medium mb-2">Temp Banned</p>
+                    <div class="flex items-center gap-2 text-sm text-amber-100">
+                        <span class="oi oi-timer" aria-hidden="true"></span>
+                        <span>Temporary suspension</span>
+                    </div>
                 </div>
             </div>
 
