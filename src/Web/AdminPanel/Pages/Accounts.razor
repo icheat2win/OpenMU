@@ -14,14 +14,14 @@
         <!-- Header -->
         <div class="mb-8 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
             <div>
-                <h1 class="text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600 dark:from-blue-400 dark:to-purple-400 flex items-center gap-3 mb-2">
-                    <span class="text-4xl">�</span>
+                <h1 class="text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-cyan-500 dark:from-blue-400 dark:to-cyan-300 flex items-center gap-3 mb-2">
+                    <span class="text-4xl">👥</span>
                     Account Management
                 </h1>
                 <p class="text-slate-600 dark:text-slate-300 text-lg">Manage player accounts, credentials, and user status</p>
             </div>
             <button type="button" 
-                    class="px-6 py-3 bg-gradient-to-r from-emerald-500 via-green-500 to-teal-500 hover:from-emerald-600 hover:via-green-600 hover:to-teal-600 text-white rounded-xl font-bold shadow-lg hover:shadow-2xl transition-all transform hover:scale-105 flex items-center gap-2" 
+                    class="px-6 py-3 bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white rounded-xl font-bold shadow-lg hover:shadow-2xl transition-all transform hover:scale-105 flex items-center gap-2" 
                     @onclick="@this._accountService.CreateNewInModalDialogAsync">
                 <span class="text-xl">✨</span> Create New Account
             </button>
@@ -166,7 +166,7 @@
                                     <tr class="hover:bg-slate-50 dark:hover:bg-slate-700/50 transition-colors">
                                         <td class="px-6 py-4">
                                             <div class="flex items-center gap-3">
-                                                <div class="w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-500 rounded-full flex items-center justify-center text-white font-bold text-lg shadow-lg">
+                                                <div class="w-10 h-10 bg-gradient-to-br from-blue-500 to-cyan-500 rounded-full flex items-center justify-center text-white font-bold text-lg shadow-lg">
                                                     @item.LoginName.Substring(0, 1).ToUpper()
                                                 </div>
                                                 <div>
@@ -227,7 +227,7 @@
                         {
                             <button type="button" 
                                     @onclick="@this._accountService.CreateNewInModalDialogAsync"
-                                    class="px-6 py-3 bg-gradient-to-r from-emerald-500 to-green-500 hover:from-emerald-600 hover:to-green-600 text-white rounded-xl font-bold shadow-lg hover:shadow-xl transition-all inline-flex items-center gap-2">
+                                    class="px-6 py-3 bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white rounded-xl font-bold shadow-lg hover:shadow-xl transition-all inline-flex items-center gap-2">
                                 <span class="text-xl">✨</span> Create First Account
                             </button>
                         }
