@@ -6,13 +6,18 @@
 @if (!string.IsNullOrWhiteSpace(this._actualLabel))
 {
     <label for="@this._fieldIdentifier.FieldName">
-        @this._actualLabel
+        <div class="flex items-start justify-between gap-2">
+            <span class="font-semibold">@this._actualLabel</span>
+            @if (!string.IsNullOrWhiteSpace(this._description))
+            {
+                <span class="oi oi-info text-cyan-500 text-xs cursor-help" title="@this._description" aria-hidden="true"></span>
+            }
+        </div>
         @if (!string.IsNullOrWhiteSpace(this._description))
         {
-            <details>
-                <summary></summary>
-                <div><span class="oi oi-info" aria-hidden="true"></span> @this._description</div>
-            </details>
+            <small class="block mt-1 text-slate-600 dark:text-slate-400 font-normal leading-relaxed">
+                @this._description
+            </small>
         }
     </label>
 }

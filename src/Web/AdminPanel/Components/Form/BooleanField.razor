@@ -1,7 +1,7 @@
 ﻿@using System.Diagnostics.CodeAnalysis
 @inherits NotifyableInputBase<bool>
 
-<div>
+<div class="form-field">
     <FieldLabel Text="@Label" ValueExpression="@this.ValueExpression" />
     <input type="checkbox" id="@this.FieldIdentifier.FieldName" @bind="CurrentValue" />
     <ValidationMessage For=@this.ValueExpression />

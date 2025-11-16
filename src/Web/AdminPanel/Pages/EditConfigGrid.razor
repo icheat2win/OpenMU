@@ -4,8 +4,20 @@
 
 @if (this.Type is not null)
 {
-  <h1>@CaptionHelper.GetPluralizedTypeCaption(this.Type)</h1>
-  <PageTitle>@CaptionHelper.GetPluralizedTypeCaption(this.Type)</PageTitle>
+    <!-- Modern Header -->
+    <div class="mb-8">
+        <div class="flex items-center justify-between mb-6">
+            <div class="flex items-center gap-3">
+                <span class="oi oi-layers text-cyan-500 text-4xl"></span>
+                <h1 class="text-4xl font-bold text-slate-900 dark:text-white">@CaptionHelper.GetPluralizedTypeCaption(this.Type)</h1>
+            </div>
+            <button type="button" class="flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-cyan-500 to-blue-500 text-white font-semibold rounded-lg hover:from-cyan-600 hover:to-blue-600 transition-all shadow-lg hover:shadow-xl" @onclick="OnCreateButtonClickAsync">
+                <span class="oi oi-plus"></span>
+                <span>Add New</span>
+            </button>
+        </div>
+    </div>
+    <PageTitle>@CaptionHelper.GetPluralizedTypeCaption(this.Type)</PageTitle>
     <Breadcrumb Caption=@CaptionHelper.GetPluralizedTypeCaption(this.Type) IsFirstFromRoot="true"></Breadcrumb>
 }
 
@@ -21,11 +33,11 @@
         <PropertyColumn Property="@(c => c.Name)" Sortable="true">
             <HeaderTemplate>
                 <button type="button" class="min-w-0 flex flex-grow p-0" onclick="@(() => context.Grid.SortByColumnAsync(context))">
-                    <div class="font-bold">@context.Title</div>
+                    <div class="font-bold text-slate-900 dark:text-white">@context.Title</div>
                     <div class="sort-indicator" aria-hidden="true"></div>
                 </button>
                 <div class="w-1/2 ml-5">
-                    <input class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:outline-none focus:border-blue-500" type="search" autofocus @bind="@NameFilter" @bind:event="oninput" placeholder="Search ..."/>
+                    <input class="w-full px-3 py-2 text-sm font-medium border-2 border-slate-300 dark:border-slate-600 rounded-lg focus:outline-none focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20 dark:bg-slate-800 dark:text-white transition-all" type="search" autofocus @bind="@NameFilter" @bind:event="oninput" placeholder="Search ..."/>
                 </div>
             </HeaderTemplate>
         </PropertyColumn>
@@ -34,11 +46,15 @@
             @{
                 var targetUrl = $"edit-config/{this.TypeString}/" + context.Id;
             }
-            <a href="@(targetUrl)" class="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 inline-block">Edit</a>
-            <button type="button" class="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 ml-2" @onclick="@(() => this.OnDeleteButtonClickAsync(context))"><span class="oi oi-trash"></span> Delete</button>
+            <a href="@(targetUrl)" class="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-blue-500 to-blue-600 text-white font-semibold rounded-lg hover:from-blue-600 hover:to-blue-700 transition-all shadow-md hover:shadow-lg">
+                <span class="oi oi-pencil"></span>
+                <span>Edit</span>
+            </a>
+            <button type="button" class="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-red-500 to-red-600 text-white font-semibold rounded-lg hover:from-red-600 hover:to-red-700 transition-all shadow-md hover:shadow-lg ml-2" @onclick="@(() => this.OnDeleteButtonClickAsync(context))">
+                <span class="oi oi-trash"></span>
+                <span>Delete</span>
+            </button>
         </TemplateColumn>
     </QuickGrid>
 </div>
 <Paginator State="@_pagination" />
-<hr class="my-6 border-slate-300" />
-<button type="button" class="px-6 py-3 border-2 border-blue-500 text-blue-500 rounded-lg hover:bg-blue-50" @onclick="OnCreateButtonClickAsync"><span class="oi oi-plus"></span> Add New</button>

@@ -2,7 +2,7 @@
 @using System.Diagnostics.CodeAnalysis
 @inherits NotifyableInputBase<TValue>
 
-<div>
+<div class="form-field">
     <FieldLabel Text="@Label" ValueExpression="@this.ValueExpression" />
     <EnumSelect Id="@this.FieldIdentifier.FieldName"  @bind-Value="@CurrentValue" />
     <ValidationMessage For="@this.ValueExpression" />
