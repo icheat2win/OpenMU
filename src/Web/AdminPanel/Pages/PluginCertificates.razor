@@ -46,20 +46,20 @@
                     </div>
                     
                     <div class="mb-3">
-                        <label class="form-label">Or specify certificate file path on server</label>
-                        <div class="input-group">
-                            <input type="text" class="form-control" @bind="_certificatePath" placeholder="/path/to/certificate.cer" />
-                            <button class="btn btn-primary" @onclick="AddCertificateFromPath">
+                        <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Or specify certificate file path on server</label>
+                        <div class="flex gap-2">
+                            <input type="text" class="flex-1 px-4 py-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400" @bind="_certificatePath" placeholder="/path/to/certificate.cer" />
+                            <button class="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-blue-500 to-indigo-500 hover:from-blue-600 hover:to-indigo-600 text-white rounded-lg font-medium transition-all shadow-md hover:shadow-lg" @onclick="AddCertificateFromPath">
                                 <span class="oi oi-plus" aria-hidden="true"></span> Add from Path
                             </button>
                         </div>
                     </div>
 
                     <div class="mb-3">
-                        <label class="form-label">Or add certificate by thumbprint (SHA-1)</label>
-                        <div class="input-group">
-                            <input type="text" class="form-control" @bind="_thumbprint" placeholder="A1B2C3D4E5F6..." />
-                            <button class="btn btn-primary" @onclick="AddCertificateByThumbprint">
+                        <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Or add certificate by thumbprint (SHA-1)</label>
+                        <div class="flex gap-2">
+                            <input type="text" class="flex-1 px-4 py-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400" @bind="_thumbprint" placeholder="A1B2C3D4E5F6..." />
+                            <button class="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-blue-500 to-indigo-500 hover:from-blue-600 hover:to-indigo-600 text-white rounded-lg font-medium transition-all shadow-md hover:shadow-lg" @onclick="AddCertificateByThumbprint">
                                 <span class="oi oi-plus" aria-hidden="true"></span> Add Thumbprint
                             </button>
                         </div>
@@ -75,14 +75,14 @@
             <div class="card">
                 <div class="card-header d-flex justify-content-between align-items-center">
                     <h5 class="mb-0">Trusted Certificates (@_certificateManager.TrustedThumbprints.Count)</h5>
-                    <div>
-                        <button class="btn btn-sm btn-success" @onclick="SaveConfiguration">
+                    <div class="flex gap-2">
+                        <button class="inline-flex items-center gap-2 px-3 py-1.5 text-sm bg-gradient-to-r from-emerald-500 to-green-500 hover:from-emerald-600 hover:to-green-600 text-white rounded-lg font-medium transition-all shadow-md hover:shadow-lg" @onclick="SaveConfiguration">
                             <span class="oi oi-data-transfer-download" aria-hidden="true"></span> Save to Config
                         </button>
-                        <button class="btn btn-sm btn-warning" @onclick="LoadConfiguration">
+                        <button class="inline-flex items-center gap-2 px-3 py-1.5 text-sm bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white rounded-lg font-medium transition-all shadow-md hover:shadow-lg" @onclick="LoadConfiguration">
                             <span class="oi oi-data-transfer-upload" aria-hidden="true"></span> Load from Config
                         </button>
-                        <button class="btn btn-sm btn-danger" @onclick="ClearAllCertificates">
+                        <button class="inline-flex items-center gap-2 px-3 py-1.5 text-sm bg-gradient-to-r from-red-500 to-rose-500 hover:from-red-600 hover:to-rose-600 text-white rounded-lg font-medium transition-all shadow-md hover:shadow-lg" @onclick="ClearAllCertificates">
                             <span class="oi oi-trash" aria-hidden="true"></span> Clear All
                         </button>
                     </div>
@@ -118,7 +118,7 @@
                                                 </span>
                                             </td>
                                             <td>
-                                                <button class="btn btn-sm btn-danger" @onclick="() => RemoveCertificate(thumbprint)">
+                                                <button class="inline-flex items-center gap-2 px-3 py-1.5 text-sm bg-gradient-to-r from-red-500 to-rose-500 hover:from-red-600 hover:to-rose-600 text-white rounded-lg font-medium transition-all shadow-md hover:shadow-lg" @onclick="() => RemoveCertificate(thumbprint)">
                                                     <span class="oi oi-trash" aria-hidden="true"></span> Remove
                                                 </button>
                                             </td>
@@ -142,10 +142,10 @@
                 </div>
                 <div class="card-body">
                     <div class="mb-3">
-                        <label class="form-label">Plugin Assembly Path</label>
-                        <div class="input-group">
-                            <input type="text" class="form-control" @bind="_testAssemblyPath" placeholder="plugins/MyPlugin.dll" />
-                            <button class="btn btn-primary" @onclick="TestVerification">
+                        <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Plugin Assembly Path</label>
+                        <div class="flex gap-2">
+                            <input type="text" class="flex-1 px-4 py-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400" @bind="_testAssemblyPath" placeholder="plugins/MyPlugin.dll" />
+                            <button class="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-blue-500 to-indigo-500 hover:from-blue-600 hover:to-indigo-600 text-white rounded-lg font-medium transition-all shadow-md hover:shadow-lg" @onclick="TestVerification">
                                 <span class="oi oi-task" aria-hidden="true"></span> Test Verification
                             </button>
                         </div>
