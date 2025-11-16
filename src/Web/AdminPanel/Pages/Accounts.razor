@@ -4,91 +4,310 @@
 @using MUnique.OpenMU.Persistence;
 
 @inject AccountService _accountService;
+@implements IDisposable
 
 <PageTitle>OpenMU: Accounts</PageTitle>
 <Breadcrumb IsFirstFromRoot="true" Caption="Accounts" />
 
-<div class="min-h-screen bg-slate-50 dark:bg-slate-900 py-6">
-    <!-- Header -->
-    <div class="mb-8 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-        <div>
-            <h1 class="text-4xl font-bold text-slate-900 dark:text-white flex items-center gap-3 mb-2">
-                <span class="text-3xl">👤</span>
-                Account Management
-            </h1>
-            <p class="text-slate-600 dark:text-slate-300 text-lg">Manage player accounts and user credentials</p>
+<div class="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-slate-50 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900 py-8 px-4">
+    <div class="max-w-7xl mx-auto">
+        <!-- Header -->
+        <div class="mb-8 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+            <div>
+                <h1 class="text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600 dark:from-blue-400 dark:to-purple-400 flex items-center gap-3 mb-2">
+                    <span class="text-4xl">�</span>
+                    Account Management
+                </h1>
+                <p class="text-slate-600 dark:text-slate-300 text-lg">Manage player accounts, credentials, and user status</p>
+            </div>
+            <button type="button" 
+                    class="px-6 py-3 bg-gradient-to-r from-emerald-500 via-green-500 to-teal-500 hover:from-emerald-600 hover:via-green-600 hover:to-teal-600 text-white rounded-xl font-bold shadow-lg hover:shadow-2xl transition-all transform hover:scale-105 flex items-center gap-2" 
+                    @onclick="@this._accountService.CreateNewInModalDialogAsync">
+                <span class="text-xl">✨</span> Create New Account
+            </button>
         </div>
-        <button type="button" class="px-6 py-3 bg-gradient-to-r from-emerald-500 to-green-500 hover:from-emerald-600 hover:to-green-600 text-white rounded-lg font-semibold shadow-lg hover:shadow-xl transition-all flex items-center gap-2" @onclick="@this._accountService.CreateNewInModalDialogAsync">
-            <span class="text-xl">➕</span> Create Account
-        </button>
-    </div>
 
-    <!-- Accounts Table Card -->
-    <div class="bg-white dark:bg-slate-800 rounded-xl shadow-lg border border-slate-200 dark:border-slate-700 overflow-hidden">
-        <div class="p-6 border-b border-slate-200 dark:border-slate-700">
-            <h2 class="text-2xl font-bold text-slate-900 dark:text-white flex items-center gap-2">
-                <span>📋</span> Accounts
-            </h2>
-        </div>
-        
-        <div class="overflow-x-auto">
-            <DataTable TItem=@Account>
-                <TableHeader>
-                    <th class="px-6 py-4 bg-slate-50 dark:bg-slate-700 text-left">
-                        <div class="flex items-center gap-2 text-sm font-semibold text-slate-700 dark:text-slate-200 uppercase tracking-wider">
-                            <span>👤</span>
-                            <span>Login Name</span>
+        @if (_isLoading)
+        {
+            <!-- Loading State -->
+            <div class="flex flex-col items-center justify-center py-20">
+                <div class="relative">
+                    <div class="w-20 h-20 border-4 border-blue-200 dark:border-blue-900 rounded-full"></div>
+                    <div class="w-20 h-20 border-4 border-blue-600 dark:border-blue-400 border-t-transparent rounded-full animate-spin absolute top-0 left-0"></div>
+                </div>
+                <p class="mt-6 text-slate-600 dark:text-slate-400 text-lg font-medium animate-pulse">Loading accounts...</p>
+            </div>
+        }
+        else
+        {
+            <!-- Stats Cards -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                <div class="bg-gradient-to-br from-blue-500 to-blue-600 dark:from-blue-600 dark:to-blue-700 rounded-2xl shadow-xl p-6 text-white transform hover:scale-105 transition-all">
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="text-3xl">📊</span>
+                        <span class="bg-white/20 px-3 py-1 rounded-full text-sm font-semibold backdrop-blur-sm">Total</span>
+                    </div>
+                    <h3 class="text-4xl font-bold mb-1">@_totalAccounts</h3>
+                    <p class="text-blue-100">Total Accounts</p>
+                </div>
+
+                <div class="bg-gradient-to-br from-green-500 to-emerald-600 dark:from-green-600 dark:to-emerald-700 rounded-2xl shadow-xl p-6 text-white transform hover:scale-105 transition-all">
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="text-3xl">✅</span>
+                        <span class="bg-white/20 px-3 py-1 rounded-full text-sm font-semibold backdrop-blur-sm">Active</span>
+                    </div>
+                    <h3 class="text-4xl font-bold mb-1">@_activeAccounts</h3>
+                    <p class="text-green-100">Active Accounts</p>
+                </div>
+
+                <div class="bg-gradient-to-br from-red-500 to-rose-600 dark:from-red-600 dark:to-rose-700 rounded-2xl shadow-xl p-6 text-white transform hover:scale-105 transition-all">
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="text-3xl">🚫</span>
+                        <span class="bg-white/20 px-3 py-1 rounded-full text-sm font-semibold backdrop-blur-sm">Banned</span>
+                    </div>
+                    <h3 class="text-4xl font-bold mb-1">@_bannedAccounts</h3>
+                    <p class="text-red-100">Banned Accounts</p>
+                </div>
+
+                <div class="bg-gradient-to-br from-amber-500 to-orange-600 dark:from-amber-600 dark:to-orange-700 rounded-2xl shadow-xl p-6 text-white transform hover:scale-105 transition-all">
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="text-3xl">⏱️</span>
+                        <span class="bg-white/20 px-3 py-1 rounded-full text-sm font-semibold backdrop-blur-sm">Temp</span>
+                    </div>
+                    <h3 class="text-4xl font-bold mb-1">@_tempBannedAccounts</h3>
+                    <p class="text-amber-100">Temp Banned</p>
+                </div>
+            </div>
+
+            <!-- Search and Filter Bar -->
+            <div class="bg-white dark:bg-slate-800 rounded-2xl shadow-lg border border-slate-200 dark:border-slate-700 p-6 mb-6">
+                <div class="flex flex-col md:flex-row gap-4">
+                    <div class="flex-1">
+                        <div class="relative">
+                            <span class="absolute left-4 top-1/2 transform -translate-y-1/2 text-slate-400 text-xl">🔍</span>
+                            <input type="text" 
+                                   placeholder="Search by login name or email..." 
+                                   @bind="_searchTerm" 
+                                   @bind:event="oninput"
+                                   class="w-full pl-12 pr-4 py-3 bg-slate-50 dark:bg-slate-700 border border-slate-300 dark:border-slate-600 rounded-xl text-slate-900 dark:text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all" />
                         </div>
-                    </th>
-                    <th class="px-6 py-4 bg-slate-50 dark:bg-slate-700 text-left">
-                        <div class="flex items-center gap-2 text-sm font-semibold text-slate-700 dark:text-slate-200 uppercase tracking-wider">
-                            <span>🔒</span>
-                            <span>State</span>
-                        </div>
-                    </th>
-                    <th class="px-6 py-4 bg-slate-50 dark:bg-slate-700 text-left">
-                        <div class="flex items-center gap-2 text-sm font-semibold text-slate-700 dark:text-slate-200 uppercase tracking-wider">
-                            <span>📧</span>
-                            <span>E-Mail</span>
-                        </div>
-                    </th>
-                    <th class="px-6 py-4 bg-slate-50 dark:bg-slate-700 text-right">
-                        <div class="flex items-center justify-end gap-2 text-sm font-semibold text-slate-700 dark:text-slate-200 uppercase tracking-wider">
-                            <span>⚙️</span>
-                            <span>Actions</span>
-                        </div>
-                    </th>
-                </TableHeader>
-                <ItemTemplate Context="item">
-                    <td class="px-6 py-4 border-b border-slate-200 dark:border-slate-700">
-                        <span class="text-slate-900 dark:text-white font-medium">@item.LoginName</span>
-                    </td>
-                    <td class="px-6 py-4 border-b border-slate-200 dark:border-slate-700">
-                        <StatBadge Value="@GetAccountStateText(item.State)" Color="@GetAccountStateBadgeColor(item.State)" />
-                    </td>
-                    <td class="px-6 py-4 border-b border-slate-200 dark:border-slate-700">
-                        <span class="text-slate-600 dark:text-slate-300">@(string.IsNullOrEmpty(item.EMail) ? "—" : item.EMail)</span>
-                    </td>
-                    <td class="px-6 py-4 border-b border-slate-200 dark:border-slate-700 text-right">
-                        <NavLink href="@($"edit-account/{item.GetId()}/{typeof(Account).FullName}/{item.GetId()}")" class="inline-flex items-center gap-2 px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg font-medium transition-colors">
-                            <span>✏️</span> Edit
-                        </NavLink>
-                    </td>
-                </ItemTemplate>
-            </DataTable>
-        </div>
+                    </div>
+                    <select @bind="_filterState" 
+                            class="px-6 py-3 bg-slate-50 dark:bg-slate-700 border border-slate-300 dark:border-slate-600 rounded-xl text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all">
+                        <option value="">All Status</option>
+                        <option value="Normal">Active</option>
+                        <option value="Banned">Banned</option>
+                        <option value="TemporarilyBanned">Temp Banned</option>
+                    </select>
+                </div>
+                @if (!string.IsNullOrEmpty(_searchTerm) || !string.IsNullOrEmpty(_filterState))
+                {
+                    <div class="mt-4 flex items-center gap-3">
+                        <span class="text-slate-600 dark:text-slate-400 text-sm">Showing @_filteredAccounts.Count() of @_totalAccounts accounts</span>
+                        <button @onclick="ClearFilters" class="text-blue-600 dark:text-blue-400 hover:underline text-sm font-medium">Clear filters</button>
+                    </div>
+                }
+            </div>
+
+            <!-- Accounts Table Card -->
+            <div class="bg-white dark:bg-slate-800 rounded-2xl shadow-2xl border border-slate-200 dark:border-slate-700 overflow-hidden">
+                <div class="bg-gradient-to-r from-slate-800 to-slate-700 dark:from-slate-700 dark:to-slate-600 p-6">
+                    <div class="flex items-center justify-between">
+                        <h2 class="text-2xl font-bold text-white flex items-center gap-2">
+                            <span>📋</span> Accounts List
+                        </h2>
+                        <span class="bg-white/20 px-4 py-2 rounded-lg text-white font-semibold backdrop-blur-sm">
+                            @_filteredAccounts.Count() accounts
+                        </span>
+                    </div>
+                </div>
+                
+                @if (_filteredAccounts.Any())
+                {
+                    <div class="overflow-x-auto">
+                        <table class="w-full">
+                            <thead class="bg-slate-100 dark:bg-slate-700/50 border-b-2 border-slate-300 dark:border-slate-600">
+                                <tr>
+                                    <th class="px-6 py-4 text-left">
+                                        <div class="flex items-center gap-2 text-sm font-bold text-slate-700 dark:text-slate-200 uppercase tracking-wider">
+                                            <span>👤</span>
+                                            <span>Login Name</span>
+                                        </div>
+                                    </th>
+                                    <th class="px-6 py-4 text-left">
+                                        <div class="flex items-center gap-2 text-sm font-bold text-slate-700 dark:text-slate-200 uppercase tracking-wider">
+                                            <span>🔒</span>
+                                            <span>Status</span>
+                                        </div>
+                                    </th>
+                                    <th class="px-6 py-4 text-left">
+                                        <div class="flex items-center gap-2 text-sm font-bold text-slate-700 dark:text-slate-200 uppercase tracking-wider">
+                                            <span>📧</span>
+                                            <span>Email</span>
+                                        </div>
+                                    </th>
+                                    <th class="px-6 py-4 text-left">
+                                        <div class="flex items-center gap-2 text-sm font-bold text-slate-700 dark:text-slate-200 uppercase tracking-wider">
+                                            <span>🎮</span>
+                                            <span>Characters</span>
+                                        </div>
+                                    </th>
+                                    <th class="px-6 py-4 text-right">
+                                        <div class="flex items-center justify-end gap-2 text-sm font-bold text-slate-700 dark:text-slate-200 uppercase tracking-wider">
+                                            <span>⚙️</span>
+                                            <span>Actions</span>
+                                        </div>
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-slate-200 dark:divide-slate-700">
+                                @foreach (var item in _filteredAccounts)
+                                {
+                                    <tr class="hover:bg-slate-50 dark:hover:bg-slate-700/50 transition-colors">
+                                        <td class="px-6 py-4">
+                                            <div class="flex items-center gap-3">
+                                                <div class="w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-500 rounded-full flex items-center justify-center text-white font-bold text-lg shadow-lg">
+                                                    @item.LoginName.Substring(0, 1).ToUpper()
+                                                </div>
+                                                <div>
+                                                    <p class="text-slate-900 dark:text-white font-semibold">@item.LoginName</p>
+                                                    <p class="text-slate-500 dark:text-slate-400 text-sm">ID: @item.GetId()</p>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td class="px-6 py-4">
+                                            @{
+                                                var (badgeColor, icon) = GetAccountStateBadgeStyle(item.State);
+                                            }
+                                            <span class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-sm font-bold @badgeColor">
+                                                <span>@icon</span>
+                                                @GetAccountStateText(item.State)
+                                            </span>
+                                        </td>
+                                        <td class="px-6 py-4">
+                                            <span class="text-slate-700 dark:text-slate-300">
+                                                @(string.IsNullOrEmpty(item.EMail) ? "—" : item.EMail)
+                                            </span>
+                                        </td>
+                                        <td class="px-6 py-4">
+                                            <div class="flex items-center gap-2">
+                                                <span class="bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 px-3 py-1 rounded-full text-sm font-semibold">
+                                                    @item.Characters.Count
+                                                </span>
+                                            </div>
+                                        </td>
+                                        <td class="px-6 py-4 text-right">
+                                            <NavLink href="@($"edit-account/{item.GetId()}/{typeof(Account).FullName}/{item.GetId()}")" 
+                                                     class="inline-flex items-center gap-2 px-5 py-2.5 bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white rounded-xl font-semibold shadow-lg hover:shadow-xl transition-all transform hover:scale-105">
+                                                <span>✏️</span> Edit Account
+                                            </NavLink>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                }
+                else
+                {
+                    <div class="p-16 text-center">
+                        <div class="text-6xl mb-4">🔍</div>
+                        <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-2">No Accounts Found</h3>
+                        <p class="text-slate-600 dark:text-slate-400 mb-6">
+                            @if (!string.IsNullOrEmpty(_searchTerm) || !string.IsNullOrEmpty(_filterState))
+                            {
+                                <span>No accounts match your search criteria.</span>
+                            }
+                            else
+                            {
+                                <span>Get started by creating your first account.</span>
+                            }
+                        </p>
+                        @if (string.IsNullOrEmpty(_searchTerm) && string.IsNullOrEmpty(_filterState))
+                        {
+                            <button type="button" 
+                                    @onclick="@this._accountService.CreateNewInModalDialogAsync"
+                                    class="px-6 py-3 bg-gradient-to-r from-emerald-500 to-green-500 hover:from-emerald-600 hover:to-green-600 text-white rounded-xl font-bold shadow-lg hover:shadow-xl transition-all inline-flex items-center gap-2">
+                                <span class="text-xl">✨</span> Create First Account
+                            </button>
+                        }
+                    </div>
+                }
+            </div>
+        }
     </div>
 </div>
 
 @code {
-    private string GetAccountStateBadgeColor(AccountState state)
+    private bool _isLoading = true;
+    private string _searchTerm = string.Empty;
+    private string _filterState = string.Empty;
+    private int _totalAccounts;
+    private int _activeAccounts;
+    private int _bannedAccounts;
+    private int _tempBannedAccounts;
+    private IEnumerable<Account> _allAccounts = Enumerable.Empty<Account>();
+
+    private IEnumerable<Account> _filteredAccounts
+    {
+        get
+        {
+            var filtered = _allAccounts;
+
+            if (!string.IsNullOrEmpty(_searchTerm))
+            {
+                filtered = filtered.Where(a => 
+                    a.LoginName.Contains(_searchTerm, StringComparison.OrdinalIgnoreCase) ||
+                    (a.EMail?.Contains(_searchTerm, StringComparison.OrdinalIgnoreCase) ?? false));
+            }
+
+            if (!string.IsNullOrEmpty(_filterState) && Enum.TryParse<AccountState>(_filterState, out var state))
+            {
+                filtered = filtered.Where(a => a.State == state);
+            }
+
+            return filtered;
+        }
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+        await LoadAccountsAsync();
+    }
+
+    private async Task LoadAccountsAsync()
+    {
+        _isLoading = true;
+        StateHasChanged();
+
+        await Task.Delay(100); // Brief delay for smooth loading animation
+
+        // Load all accounts (using large count to get all)
+        _allAccounts = (await _accountService.GetAsync(0, 10000)).OrderBy(a => a.LoginName).ToList();
+        _totalAccounts = _allAccounts.Count();
+        _activeAccounts = _allAccounts.Count(a => a.State == AccountState.Normal);
+        _bannedAccounts = _allAccounts.Count(a => a.State == AccountState.Banned);
+        _tempBannedAccounts = _allAccounts.Count(a => a.State == AccountState.TemporarilyBanned);
+
+        _isLoading = false;
+        StateHasChanged();
+    }
+
+    private void ClearFilters()
+    {
+        _searchTerm = string.Empty;
+        _filterState = string.Empty;
+    }
+
+    private (string cssClass, string icon) GetAccountStateBadgeStyle(AccountState state)
     {
         return state switch
         {
-            AccountState.Normal => "success",
-            AccountState.Banned => "danger",
-            AccountState.TemporarilyBanned => "warning",
-            _ => "default"
+            AccountState.Normal => ("bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300", "✅"),
+            AccountState.Banned => ("bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-300", "🚫"),
+            AccountState.TemporarilyBanned => ("bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-300", "⏱️"),
+            _ => ("bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-300", "❓")
         };
     }
 
@@ -101,5 +320,10 @@
             AccountState.TemporarilyBanned => "Temp Banned",
             _ => state.ToString()
         };
+    }
+
+    public void Dispose()
+    {
+        // Clean up if needed
     }
 }
