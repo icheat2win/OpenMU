@@ -3,7 +3,7 @@
 
 <nav class="sidebar bg-white dark:bg-slate-950 text-slate-800 dark:text-white shadow-2xl flex flex-col h-screen fixed top-0 left-0 w-64 z-50 transition-all duration-300 @NavMenuCssClass border-r border-slate-200 dark:border-slate-800">
     <!-- Header -->
-    <div class="flex items-center justify-between px-6 py-4 bg-gradient-to-r from-blue-600 to-cyan-600 border-b border-white/10">
+    <div class="flex items-center justify-between px-6 py-4 bg-gradient-to-r from-primary-600 to-primary-700 border-b border-white/10">
         <a href="" class="flex items-center gap-3 text-xl font-bold hover:opacity-80 transition-opacity">
             <span class="text-2xl">🎮</span>
             <span>OpenMU</span>
@@ -32,7 +32,7 @@
                 <li>
                     <NavLink href="setup" 
                              class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-white/10 transition-all duration-200 group">
-                        <span class="oi oi-cog text-cyan-400 group-hover:scale-110 transition-transform" aria-hidden="true"></span>
+                        <span class="oi oi-cog text-accent-400 group-hover:scale-110 transition-transform" aria-hidden="true"></span>
                         <span class="font-medium">Setup</span>
                     </NavLink>
                 </li>
@@ -43,28 +43,28 @@
                 <li>
                     <NavLink href="" Match="NavLinkMatch.All" 
                              class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-white/10 transition-all duration-200 group">
-                        <span class="oi oi-home text-cyan-400 group-hover:scale-110 transition-transform" aria-hidden="true"></span>
+                        <span class="oi oi-home text-primary-400 group-hover:scale-110 transition-transform" aria-hidden="true"></span>
                         <span class="font-medium">Home</span>
                     </NavLink>
                 </li>
                 <li>
                     <NavLink href="servers" 
                              class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-white/10 transition-all duration-200 group">
-                        <span class="oi oi-project text-blue-400 group-hover:scale-110 transition-transform" aria-hidden="true"></span>
+                        <span class="oi oi-project text-primary-400 group-hover:scale-110 transition-transform" aria-hidden="true"></span>
                         <span class="font-medium">Servers</span>
                     </NavLink>
                 </li>
                 <li>
                     <NavLink href="accounts" 
                              class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-white/10 transition-all duration-200 group">
-                        <span class="oi oi-list text-yellow-400 group-hover:scale-110 transition-transform" aria-hidden="true"></span>
+                        <span class="oi oi-list text-accent-400 group-hover:scale-110 transition-transform" aria-hidden="true"></span>
                         <span class="font-medium">Accounts</span>
                     </NavLink>
                 </li>
                 <li>
                     <NavLink href="logged-in" 
                              class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-white/10 transition-all duration-200 group">
-                        <span class="oi oi-people text-emerald-400 group-hover:scale-110 transition-transform" aria-hidden="true"></span>
+                        <span class="oi oi-people text-accent-400 group-hover:scale-110 transition-transform" aria-hidden="true"></span>
                         <span class="font-medium">Online Accounts</span>
                     </NavLink>
                 </li>
@@ -85,7 +85,7 @@
                 <li>
                     <NavLink href="setup" 
                              class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-white/10 transition-all duration-200 group">
-                        <span class="oi oi-cog text-amber-400 group-hover:scale-110 transition-transform" aria-hidden="true"></span>
+                        <span class="oi oi-cog text-accent-400 group-hover:scale-110 transition-transform" aria-hidden="true"></span>
                         <span class="font-medium">Setup</span>
                     </NavLink>
                 </li>
@@ -93,12 +93,12 @@
                     <NavLink href="config-updates" 
                              class="flex items-center justify-between px-4 py-3 rounded-lg hover:bg-white/10 transition-all duration-200 group">
                         <div class="flex items-center gap-3">
-                            <span class="oi oi-medical-cross text-rose-400 group-hover:scale-110 transition-transform" aria-hidden="true"></span>
+                            <span class="oi oi-medical-cross text-danger-400 group-hover:scale-110 transition-transform" aria-hidden="true"></span>
                             <span class="font-medium">Updates</span>
                         </div>
                         @if (this._availableConfigUpdates > 0)
                         {
-                            <span class="px-2 py-1 bg-rose-500 text-white text-xs font-bold rounded-full animate-pulse">
+                            <span class="px-2 py-1 bg-danger-500 text-white text-xs font-bold rounded-full animate-pulse">
                                 @this._availableConfigUpdates
                             </span>
                         }
@@ -112,7 +112,7 @@
                 <li>
                     <NavLink href="users" 
                              class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-white/10 transition-all duration-200 group">
-                        <span class="oi oi-key text-yellow-400 group-hover:scale-110 transition-transform" aria-hidden="true"></span>
+                        <span class="oi oi-key text-accent-400 group-hover:scale-110 transition-transform" aria-hidden="true"></span>
                         <span class="font-medium">Users</span>
                     </NavLink>
                 </li>

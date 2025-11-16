@@ -15,13 +15,13 @@
         <div class="mb-8 flex items-center justify-between">
             <div>
                 <h1 class="text-4xl font-bold text-slate-900 dark:text-white flex items-center gap-3 mb-2">
-                    <span class="oi oi-people text-cyan-500" aria-hidden="true"></span>
+                    <span class="oi oi-people text-primary-500" aria-hidden="true"></span>
                     Account Management
                 </h1>
                 <p class="text-slate-600 dark:text-slate-400 text-lg">Manage player accounts, credentials, and user status</p>
             </div>
             <button type="button" 
-                    class="px-4 py-2 bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white rounded-lg shadow-md hover:shadow-lg transition-all flex items-center gap-2 font-semibold" 
+                    class="px-4 py-2 bg-gradient-to-r from-primary-500 to-primary-700 hover:from-primary-600 hover:to-primary-800 text-white rounded-lg shadow-md hover:shadow-lg transition-all flex items-center gap-2 font-semibold" 
                     @onclick="@this._accountService.CreateNewInModalDialogAsync">
                 <span class="oi oi-plus" aria-hidden="true"></span>
                 <span class="hidden md:inline">Create Account</span>
@@ -35,7 +35,7 @@
                 <div class="text-center">
                     <div class="relative inline-block">
                         <div class="w-16 h-16 border-4 border-slate-200 dark:border-slate-700 rounded-full"></div>
-                        <div class="w-16 h-16 border-4 border-cyan-500 border-t-transparent rounded-full animate-spin absolute top-0 left-0"></div>
+                        <div class="w-16 h-16 border-4 border-primary-500 border-t-transparent rounded-full animate-spin absolute top-0 left-0"></div>
                     </div>
                     <p class="mt-4 text-slate-600 dark:text-slate-400 font-medium">Loading accounts...</p>
                 </div>
@@ -45,7 +45,7 @@
         {
             <!-- Stats Cards -->
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-                <div class="bg-gradient-to-br from-blue-500 to-blue-600 dark:from-blue-600 dark:to-blue-700 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 p-6 text-white">
+                <div class="bg-gradient-to-br from-primary-500 to-primary-700 dark:from-primary-600 dark:to-primary-800 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 p-6 text-white">
                     <div class="flex items-start justify-between mb-4">
                         <div class="p-3 bg-white/20 rounded-lg backdrop-blur-sm">
                             <span class="oi oi-people text-2xl" aria-hidden="true"></span>
@@ -53,14 +53,14 @@
                         <span class="px-3 py-1 bg-white/20 rounded-full text-xs font-semibold backdrop-blur-sm">TOTAL</span>
                     </div>
                     <h3 class="text-4xl font-bold mb-1">@_totalAccounts</h3>
-                    <p class="text-blue-100 font-medium mb-2">Total Accounts</p>
-                    <div class="flex items-center gap-2 text-sm text-blue-100">
+                    <p class="text-primary-100 font-medium mb-2">Total Accounts</p>
+                    <div class="flex items-center gap-2 text-sm text-primary-100">
                         <span class="oi oi-info" aria-hidden="true"></span>
                         <span>All registered users</span>
                     </div>
                 </div>
 
-                <div class="bg-gradient-to-br from-emerald-500 to-emerald-600 dark:from-emerald-600 dark:to-emerald-700 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 p-6 text-white">
+                <div class="bg-gradient-to-br from-accent-500 to-accent-700 dark:from-accent-600 dark:to-accent-800 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 p-6 text-white">
                     <div class="flex items-start justify-between mb-4">
                         <div class="p-3 bg-white/20 rounded-lg backdrop-blur-sm">
                             <span class="oi oi-circle-check text-2xl" aria-hidden="true"></span>
@@ -68,14 +68,14 @@
                         <span class="px-3 py-1 bg-white/20 rounded-full text-xs font-semibold backdrop-blur-sm">ACTIVE</span>
                     </div>
                     <h3 class="text-4xl font-bold mb-1">@_activeAccounts</h3>
-                    <p class="text-emerald-100 font-medium mb-2">Active Accounts</p>
-                    <div class="flex items-center gap-2 text-sm text-emerald-100">
+                    <p class="text-accent-100 font-medium mb-2">Active Accounts</p>
+                    <div class="flex items-center gap-2 text-sm text-accent-100">
                         <span class="oi oi-check" aria-hidden="true"></span>
                         <span>Currently active</span>
                     </div>
                 </div>
 
-                <div class="bg-gradient-to-br from-red-500 to-red-600 dark:from-red-600 dark:to-red-700 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 p-6 text-white">
+                <div class="bg-gradient-to-br from-danger-500 to-danger-700 dark:from-danger-600 dark:to-danger-800 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 p-6 text-white">
                     <div class="flex items-start justify-between mb-4">
                         <div class="p-3 bg-white/20 rounded-lg backdrop-blur-sm">
                             <span class="oi oi-ban text-2xl" aria-hidden="true"></span>
@@ -83,14 +83,14 @@
                         <span class="px-3 py-1 bg-white/20 rounded-full text-xs font-semibold backdrop-blur-sm">BANNED</span>
                     </div>
                     <h3 class="text-4xl font-bold mb-1">@_bannedAccounts</h3>
-                    <p class="text-red-100 font-medium mb-2">Banned Accounts</p>
-                    <div class="flex items-center gap-2 text-sm text-red-100">
+                    <p class="text-danger-100 font-medium mb-2">Banned Accounts</p>
+                    <div class="flex items-center gap-2 text-sm text-danger-100">
                         <span class="oi oi-x" aria-hidden="true"></span>
                         <span>Permanently banned</span>
                     </div>
                 </div>
 
-                <div class="bg-gradient-to-br from-amber-500 to-amber-600 dark:from-amber-600 dark:to-amber-700 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 p-6 text-white">
+                <div class="bg-gradient-to-br from-accent-500 to-accent-700 dark:from-accent-600 dark:to-accent-800 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 p-6 text-white">
                     <div class="flex items-start justify-between mb-4">
                         <div class="p-3 bg-white/20 rounded-lg backdrop-blur-sm">
                             <span class="oi oi-clock text-2xl" aria-hidden="true"></span>
@@ -98,8 +98,8 @@
                         <span class="px-3 py-1 bg-white/20 rounded-full text-xs font-semibold backdrop-blur-sm">TEMP</span>
                     </div>
                     <h3 class="text-4xl font-bold mb-1">@_tempBannedAccounts</h3>
-                    <p class="text-amber-100 font-medium mb-2">Temp Banned</p>
-                    <div class="flex items-center gap-2 text-sm text-amber-100">
+                    <p class="text-accent-100 font-medium mb-2">Temp Banned</p>
+                    <div class="flex items-center gap-2 text-sm text-accent-100">
                         <span class="oi oi-timer" aria-hidden="true"></span>
                         <span>Temporary suspension</span>
                     </div>
@@ -116,7 +116,7 @@
                                    placeholder="Search by login name or email..." 
                                    @bind="_searchTerm" 
                                    @bind:event="oninput"
-                                   class="w-full pl-12 pr-4 py-3 bg-slate-50 dark:bg-slate-700 border border-slate-300 dark:border-slate-600 rounded-xl text-slate-900 dark:text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all" />
+                                   class="w-full pl-12 pr-4 py-3 bg-slate-50 dark:bg-slate-700 border border-slate-300 dark:border-slate-600 rounded-xl text-slate-900 dark:text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all" />
                         </div>
                     </div>
                     <select @bind="_filterState" 
@@ -218,14 +218,14 @@
                                         </td>
                                         <td class="px-6 py-4">
                                             <div class="flex items-center gap-2">
-                                                <span class="bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 px-3 py-1 rounded-full text-sm font-semibold">
+                                                <span class="bg-primary-100 dark:bg-primary-900/30 text-primary-700 dark:text-primary-300 px-3 py-1 rounded-full text-sm font-semibold">
                                                     @item.Characters.Count
                                                 </span>
                                             </div>
                                         </td>
                                         <td class="px-6 py-4 text-right">
                                             <NavLink href="@($"edit-account/{item.GetId()}/{typeof(Account).FullName}/{item.GetId()}")" 
-                                                     class="inline-flex items-center gap-2 px-5 py-2.5 bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white rounded-xl font-semibold shadow-lg hover:shadow-xl transition-all transform hover:scale-105">
+                                                     class="inline-flex items-center gap-2 px-5 py-2.5 bg-gradient-to-r from-primary-500 to-primary-700 hover:from-primary-600 hover:to-primary-800 text-white rounded-xl font-semibold shadow-lg hover:shadow-xl transition-all transform hover:scale-105">
                                                 <span>✏️</span> Edit Account
                                             </NavLink>
                                         </td>
@@ -331,9 +331,9 @@
     {
         return state switch
         {
-            AccountState.Normal => ("bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300", "✅"),
-            AccountState.Banned => ("bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-300", "🚫"),
-            AccountState.TemporarilyBanned => ("bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-300", "⏱️"),
+            AccountState.Normal => ("bg-accent-100 dark:bg-accent-900/30 text-accent-700 dark:text-accent-300", "✅"),
+            AccountState.Banned => ("bg-danger-100 dark:bg-danger-900/30 text-danger-700 dark:text-danger-300", "🚫"),
+            AccountState.TemporarilyBanned => ("bg-accent-100 dark:bg-accent-900/30 text-accent-700 dark:text-accent-300", "⏱️"),
             _ => ("bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-300", "❓")
         };
     }
