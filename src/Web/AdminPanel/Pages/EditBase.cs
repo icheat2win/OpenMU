@@ -176,17 +176,12 @@ public abstract class EditBase : ComponentBase, IAsyncDisposable
             return;
         }
 
-        var downloadMarkup = this.GetDownloadMarkup();
         var editorsMarkup = this.GetEditorsMarkup();
 
         // Modern Tailwind v4 styled page container
         builder.AddMarkupContent(10, 
             $@"<div class=""py-6 px-4 max-w-7xl mx-auto"">
                 <div class=""mb-8"">
-                    <h1 class=""text-4xl font-bold bg-gradient-to-r from-blue-600 to-cyan-500 bg-clip-text text-transparent mb-2"">
-                    Edit {CaptionHelper.GetTypeCaption(this.Type!)}
-                    </h1>
-                    {downloadMarkup}
                     {editorsMarkup}
                 </div>");        builder.OpenComponent<CascadingValue<IContext>>(11);
         builder.AddAttribute(12, nameof(CascadingValue<IContext>.Value), this._persistenceContext);
