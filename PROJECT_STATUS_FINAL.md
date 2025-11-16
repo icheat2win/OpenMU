@@ -2,16 +2,82 @@
 
 **Last Updated:** November 16, 2025  
 **Project Status:** Production Ready ✅  
-**Latest Commit:** 5971603f2  
+**Latest Commit:** 1d0dd7973  
 **Branch:** master  
 **Server URL:** http://connect.globalmu.org/ (http://192.168.4.71/)  
-**Admin Panel:** http://192.168.4.71:8080/  
-**API Endpoint:** http://192.168.4.71:8080/api/server/status  
+**Admin Panel:** http://connect.globalmu.org:8080/  
+**API Endpoint:** http://connect.globalmu.org:8080/api/server/status  
 **Repository:** https://github.com/icheat2win/OpenMU
 
 ---
 
-## 🎯 Latest Update: Enhanced Accounts Page UI (November 16, 2025)
+## 🎯 Latest Updates (November 16, 2025)
+
+### Update 3: Modernized Online Accounts Page (Commit: 1d0dd7973) ✨
+
+**Status:** ✅ Complete dark mode support + modern design for logged-in player monitoring
+
+Completely transformed the Online Accounts (`/logged-in`) page with comprehensive dark mode styling and modern interface design.
+
+**Visual Enhancements:**
+- **Modern Header Design:**
+  - Gradient icon badge (blue to cyan) with emoji
+  - Professional typography with clear hierarchy
+  - Descriptive subtitle "Real-time monitoring of connected players"
+  - Responsive padding and max-width constraints
+
+- **Enhanced Table Interface:**
+  - Fully styled table headers with emoji icons
+  - User avatar badges showing first letter of username
+  - Animated pulse indicator on server badges
+  - Gradient-styled disconnect buttons (red with hover effects)
+  - Better spacing and border styling
+
+- **Dark Mode Excellence:**
+  - Complete dark mode variants for all elements
+  - Proper contrast on backgrounds (`bg-slate-900`, `bg-slate-800`)
+  - Light text colors in dark mode (`text-slate-100`, `text-slate-300`)
+  - Dark borders and dividers (`border-slate-700`)
+  - Gradient buttons work in both themes
+
+- **Interactive Elements:**
+  - Hover effects with transform animation on disconnect button
+  - Smooth transitions on all interactive elements
+  - Visual feedback on table row hover
+  - Professional shadow and glow effects
+
+- **User Experience:**
+  - Clear visual hierarchy with icon badges
+  - Status indicators with animated pulse
+  - Better readability in both light and dark modes
+  - Responsive layout with proper padding
+
+**Technical Implementation:**
+- Dark mode support via Tailwind `dark:` variants
+- Gradient backgrounds adapt to theme
+- Proper semantic HTML structure
+- Accessibility-friendly contrast ratios
+
+---
+
+### Update 2: Personal Store Checkbox Fix (Commit: 52d85b492) 🔧
+
+**Status:** ✅ Fixed visibility issue on Character Edit page
+
+Fixed the "Store is Open" checkbox label that was hard to read in both light and dark themes.
+
+**Changes:**
+- Added `dark:text-slate-300` for readable text in dark mode
+- Changed `text-slate-900` to `text-slate-700` for better light mode contrast
+- Enhanced container styling with dark mode background (`dark:bg-slate-700`)
+- Added dark mode border variants (`dark:border-slate-600`)
+- Added dark mode hover effect (`dark:hover:border-blue-400`)
+
+**User Feedback:** "see picture and fix store is open not easy to read send u dark mode eand white"
+
+---
+
+### Update 1: Enhanced Accounts Page UI (Commit: 5971603f2) 🚀
 
 **Status:** ✅ Modern Account Management Interface with Advanced Features
 
