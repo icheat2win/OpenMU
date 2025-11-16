@@ -7,43 +7,51 @@
 @inject IModalService _modal
 @inject NavigationManager _navigationManager
 
-    <div class="card">
-        <h5 class="card-header">
-            <FieldLabel Text="@Label" ValueExpression="@this.ValueExpression" />
-            @if (this._isStartingCollapsed)
-        {
-            @if (this._isCollapsed)
-            {
-                <button type="button" class="btn-outline-info ml-3" @onclick="@this.OnToggleCollapseClick">Expand (@(this.Value?.Count) Items)</button>
-            }
-            else
-            {
-                <button type="button" class="btn-outline-info ml-3" @onclick="@this.OnToggleCollapseClick">Collapse</button>
-            }
-        }
-        </h5>
+    <div class="bg-white dark:bg-slate-800 rounded-xl shadow-lg border border-slate-200 dark:border-slate-700 overflow-hidden mb-6">
+        <div class="bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-slate-700 dark:to-slate-600 px-6 py-4 border-b border-slate-200 dark:border-slate-600">
+            <div class="flex items-center justify-between">
+                <FieldLabel Text="@Label" ValueExpression="@this.ValueExpression" />
+                @if (this._isStartingCollapsed)
+                {
+                    @if (this._isCollapsed)
+                    {
+                        <button type="button" class="inline-flex items-center gap-2 px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg font-medium transition-all shadow-md hover:shadow-lg" @onclick="@this.OnToggleCollapseClick">
+                            <span class="oi oi-chevron-down"></span>
+                            <span>Expand (@(this.Value?.Count) Items)</span>
+                        </button>
+                    }
+                    else
+                    {
+                        <button type="button" class="inline-flex items-center gap-2 px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg font-medium transition-all shadow-md hover:shadow-lg" @onclick="@this.OnToggleCollapseClick">
+                            <span class="oi oi-chevron-up"></span>
+                            <span>Collapse</span>
+                        </button>
+                    }
+                }
+            </div>
+        </div>
         @if (!this._isCollapsed)
         {
-            <div class="card-body card-text">
-                <table>
-                    <tbody>
+            <div class="p-6">
+                <table class="w-full">
+                    <tbody class="divide-y divide-slate-200 dark:divide-slate-700">
                     @foreach (var item in (this.Value ?? Enumerable.Empty<TItem>())
                         .Select(i => (Name : i.GetName(), Id : i.GetId(), Item : i))
                         .OrderBy(i => i.Name))
                     {
-                        <tr>
+                        <tr class="hover:bg-slate-50 dark:hover:bg-slate-700/50 transition-colors">
                         @if (this._isInlineEditable)
                         {
-                          <td colspan="2">
+                          <td colspan="2" class="px-4 py-3">
                             <EditForm Model="@item.Item"><AutoFields></AutoFields></EditForm>
                           </td>
                         }
                         else
                         {
-                            <td>
+                            <td class="px-4 py-3 text-slate-900 dark:text-slate-100 font-medium">
                                 @item.Name
                             </td>
-                            <td>
+                            <td class="px-4 py-3">
                               @if (this._isEditable)
                               {
                                 string urlPrefix;
@@ -64,34 +72,48 @@
                                   urlPrefix = "edit-account";
                                 }
 
-                                <a href="@($"{urlPrefix}/{typeof(TItem).FullName}/{item.Id}")" class="btn btn-info">Edit</a>
+                                <a href="@($"{urlPrefix}/{typeof(TItem).FullName}/{item.Id}")" class="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-blue-500 to-indigo-500 hover:from-blue-600 hover:to-indigo-600 text-white rounded-lg font-medium transition-all shadow-md hover:shadow-lg">
+                                    <span class="oi oi-pencil"></span>
+                                    <span>Edit</span>
+                                </a>
                               }
                             </td>
                         }
-                            <td>
+                            <td class="px-4 py-3">
                                 @if (this._isEditable)
                                 {
-                                    <button type="button" class="btn-danger" @onclick="@(() => OnRemoveClickAsync(item.Item))">Remove</button>
+                                    <button type="button" class="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-red-500 to-rose-500 hover:from-red-600 hover:to-rose-600 text-white rounded-lg font-medium transition-all shadow-md hover:shadow-lg" @onclick="@(() => OnRemoveClickAsync(item.Item))">
+                                        <span class="oi oi-trash"></span>
+                                        <span>Remove</span>
+                                    </button>
                                 }
                             </td>
                         </tr>
                     }
                     </tbody>
-                    <tfooter>
+                    <tfoot class="bg-slate-50 dark:bg-slate-900/50">
                         <tr>
-                            <td colspan="3">
-                                @if (this._isAddingSupported)
-                                {
-                                    <button type="button" class="btn-primary" @onclick="@OnAddClickAsync">Add</button>
-                                }
+                            <td colspan="3" class="px-4 py-4">
+                                <div class="flex gap-3">
+                                    @if (this._isAddingSupported)
+                                    {
+                                        <button type="button" class="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-emerald-500 to-green-500 hover:from-emerald-600 hover:to-green-600 text-white rounded-lg font-medium transition-all shadow-md hover:shadow-lg" @onclick="@OnAddClickAsync">
+                                            <span class="oi oi-plus"></span>
+                                            <span>Add</span>
+                                        </button>
+                                    }
 
-                                @if (this._isCreatingSupported)
-                                {
-                                    <button type="button" class="btn-primary" @onclick="@OnCreateClickAsync">Create</button>
-                                }
+                                    @if (this._isCreatingSupported)
+                                    {
+                                        <button type="button" class="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-purple-500 to-indigo-500 hover:from-purple-600 hover:to-indigo-600 text-white rounded-lg font-medium transition-all shadow-md hover:shadow-lg" @onclick="@OnCreateClickAsync">
+                                            <span class="oi oi-file"></span>
+                                            <span>Create</span>
+                                        </button>
+                                    }
+                                </div>
                             </td>
                         </tr>
-                    </tfooter>
+                    </tfoot>
                 </table>
             </div>
         }
