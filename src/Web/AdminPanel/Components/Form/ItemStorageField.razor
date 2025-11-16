@@ -607,9 +607,12 @@
                 System.Threading.Timer? clearTimer = null;
                 clearTimer = new System.Threading.Timer(__ =>
                 {
-                    _saveMessage = string.Empty;
-                    _isToastClosing = false;
-                    StateHasChanged();
+                    InvokeAsync(() =>
+                    {
+                        _saveMessage = string.Empty;
+                        _isToastClosing = false;
+                        StateHasChanged();
+                    });
                     clearTimer?.Dispose();
                 }, null, 300, System.Threading.Timeout.Infinite);
             });
@@ -626,9 +629,12 @@
         System.Threading.Timer? clearTimer = null;
         clearTimer = new System.Threading.Timer(_ =>
         {
-            _saveMessage = string.Empty;
-            _isToastClosing = false;
-            StateHasChanged();
+            InvokeAsync(() =>
+            {
+                _saveMessage = string.Empty;
+                _isToastClosing = false;
+                StateHasChanged();
+            });
             clearTimer?.Dispose();
         }, null, 300, System.Threading.Timeout.Infinite);
     }
