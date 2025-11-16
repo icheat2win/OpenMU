@@ -183,7 +183,7 @@ public abstract class EditBase : ComponentBase, IAsyncDisposable
         builder.AddMarkupContent(10, 
             $@"<div class=""py-6 px-4 max-w-7xl mx-auto"">
                 <div class=""mb-8"">
-                    <h1 class=""text-4xl font-bold bg-gradient-to-r from-purple-600 to-violet-600 bg-clip-text text-transparent mb-2"">
+                    <h1 class=""text-4xl font-bold bg-gradient-to-r from-blue-600 to-cyan-500 bg-clip-text text-transparent mb-2"">
                     Edit {CaptionHelper.GetTypeCaption(this.Type!)}
                     </h1>
                     {downloadMarkup}
@@ -323,7 +323,7 @@ public abstract class EditBase : ComponentBase, IAsyncDisposable
             var uri = $"/download/{this.Type.Name}/{this.Type.Name}_{this.Id}.json";
             return $@"<p class=""text-slate-600 dark:text-slate-400 text-sm mb-2"">
                         Download as JSON: 
-                        <a href=""{uri}"" download class=""text-purple-600 dark:text-purple-400 hover:text-purple-700 dark:hover:text-purple-300 font-medium transition-colors duration-200 inline-flex items-center"">
+                        <a href=""{uri}"" download class=""text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 font-medium transition-colors duration-200 inline-flex items-center"">
                             <span class=""oi oi-data-transfer-download mr-1""></span>
                             <span>Download</span>
                         </a>
