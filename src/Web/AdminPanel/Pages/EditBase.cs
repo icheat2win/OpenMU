@@ -216,37 +216,44 @@ public abstract class EditBase : ComponentBase, IAsyncDisposable
                 </div>"
             : string.Empty;
         
-        builder.AddMarkupContent(10, 
-            $@"<div class=""min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-slate-50 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900 py-8 px-4"">
-                <div class=""max-w-7xl mx-auto"">
-                    {pageHeader}
-                    {actionsMarkup}
-                    <div class=""bg-white dark:bg-slate-800 rounded-2xl shadow-2xl border border-slate-200 dark:border-slate-700 overflow-hidden"">
-                        <div class=""bg-gradient-to-r from-slate-800 to-slate-700 dark:from-slate-700 dark:to-slate-600 p-6 border-b border-slate-600"">
-                            <div class=""flex items-center gap-3"">
-                                <span class=""text-2xl"">⚙️</span>
-                                <h2 class=""text-2xl font-bold text-white"">Configuration Settings</h2>
-                            </div>
-                        </div>
-                        <div class=""p-8"">");
+        var sequence = 0;
+        builder.OpenElement(++sequence, "div");
+        builder.AddAttribute(++sequence, "class", "min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-slate-50 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900 py-8 px-4");
         
-        builder.OpenComponent<CascadingValue<IContext>>(11);
-        builder.AddAttribute(12, nameof(CascadingValue<IContext>.Value), this._persistenceContext);
-        builder.AddAttribute(13, nameof(CascadingValue<IContext>.IsFixed), this._isOwningContext);
-        builder.AddAttribute(14, nameof(CascadingValue<IContext>.ChildContent), (RenderFragment)(builder2 =>
-        {
-            var sequence = 14;
-            this.AddFormToRenderTree(builder2, ref sequence);
-        }));
-
-        builder.CloseComponent();
+        builder.OpenElement(++sequence, "div");
+        builder.AddAttribute(++sequence, "class", "max-w-7xl mx-auto");
         
-        // Close all container divs
-        builder.AddMarkupContent(15, @"
-                        </div>
-                    </div>
+        builder.AddMarkupContent(++sequence, pageHeader);
+        builder.AddMarkupContent(++sequence, actionsMarkup);
+        
+        builder.OpenElement(++sequence, "div");
+        builder.AddAttribute(++sequence, "class", "bg-white dark:bg-slate-800 rounded-2xl shadow-2xl border border-slate-200 dark:border-slate-700 overflow-hidden");
+        
+        builder.AddMarkupContent(++sequence, 
+            @"<div class=""bg-gradient-to-r from-slate-800 to-slate-700 dark:from-slate-700 dark:to-slate-600 p-6 border-b border-slate-600"">
+                <div class=""flex items-center gap-3"">
+                    <span class=""text-2xl"">⚙️</span>
+                    <h2 class=""text-2xl font-bold text-white"">Configuration Settings</h2>
                 </div>
             </div>");
+        
+        builder.OpenElement(++sequence, "div");
+        builder.AddAttribute(++sequence, "class", "p-8");
+        
+        builder.OpenComponent<CascadingValue<IContext>>(++sequence);
+        builder.AddAttribute(++sequence, nameof(CascadingValue<IContext>.Value), this._persistenceContext);
+        builder.AddAttribute(++sequence, nameof(CascadingValue<IContext>.IsFixed), this._isOwningContext);
+        builder.AddAttribute(++sequence, nameof(CascadingValue<IContext>.ChildContent), (RenderFragment)(builder2 =>
+        {
+            var formSequence = 0;
+            this.AddFormToRenderTree(builder2, ref formSequence);
+        }));
+        builder.CloseComponent();
+        
+        builder.CloseElement(); // Close p-8 div
+        builder.CloseElement(); // Close card div
+        builder.CloseElement(); // Close mx-auto div
+        builder.CloseElement(); // Close min-h-screen div
     }
 
     /// <inheritdoc />
