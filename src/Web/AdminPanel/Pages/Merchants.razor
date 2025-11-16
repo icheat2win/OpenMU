@@ -6,23 +6,33 @@
 <PageTitle>OpenMU: Merchants</PageTitle>
 <Breadcrumb IsFirstFromRoot="true" Caption="Merchants"/>
 
-<!-- Page Header -->
-<div class="min-h-screen bg-white dark:bg-slate-900 py-6 px-4 max-w-7xl mx-auto">
-    <div class="mb-8">
-        <h1 class="text-4xl font-bold bg-gradient-to-r from-purple-600 to-violet-600 bg-clip-text text-transparent mb-2">
-            Merchants
-        </h1>
-        <p class="text-slate-600 dark:text-slate-400">Manage merchant inventories and items</p>
-    </div>
+<!-- Modern Page Container with Gradient Background -->
+<div class="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-slate-50 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900 py-8 px-4">
+    <div class="max-w-7xl mx-auto">
+        <!-- Page Header -->
+        <div class="mb-8 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+            <div class="flex items-center gap-4">
+                <div class="p-4 bg-gradient-to-br from-purple-500 to-violet-600 rounded-2xl shadow-lg">
+                    <span class="text-4xl">🏪</span>
+                </div>
+                <div>
+                    <h1 class="text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-purple-600 to-violet-600 dark:from-purple-400 dark:to-violet-400 mb-1">
+                        Merchants
+                    </h1>
+                    <p class="text-slate-600 dark:text-slate-400 text-lg">Manage merchant inventories and items</p>
+                </div>
+            </div>
+        </div>
 
     @if (this.ViewModels is null)
     {
-        <!-- Loading State -->
-        <div class="flex items-center justify-center py-16">
-            <div class="flex items-center space-x-3">
-                <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-purple-600"></div>
-                <span class="text-slate-700 dark:text-slate-300 font-medium">Loading merchants...</span>
+        <!-- Modern Loading State -->
+        <div class="flex flex-col items-center justify-center py-20">
+            <div class="relative">
+                <div class="w-20 h-20 border-4 border-purple-200 dark:border-purple-900 rounded-full"></div>
+                <div class="w-20 h-20 border-4 border-purple-600 dark:border-purple-400 border-t-transparent rounded-full animate-spin absolute top-0 left-0"></div>
             </div>
+            <p class="mt-6 text-slate-600 dark:text-slate-400 text-lg font-medium animate-pulse">Loading merchants...</p>
         </div>
         return;
     }
@@ -30,22 +40,74 @@
     @if (this._selectedMerchant is null)
     {
         <!-- Merchant List View -->
-        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-lg overflow-hidden border border-slate-200 dark:border-slate-700">
-            <QuickGrid Items="@this.ViewModels" Pagination="@_merchantPagination" Theme="none">
-                <PropertyColumn Title="Name" Property="@(c => c.Name)" Sortable="true">
-                </PropertyColumn>
+        <div class="bg-white dark:bg-slate-800 rounded-2xl shadow-2xl border border-slate-200 dark:border-slate-700 overflow-hidden">
+            <!-- Table Header -->
+            <div class="bg-gradient-to-r from-slate-800 to-slate-700 dark:from-slate-700 dark:to-slate-600 p-6 border-b border-slate-600">
+                <div class="flex items-center gap-3">
+                    <span class="text-2xl">📋</span>
+                    <h2 class="text-2xl font-bold text-white">Merchant List</h2>
+                </div>
+            </div>
 
-                <TemplateColumn Align="Align.Center">
-                    <button type="button" 
-                            class="px-4 py-2 bg-gradient-to-r from-blue-500 to-blue-600 text-white font-medium rounded-lg hover:from-blue-600 hover:to-blue-700 transition-all duration-200 shadow-sm hover:shadow-md"
-                            @onclick="@(() => this.OnMerchantEditClickAsync(context))">
-                        <span class="oi oi-pencil mr-1"></span> Edit
-                    </button>
-                </TemplateColumn>
-            </QuickGrid>
+            <!-- Table Content -->
+            <div class="overflow-x-auto">
+                <QuickGrid Items="@this.ViewModels" Pagination="@_merchantPagination" Theme="none" Class="w-full">
+                    <TemplateColumn Title="Name" SortBy="@(GridSort<MerchantStorageViewModel>.ByAscending(c => c.Name))" Class="min-w-[300px]">
+                        <HeaderTemplate>
+                            <div class="bg-slate-100 dark:bg-slate-700/50 p-4 border-b-2 border-slate-300 dark:border-slate-600">
+                                <button type="button" 
+                                        class="flex items-center gap-2 text-left w-full text-sm font-bold text-slate-700 dark:text-slate-200 uppercase tracking-wider hover:text-purple-600 dark:hover:text-purple-400 transition-colors" 
+                                        onclick="@(() => context.Grid.SortByColumnAsync(context))">
+                                    <span class="text-lg">🏪</span>
+                                    <span>@context.Title</span>
+                                    <div class="sort-indicator ml-auto" aria-hidden="true"></div>
+                                </button>
+                            </div>
+                        </HeaderTemplate>
+                        <ChildContent>
+                            <div class="px-6 py-4 border-b border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-700/50 transition-colors">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-10 h-10 bg-gradient-to-br from-purple-500 to-violet-500 rounded-lg flex items-center justify-center text-white font-bold text-lg shadow-lg">
+                                        @context.Name.Substring(0, 1).ToUpper()
+                                    </div>
+                                    <div>
+                                        <p class="text-slate-900 dark:text-white font-semibold text-lg">@context.Name</p>
+                                        <p class="text-slate-500 dark:text-slate-400 text-sm">Merchant Inventory</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </ChildContent>
+                    </TemplateColumn>
+
+                    <TemplateColumn Align="Align.Center" Class="min-w-[150px]">
+                        <HeaderTemplate>
+                            <div class="bg-slate-100 dark:bg-slate-700/50 p-4 border-b-2 border-slate-300 dark:border-slate-600">
+                                <div class="flex items-center justify-center gap-2 text-sm font-bold text-slate-700 dark:text-slate-200 uppercase tracking-wider">
+                                    <span class="oi oi-cog"></span>
+                                    <span>Actions</span>
+                                </div>
+                            </div>
+                        </HeaderTemplate>
+                        <ChildContent>
+                            <div class="px-6 py-4 border-b border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-700/50 transition-colors">
+                                <div class="flex items-center justify-center">
+                                    <button type="button" 
+                                            class="inline-flex items-center gap-2 px-5 py-2.5 bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white font-semibold rounded-xl transition-all shadow-lg hover:shadow-xl transform hover:scale-105"
+                                            @onclick="@(() => this.OnMerchantEditClickAsync(context))">
+                                        <span class="oi oi-pencil"></span>
+                                        <span>Edit</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </ChildContent>
+                    </TemplateColumn>
+                </QuickGrid>
+            </div>
         </div>
-        <div class="mt-4">
-            <Paginator State="@_merchantPagination"/>
+        <div class="mt-6 flex justify-center">
+            <div class="bg-white dark:bg-slate-800 rounded-xl shadow-lg border border-slate-200 dark:border-slate-700 p-4">
+                <Paginator State="@_merchantPagination"/>
+            </div>
         </div>
     }
     else
@@ -53,45 +115,60 @@
         <!-- Merchant Edit View -->
         <div class="space-y-6">
             <!-- Back Button and Title -->
-            <div class="flex items-center space-x-4">
+            <div class="flex flex-col md:flex-row md:items-center gap-4">
                 <button type="button" 
-                        class="px-5 py-3 border-2 border-slate-300 dark:border-slate-600 text-slate-700 dark:text-slate-300 font-semibold rounded-lg hover:bg-slate-50 dark:hover:bg-slate-700 transition-all duration-200 flex items-center space-x-2"
+                        class="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-slate-600 to-slate-700 hover:from-slate-700 hover:to-slate-800 text-white font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all transform hover:scale-105"
                         @onclick="this.OnBackButtonClickAsync">
-                    <span class="text-xl">&larr;</span>
+                    <span class="oi oi-arrow-left text-xl"></span>
                     <span>Back to List</span>
                 </button>
-                <h2 class="text-3xl font-bold text-slate-800 dark:text-slate-100">
-                    @this._selectedMerchant.Merchant.Designation
-                </h2>
+                <div class="flex items-center gap-3">
+                    <div class="p-3 bg-gradient-to-br from-purple-500 to-violet-600 rounded-xl shadow-lg">
+                        <span class="text-3xl">🏪</span>
+                    </div>
+                    <h2 class="text-3xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-purple-600 to-violet-600 dark:from-purple-400 dark:to-violet-400">
+                        @this._selectedMerchant.Merchant.Designation
+                    </h2>
+                </div>
             </div>
 
-            <!-- Separator -->
-            <div class="border-t border-slate-200 dark:border-slate-700"></div>
+            <!-- Edit Form Card -->
+            <div class="bg-white dark:bg-slate-800 rounded-2xl shadow-2xl border border-slate-200 dark:border-slate-700 overflow-hidden">
+                <!-- Card Header -->
+                <div class="bg-gradient-to-r from-slate-800 to-slate-700 dark:from-slate-700 dark:to-slate-600 p-6 border-b border-slate-600">
+                    <div class="flex items-center gap-3">
+                        <span class="text-2xl">📦</span>
+                        <h3 class="text-2xl font-bold text-white">Inventory Management</h3>
+                    </div>
+                </div>
 
-            <!-- Edit Form -->
-            <div class="bg-white dark:bg-slate-800 rounded-xl shadow-lg p-6 border border-slate-200 dark:border-slate-700">
-                <CascadingValue TValue="IContext" Value="this._persistenceContext">
-                    <EditForm Model="this._selectedMerchant.Merchant" OnValidSubmit="this.OnSaveButtonClickAsync">
-                        <div class="mb-6">
-                            <ItemStorageField @bind-Value="this._selectedMerchant.Merchant.MerchantStore" HideLabel="true"/>
-                        </div>
+                <!-- Form Content -->
+                <div class="p-8">
+                    <CascadingValue TValue="IContext" Value="this._persistenceContext">
+                        <EditForm Model="this._selectedMerchant.Merchant" OnValidSubmit="this.OnSaveButtonClickAsync">
+                            <div class="mb-6">
+                                <ItemStorageField @bind-Value="this._selectedMerchant.Merchant.MerchantStore" HideLabel="true"/>
+                            </div>
 
-                        <!-- Action Buttons -->
-                        <div class="flex space-x-3 pt-6 border-t border-slate-200 dark:border-slate-700">
-                            <button type="submit" 
-                                    class="px-6 py-3 bg-gradient-to-r from-green-500 to-emerald-600 text-white font-semibold rounded-lg hover:from-green-600 hover:to-emerald-700 transition-all duration-200 shadow-md hover:shadow-lg flex items-center space-x-2">
-                                <span class="oi oi-check"></span>
-                                <span>Save Changes</span>
-                            </button>
-                            <button type="button" 
-                                    class="px-6 py-3 border-2 border-slate-300 dark:border-slate-600 text-slate-700 dark:text-slate-300 font-semibold rounded-lg hover:bg-slate-50 dark:hover:bg-slate-700 transition-all duration-200"
-                                    @onclick="this.OnCancelButtonClickAsync">
-                                <span class="oi oi-x mr-1"></span> Discard Changes
-                            </button>
-                        </div>
-                    </EditForm>
-                </CascadingValue>
+                            <!-- Action Buttons -->
+                            <div class="flex flex-col sm:flex-row gap-3 pt-6 border-t border-slate-200 dark:border-slate-700">
+                                <button type="submit" 
+                                        class="inline-flex items-center justify-center gap-2 px-6 py-3 bg-gradient-to-r from-emerald-500 to-green-500 hover:from-emerald-600 hover:to-green-600 text-white font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all transform hover:scale-105">
+                                    <span class="oi oi-check text-xl"></span>
+                                    <span>Save Changes</span>
+                                </button>
+                                <button type="button" 
+                                        class="inline-flex items-center justify-center gap-2 px-6 py-3 bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all transform hover:scale-105"
+                                        @onclick="this.OnCancelButtonClickAsync">
+                                    <span class="oi oi-x text-xl"></span>
+                                    <span>Discard Changes</span>
+                                </button>
+                            </div>
+                        </EditForm>
+                    </CascadingValue>
+                </div>
             </div>
         </div>
     }
+    </div>
 </div>
