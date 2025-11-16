@@ -586,7 +586,7 @@
     align-items: flex-start;
     margin-bottom: 2rem;
     padding: 1.5rem;
-    background: var(--gradient-header, linear-gradient(135deg, #1e3a8a 0%, #7c3aed 100%));
+    background: var(--gradient-header, linear-gradient(135deg, #1e3a8a 0%, #1e40af 100%));
     border-radius: 16px;
     color: white;
     box-shadow: var(--shadow-lg, 0 4px 16px rgba(0, 0, 0, 0.5));

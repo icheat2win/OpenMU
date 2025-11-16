@@ -261,7 +261,7 @@ html.dark .field-group {
 
 .field-group-header {
     padding: 0.75rem 1rem;
-    background: linear-gradient(135deg, #9333ea 0%, #7c3aed 100%);
+    background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 100%);
     color: #ffffff;
     font-weight: 600;
     font-size: 1rem;
@@ -273,7 +273,7 @@ html.dark .field-group {
 }
 
 .field-group-header:hover {
-    background: linear-gradient(135deg, #7e22ce 0%, #6b21a8 100%);
+    background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);
 }
 
 .field-group-header::after {
@@ -343,8 +343,8 @@ input[type="time"]:focus,
 textarea:focus,
 select:focus {
     outline: none;
-    border-color: #9333ea;
-    box-shadow: 0 0 0 3px rgba(147, 51, 234, 0.1);
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
 }
 
 html.dark input[type="text"],

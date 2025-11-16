@@ -13,11 +13,11 @@
     
     /* Accent Colors */
     --color-accent-cyan: #0891b2;       /* Darker cyan for better contrast */
-    --color-accent-blue: #2563eb;       /* Darker blue - secondary accent */
-    --color-accent-purple: #7c3aed;     /* Purple - tertiary accent */
+    --color-accent-blue: #1e3a8a;       /* Dark blue - primary accent */
+    --color-accent-purple: #7c3aed;     /* Purple - tertiary accent (kept for compatibility) */
     --color-accent-green: #059669;      /* Green - success states */
-    --color-accent-red: #dc2626;        /* Red - error/danger states */
-    --color-accent-yellow: #d97706;     /* Orange/Yellow - warning states */
+    --color-accent-red: #991b1b;        /* Dark red - error/danger states */
+    --color-accent-yellow: #eab308;     /* Yellow - warning/highlight states */
     
     /* Text Colors */
     --color-text-primary: #0f172a;      /* Dark slate - primary text */
@@ -31,10 +31,10 @@
     --color-border-accent: #0891b2;     /* Accent borders */
     
     /* Gradient Definitions */
-    --gradient-header: linear-gradient(135deg, #2563eb 0%, #7c3aed 100%);
+    --gradient-header: linear-gradient(135deg, #1e3a8a 0%, #1e40af 100%);
     --gradient-card: linear-gradient(135deg, #f8fafc, #eff6ff);
-    --gradient-button: linear-gradient(135deg, #0891b2 0%, #2563eb 100%);
-    --gradient-danger: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
+    --gradient-button: linear-gradient(135deg, #1e3a8a 0%, #1e40af 100%);
+    --gradient-danger: linear-gradient(135deg, #991b1b 0%, #b91c1c 100%);
     
     /* Shadow Definitions */
     --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
