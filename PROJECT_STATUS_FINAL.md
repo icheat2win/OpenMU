@@ -2,7 +2,7 @@
 
 **Last Updated:** November 16, 2025  
 **Project Status:** Production Ready ✅  
-**Latest Commit:** 5205614ec  
+**Latest Commit:** 911a98af0  
 **Branch:** master  
 **Server URL:** http://connect.globalmu.org/ (http://192.168.4.71/)  
 **Admin Panel:** http://connect.globalmu.org:8080/  
@@ -12,6 +12,149 @@
 ---
 
 ## 🎯 Latest Updates (November 16, 2025)
+
+### Update 7: Professional Color Theme - Dark Blue, Dark Red, Yellow (Commit: 911a98af0) 🎨
+
+**Status:** ✅ Comprehensive color theme redesign with modern, professional palette
+
+Implemented a complete color scheme transformation across the entire admin panel using a sophisticated dark blue, dark red, and yellow palette for enhanced visual consistency and professional appearance.
+
+**New Color Palette:**
+
+**Primary Colors:**
+- **Dark Blue (#1e40af):** Main brand color used for buttons, links, focus states, headers, and primary UI elements
+- **Dark Red (#991b1b):** Danger/error states, bans, critical warnings, and destructive actions
+- **Yellow (#eab308):** Accents, highlights, warnings, special states, and active indicators
+
+**Color Scale (50-900):**
+```css
+Primary (Dark Blue): 
+  50: #eff6ff → 900: #172554
+Danger (Dark Red):   
+  50: #fef2f2 → 900: #7f1d1d
+Accent (Yellow):     
+  50: #fefce8 → 900: #713f12
+```
+
+**Components Updated:**
+
+**1. Tailwind CSS Foundation**
+- Added custom `@theme` section with primary, danger, and accent color definitions
+- Replaced purple (#7c3aed) with dark blue (#1e40af)
+- Replaced standard red with dark red (#991b1b)
+- Replaced amber with yellow (#eab308)
+- Field group headers: Dark blue gradients (from purple)
+- Form input focus: Dark blue ring and border
+- Checkbox colors: Primary dark blue
+
+**2. Form Input Components**
+- **TextField.razor:**
+  - Focus ring: `focus:ring-primary-500` (dark blue)
+  - Focus border: `focus:border-primary-500`
+  - Consistent with all text input fields across the application
+  
+- **NumberField.razor:**
+  - Applied identical dark blue focus states
+  - Maintains visual consistency with text fields
+  - Clear interaction feedback with primary color
+
+**3. Navigation Menu (NavMenu.razor)**
+- **Header Gradient:** Changed from blue-cyan (`from-blue-600 to-cyan-600`) to dark blue (`from-primary-600 to-primary-700`)
+- **Icon Colors:**
+  - Setup: `text-accent-400` (yellow - system configuration)
+  - Home: `text-primary-400` (dark blue - main navigation)
+  - Servers: `text-primary-400` (dark blue)
+  - Accounts: `text-accent-400` (yellow - user management)
+  - Online Accounts: `text-accent-400` (yellow)
+  - Updates: `text-danger-400` (dark red - critical notifications)
+  - Users: `text-accent-400` (yellow - administrative)
+
+**4. Accounts Page (Accounts.razor)**
+- **Page Header:**
+  - Title icon: `text-primary-500` (dark blue)
+  - Create button: `from-primary-500 to-primary-700` gradient
+  
+- **Stats Cards:**
+  - Total Accounts: `from-primary-500 to-primary-700` (dark blue gradient)
+  - Active Accounts: `from-accent-500 to-accent-700` (yellow gradient)
+  - Banned Accounts: `from-danger-500 to-danger-700` (dark red gradient)
+  - Temp Banned: `from-accent-500 to-accent-700` (yellow gradient)
+  
+- **Interactive Elements:**
+  - Search input focus: `focus:ring-primary-500`
+  - Character count badge: `bg-primary-100 text-primary-700`
+  - Edit button: `from-primary-500 to-primary-700` gradient
+  
+- **Status Badges:**
+  - Normal: `bg-accent-100 text-accent-700` (yellow - active/good)
+  - Banned: `bg-danger-100 text-danger-700` (dark red - critical)
+  - Temporarily Banned: `bg-accent-100 text-accent-700` (yellow - warning)
+  
+- **Loading Spinner:**
+  - Animation color: `border-primary-500` (dark blue)
+
+**Design Philosophy:**
+
+**Visual Hierarchy:**
+1. **Primary (Dark Blue):** Main actions, primary navigation, important buttons
+2. **Danger (Dark Red):** Errors, bans, destructive actions, critical warnings
+3. **Accent (Yellow):** Highlights, warnings, active states, special indicators
+
+**Color Psychology:**
+- **Dark Blue:** Trust, stability, professionalism, authority
+- **Dark Red:** Urgency, danger, importance, critical attention
+- **Yellow:** Energy, optimism, attention, highlights
+
+**Accessibility:**
+- Sufficient contrast ratios for WCAG AA compliance
+- Clear focus indicators with 2px rings
+- Distinct colors for different states (normal/hover/focus/active)
+- Visible borders and backgrounds for all form inputs
+
+**Technical Implementation:**
+
+**Before vs After:**
+```css
+/* Before (Old Purple/Cyan Theme) */
+focus:ring-cyan-500          → focus:ring-primary-500 (dark blue)
+from-blue-600 to-cyan-600    → from-primary-600 to-primary-700
+bg-emerald-500              → bg-accent-500 (yellow)
+text-rose-400               → text-danger-400 (dark red)
+border-purple-500           → border-primary-500
+
+/* After (New Dark Blue/Red/Yellow Theme) */
+Primary: #1e40af (dark blue)
+Danger: #991b1b (dark red)  
+Accent: #eab308 (yellow)
+```
+
+**Build & Deployment:**
+- **Local Build:** Successful (0 errors, 0 warnings, Time: 1:19.48)
+- **Docker Build:** Clean rebuild with `--force-recreate`
+- **Containers:** All running successfully (database, openmu-startup, nginx-80)
+- **Status:** Production deployed at http://connect.globalmu.org:8080/
+
+**Testing Completed:**
+- ✅ All pages load correctly with new color scheme
+- ✅ Form inputs clearly visible with dark blue focus rings
+- ✅ Navigation menu displays proper color-coded icons
+- ✅ Buttons and interactive elements use consistent primary blue
+- ✅ Error/danger states show dark red appropriately
+- ✅ Accent/warning elements display yellow highlights
+- ✅ Dark mode maintains excellent visibility
+- ✅ Hover and focus states provide clear feedback
+
+**Files Modified:**
+1. `src/Web/AdminPanel/Styles/tailwind.css` - Added @theme with custom colors
+2. `src/Web/AdminPanel/Components/Form/TextField.razor` - Primary blue focus
+3. `src/Web/AdminPanel/Components/Form/NumberField.razor` - Primary blue focus
+4. `src/Web/AdminPanel/Shared/NavMenu.razor` - Dark blue header, color-coded icons
+5. `src/Web/AdminPanel/Pages/Accounts.razor` - Complete color scheme update
+
+**Result:**
+The admin panel now features a professional, cohesive color theme with excellent visual hierarchy, clear interaction feedback, and consistent branding throughout. The dark blue primary color provides trust and authority, dark red ensures critical items stand out, and yellow accents add energy and highlight important states. All pages including the GameClientDefinition configuration page now benefit from this sophisticated color scheme.
+
+---
 
 ### Update 6: Standardized Page Headers - Unified Design Language (Commit: 5205614ec) 🎨
 
