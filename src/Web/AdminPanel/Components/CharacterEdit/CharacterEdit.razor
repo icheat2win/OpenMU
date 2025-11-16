@@ -106,7 +106,7 @@
         color: #d1d5db;
     }
     
-    @keyframes slideInRight {
+    @@keyframes slideInRight {
         from {
             transform: translateX(400px);
             opacity: 0;
@@ -121,7 +121,7 @@
         animation: fadeOut 0.3s ease-out forwards;
     }
     
-    @keyframes fadeOut {
+    @@keyframes fadeOut {
         to {
             opacity: 0;
             transform: translateX(400px);
@@ -657,7 +657,6 @@
     private bool _isCharacterOnline = false;
     private bool _isCheckingOnlineStatus = true;
     private string _saveMessage = string.Empty;
-    private string _saveMessageClass = string.Empty;
     private string _toastType = "toast-info";
     private string _toastIcon = "ℹ️";
     private bool _isToastClosing = false;
