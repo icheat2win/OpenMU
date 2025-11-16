@@ -2,59 +2,162 @@
 
 @using Microsoft.AspNetCore.Components.QuickGrid;
 
-@if (this.Type is not null)
-{
-    <!-- Modern Header -->
-    <div class="mb-8">
-        <div class="flex items-center justify-between mb-6">
-            <div class="flex items-center gap-3">
-                <span class="oi oi-layers text-cyan-500 text-4xl"></span>
-                <h1 class="text-4xl font-bold text-slate-900 dark:text-white">@CaptionHelper.GetPluralizedTypeCaption(this.Type)</h1>
-            </div>
-            <button type="button" class="flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-cyan-500 to-blue-500 text-white font-semibold rounded-lg hover:from-cyan-600 hover:to-blue-600 transition-all shadow-lg hover:shadow-xl" @onclick="OnCreateButtonClickAsync">
-                <span class="oi oi-plus"></span>
-                <span>Add New</span>
-            </button>
-        </div>
-    </div>
-    <PageTitle>@CaptionHelper.GetPluralizedTypeCaption(this.Type)</PageTitle>
-    <Breadcrumb Caption=@CaptionHelper.GetPluralizedTypeCaption(this.Type) IsFirstFromRoot="true"></Breadcrumb>
-}
-
-@if (this.ViewModels is null)
-{
-    <span class="spinner-border" role="status" aria-hidden="true"></span>
-    <span class="sr-only">Loading...</span>
-    return;
-}
-
-<div>
-    <QuickGrid Items="@this.ViewModels" Pagination="@_pagination" Theme="none" >
-        <PropertyColumn Property="@(c => c.Name)" Sortable="true">
-            <HeaderTemplate>
-                <button type="button" class="min-w-0 flex flex-grow p-0" onclick="@(() => context.Grid.SortByColumnAsync(context))">
-                    <div class="font-bold text-slate-900 dark:text-white">@context.Title</div>
-                    <div class="sort-indicator" aria-hidden="true"></div>
-                </button>
-                <div class="w-1/2 ml-5">
-                    <input class="w-full px-3 py-2 text-sm font-medium border-2 border-slate-300 dark:border-slate-600 rounded-lg focus:outline-none focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20 dark:bg-slate-800 dark:text-white transition-all" type="search" autofocus @bind="@NameFilter" @bind:event="oninput" placeholder="Search ..."/>
+<div class="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-slate-50 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900 py-8 px-4">
+    <div class="max-w-7xl mx-auto">
+        @if (this.Type is not null)
+        {
+            <PageTitle>@CaptionHelper.GetPluralizedTypeCaption(this.Type)</PageTitle>
+            <Breadcrumb Caption=@CaptionHelper.GetPluralizedTypeCaption(this.Type) IsFirstFromRoot="true"></Breadcrumb>
+            
+            <!-- Modern Header with Gradient -->
+            <div class="mb-8">
+                <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6">
+                    <div class="flex items-center gap-4">
+                        <div class="p-4 bg-gradient-to-br from-blue-500 to-purple-600 rounded-2xl shadow-lg">
+                            <span class="oi oi-layers text-white text-3xl"></span>
+                        </div>
+                        <div>
+                            <h1 class="text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600 dark:from-blue-400 dark:to-purple-400">
+                                @CaptionHelper.GetPluralizedTypeCaption(this.Type)
+                            </h1>
+                            <p class="text-slate-600 dark:text-slate-400 mt-1">Manage and configure game client definitions</p>
+                        </div>
+                    </div>
+                    <button type="button" 
+                            class="flex items-center justify-center gap-2 px-6 py-3 bg-gradient-to-r from-emerald-500 via-green-500 to-teal-500 hover:from-emerald-600 hover:via-green-600 hover:to-teal-600 text-white font-bold rounded-xl transition-all shadow-lg hover:shadow-2xl transform hover:scale-105" 
+                            @onclick="OnCreateButtonClickAsync">
+                        <span class="oi oi-plus text-xl"></span>
+                        <span>Add New Client</span>
+                    </button>
                 </div>
-            </HeaderTemplate>
-        </PropertyColumn>
+            </div>
+        }
 
-        <TemplateColumn Align="Align.Center">
-            @{
-                var targetUrl = $"edit-config/{this.TypeString}/" + context.Id;
+        @if (this.ViewModels is null)
+        {
+            <!-- Modern Loading State -->
+            <div class="flex flex-col items-center justify-center py-20">
+                <div class="relative">
+                    <div class="w-20 h-20 border-4 border-blue-200 dark:border-blue-900 rounded-full"></div>
+                    <div class="w-20 h-20 border-4 border-blue-600 dark:border-blue-400 border-t-transparent rounded-full animate-spin absolute top-0 left-0"></div>
+                </div>
+                <p class="mt-6 text-slate-600 dark:text-slate-400 text-lg font-medium animate-pulse">Loading configurations...</p>
+            </div>
+            return;
+        }
+
+        <!-- Modern Data Table Card -->
+        <div class="bg-white dark:bg-slate-800 rounded-2xl shadow-2xl border border-slate-200 dark:border-slate-700 overflow-hidden">
+            <!-- Table Header -->
+            <div class="bg-gradient-to-r from-slate-800 to-slate-700 dark:from-slate-700 dark:to-slate-600 p-6 border-b border-slate-600">
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center gap-3">
+                        <span class="text-2xl">🎮</span>
+                        <h2 class="text-2xl font-bold text-white">Configuration List</h2>
+                    </div>
+                    <span class="bg-white/20 px-4 py-2 rounded-lg text-white font-semibold backdrop-blur-sm">
+                        @ViewModels.Count() items
+                    </span>
+                </div>
+            </div>
+
+            <!-- Table Content -->
+            <div class="overflow-x-auto">
+                <QuickGrid Items="@this.ViewModels" Pagination="@_pagination" Theme="none" Class="w-full">
+                    <TemplateColumn Title="Name" SortBy="@(GridSort<EditConfigGrid.ViewModel>.ByAscending(c => c.Name))" Class="min-w-[300px]">
+                        <HeaderTemplate>
+                            <div class="bg-slate-100 dark:bg-slate-700/50 p-4 border-b-2 border-slate-300 dark:border-slate-600">
+                                <button type="button" 
+                                        class="flex items-center gap-2 text-left w-full mb-3 text-sm font-bold text-slate-700 dark:text-slate-200 uppercase tracking-wider hover:text-blue-600 dark:hover:text-blue-400 transition-colors" 
+                                        onclick="@(() => context.Grid.SortByColumnAsync(context))">
+                                    <span class="oi oi-tag text-lg"></span>
+                                    <span>@context.Title</span>
+                                    <div class="sort-indicator ml-auto" aria-hidden="true"></div>
+                                </button>
+                                <div class="relative">
+                                    <span class="absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-400 text-lg">🔍</span>
+                                    <input class="w-full pl-10 pr-4 py-2.5 text-sm bg-white dark:bg-slate-800 border-2 border-slate-300 dark:border-slate-600 rounded-xl focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 dark:text-white transition-all placeholder-slate-400" 
+                                           type="search" 
+                                           autofocus 
+                                           @bind="@NameFilter" 
+                                           @bind:event="oninput" 
+                                           placeholder="Search configurations..."/>
+                                </div>
+                            </div>
+                        </HeaderTemplate>
+                        <ChildContent>
+                            <div class="px-6 py-4 border-b border-slate-200 dark:border-slate-700">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-500 rounded-lg flex items-center justify-center text-white font-bold text-lg shadow-lg">
+                                        @context.Name.Substring(0, 1).ToUpper()
+                                    </div>
+                                    <div>
+                                        <p class="text-slate-900 dark:text-white font-semibold text-lg">@context.Name</p>
+                                        <p class="text-slate-500 dark:text-slate-400 text-sm">Game Client Configuration</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </ChildContent>
+                    </TemplateColumn>
+
+                    <TemplateColumn Align="Align.Center" Class="min-w-[250px]">
+                        <HeaderTemplate>
+                            <div class="bg-slate-100 dark:bg-slate-700/50 p-4 border-b-2 border-slate-300 dark:border-slate-600">
+                                <div class="flex items-center justify-center gap-2 text-sm font-bold text-slate-700 dark:text-slate-200 uppercase tracking-wider">
+                                    <span class="oi oi-cog"></span>
+                                    <span>Actions</span>
+                                </div>
+                            </div>
+                        </HeaderTemplate>
+                        <ChildContent>
+                            @{
+                                var targetUrl = $"edit-config/{this.TypeString}/" + context.Id;
+                            }
+                            <div class="px-6 py-4 border-b border-slate-200 dark:border-slate-700">
+                                <div class="flex items-center justify-center gap-3">
+                                    <a href="@(targetUrl)" 
+                                       class="inline-flex items-center gap-2 px-5 py-2.5 bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white font-semibold rounded-xl transition-all shadow-lg hover:shadow-xl transform hover:scale-105">
+                                        <span class="oi oi-pencil"></span>
+                                        <span>Edit</span>
+                                    </a>
+                                    <button type="button" 
+                                            class="inline-flex items-center gap-2 px-5 py-2.5 bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white font-semibold rounded-xl transition-all shadow-lg hover:shadow-xl transform hover:scale-105" 
+                                            @onclick="@(() => this.OnDeleteButtonClickAsync(context))">
+                                        <span class="oi oi-trash"></span>
+                                        <span>Delete</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </ChildContent>
+                    </TemplateColumn>
+                </QuickGrid>
+            </div>
+
+            <!-- Empty State -->
+            @if (!ViewModels.Any())
+            {
+                <div class="p-16 text-center">
+                    <div class="text-6xl mb-4">📦</div>
+                    <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-2">No Configurations Found</h3>
+                    <p class="text-slate-600 dark:text-slate-400 mb-6">Get started by creating your first game client configuration.</p>
+                    <button type="button" 
+                            @onclick="OnCreateButtonClickAsync"
+                            class="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-emerald-500 to-green-500 hover:from-emerald-600 hover:to-green-600 text-white font-bold rounded-xl shadow-lg hover:shadow-xl transition-all">
+                        <span class="oi oi-plus text-xl"></span>
+                        <span>Create First Configuration</span>
+                    </button>
+                </div>
             }
-            <a href="@(targetUrl)" class="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-blue-500 to-blue-600 text-white font-semibold rounded-lg hover:from-blue-600 hover:to-blue-700 transition-all shadow-md hover:shadow-lg">
-                <span class="oi oi-pencil"></span>
-                <span>Edit</span>
-            </a>
-            <button type="button" class="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-red-500 to-red-600 text-white font-semibold rounded-lg hover:from-red-600 hover:to-red-700 transition-all shadow-md hover:shadow-lg ml-2" @onclick="@(() => this.OnDeleteButtonClickAsync(context))">
-                <span class="oi oi-trash"></span>
-                <span>Delete</span>
-            </button>
-        </TemplateColumn>
-    </QuickGrid>
+        </div>
+
+        <!-- Pagination -->
+        @if (ViewModels.Any())
+        {
+            <div class="mt-6 flex justify-center">
+                <div class="bg-white dark:bg-slate-800 rounded-xl shadow-lg border border-slate-200 dark:border-slate-700 p-4">
+                    <Paginator State="@_pagination" />
+                </div>
+            </div>
+        }
+    </div>
 </div>
-<Paginator State="@_pagination" />

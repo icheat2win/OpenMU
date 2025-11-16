@@ -179,33 +179,56 @@ public abstract class EditBase : ComponentBase, IAsyncDisposable
         var downloadMarkup = this.GetDownloadMarkup();
         var editorsMarkup = this.GetEditorsMarkup();
 
-        // Modern Tailwind v4 styled page container with header
+        // Modern Tailwind v4 styled page with gradient background
         var typeName = this.Type?.Name ?? "Configuration";
         var pageHeader = $@"
-            <div class=""mb-8 flex items-center justify-between"">
-                <div>
-                    <h1 class=""text-4xl font-bold text-slate-900 dark:text-white flex items-center gap-3 mb-2"">
-                        <span class=""oi oi-wrench text-cyan-500"" aria-hidden=""true""></span>
-                        {typeName} Configuration
-                    </h1>
-                    <p class=""text-slate-600 dark:text-slate-400 text-lg"">Configure and manage system settings</p>
+            <div class=""mb-8 flex flex-col md:flex-row md:items-center md:justify-between gap-4"">
+                <div class=""flex items-center gap-4"">
+                    <div class=""p-4 bg-gradient-to-br from-blue-500 to-purple-600 rounded-2xl shadow-lg"">
+                        <span class=""oi oi-wrench text-white text-3xl"" aria-hidden=""true""></span>
+                    </div>
+                    <div>
+                        <h1 class=""text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600 dark:from-blue-400 dark:to-purple-400 mb-1"">
+                            {typeName}
+                        </h1>
+                        <p class=""text-slate-600 dark:text-slate-400 text-lg"">Configure and manage system settings</p>
+                    </div>
                 </div>
                 <button 
                     onclick=""window.history.back()"" 
                     title=""Go back""
-                    class=""px-4 py-2 bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-600 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors flex items-center gap-2 text-slate-700 dark:text-slate-300"">
-                    <span class=""oi oi-arrow-left"" aria-hidden=""true""></span>
-                    <span class=""hidden md:inline"">Back</span>
+                    class=""inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-slate-600 to-slate-700 hover:from-slate-700 hover:to-slate-800 text-white font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all transform hover:scale-105"">
+                    <span class=""oi oi-arrow-left text-xl"" aria-hidden=""true""></span>
+                    <span>Back</span>
                 </button>
             </div>";
         
+        var actionsMarkup = downloadMarkup != null || editorsMarkup != null 
+            ? $@"<div class=""mb-8 bg-white dark:bg-slate-800 rounded-xl shadow-lg border border-slate-200 dark:border-slate-700 p-6"">
+                    <div class=""flex items-center gap-2 mb-4"">
+                        <span class=""text-2xl"">⚡</span>
+                        <h2 class=""text-xl font-bold text-slate-900 dark:text-white"">Quick Actions</h2>
+                    </div>
+                    <div class=""space-y-3"">
+                        {downloadMarkup}
+                        {editorsMarkup}
+                    </div>
+                </div>"
+            : string.Empty;
+        
         builder.AddMarkupContent(10, 
-            $@"<div class=""py-6 px-4 max-w-7xl mx-auto"">
-                {pageHeader}
-                <div class=""mb-8"">
-                    {downloadMarkup}
-                    {editorsMarkup}
-                </div>");
+            $@"<div class=""min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-slate-50 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900 py-8 px-4"">
+                <div class=""max-w-7xl mx-auto"">
+                    {pageHeader}
+                    {actionsMarkup}
+                    <div class=""bg-white dark:bg-slate-800 rounded-2xl shadow-2xl border border-slate-200 dark:border-slate-700 overflow-hidden"">
+                        <div class=""bg-gradient-to-r from-slate-800 to-slate-700 dark:from-slate-700 dark:to-slate-600 p-6 border-b border-slate-600"">
+                            <div class=""flex items-center gap-3"">
+                                <span class=""text-2xl"">⚙️</span>
+                                <h2 class=""text-2xl font-bold text-white"">Configuration Settings</h2>
+                            </div>
+                        </div>
+                        <div class=""p-8"">");
         
         builder.OpenComponent<CascadingValue<IContext>>(11);
         builder.AddAttribute(12, nameof(CascadingValue<IContext>.Value), this._persistenceContext);
@@ -218,8 +241,12 @@ public abstract class EditBase : ComponentBase, IAsyncDisposable
 
         builder.CloseComponent();
         
-        // Close container div
-        builder.AddMarkupContent(15, "</div>");
+        // Close all container divs
+        builder.AddMarkupContent(15, @"
+                        </div>
+                    </div>
+                </div>
+            </div>");
     }
 
     /// <inheritdoc />
@@ -340,13 +367,17 @@ public abstract class EditBase : ComponentBase, IAsyncDisposable
         if (this.Type is not null && GenericControllerFeatureProvider.SupportedTypes.Any(t => t.Item1 == this.Type))
         {
             var uri = $"/download/{this.Type.Name}/{this.Type.Name}_{this.Id}.json";
-            return $@"<p class=""text-slate-600 dark:text-slate-400 text-sm mb-2"">
-                        Download as JSON: 
-                        <a href=""{uri}"" download class=""text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 font-medium transition-colors duration-200 inline-flex items-center"">
-                            <span class=""oi oi-data-transfer-download mr-1""></span>
-                            <span>Download</span>
+            return $@"<div class=""flex items-center gap-3 p-4 bg-gradient-to-r from-emerald-50 to-green-50 dark:from-emerald-900/20 dark:to-green-900/20 rounded-lg border border-emerald-200 dark:border-emerald-800"">
+                        <span class=""text-2xl"">💾</span>
+                        <div class=""flex-1"">
+                            <p class=""text-slate-900 dark:text-white font-semibold mb-1"">Download Configuration</p>
+                            <p class=""text-slate-600 dark:text-slate-400 text-sm"">Export this configuration as JSON file</p>
+                        </div>
+                        <a href=""{uri}"" download class=""inline-flex items-center gap-2 px-5 py-2.5 bg-gradient-to-r from-emerald-500 to-green-500 hover:from-emerald-600 hover:to-green-600 text-white font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all transform hover:scale-105"">
+                            <span class=""oi oi-data-transfer-download text-lg""></span>
+                            <span>Download JSON</span>
                         </a>
-                      </p>";
+                      </div>";
         }
 
         return null;
