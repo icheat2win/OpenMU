@@ -2,23 +2,40 @@
 
 @typeparam TItem where TItem : class
 
-<div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
-    <div class="btn-group" role="group" aria-label="Navigation group">
-        <Button disabled="@(this.Page <= 1 || this._isLoading)" class="btn btn-sm btn-primary" @onclick=@this.GetPreviousPageAsync><span class="oi oi-arrow-thick-left" aria-hidden="true" /></Button>
-        <button class="btn btn-sm btn-light" disabled>
+@* Only show pagination if there are multiple pages or we have more entries *@
+@if (this.Page > 1 || this._hasMoreEntries)
+{
+    <div class="flex justify-center items-center gap-3 py-4 mb-6">
+        <!-- Previous Button -->
+        <Button disabled="@(this.Page <= 1 || this._isLoading)" 
+                class="inline-flex items-center gap-2 px-4 py-2 bg-blue-500 hover:bg-blue-600 disabled:bg-slate-300 disabled:cursor-not-allowed dark:bg-blue-600 dark:hover:bg-blue-700 dark:disabled:bg-slate-700 text-white rounded-lg font-medium transition-all duration-200 shadow-md hover:shadow-lg disabled:shadow-none" 
+                @onclick=@this.GetPreviousPageAsync>
+            <span class="oi oi-chevron-left text-sm" aria-hidden="true"></span>
+            <span>Previous</span>
+        </Button>
+        
+        <!-- Page Indicator -->
+        <div class="inline-flex items-center gap-2 px-5 py-2 bg-slate-100 dark:bg-slate-800 border-2 border-slate-300 dark:border-slate-600 rounded-lg min-w-[120px] justify-center">
             @if (this._isLoading)
             {
-                <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-                <span class="sr-only">Loading...</span>
+                <span class="inline-block w-4 h-4 border-2 border-blue-500 border-t-transparent rounded-full animate-spin" role="status" aria-hidden="true"></span>
+                <span class="text-sm font-medium text-slate-600 dark:text-slate-400">Loading...</span>
             }
             else
             {
-                <span>Page @this.Page</span>
+                <span class="text-sm font-bold text-slate-900 dark:text-white">Page @this.Page</span>
             }
-        </button>
-        <Button disabled="@(!this._hasMoreEntries || this._isLoading)" class="btn btn-sm btn-primary" @onclick=@this.GetNextPageAsync><span class="oi oi-arrow-thick-right" aria-hidden="true" /></Button>
+        </div>
+        
+        <!-- Next Button -->
+        <Button disabled="@(!this._hasMoreEntries || this._isLoading)" 
+                class="inline-flex items-center gap-2 px-4 py-2 bg-blue-500 hover:bg-blue-600 disabled:bg-slate-300 disabled:cursor-not-allowed dark:bg-blue-600 dark:hover:bg-blue-700 dark:disabled:bg-slate-700 text-white rounded-lg font-medium transition-all duration-200 shadow-md hover:shadow-lg disabled:shadow-none" 
+                @onclick=@this.GetNextPageAsync>
+            <span>Next</span>
+            <span class="oi oi-chevron-right text-sm" aria-hidden="true"></span>
+        </Button>
     </div>
-</div>
+}
 
 <table>
     <thead>
