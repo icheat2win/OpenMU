@@ -2,7 +2,7 @@
 
 **Last Updated:** November 16, 2025  
 **Project Status:** Production Ready ✅  
-**Latest Commit:** 656d08ca2  
+**Latest Commit:** 21de6dcc6  
 **Branch:** master  
 **Server URL:** http://connect.globalmu.org/ (http://192.168.4.71/)  
 **Admin Panel:** http://connect.globalmu.org:8080/  
@@ -12,6 +12,103 @@
 ---
 
 ## 🎯 Latest Updates (November 16, 2025)
+
+### Update 5: Color Theme Redesign - Dark Blue, Dark Red, Yellow (Commit: 21de6dcc6) 🎨
+
+**Status:** ✅ Professional color scheme with dark blue primary, dark red warnings, yellow highlights
+
+Completely redesigned the admin panel color scheme from purple accents to a professional dark blue, dark red, and yellow palette.
+
+**Color Scheme:**
+- **Primary (Dark Blue):** `#1e3a8a` to `#1e40af` - Headers, navigation, form groups
+- **Error/Warning (Dark Red):** `#991b1b` to `#b91c1c` - Danger states, error messages
+- **Highlight (Yellow):** `#eab308` - Success states, attention elements
+- **Form Focus:** `#3b82f6` with blue shadow effect
+
+**Component Updates:**
+
+1. **Configuration Form Headers:**
+   - Dark blue gradient background (`linear-gradient(135deg, #1e3a8a 0%, #1e40af 100%)`)
+   - Smooth hover transition to lighter blue
+   - Maintains collapsible functionality
+   - Full dark mode compatibility
+
+2. **Form Inputs:**
+   - Blue focus border (`#3b82f6`)
+   - Blue focus shadow with proper opacity
+   - Consistent across all input types
+
+3. **Character Edit Component:**
+   - Updated header gradient from blue-purple to dark blue
+   - Better visual consistency with overall theme
+   - Skills section border updated
+
+4. **Navigation Components:**
+   - Changed account icon from purple to yellow for better visibility
+   - Character classes icon changed to blue
+   - Consistent icon colors across navigation
+
+5. **Theme Variables (light-theme.css):**
+   - `--color-accent-blue`: Changed to dark blue `#1e3a8a`
+   - `--color-accent-red`: Changed to dark red `#991b1b`
+   - `--color-accent-yellow`: Added yellow `#eab308`
+   - `--gradient-header`: Updated to dark blue gradient
+   - `--gradient-danger`: Updated to dark red gradient
+
+6. **Dashboard Styling:**
+   - Dashboard header uses new dark blue gradient
+   - Maintains professional appearance
+   - Consistent with overall color scheme
+
+**Technical Implementation:**
+```css
+/* Form Group Headers - site.css */
+.field-group-header {
+    background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 100%);
+}
+
+.field-group-header:hover {
+    background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);
+}
+
+/* Form Focus States - site.css */
+input:focus, textarea:focus, select:focus {
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+/* Light Theme Variables - light-theme.css */
+--color-accent-blue: #1e3a8a;
+--color-accent-red: #991b1b;
+--color-accent-yellow: #eab308;
+--gradient-header: linear-gradient(135deg, #1e3a8a 0%, #1e40af 100%);
+```
+
+**Files Modified:**
+- `src/Web/AdminPanel/wwwroot/css/site.css` - Form group headers, focus states
+- `src/Web/AdminPanel/wwwroot/css/light-theme.css` - Color variables, gradients
+- `src/Web/AdminPanel/wwwroot/css/dashboard.css` - Dashboard header gradient
+- `src/Web/AdminPanel/Components/CharacterEdit/CharacterEdit.razor` - Character header
+- `src/Web/AdminPanel/Shared/ConfigNavMenu.razor` - Icon colors
+- `src/Web/AdminPanel/Shared/NavMenu.razor` - Icon colors
+
+**User Experience:**
+- More professional and corporate-friendly color scheme
+- Better visual hierarchy with dark blue primary
+- Clear distinction between different UI states
+- Consistent theming across all admin pages
+- Improved accessibility with proper contrast ratios
+- Seamless dark mode integration
+
+**Testing:**
+- ✅ Docker build: 228.8s (successful)
+- ✅ All containers running
+- ✅ Dark mode compatibility verified
+- ✅ Form interactions tested
+- ✅ Navigation components verified
+- ✅ Configuration pages checked
+
+---
 
 ### Update 4: Modernized DataTable Pagination (Commit: 656d08ca2) 🎨
 
