@@ -17,6 +17,7 @@ using MUnique.OpenMU.GameLogic.CastleSiege.Actions;
 using MUnique.OpenMU.GameLogic.CastleSiege.Intelligence;
 using MUnique.OpenMU.GameLogic.CastleSiege.NPC;
 using MUnique.OpenMU.GameLogic.MiniGames;
+using MUnique.OpenMU.GameLogic.NPC;
 using MUnique.OpenMU.GameLogic.PlayerActions.ItemConsumeActions;
 using MUnique.OpenMU.GameLogic.PlugIns;
 using MUnique.OpenMU.GameLogic.Views.CastleSiege;
@@ -1429,6 +1430,53 @@ public class CastleSiegeNpcTests
             Assert.That(CastleSiegeMachineGroupHandlerPlugIn.GroupKey, Is.EqualTo(0xB7));
             Assert.That(new CastleSiegeMachineUseHandlerPlugIn().Key, Is.EqualTo(0x01));
         });
+    }
+
+    /// <summary>
+    /// Verifies that defense management requests are only handled while the Senior's window is opened.
+    /// </summary>
+    [Test]
+    public async ValueTask RepairRequestRequiresOpenedSeniorAsync()
+    {
+        var fixture = await CreateFixtureAsync().ConfigureAwait(false);
+        try
+        {
+            var packet = new byte[MUnique.OpenMU.Network.Packets.ClientToServer.CastleSiegeDefenseRepairRequest.Length];
+            var request = new MUnique.OpenMU.Network.Packets.ClientToServer.CastleSiegeDefenseRepairRequest(packet);
+            request.NpcNumber = (uint)CastleSiegeGate.MonsterNumber;
+            request.NpcIndex = GateInstanceId;
+            var handler = new CastleSiegeDefenseRepairHandlerPlugIn();
+            var resultView = Mock.Get(fixture.Player.ViewPlugIns.GetPlugIn<ICastleSiegeNpcOperationResultPlugIn>()!);
+
+            fixture.Player.OpenedNpc = null;
+            await handler.HandlePacketAsync(fixture.Player, packet).ConfigureAwait(false);
+            resultView.Verify(
+                view => view.ShowRepairResultAsync(
+                    It.IsAny<CastleSiegeNpcOperationResult>(),
+                    It.IsAny<uint>(),
+                    It.IsAny<uint>(),
+                    It.IsAny<int>(),
+                    It.IsAny<int>()),
+                Times.Never);
+
+            fixture.Player.OpenedNpc = new NonPlayerCharacter(
+                null!,
+                new MonsterDefinition { Number = 223, NpcWindow = NpcWindow.CastleSeniorNPC },
+                null!);
+            await handler.HandlePacketAsync(fixture.Player, packet).ConfigureAwait(false);
+            resultView.Verify(
+                view => view.ShowRepairResultAsync(
+                    It.IsAny<CastleSiegeNpcOperationResult>(),
+                    (uint)CastleSiegeGate.MonsterNumber,
+                    GateInstanceId,
+                    It.IsAny<int>(),
+                    It.IsAny<int>()),
+                Times.Once);
+        }
+        finally
+        {
+            await fixture.Context.NpcController.DespawnAllAsync().ConfigureAwait(false);
+        }
     }
 
     /// <summary>
