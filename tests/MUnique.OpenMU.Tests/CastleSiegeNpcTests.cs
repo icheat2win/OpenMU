@@ -723,6 +723,7 @@ public class CastleSiegeNpcTests
             fixture.Context.IsCrownAvailable = true;
             fixture.Context.CrownAccumulatedTime = TimeSpan.FromSeconds(12);
             fixture.Player.IsAlive = true;
+            SetPlayerJoinSide(fixture, CastleSiegeJoinSide.Attack1);
             await fixture.Player.WarpToAsync(new ExitGate
             {
                 Map = fixture.SiegeMap,
@@ -782,6 +783,54 @@ public class CastleSiegeNpcTests
         }
         finally
         {
+            await fixture.GameServerContext.RemovePlayerAsync(fixture.Player).ConfigureAwait(false);
+            await fixture.Context.NpcController.DespawnAllAsync().ConfigureAwait(false);
+        }
+    }
+
+    /// <summary>
+    /// Verifies that defenders can't claim or block the Crown, and that the current Crown user keeps it
+    /// when another attacker steps next to the Crown.
+    /// </summary>
+    [Test]
+    public async ValueTask CrownIgnoresDefendersAndKeepsCurrentUserAsync()
+    {
+        var fixture = await CreateFixtureAsync().ConfigureAwait(false);
+        var defender = await PlayerTestHelper.CreatePlayerAsync(fixture.GameServerContext).ConfigureAwait(false);
+        var otherAttacker = await PlayerTestHelper.CreatePlayerAsync(fixture.GameServerContext).ConfigureAwait(false);
+        try
+        {
+            await fixture.Context.NpcController.PrepareAsync().ConfigureAwait(false);
+            fixture.Context.CurrentState = CastleSiegeState.Start;
+            var crown = fixture.Context.ActiveNpcs
+                .Select(runtime => runtime.SpawnedInstance)
+                .OfType<CastleSiegeCrown>()
+                .Single();
+            using var crownIntelligence = new CastleSiegeCrownIntelligence(fixture.Context)
+            {
+                Npc = crown,
+            };
+
+            await AddSiegePlayerAsync(fixture, defender, CastleSiegeJoinSide.Defense, crown.Position.X, crown.Position.Y).ConfigureAwait(false);
+            await crownIntelligence.TickAsync().ConfigureAwait(false);
+            Assert.That(fixture.Context.CrownUser, Is.Null);
+
+            await AddSiegePlayerAsync(fixture, fixture.Player, CastleSiegeJoinSide.Attack1, crown.Position.X, crown.Position.Y).ConfigureAwait(false);
+            await crownIntelligence.TickAsync().ConfigureAwait(false);
+            Assert.That(fixture.Context.CrownUser, Is.SameAs(fixture.Player));
+
+            await AddSiegePlayerAsync(fixture, otherAttacker, CastleSiegeJoinSide.Attack1, crown.Position.X, crown.Position.Y).ConfigureAwait(false);
+            await crownIntelligence.TickAsync().ConfigureAwait(false);
+            Assert.That(fixture.Context.CrownUser, Is.SameAs(fixture.Player));
+
+            fixture.Player.IsAlive = false;
+            await crownIntelligence.TickAsync().ConfigureAwait(false);
+            Assert.That(fixture.Context.CrownUser, Is.SameAs(otherAttacker));
+        }
+        finally
+        {
+            await fixture.GameServerContext.RemovePlayerAsync(otherAttacker).ConfigureAwait(false);
+            await fixture.GameServerContext.RemovePlayerAsync(defender).ConfigureAwait(false);
             await fixture.GameServerContext.RemovePlayerAsync(fixture.Player).ConfigureAwait(false);
             await fixture.Context.NpcController.DespawnAllAsync().ConfigureAwait(false);
         }
