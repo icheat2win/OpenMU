@@ -5,7 +5,6 @@
 namespace MUnique.OpenMU.GameLogic.CastleSiege.Actions;
 
 using MUnique.OpenMU.GameLogic.PlayerActions;
-using MUnique.OpenMU.GameLogic.Views.Inventory;
 
 /// <summary>
 /// Enters the Castle Siege hunting zone.
@@ -38,7 +37,6 @@ public sealed class CastleSiegeHuntZoneEnterAction
             return false;
         }
 
-        var moneyBeforePayment = player.Money;
         if (!await this._taxProvider.TryPayHuntEntryFeeAsync(player, context).ConfigureAwait(false))
         {
             var fee = await this._taxProvider.GetHuntEntryFeeAsync(player, context).ConfigureAwait(false);
@@ -51,11 +49,6 @@ public sealed class CastleSiegeHuntZoneEnterAction
             }
 
             return false;
-        }
-
-        if (player.Money != moneyBeforePayment)
-        {
-            await player.InvokeViewPlugInAsync<IUpdateMoneyPlugIn>(view => view.UpdateMoneyAsync()).ConfigureAwait(false);
         }
 
         player.OpenedNpc = null;

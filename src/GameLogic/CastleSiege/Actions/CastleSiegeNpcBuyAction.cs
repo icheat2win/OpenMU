@@ -6,7 +6,6 @@ namespace MUnique.OpenMU.GameLogic.CastleSiege.Actions;
 
 using MUnique.OpenMU.GameLogic.CastleSiege.NPC;
 using MUnique.OpenMU.GameLogic.Views.CastleSiege;
-using MUnique.OpenMU.GameLogic.Views.Inventory;
 
 /// <summary>
 /// Re-purchases destroyed Castle Siege gates and Guardian Statues.
@@ -28,11 +27,6 @@ public static class CastleSiegeNpcBuyAction
         uint npcIndex)
     {
         var result = await BuyCoreAsync(player, context, npcNumber, npcIndex).ConfigureAwait(false);
-        if (result == CastleSiegeNpcOperationResult.Success)
-        {
-            await player.InvokeViewPlugInAsync<IUpdateMoneyPlugIn>(view => view.UpdateMoneyAsync()).ConfigureAwait(false);
-        }
-
         await player.InvokeViewPlugInAsync<ICastleSiegeNpcOperationResultPlugIn>(
                 view => view.ShowBuyResultAsync(result, npcNumber, npcIndex))
             .ConfigureAwait(false);
