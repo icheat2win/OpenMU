@@ -673,6 +673,10 @@ public class CastleSiegeNpcTests
                 .BuyAsync(fixture.Player, fixture.Context, (uint)CastleSiegeGate.MonsterNumber, GateInstanceId)
                 .ConfigureAwait(false);
             var respawnedGate = (CastleSiegeGate)runtime.SpawnedInstance!;
+            var lever = fixture.Context.ActiveNpcs
+                .Select(candidate => candidate.SpawnedInstance)
+                .OfType<CastleSiegeLever>()
+                .Single();
             Assert.Multiple(() =>
             {
                 Assert.That(buyResult, Is.EqualTo(CastleSiegeNpcOperationResult.Success));
@@ -682,6 +686,7 @@ public class CastleSiegeNpcTests
                 Assert.That(runtime.PersistedState.LifeLevel, Is.Zero);
                 Assert.That(respawnedGate.Health, Is.EqualTo(1_000));
                 Assert.That(respawnedGate.IsClosed, Is.True);
+                Assert.That(lever.Gate, Is.SameAs(respawnedGate));
             });
         }
         finally
