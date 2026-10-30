@@ -36,3 +36,12 @@ The attacking sides are enemies of each other as well as of the defenders.
 This applies only on the Castle Siege map and only to players with a siege
 side. Killing a player of the own side, or any player outside the battle, is
 still a normal player kill.
+
+## Restarting after a missed cycle end
+
+When the server wasn't running at the end of a cycle (`EndCycle`), it notices
+on the next start: if the selected guilds of a battle are still stored while
+the schedule is already before the guild selection (`Notify`) of the next
+cycle, the old registrations, marks and selected guilds are cleared, as the
+cycle end would have done. A cycle which ended without selecting guilds leaves
+no trace, so its registrations stay.
