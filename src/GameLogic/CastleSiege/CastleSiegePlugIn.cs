@@ -4,6 +4,7 @@
 
 namespace MUnique.OpenMU.GameLogic.CastleSiege;
 
+using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Threading;
@@ -17,11 +18,12 @@ using MUnique.OpenMU.PlugIns;
 /// </summary>
 /// <remarks>
 /// During the battle, the attacks and kills between players of opposing sides are exempted from the player killer penalty.
+/// During the battle, players of the same side can't damage each other.
 /// </remarks>
 [PlugIn]
 [Display(Name = nameof(PlugInResources.CastleSiegePlugIn_Name), Description = nameof(PlugInResources.CastleSiegePlugIn_Description), ResourceType = typeof(PlugInResources))]
 [Guid("B7F62FA9-59E6-49E9-B499-0358A14957CF")]
-public class CastleSiegePlugIn : IPeriodicTaskPlugIn, IObjectAddedToMapPlugIn, IObjectRemovedFromMapPlugIn, IPlayerStateChangedPlugIn, IPlayerSpawnGateSelectionPlugIn, IPlayerKillPenaltyExemptionPlugIn
+public class CastleSiegePlugIn : IPeriodicTaskPlugIn, IObjectAddedToMapPlugIn, IObjectRemovedFromMapPlugIn, IPlayerStateChangedPlugIn, IPlayerSpawnGateSelectionPlugIn, IPlayerKillPenaltyExemptionPlugIn, IPlayerAttackRestrictionPlugIn
 {
     private static readonly TimeSpan EconomySaveInterval = TimeSpan.FromSeconds(30);
     private static readonly TimeSpan NpcSaveInterval = TimeSpan.FromMinutes(2);
@@ -136,6 +138,16 @@ public class CastleSiegePlugIn : IPeriodicTaskPlugIn, IObjectAddedToMapPlugIn, I
         }
 
         return ValueTask.CompletedTask;
+    }
+
+    /// <inheritdoc />
+    public void CheckAttack(Player attacker, Player defender, CancelEventArgs eventArgs)
+    {
+        if (this.GetContext(attacker.GameContext) is { } context
+            && context.AreOnSameSide(attacker, defender))
+        {
+            eventArgs.Cancel = true;
+        }
     }
 
     /// <inheritdoc />

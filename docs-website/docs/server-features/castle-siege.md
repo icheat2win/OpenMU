@@ -36,3 +36,9 @@ The attacking sides are enemies of each other as well as of the defenders.
 This applies only on the Castle Siege map and only to players with a siege
 side. Killing a player of the own side, or any player outside the battle, is
 still a normal player kill.
+
+## Friendly fire during the battle
+
+During the battle, players of the same siege side can't damage each other,
+including with area skills and pets. This applies only on the Castle Siege map
+and only to players with a siege side.
