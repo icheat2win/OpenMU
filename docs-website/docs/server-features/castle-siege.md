@@ -36,3 +36,11 @@ The attacking sides are enemies of each other as well as of the defenders.
 This applies only on the Castle Siege map and only to players with a siege
 side. Killing a player of the own side, or any player outside the battle, is
 still a normal player kill.
+
+## Teleporting over gates
+
+While a castle gate is closed, players can't use the Teleport or Teleport Ally
+skill to cross it. The gate blocks a teleport when the straight line between
+the start and the target passes through its area. An opened or destroyed gate
+doesn't block teleports. The castle walls are ordinary terrain and are not
+covered by this rule.
