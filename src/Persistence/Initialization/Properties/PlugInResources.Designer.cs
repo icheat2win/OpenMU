@@ -443,6 +443,12 @@ namespace MUnique.OpenMU.Persistence.Initialization.Properties {
         /// <summary>Gets the localized FixAncientDiscriminatorsUpdatePlugIn_Description text.</summary>
         public static string FixAncientDiscriminatorsUpdatePlugIn_Description => ResourceManager.GetString("FixAncientDiscriminatorsUpdatePlugIn_Description", resourceCulture)!;
 
+        /// <summary>Gets the localized FixMurenRingOfFireBonusPlugIn_Name text.</summary>
+        public static string FixMurenRingOfFireBonusPlugIn_Name => ResourceManager.GetString("FixMurenRingOfFireBonusPlugIn_Name", resourceCulture)!;
+
+        /// <summary>Gets the localized FixMurenRingOfFireBonusPlugIn_Description text.</summary>
+        public static string FixMurenRingOfFireBonusPlugIn_Description => ResourceManager.GetString("FixMurenRingOfFireBonusPlugIn_Description", resourceCulture)!;
+
         /// <summary>Gets the localized AddSummonerBuffSkillsPlugIn_Name text.</summary>
         public static string AddSummonerBuffSkillsPlugIn_Name => ResourceManager.GetString("AddSummonerBuffSkillsPlugIn_Name", resourceCulture)!;
 
@@ -905,6 +911,12 @@ namespace MUnique.OpenMU.Persistence.Initialization.Properties {
         /// <summary>Gets the localized AddResetFruitsUpdatePlugIn_Description text.</summary>
         public static string AddResetFruitsUpdatePlugIn_Description => ResourceManager.GetString("AddResetFruitsUpdatePlugIn_Description", resourceCulture)!;
 
+        /// <summary>Gets the localized AddSantaVillageInvitationUpdatePlugIn_Name text.</summary>
+        public static string AddSantaVillageInvitationUpdatePlugIn_Name => ResourceManager.GetString("AddSantaVillageInvitationUpdatePlugIn_Name", resourceCulture)!;
+
+        /// <summary>Gets the localized AddSantaVillageInvitationUpdatePlugIn_Description text.</summary>
+        public static string AddSantaVillageInvitationUpdatePlugIn_Description => ResourceManager.GetString("AddSantaVillageInvitationUpdatePlugIn_Description", resourceCulture)!;
+
         /// <summary>Gets the localized AddFreeTicketItemsUpdatePlugIn_Name text.</summary>
         public static string AddFreeTicketItemsUpdatePlugIn_Name => ResourceManager.GetString("AddFreeTicketItemsUpdatePlugIn_Name", resourceCulture)!;
 
@@ -989,18 +1001,6 @@ namespace MUnique.OpenMU.Persistence.Initialization.Properties {
         /// <summary>Gets the localized AddItemPriceDefinitionsPlugIn_Description text.</summary>
         public static string AddItemPriceDefinitionsPlugIn_Description => ResourceManager.GetString("AddItemPriceDefinitionsPlugIn_Description", resourceCulture)!;
 
-        /// <summary>Gets the localized Name1 text.</summary>
-        public static string Name1 => ResourceManager.GetString("Name1", resourceCulture)!;
-
-        /// <summary>Gets the localized Color1 text.</summary>
-        public static string Color1 => ResourceManager.GetString("Color1", resourceCulture)!;
-
-        /// <summary>Gets the localized Bitmap1 text.</summary>
-        public static string Bitmap1 => ResourceManager.GetString("Bitmap1", resourceCulture)!;
-
-        /// <summary>Gets the localized Icon1 text.</summary>
-        public static string Icon1 => ResourceManager.GetString("Icon1", resourceCulture)!;
-
         /// <summary>Gets the localized AddKalimaTicketUpdatePlugIn_Name text.</summary>
         public static string AddKalimaTicketUpdatePlugIn_Name => ResourceManager.GetString("AddKalimaTicketUpdatePlugIn_Name", resourceCulture)!;
 
@@ -1036,6 +1036,12 @@ namespace MUnique.OpenMU.Persistence.Initialization.Properties {
 
         /// <summary>Gets the localized AddCraftingTalismansUpdatePlugIn_Description text.</summary>
         public static string AddCraftingTalismansUpdatePlugIn_Description => ResourceManager.GetString("AddCraftingTalismansUpdatePlugIn_Description", resourceCulture)!;
+
+        /// <summary>Gets the localized AddHitShockSettingsPlugIn_Name text.</summary>
+        public static string AddHitShockSettingsPlugIn_Name => ResourceManager.GetString("AddHitShockSettingsPlugIn_Name", resourceCulture)!;
+
+        /// <summary>Gets the localized AddHitShockSettingsPlugIn_Description text.</summary>
+        public static string AddHitShockSettingsPlugIn_Description => ResourceManager.GetString("AddHitShockSettingsPlugIn_Description", resourceCulture)!;
 
     }
 }
