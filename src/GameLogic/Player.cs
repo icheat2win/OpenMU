@@ -829,6 +829,11 @@ public class Player : AsyncDisposable, IBucketMapObserver, IAttackable, IAttacke
             return hitInfo;
         }
 
+        if (this.Attributes[Stats.IsFrozen] > 0)
+        {
+            await this.MagicEffectList.ShortenEffectsProducingSpecificStatAsync(Stats.IsFrozen, 1).ConfigureAwait(false);
+        }
+
         if (this.Attributes[Stats.IsAsleep] > 0)
         {
             await this.MagicEffectList.ClearAllEffectsProducingSpecificStatAsync(Stats.IsAsleep).ConfigureAwait(false);
@@ -1333,6 +1338,14 @@ public class Player : AsyncDisposable, IBucketMapObserver, IAttackable, IAttacke
     /// <param name="decrement">The decrement.</param>
     public async ValueTask DecreaseItemDurabilityAsync(Item item, double decrement)
     {
+        if (this.Attributes?[Stats.ItemDurabilityProtection] > 0
+            && item.ItemSlot != InventoryConstants.PetSlot
+            && !item.IsTrainablePet())
+        {
+            // E.g. the Talisman of Item Protection keeps the durability of all equipped items, except pets.
+            return;
+        }
+
         var previousFactor = item.GetCurrentDurabilityFactor();
         if (item.DecreaseDurability(decrement))
         {
