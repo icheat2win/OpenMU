@@ -267,6 +267,8 @@
   <data name="FinishElfMasterTreePlugIn_Description" xml:space="preserve"><value>补全弓箭手大师技能树并修正部分技能数值，为部分高级弓弩补充缺失的第 4 支箭。</value></data>
   <data name="ScopeExtraProjectilesPlugIn_Name" xml:space="preserve"><value>按技能限定额外箭矢</value></data>
   <data name="ScopeExtraProjectilesPlugIn_Description" xml:space="preserve"><value>使三连射精通的额外箭矢只对三连射技能生效，而装备特定弓弩仍会增强所有多重射击技能。</value></data>
+  <data name="FixPhantomAndDestroyArmorNamesPlugIn_Name" xml:space="preserve"><value>修正巨石和破灭套装的名称</value></data>
+  <data name="FixPhantomAndDestroyArmorNamesPlugIn_Description" xml:space="preserve"><value>按照客户端数据交换47号（巨石）和48号（破灭）套装的名称，并修正"Destory"的拼写。</value></data>
   <data name="AddItemRegistrationAttributesUpdatePlugIn_Name" xml:space="preserve"><value>添加物品登记属性</value></data>
   <data name="AddItemRegistrationAttributesUpdatePlugIn_Description" xml:space="preserve"><value>添加物品登记功能所需的属性数据。</value></data>
   <data name="FixWingsDmgRatesUpdatePlugInBase_Name" xml:space="preserve"><value>修正翅膀伤害比例</value></data>

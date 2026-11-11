@@ -566,6 +566,12 @@
   <data name="ScopeExtraProjectilesPlugIn_Description" xml:space="preserve">
     <value>Bewirkt, dass das zusätzliche Projektil der Triple-Shot-Meisterschaft nur auf die Fähigkeit Triple Shot wirkt, während das Ausrüsten bestimmter Bögen und Armbrüste weiterhin jede Mehrfachprojektil-Fähigkeit verstärkt.</value>
   </data>
+  <data name="FixPhantomAndDestroyArmorNamesPlugIn_Name" xml:space="preserve">
+    <value>Namen der Phantom- und Zerstörer-Rüstungen korrigieren</value>
+  </data>
+  <data name="FixPhantomAndDestroyArmorNamesPlugIn_Description" xml:space="preserve">
+    <value>Tauscht die Namen der Rüstungssets Nummer 47 (Phantom) und 48 (Zerstörer) wie in den Client-Daten und korrigiert die Schreibweise von „Destory“.</value>
+  </data>
   <data name="ConfigureCastleSiegeLifeStoneUpdatePlugIn_Name" xml:space="preserve">
     <value>Lebensstein von Castle Siege konfigurieren</value>
   </data>

@@ -308,6 +308,8 @@
   <data name="FinishElfMasterTreePlugIn_Description" xml:space="preserve"><value>This update completes the elf master tree and fixes some of its skill values. It also adds the missing extra projectile (4th) on some higher level (cross)bows.</value></data>
   <data name="ScopeExtraProjectilesPlugIn_Name" xml:space="preserve"><value>Scope extra projectiles per skill</value></data>
   <data name="ScopeExtraProjectilesPlugIn_Description" xml:space="preserve"><value>Makes the extra projectile of the triple shot mastery apply to the triple shot skill only, while equipping certain (cross)bows keeps boosting every multi-projectile skill.</value></data>
+  <data name="FixPhantomAndDestroyArmorNamesPlugIn_Name" xml:space="preserve"><value>Fix Phantom and Destroy armor names</value></data>
+  <data name="FixPhantomAndDestroyArmorNamesPlugIn_Description" xml:space="preserve"><value>Swaps the names of the armor sets number 47 (Phantom) and 48 (Destroy), as in the client data, and corrects the spelling of 'Destory'.</value></data>
   <data name="AddItemRegistrationAttributesUpdatePlugIn_Name" xml:space="preserve"><value>Add Item Registration Attributes</value></data>
   <data name="AddItemRegistrationAttributesUpdatePlugIn_Description" xml:space="preserve"><value>This update adds data for the item registration attributes.</value></data>
   <data name="FixWingsDmgRatesUpdatePlugInBase_Name" xml:space="preserve"><value>Fix Wings Damage Rates</value></data>
