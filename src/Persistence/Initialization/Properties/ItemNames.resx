@@ -2346,4 +2346,7 @@
   <data name="LuckyCoin" xml:space="preserve">
     <value>Lucky Coin</value>
   </data>
+  <data name="GladiatorsHonor" xml:space="preserve">
+    <value>Gladiator's Honor</value>
+  </data>
 </root>

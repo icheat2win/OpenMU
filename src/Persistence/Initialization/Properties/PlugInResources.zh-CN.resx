@@ -495,4 +495,10 @@
   <data name="AddLuckyCoinUpdatePlugIn_Description" xml:space="preserve">
     <value>此更新添加幸运币，可在德维亚斯的NPC德尔加多处登记或兑换物品，并打开他的幸运币对话框。</value>
   </data>
+  <data name="AddGladiatorsHonorUpdatePlugIn_Name" xml:space="preserve">
+    <value>添加角斗士的荣耀</value>
+  </data>
+  <data name="AddGladiatorsHonorUpdatePlugIn_Description" xml:space="preserve">
+    <value>此更新添加角斗士的荣耀，在 30 分钟内使囚禁之岛的经验增加 20%。</value>
+  </data>
 </root>

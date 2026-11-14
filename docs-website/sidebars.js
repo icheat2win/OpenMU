@@ -69,6 +69,7 @@ const sidebars = {
         "server-features/discord",
         "server-features/player-shop-currencies",
         "server-features/lucky-coins",
+        "server-features/waiting-items",
       ],
     },
     {

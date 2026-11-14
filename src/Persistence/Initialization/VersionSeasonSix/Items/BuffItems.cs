@@ -68,6 +68,15 @@ internal class BuffItems : InitializerBase
     /// </summary>
     private const byte ItemProtectionTalismanSubType = 78;
 
+    /// The sub type of the effect of the Gladiator's Honor.
+    /// </summary>
+    private const byte GladiatorsHonorSubType = 79;
+
+    /// <summary>
+    /// The experience rate which the Gladiator's Honor adds in Vulcanus, as the game client describes it.
+    /// </summary>
+    private const float GladiatorsHonorExperienceRate = 0.2f;
+
     /// <summary>
     /// The defense which the game client shows for the scroll of defense.
     /// </summary>
@@ -126,6 +135,10 @@ internal class BuffItems : InitializerBase
             // Talismans, which protect from the death penalty and from the durability loss of the equipped items.
             this.CreateItem(13, 81, 1, 1, () => ItemNames.TalismanOfGuardian, MagicEffectNumber.TalismanOfGuardian, DeathPenaltyTalismanSubType, TalismanDuration, false, Boost.Add(Stats.DeathPenaltyProtection, 1f)),
             this.CreateItem(13, 82, 1, 1, () => ItemNames.TalismanOfItemProtection, MagicEffectNumber.TalismanOfItemProtection, ItemProtectionTalismanSubType, TalismanDuration, false, Boost.Add(Stats.ItemDurabilityProtection, 1f)),
+
+            // The Gladiator's Honor, which can only be used in Vulcanus and only increases the experience there.
+            // The game client doesn't define its duration, so it lasts like a seal.
+            this.CreateItem(13, 95, 1, 1, () => ItemNames.GladiatorsHonor, MagicEffectNumber.GladiatorsHonor, GladiatorsHonorSubType, SealDuration, false, Boost.Add(Stats.VulcanusExperienceRate, GladiatorsHonorExperienceRate)),
 
             // Auras, which increase the maximum by the character level.
             this.CreateItem(13, 104, 1, 1, () => ItemNames.MaxAgBoostAura, MagicEffectNumber.MaxAbilityBoostAura, 58, AuraDuration, false, Boost.PerLevel(Stats.MaximumAbility, 1f)),

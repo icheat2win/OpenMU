@@ -5494,5 +5494,12 @@ namespace MUnique.OpenMU.Persistence.Initialization.Properties {
                 return ResourceManager.GetString("LuckyCoin", resourceCulture);
             }
         }
+        
+        /// <summary>Gets GladiatorsHonor from the configuration name resources.</summary>
+        public static string GladiatorsHonor {
+            get {
+                return ResourceManager.GetString("GladiatorsHonor", resourceCulture);
+            }
+        }
     }
 }

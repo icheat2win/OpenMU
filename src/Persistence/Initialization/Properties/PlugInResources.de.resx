@@ -978,4 +978,10 @@
   <data name="AddLuckyCoinUpdatePlugIn_Description" xml:space="preserve">
     <value>Dieses Update fügt die Glücksmünze hinzu, die beim NPC Delgado in Devias registriert oder gegen Gegenstände getauscht wird, und öffnet seinen Glücksmünzen-Dialog.</value>
   </data>
+  <data name="AddGladiatorsHonorUpdatePlugIn_Name" xml:space="preserve">
+    <value>Ehre des Gladiators hinzufügen</value>
+  </data>
+  <data name="AddGladiatorsHonorUpdatePlugIn_Description" xml:space="preserve">
+    <value>Dieses Update fügt die Ehre des Gladiators hinzu, welche die Erfahrung in Vulcanus 30 Minuten lang um 20 % erhöht.</value>
+  </data>
 </root>

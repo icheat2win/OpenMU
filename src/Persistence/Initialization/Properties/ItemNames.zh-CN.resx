@@ -2346,4 +2346,7 @@
   <data name="LuckyCoin" xml:space="preserve">
     <value>幸运币</value>
   </data>
+  <data name="GladiatorsHonor" xml:space="preserve">
+    <value>角斗士的荣耀</value>
+  </data>
 </root>
