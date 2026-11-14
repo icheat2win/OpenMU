@@ -5487,5 +5487,12 @@ namespace MUnique.OpenMU.Persistence.Initialization.Properties {
                 return ResourceManager.GetString("TalismanOfItemProtection", resourceCulture);
             }
         }
+
+        /// <summary>Gets LuckyCoin from the configuration name resources.</summary>
+        public static string LuckyCoin {
+            get {
+                return ResourceManager.GetString("LuckyCoin", resourceCulture);
+            }
+        }
     }
 }

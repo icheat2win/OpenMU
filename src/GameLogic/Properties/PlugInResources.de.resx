@@ -2016,4 +2016,10 @@
   <data name="ShowWarpListAfterEnterWorldPlugIn_Description" xml:space="preserve">
     <value>Teilt dem Client beim Betreten des Spiels mit, welche Warps der Spieler im Warp-Fenster auswählen kann.</value>
   </data>
+  <data name="LuckyCoinFeaturePlugIn_Name" xml:space="preserve">
+    <value>Glücksmünzen-Event</value>
+  </data>
+  <data name="LuckyCoinFeaturePlugIn_Description" xml:space="preserve">
+    <value>Spieler können beim NPC Delgado Glücksmünzen registrieren oder 10, 20 oder 30 davon gegen einen Gegenstand tauschen. Die Belohnungen des Tauschs werden hier konfiguriert.</value>
+  </data>
 </root>

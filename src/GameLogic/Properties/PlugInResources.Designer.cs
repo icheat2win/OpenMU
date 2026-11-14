@@ -7710,5 +7710,23 @@ namespace MUnique.OpenMU.GameLogic.Properties {
                 return ResourceManager.GetString("WorldChatChatCommandPlugIn_Name", resourceCulture);
             }
         }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Lucky coin event.
+        /// </summary>
+        public static string LuckyCoinFeaturePlugIn_Name {
+            get {
+                return ResourceManager.GetString("LuckyCoinFeaturePlugIn_Name", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Players can register lucky coins at the NPC Delgado, or exchange 10, 20 or 30 of them for an item. The rewards of the exchange are configured here..
+        /// </summary>
+        public static string LuckyCoinFeaturePlugIn_Description {
+            get {
+                return ResourceManager.GetString("LuckyCoinFeaturePlugIn_Description", resourceCulture);
+            }
+        }
     }
 }
