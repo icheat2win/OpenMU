@@ -2061,4 +2061,10 @@
   <data name="ShowWarpListAfterEnterWorldPlugIn_Description" xml:space="preserve">
     <value>Tells the client which warps the player can select in the warp window, when the player enters the game.</value>
   </data>
+  <data name="TalismanOfMobilityConsumeHandlerPlugIn_Name" xml:space="preserve">
+    <value>Talisman of Mobility Consume Handler</value>
+  </data>
+  <data name="TalismanOfMobilityConsumeHandlerPlugIn_Description" xml:space="preserve">
+    <value>Plugin which handles the Talisman of Mobility. The first usage saves the place of the character, the second one warps it back to the saved place.</value>
+  </data>
 </root>

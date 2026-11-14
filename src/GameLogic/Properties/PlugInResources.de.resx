@@ -2016,4 +2016,10 @@
   <data name="ShowWarpListAfterEnterWorldPlugIn_Description" xml:space="preserve">
     <value>Teilt dem Client beim Betreten des Spiels mit, welche Warps der Spieler im Warp-Fenster auswählen kann.</value>
   </data>
+  <data name="TalismanOfMobilityConsumeHandlerPlugIn_Name" xml:space="preserve">
+    <value>Verbrauch des Talismans der Mobilität</value>
+  </data>
+  <data name="TalismanOfMobilityConsumeHandlerPlugIn_Description" xml:space="preserve">
+    <value>Plugin, das den Talisman der Mobilität verarbeitet. Die erste Benutzung speichert den Ort des Charakters, die zweite versetzt ihn an den gespeicherten Ort zurück.</value>
+  </data>
 </root>
