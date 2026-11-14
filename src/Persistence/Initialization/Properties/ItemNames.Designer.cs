@@ -1778,10 +1778,10 @@ namespace MUnique.OpenMU.Persistence.Initialization.Properties {
             }
         }
 
-        /// <summary>Gets DestoryArmor from the configuration name resources.</summary>
-        public static string DestoryArmor {
+        /// <summary>Gets DestroyArmor from the configuration name resources.</summary>
+        public static string DestroyArmor {
             get {
-                return ResourceManager.GetString("DestoryArmor", resourceCulture);
+                return ResourceManager.GetString("DestroyArmor", resourceCulture);
             }
         }
 
@@ -2177,10 +2177,10 @@ namespace MUnique.OpenMU.Persistence.Initialization.Properties {
             }
         }
 
-        /// <summary>Gets DestoryPants from the configuration name resources.</summary>
-        public static string DestoryPants {
+        /// <summary>Gets DestroyPants from the configuration name resources.</summary>
+        public static string DestroyPants {
             get {
-                return ResourceManager.GetString("DestoryPants", resourceCulture);
+                return ResourceManager.GetString("DestroyPants", resourceCulture);
             }
         }
 
@@ -2947,10 +2947,10 @@ namespace MUnique.OpenMU.Persistence.Initialization.Properties {
             }
         }
 
-        /// <summary>Gets DestoryBoots from the configuration name resources.</summary>
-        public static string DestoryBoots {
+        /// <summary>Gets DestroyBoots from the configuration name resources.</summary>
+        public static string DestroyBoots {
             get {
-                return ResourceManager.GetString("DestoryBoots", resourceCulture);
+                return ResourceManager.GetString("DestroyBoots", resourceCulture);
             }
         }
 
@@ -5471,6 +5471,41 @@ namespace MUnique.OpenMU.Persistence.Initialization.Properties {
         public static string InvitationToSantaVillage {
             get {
                 return ResourceManager.GetString("InvitationToSantaVillage", resourceCulture);
+            }
+        }
+
+        /// <summary>Gets TalismanOfGuardian from the configuration name resources.</summary>
+        public static string TalismanOfGuardian {
+            get {
+                return ResourceManager.GetString("TalismanOfGuardian", resourceCulture);
+            }
+        }
+
+        /// <summary>Gets TalismanOfItemProtection from the configuration name resources.</summary>
+        public static string TalismanOfItemProtection {
+            get {
+                return ResourceManager.GetString("TalismanOfItemProtection", resourceCulture);
+            }
+        }
+
+        /// <summary>Gets TalismanOfResurrection from the configuration name resources.</summary>
+        public static string TalismanOfResurrection {
+            get {
+                return ResourceManager.GetString("TalismanOfResurrection", resourceCulture);
+            }
+        }
+        
+        /// <summary>Gets LuckyCoin from the configuration name resources.</summary>
+        public static string LuckyCoin {
+            get {
+                return ResourceManager.GetString("LuckyCoin", resourceCulture);
+            }
+        }
+        
+        /// <summary>Gets GladiatorsHonor from the configuration name resources.</summary>
+        public static string GladiatorsHonor {
+            get {
+                return ResourceManager.GetString("GladiatorsHonor", resourceCulture);
             }
         }
     }
