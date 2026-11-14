@@ -2343,4 +2343,7 @@
   <data name="TalismanOfItemProtection" xml:space="preserve">
     <value>物品保护护身符</value>
   </data>
+  <data name="TalismanOfResurrection" xml:space="preserve">
+    <value>复活护身符</value>
+  </data>
 </root>

@@ -7710,5 +7710,17 @@ namespace MUnique.OpenMU.GameLogic.Properties {
                 return ResourceManager.GetString("WorldChatChatCommandPlugIn_Name", resourceCulture);
             }
         }
+
+        /// <summary>Gets the localized TalismanOfResurrectionSpawnGatePlugIn_Name text.</summary>
+        public static string TalismanOfResurrectionSpawnGatePlugIn_Name => ResourceManager.GetString("TalismanOfResurrectionSpawnGatePlugIn_Name", resourceCulture)!;
+
+        /// <summary>Gets the localized TalismanOfResurrectionSpawnGatePlugIn_Description text.</summary>
+        public static string TalismanOfResurrectionSpawnGatePlugIn_Description => ResourceManager.GetString("TalismanOfResurrectionSpawnGatePlugIn_Description", resourceCulture)!;
+
+        /// <summary>Gets the localized TalismanOfResurrectionSpawnGatePlugInConfiguration_ItemGroup_Caption text.</summary>
+        public static string TalismanOfResurrectionSpawnGatePlugInConfiguration_ItemGroup_Caption => ResourceManager.GetString("TalismanOfResurrectionSpawnGatePlugInConfiguration_ItemGroup_Caption", resourceCulture)!;
+
+        /// <summary>Gets the localized TalismanOfResurrectionSpawnGatePlugInConfiguration_ItemNumber_Caption text.</summary>
+        public static string TalismanOfResurrectionSpawnGatePlugInConfiguration_ItemNumber_Caption => ResourceManager.GetString("TalismanOfResurrectionSpawnGatePlugInConfiguration_ItemNumber_Caption", resourceCulture)!;
     }
 }
