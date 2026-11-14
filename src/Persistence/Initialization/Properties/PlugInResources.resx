@@ -458,4 +458,12 @@
   <data name="FixCrywolfGateTerrainUpdatePlugIn_Description" xml:space="preserve"><value>Makes the south entry of the gate to Crywolf Fortress in Valley of Loren walkable, which players use outside of Castle Siege. The north entry and all other tiles are kept.</value></data>
   <data name="AddTalismanOfResurrectionUpdatePlugIn_Name" xml:space="preserve"><value>Add the Talisman of Resurrection</value></data>
   <data name="AddTalismanOfResurrectionUpdatePlugIn_Description" xml:space="preserve"><value>This update adds the Talisman of Resurrection, which respawns a dead player at the place of its death. The packages of the in-game shop which contain it are put on sale.</value></data>
+  <data name="AddLuckyCoinUpdatePlugIn_Name" xml:space="preserve"><value>Add the lucky coin</value></data>
+  <data name="AddLuckyCoinUpdatePlugIn_Description" xml:space="preserve"><value>This update adds the lucky coin, which is registered or exchanged for items at the NPC Delgado in Devias, and opens his lucky coin dialog.</value></data>
+  <data name="AddGladiatorsHonorUpdatePlugIn_Name" xml:space="preserve">
+    <value>Add the Gladiator's Honor</value>
+  </data>
+  <data name="AddGladiatorsHonorUpdatePlugIn_Description" xml:space="preserve">
+    <value>This update adds the Gladiator's Honor, which increases the experience in Vulcanus by 20 % for 30 minutes.</value>
+  </data>
 </root>

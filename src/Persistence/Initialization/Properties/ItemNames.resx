@@ -2346,4 +2346,10 @@
   <data name="TalismanOfResurrection" xml:space="preserve">
     <value>Talisman of Resurrection</value>
   </data>
+  <data name="LuckyCoin" xml:space="preserve">
+    <value>Lucky Coin</value>
+  </data>
+  <data name="GladiatorsHonor" xml:space="preserve">
+    <value>Gladiator's Honor</value>
+  </data>
 </root>
