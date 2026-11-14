@@ -6820,6 +6820,24 @@ namespace MUnique.OpenMU.GameServer.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Sends the warp list of the server to the open source client, which shows it in its warp window instead of the warp list of its data files..
+        /// </summary>
+        public static string ShowWarpListExtendedPlugIn_Description {
+            get {
+                return ResourceManager.GetString("ShowWarpListExtendedPlugIn_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Show warp list (extended).
+        /// </summary>
+        public static string ShowWarpListExtendedPlugIn_Name {
+            get {
+                return ResourceManager.GetString("ShowWarpListExtendedPlugIn_Name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The extended implementation of the IShowShopItemListPlugIn which is forwarding everything to the game client with specific data packets..
         /// </summary>
         public static string ShowShopItemListExtendedPlugIn_Description {
@@ -8017,5 +8035,17 @@ namespace MUnique.OpenMU.GameServer.Properties {
 
         /// <summary>Gets the localized PingHandlerPlugIn_Description text.</summary>
         public static string PingHandlerPlugIn_Description => ResourceManager.GetString("PingHandlerPlugIn_Description", resourceCulture)!;
+
+        /// <summary>Gets the localized InventoryItemEquipRequestHandlerPlugIn_Name text.</summary>
+        public static string InventoryItemEquipRequestHandlerPlugIn_Name => ResourceManager.GetString("InventoryItemEquipRequestHandlerPlugIn_Name", resourceCulture)!;
+
+        /// <summary>Gets the localized InventoryItemEquipRequestHandlerPlugIn_Description text.</summary>
+        public static string InventoryItemEquipRequestHandlerPlugIn_Description => ResourceManager.GetString("InventoryItemEquipRequestHandlerPlugIn_Description", resourceCulture)!;
+
+        /// <summary>Gets the localized InventoryItemUseChangedPlugIn_Name text.</summary>
+        public static string InventoryItemUseChangedPlugIn_Name => ResourceManager.GetString("InventoryItemUseChangedPlugIn_Name", resourceCulture)!;
+
+        /// <summary>Gets the localized InventoryItemUseChangedPlugIn_Description text.</summary>
+        public static string InventoryItemUseChangedPlugIn_Description => ResourceManager.GetString("InventoryItemUseChangedPlugIn_Description", resourceCulture)!;
     }
 }
