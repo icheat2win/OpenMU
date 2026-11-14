@@ -2016,4 +2016,10 @@
   <data name="ShowWarpListAfterEnterWorldPlugIn_Description" xml:space="preserve">
     <value>Teilt dem Client beim Betreten des Spiels mit, welche Warps der Spieler im Warp-Fenster auswählen kann.</value>
   </data>
+  <data name="InventoryItemUseFeaturePlugIn_Name" xml:space="preserve">
+    <value>Im Inventar benutzte Gegenstände</value>
+  </data>
+  <data name="InventoryItemUseFeaturePlugIn_Description" xml:space="preserve">
+    <value>Gegenstände wie die Figuren und Talismane werden im Inventar benutzt. Solange so ein Gegenstand benutzt wird, gelten seine Boni.</value>
+  </data>
 </root>

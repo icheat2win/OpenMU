@@ -2061,4 +2061,10 @@
   <data name="ShowWarpListAfterEnterWorldPlugIn_Description" xml:space="preserve">
     <value>Tells the client which warps the player can select in the warp window, when the player enters the game.</value>
   </data>
+  <data name="InventoryItemUseFeaturePlugIn_Name" xml:space="preserve">
+    <value>Items used inside the inventory</value>
+  </data>
+  <data name="InventoryItemUseFeaturePlugIn_Description" xml:space="preserve">
+    <value>Items like the figurines and charms are used inside the inventory. While such an item is in use, its power-ups apply.</value>
+  </data>
 </root>

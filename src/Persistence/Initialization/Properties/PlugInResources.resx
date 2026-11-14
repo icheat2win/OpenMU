@@ -456,4 +456,6 @@
   <data name="AddProtectionTalismansUpdatePlugIn_Description" xml:space="preserve"><value>This update adds the Talisman of Guardian, which protects from the death penalty, and the Talisman of Item Protection, which keeps the durability of the equipped items.</value></data>
   <data name="FixCrywolfGateTerrainUpdatePlugIn_Name" xml:space="preserve"><value>Fix the Crywolf entrance in Valley of Loren</value></data>
   <data name="FixCrywolfGateTerrainUpdatePlugIn_Description" xml:space="preserve"><value>Makes the south entry of the gate to Crywolf Fortress in Valley of Loren walkable, which players use outside of Castle Siege. The north entry and all other tiles are kept.</value></data>
+  <data name="AddFigurinesAndCharmsUpdatePlugIn_Name" xml:space="preserve"><value>Add the figurines and charms</value></data>
+  <data name="AddFigurinesAndCharmsUpdatePlugIn_Description" xml:space="preserve"><value>This update adds the Hawk and Goat Figurines and the (Golden) Oak and Maple Charms, which give their bonuses while they're used inside the inventory.</value></data>
 </root>

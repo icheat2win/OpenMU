@@ -1174,4 +1174,7 @@ Extensões de inventário: {18}</value>
   <data name="WarpOnlyForGameMasters" xml:space="preserve">
     <value>Este warp está disponível apenas para game masters.</value>
   </data>
+  <data name="SameItemAlreadyInUse" xml:space="preserve">
+    <value>O mesmo item já está em uso. Pare de usá-lo primeiro e tente novamente.</value>
+  </data>
 </root>
