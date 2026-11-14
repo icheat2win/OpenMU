@@ -972,6 +972,12 @@
   <data name="FixCrywolfGateTerrainUpdatePlugIn_Description" xml:space="preserve">
     <value>Macht den südlichen Zugang zum Tor der Festung Crywolf im Tal von Loren begehbar, den Spieler außerhalb der Burgbelagerung benutzen. Der nördliche Zugang und alle anderen Felder bleiben unverändert.</value>
   </data>
+  <data name="AddLuckyCoinUpdatePlugIn_Name" xml:space="preserve">
+    <value>Glücksmünze hinzufügen</value>
+  </data>
+  <data name="AddLuckyCoinUpdatePlugIn_Description" xml:space="preserve">
+    <value>Dieses Update fügt die Glücksmünze hinzu, die beim NPC Delgado in Devias registriert oder gegen Gegenstände getauscht wird, und öffnet seinen Glücksmünzen-Dialog.</value>
+  </data>
   <data name="AddGladiatorsHonorUpdatePlugIn_Name" xml:space="preserve">
     <value>Ehre des Gladiators hinzufügen</value>
   </data>

@@ -7802,6 +7802,14 @@ namespace MUnique.OpenMU.GameLogic.Properties {
         }
 
         /// <summary>
+        ///   Looks up a localized string similar to Lucky coin event.
+        /// </summary>
+        public static string LuckyCoinFeaturePlugIn_Name {
+            get {
+                return ResourceManager.GetString("LuckyCoinFeaturePlugIn_Name", resourceCulture);
+            }
+        }
+
         ///   Looks up a localized string similar to Gladiator's Honor consume handler.
         /// </summary>
         public static string GladiatorsHonorConsumeHandlerPlugIn_Name {
@@ -7811,6 +7819,14 @@ namespace MUnique.OpenMU.GameLogic.Properties {
         }
 
         /// <summary>
+        ///   Looks up a localized string similar to Players can register lucky coins at the NPC Delgado, or exchange 10, 20 or 30 of them for an item. The rewards of the exchange are configured here..
+        /// </summary>
+        public static string LuckyCoinFeaturePlugIn_Description {
+            get {
+                return ResourceManager.GetString("LuckyCoinFeaturePlugIn_Description", resourceCulture);
+            }
+        }
+        
         ///   Looks up a localized string similar to Applies the effect of the Gladiator's Honor, which can only be used in Vulcanus..
         /// </summary>
         public static string GladiatorsHonorConsumeHandlerPlugIn_Description {

@@ -2061,6 +2061,12 @@
   <data name="ShowWarpListAfterEnterWorldPlugIn_Description" xml:space="preserve">
     <value>Tells the client which warps the player can select in the warp window, when the player enters the game.</value>
   </data>
+  <data name="LuckyCoinFeaturePlugIn_Name" xml:space="preserve">
+    <value>Lucky coin event</value>
+  </data>
+  <data name="LuckyCoinFeaturePlugIn_Description" xml:space="preserve">
+    <value>Players can register lucky coins at the NPC Delgado, or exchange 10, 20 or 30 of them for an item. The rewards of the exchange are configured here.</value>
+  </data>
   <data name="GladiatorsHonorConsumeHandlerPlugIn_Name" xml:space="preserve">
     <value>Gladiator's Honor consume handler</value>
   </data>
