@@ -2948,6 +2948,15 @@ namespace MUnique.OpenMU.GameLogic.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to This warp is only available to game masters..
+        /// </summary>
+        public static string WarpOnlyForGameMasters {
+            get {
+                return ResourceManager.GetString("WarpOnlyForGameMasters", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to [World] {0}: {1}.
         /// </summary>
         public static string WorldChatMessage {
@@ -3187,6 +3196,24 @@ namespace MUnique.OpenMU.GameLogic.Properties {
         public static string ItemBoxRequiresLevel {
             get {
                 return ResourceManager.GetString("ItemBoxRequiresLevel", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to The place has been saved. Use the talisman again to return to it..
+        /// </summary>
+        public static string MobilityTalismanPlaceSaved {
+            get {
+                return ResourceManager.GetString("MobilityTalismanPlaceSaved", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to No place has been saved with a Talisman of Mobility..
+        /// </summary>
+        public static string MobilityTalismanNoPlaceSaved {
+            get {
+                return ResourceManager.GetString("MobilityTalismanNoPlaceSaved", resourceCulture);
             }
         }
     }
