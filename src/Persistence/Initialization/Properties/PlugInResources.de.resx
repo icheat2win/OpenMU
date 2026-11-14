@@ -972,4 +972,10 @@
   <data name="FixCrywolfGateTerrainUpdatePlugIn_Description" xml:space="preserve">
     <value>Macht den südlichen Zugang zum Tor der Festung Crywolf im Tal von Loren begehbar, den Spieler außerhalb der Burgbelagerung benutzen. Der nördliche Zugang und alle anderen Felder bleiben unverändert.</value>
   </data>
+  <data name="AddGladiatorsHonorUpdatePlugIn_Name" xml:space="preserve">
+    <value>Ehre des Gladiators hinzufügen</value>
+  </data>
+  <data name="AddGladiatorsHonorUpdatePlugIn_Description" xml:space="preserve">
+    <value>Dieses Update fügt die Ehre des Gladiators hinzu, welche die Erfahrung in Vulcanus 30 Minuten lang um 20 % erhöht.</value>
+  </data>
 </root>

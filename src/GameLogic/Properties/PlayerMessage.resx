@@ -1174,4 +1174,7 @@ Inventory Extensions: {18}</value>
   <data name="WarpOnlyForGameMasters" xml:space="preserve">
     <value>This warp is only available to game masters.</value>
   </data>
+  <data name="ItemCantBeUsedOnThisMap" xml:space="preserve">
+    <value>This item can't be used on this map.</value>
+  </data>
 </root>

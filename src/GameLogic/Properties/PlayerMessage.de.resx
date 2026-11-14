@@ -1021,4 +1021,7 @@ Inventarerweiterungen: {18}</value>
   <data name="WarpOnlyForGameMasters" xml:space="preserve">
     <value>Dieser Warp ist nur für Game Master verfügbar.</value>
   </data>
+  <data name="ItemCantBeUsedOnThisMap" xml:space="preserve">
+    <value>Dieser Gegenstand kann auf dieser Karte nicht benutzt werden.</value>
+  </data>
 </root>
