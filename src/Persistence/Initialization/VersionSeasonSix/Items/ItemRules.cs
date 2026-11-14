@@ -206,6 +206,7 @@ public class ItemRules : InitializerBase
         Rule(13, 82, Blocked.Trade, Blocked.Drop, Blocked.SellToNpc, Blocked.PersonalStore, Blocked.Repair), // Talisman of Item Protection
         Rule(13, 93, Blocked.Trade, Blocked.Drop, Blocked.Store, Blocked.SellToNpc, Blocked.PersonalStore, Blocked.Repair), // Master Seal of Ascension
         Rule(13, 94, Blocked.Trade, Blocked.Drop, Blocked.Store, Blocked.SellToNpc, Blocked.PersonalStore, Blocked.Repair), // Master Seal of Wealth
+        Rule(13, 95, Blocked.Trade, Blocked.Drop, Blocked.SellToNpc, Blocked.PersonalStore, Blocked.Repair), // Gladiator's Honor
         Rule(13, 104, Blocked.Trade, Blocked.Drop, Blocked.SellToNpc, Blocked.PersonalStore, Blocked.Repair), // Max AG Boost Aura
         Rule(13, 105, Blocked.Trade, Blocked.Drop, Blocked.SellToNpc, Blocked.PersonalStore, Blocked.Repair), // Max SD Boost Aura
         Rule(13, 106, Blocked.Trade, Blocked.Drop, Blocked.SellToNpc, Blocked.PersonalStore, Blocked.Repair), // Pet Unicorn

@@ -1174,6 +1174,9 @@ Extensões de inventário: {18}</value>
   <data name="WarpOnlyForGameMasters" xml:space="preserve">
     <value>Este warp está disponível apenas para game masters.</value>
   </data>
+  <data name="ItemCantBeUsedOnThisMap" xml:space="preserve">
+    <value>Este item não pode ser usado neste mapa.</value>
+  </data>
   <data name="ItemsWaitForSpace" xml:space="preserve">
     <value>{0} item(ns) aguardam espaço no seu inventário. Eles serão colocados nele assim que couberem:</value>
   </data>

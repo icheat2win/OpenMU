@@ -1174,6 +1174,9 @@ Inventory Extensions: {18}</value>
   <data name="WarpOnlyForGameMasters" xml:space="preserve">
     <value>This warp is only available to game masters.</value>
   </data>
+  <data name="ItemCantBeUsedOnThisMap" xml:space="preserve">
+    <value>This item can't be used on this map.</value>
+  </data>
   <data name="ItemsWaitForSpace" xml:space="preserve">
     <value>{0} item(s) wait for space in your inventory. They are put into it as soon as they fit:</value>
   </data>
