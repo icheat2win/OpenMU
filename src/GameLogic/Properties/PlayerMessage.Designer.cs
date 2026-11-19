@@ -3270,5 +3270,14 @@ namespace MUnique.OpenMU.GameLogic.Properties {
                 return ResourceManager.GetString("ItemCantBeUsedOnThisMap", resourceCulture);
             }
         }
+
+        /// <summary>
+        ///   Looks up a localized string similar to An item of the same kind is already in use. Stop using it first, and then try again..
+        /// </summary>
+        public static string SameItemAlreadyInUse {
+            get {
+                return ResourceManager.GetString("SameItemAlreadyInUse", resourceCulture);
+            }
+        }
     }
 }
