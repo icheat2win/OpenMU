@@ -5764,6 +5764,12 @@
   <data name="WarpInfo_Gate_Description" xml:space="preserve">
     <value></value>
   </data>
+  <data name="WarpInfo_Requirements_Caption" xml:space="preserve">
+    <value>传送要求</value>
+  </data>
+  <data name="WarpInfo_Requirements_Description" xml:space="preserve">
+    <value>角色除等级要求和目标地图要求外还需要满足的属性。开源客户端会获知最低大师等级和最低转生次数，并将角色尚不能使用的传送显示为不可用。</value>
+  </data>
   <data name="Account_IsBot_Caption" xml:space="preserve">
     <value>机器人账号</value>
   </data>
@@ -6504,5 +6510,41 @@
   </data>
   <data name="WaitingItemReason_NoSpaceWhenLoaded_Description" xml:space="preserve">
     <value>加载存放位置时物品找不到空间，例如其定义的尺寸变大了。</value>
+  </data>
+  <data name="GameConfiguration_WeightedValueTables_Caption" xml:space="preserve">
+    <value>加权数值表</value>
+  </data>
+  <data name="ItemDefinition_SocketCountTable_Caption" xml:space="preserve">
+    <value>镶嵌孔数量表</value>
+  </data>
+  <data name="DropItemGroup_SocketCountTable_Caption" xml:space="preserve">
+    <value>镶嵌孔数量表</value>
+  </data>
+  <data name="WeightedValueTable_TypeCaption" xml:space="preserve">
+    <value>加权数值表</value>
+  </data>
+  <data name="WeightedValueTable_TypeCaptionPlural" xml:space="preserve">
+    <value>加权数值表</value>
+  </data>
+  <data name="WeightedValueTable_Name_Caption" xml:space="preserve">
+    <value>名称</value>
+  </data>
+  <data name="WeightedValueTable_Description_Caption" xml:space="preserve">
+    <value>描述</value>
+  </data>
+  <data name="WeightedValueTable_Values_Caption" xml:space="preserve">
+    <value>数值</value>
+  </data>
+  <data name="WeightedValue_TypeCaption" xml:space="preserve">
+    <value>加权数值</value>
+  </data>
+  <data name="WeightedValue_TypeCaptionPlural" xml:space="preserve">
+    <value>加权数值</value>
+  </data>
+  <data name="WeightedValue_Value_Caption" xml:space="preserve">
+    <value>数值</value>
+  </data>
+  <data name="WeightedValue_Weight_Caption" xml:space="preserve">
+    <value>权重</value>
   </data>
 </root>

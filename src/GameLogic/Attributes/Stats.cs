@@ -159,6 +159,22 @@ public class Stats
     public static AttributeDefinition RegisteredRenas { get; } = new(new Guid("45B1C2A3-3E4F-5A6B-7C8D-9E0F1A2B3C4D"), "Registered Renas", "Progress towards next item registration reward");
 
     /// <summary>
+    /// Gets the attribute definition of the map number of the place which a character saved with the Talisman of Mobility.
+    /// It's 1 more than the map number, so that 0 means that no place is saved.
+    /// </summary>
+    public static AttributeDefinition MobilityTalismanMap { get; } = new(new Guid("1F8D393B-EB1B-4777-A231-B97DAFB8072A"), "Talisman of Mobility Map", "The map number of the place which was saved with the Talisman of Mobility, plus 1. 0 means that no place is saved.");
+
+    /// <summary>
+    /// Gets the attribute definition of the x coordinate of the place which a character saved with the Talisman of Mobility.
+    /// </summary>
+    public static AttributeDefinition MobilityTalismanX { get; } = new(new Guid("B0A203B6-1BD2-4AFD-8916-CCD2AAC47097"), "Talisman of Mobility X", "The x coordinate of the place which was saved with the Talisman of Mobility.");
+
+    /// <summary>
+    /// Gets the attribute definition of the y coordinate of the place which a character saved with the Talisman of Mobility.
+    /// </summary>
+    public static AttributeDefinition MobilityTalismanY { get; } = new(new Guid("2CA2ED75-3BC4-47A1-A183-032A005D9CF6"), "Talisman of Mobility Y", "The y coordinate of the place which was saved with the Talisman of Mobility.");
+
+    /// <summary>
     /// Gets the total registered renas / items attribute definition.
     /// </summary>
     public static AttributeDefinition TotalRegisteredRenas { get; } = new(new Guid("56C2D3B4-4F5A-6B7C-8D9E-0F1A2B3C4D5E"), "Total Registered Renas", "Total registered items (all-time counter)");
@@ -1101,37 +1117,37 @@ public class Stats
     public static AttributeDefinition IsBleeding { get; } = new(new Guid("BD5C685D-C360-4CC5-A43E-46644AD61F09"), "Is bleeding", "The player is damaged every second for a while.");
 
     /// <summary>
-    /// Gets the ice resistance attribute definition. Value range from 0 to 1.
+    /// Gets the ice resistance attribute definition. Whole numbers from 0 to 255, where 255 means immunity.
     /// </summary>
     public static AttributeDefinition IceResistance { get; } = new(new Guid("47235C36-41BB-44B4-8823-6FC415709F59"), "Ice Resistance", string.Empty);
 
     /// <summary>
-    /// Gets the fire resistance attribute definition. Value range from 0 to 1.
+    /// Gets the fire resistance attribute definition. Whole numbers from 0 to 255, where 255 means immunity.
     /// </summary>
     public static AttributeDefinition FireResistance { get; } = new(new Guid("9AE4D80D-5706-48B9-AD11-EAC4FE088A81"), "Fire Resistance", string.Empty);
 
     /// <summary>
-    /// Gets the water resistance attribute definition. Value range from 0 to 1.
+    /// Gets the water resistance attribute definition. Whole numbers from 0 to 255, where 255 means immunity.
     /// </summary>
     public static AttributeDefinition WaterResistance { get; } = new(new Guid("3AF88672-D8DB-44E1-937A-7E6484134C39"), "Water Resistance", string.Empty);
 
     /// <summary>
-    /// Gets the earth resistance attribute definition. Value range from 0 to 1.
+    /// Gets the earth resistance attribute definition. Whole numbers from 0 to 255, where 255 means immunity.
     /// </summary>
     public static AttributeDefinition EarthResistance { get; } = new(new Guid("4470890F-00CE-44A6-BADB-203684B6014D"), "Earth Resistance", string.Empty);
 
     /// <summary>
-    /// Gets the wind resistance attribute definition. Value range from 0 to 1.
+    /// Gets the wind resistance attribute definition. Whole numbers from 0 to 255, where 255 means immunity.
     /// </summary>
     public static AttributeDefinition WindResistance { get; } = new(new Guid("03A29C46-7B7E-424D-8325-8390692570C3"), "Wind Resistance", string.Empty);
 
     /// <summary>
-    /// Gets the poison resistance attribute definition. Value range from 0 to 1.
+    /// Gets the poison resistance attribute definition. Whole numbers from 0 to 255, where 255 means immunity.
     /// </summary>
     public static AttributeDefinition PoisonResistance { get; } = new(new Guid("3D50D0B7-63A2-4DA9-8855-12173EAE6B39"), "Poison Resistance", string.Empty);
 
     /// <summary>
-    /// Gets the lightning resistance attribute definition. Value range from 0 to 1.
+    /// Gets the lightning resistance attribute definition. Whole numbers from 0 to 255, where 255 means immunity.
     /// </summary>
     public static AttributeDefinition LightningResistance { get; } = new(new Guid("3E339393-2D17-452E-81D9-3987947A407F"), "Lightning Resistance", string.Empty);
 

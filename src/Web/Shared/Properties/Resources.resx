@@ -295,7 +295,7 @@
     <value>Auto (system)</value>
   </data>
   <data name="MapEditorShortcutPan" xml:space="preserve">
-    <value>Click on empty space and drag to pan the map</value>
+    <value>Middle click and drag to pan the map</value>
   </data>
   <data name="MapEditorShortcutDrag" xml:space="preserve">
     <value>CTRL + Click on object to drag it</value>
@@ -667,5 +667,14 @@ Level: {2} - {3}</value>
   </data>
   <data name="ZoomOut" xml:space="preserve">
     <value>Zoom out</value>
+  </data>
+  <data name="ItemEdit_IsTimeLimited" xml:space="preserve">
+    <value>Time-limited</value>
+  </data>
+  <data name="ItemEdit_ExpiresAt" xml:space="preserve">
+    <value>Expires at (UTC)</value>
+  </data>
+  <data name="ItemEdit_CannotBeTimeLimited" xml:space="preserve">
+    <value>This item can't be time-limited: only an item which is worn, isn't consumed, and can be dropped or sold to an NPC once it expired.</value>
   </data>
 </root>

@@ -4,8 +4,11 @@
 
 namespace MUnique.OpenMU.Persistence.Initialization.VersionSeasonSix.Items;
 
+using MUnique.OpenMU.AttributeSystem;
+using MUnique.OpenMU.DataModel.Attributes;
 using MUnique.OpenMU.DataModel.Configuration;
 using MUnique.OpenMU.DataModel.Configuration.Items;
+using MUnique.OpenMU.GameLogic.Attributes;
 using MUnique.OpenMU.Interfaces;
 using MUnique.OpenMU.Persistence.Initialization.Properties;
 
@@ -37,7 +40,30 @@ internal class CashShopItems : InitializerBase
         this.CreateItem(14, 163, LocalizedString.FromResource(() => ItemNames.VaultExpansionCertificate));
         this.CreateItem(14, 169, LocalizedString.FromResource(() => ItemNames.RageFighterCharacterCard));
         this.CreateResetFruits();
+        this.CreateFigurinesAndCharms();
         this.CreateTalismanOfResurrection();
+        this.CreateTalismanOfMobility();
+    }
+
+    /// <summary>
+    /// Creates the Talisman of Mobility, if it doesn't exist yet. Like in the client, it has a durability of 2:
+    /// the first usage saves the place of the character, the second one warps it back,
+    /// see <see cref="GameLogic.PlayerActions.ItemConsumeActions.TalismanOfMobilityConsumeHandlerPlugIn"/>.
+    /// It gets the rules of the <see cref="ItemRules"/> which block trading and selling it, and the attributes
+    /// in which a character keeps the saved place are added, so that every update which creates it is complete.
+    /// </summary>
+    /// <returns>The created item, or <c>null</c>, if it already existed.</returns>
+    internal ItemDefinition? CreateTalismanOfMobility()
+    {
+        this.AddMobilityTalismanAttributes();
+        var talisman = this.CreateItem(13, 70, LocalizedString.FromResource(() => ItemNames.TalismanOfMobility));
+        if (talisman is not null)
+        {
+            talisman.Durability = CashShopInitializer.TalismanOfMobilityDurability;
+            ItemRules.Apply([talisman]);
+        }
+
+        return talisman;
     }
 
     /// <summary>
@@ -74,6 +100,58 @@ internal class CashShopItems : InitializerBase
             .ToList();
         fruits.ForEach(fruit => fruit.Durability = CashShopInitializer.ResetFruitDurability);
         return fruits;
+    }
+
+    /// <summary>
+    /// Creates the figurines and charms, which don't exist yet. They're used inside the inventory
+    /// with a right click, see <see cref="GameLogic.PlayerActions.Items.UseInventoryItemAction"/>.
+    /// Their durability is 1, so that they're not stackable; the game logic sets the durability of an item
+    /// to 255 when it's added to the inventory, which tells the client that it's not in use.
+    /// Their bonuses are the ones which the client shows. The worn horseshoe (13/134) increases the item drop rate, for which there's no attribute yet.
+    /// </summary>
+    /// <returns>The created items.</returns>
+    internal IReadOnlyList<ItemDefinition> CreateFigurinesAndCharms()
+    {
+        const byte group = 13;
+        var items = new List<ItemDefinition>();
+        void Create(short number, LocalizedString name, byte height, params (AttributeDefinition Attribute, float Value)[] bonuses)
+        {
+            if (this.CreateItem(group, number, name) is not { } item)
+            {
+                return;
+            }
+
+            item.Height = height;
+            item.Durability = 1;
+            foreach (var (attribute, value) in bonuses)
+            {
+                item.BasePowerUpAttributes.Add(this.CreateItemBasePowerUpDefinition(attribute, value, AggregateType.AddRaw));
+            }
+
+            items.Add(item);
+        }
+
+        Create(128, LocalizedString.FromResource(() => ItemNames.HawkFigurine), 1, (Stats.CriticalDamageChance, 0.1f));
+        Create(129, LocalizedString.FromResource(() => ItemNames.GoatFigurine), 1, (Stats.ExcellentDamageChance, 0.1f));
+        Create(130, LocalizedString.FromResource(() => ItemNames.OakCharm), 1, (Stats.MaximumHealth, 50));
+        Create(131, LocalizedString.FromResource(() => ItemNames.MapleCharm), 1, (Stats.MaximumMana, 50));
+        Create(132, LocalizedString.FromResource(() => ItemNames.GoldenOakCharm), 2, (Stats.MaximumHealth, 100), (Stats.MaximumShield, 500));
+        Create(133, LocalizedString.FromResource(() => ItemNames.GoldenMapleCharm), 2, (Stats.MaximumMana, 150), (Stats.MaximumAbility, 50));
+        return items;
+    }
+
+    /// <summary>
+    /// Adds the attributes in which a character keeps the place which it saved with the Talisman of Mobility.
+    /// </summary>
+    private void AddMobilityTalismanAttributes()
+    {
+        foreach (var attribute in new[] { Stats.MobilityTalismanMap, Stats.MobilityTalismanX, Stats.MobilityTalismanY })
+        {
+            if (this.GameConfiguration.Attributes.All(a => a.Id != attribute.Id))
+            {
+                this.GameConfiguration.Attributes.Add(this.Context.CreateNew<AttributeDefinition>(attribute.Id, attribute.Designation, attribute.Description));
+            }
+        }
     }
 
     private ItemDefinition? CreateItem(byte group, short number, LocalizedString name)
