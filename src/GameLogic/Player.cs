@@ -769,6 +769,11 @@ public class Player : AsyncDisposable, IBucketMapObserver, IAttackable, IAttacke
         else
         {
             this._selectedCharacter = character;
+            if (this._account is { } enteredAccount)
+            {
+                enteredAccount.LastSeenDate = DateTime.UtcNow;
+            }
+
             await this.OnPlayerEnteredWorldAsync().ConfigureAwait(false);
             await this.PlayerEnteredWorld.SafeInvokeAsync(this).ConfigureAwait(false);
 
@@ -905,21 +910,20 @@ public class Player : AsyncDisposable, IBucketMapObserver, IAttackable, IAttacke
     }
 
     /// <inheritdoc/>
-    public ValueTask ReflectDamageAsync(IAttacker reflector, uint damage)
-    {
-        return this.HitAsync(this.GetHitInfo(damage, DamageAttributes.Reflected, reflector), reflector, null);
-    }
-
-    /// <inheritdoc/>
     public ValueTask ApplyPoisonDamageAsync(IAttacker initialAttacker, uint damage)
     {
+        if (initialAttacker is Player)
+        {
+            return this.HitAsync(new HitInfo(0, damage, DamageAttributes.Poison), initialAttacker, null);
+        }
+
         return this.HitAsync(new HitInfo(damage, 0, DamageAttributes.Poison), initialAttacker, null);
     }
 
     /// <inheritdoc/>
-    public ValueTask ApplyBleedingDamageAsync(IAttacker initialAttacker, uint damage)
+    public ValueTask ApplyDamageAsync(IAttacker attacker, uint damage, DamageAttributes damageAttributes = DamageAttributes.Undefined)
     {
-        return this.HitAsync(this.GetHitInfo(damage, DamageAttributes.Undefined, initialAttacker), initialAttacker, null);
+        return this.HitAsync(this.GetHitInfo(damage, damageAttributes, attacker), attacker, null);
     }
 
     /// <summary>
@@ -1419,6 +1423,11 @@ public class Player : AsyncDisposable, IBucketMapObserver, IAttackable, IAttacke
 
         await this.MagicEffectList.ClearAllEffectsAsync().ConfigureAwait(false);
 
+        if (this._account is { } leavingAccount)
+        {
+            leavingAccount.LastSeenDate = DateTime.UtcNow;
+        }
+
         try
         {
             await this.SaveProgressAsync().ConfigureAwait(false);
@@ -1856,9 +1865,10 @@ public class Player : AsyncDisposable, IBucketMapObserver, IAttackable, IAttacke
             await this.OnDeathAsync(attacker).ConfigureAwait(false);
         }
 
-        if (hitInfo.Attributes.HasFlag(DamageAttributes.Poison))
+        if (hitInfo.Attributes.HasFlag(DamageAttributes.Poison)
+            || hitInfo.Attributes.HasFlag(DamageAttributes.Bleed))
         {
-            // Poison Damage does not reflect to the attacker.
+            // Neither Poison nor Bleed damage reflect to the attacker.
             return;
         }
 

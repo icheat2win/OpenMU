@@ -677,6 +677,203 @@ public readonly struct MagicEffectStatus
 
 
 /// <summary>
+/// Is sent by the server when: A magic effect was added to the own player, or its time or values changed (a recast or a shortened duration).
+/// Causes reaction on client side: The user interface shows the effect as icon at the top of the interface, with the time left and the values of the effect. The first fields are the same as of MagicEffectStatus, so a client which only knows that one reads it as such.
+/// </summary>
+public readonly struct MagicEffectStatusExtended
+{
+    /// <summary>
+    /// Defines how a value changes its attribute (the aggregate type of the attribute system). When the effect has several kinds for one attribute, they are combined into one value: AddRaw if the effect adds a value before the factors or has a maximum, else AddFinal. Its factors are then part of the value and only count for its own values, e.g. a factor with only a finally added value gives that value.
+    /// </summary>
+    public enum ValueKind
+    {
+        /// <summary>
+        /// The value is added to the attribute, before the factors apply.
+        /// </summary>
+            AddRaw = 0,
+
+        /// <summary>
+        /// The value is a factor of the attribute, e.g. 1.1 for +10 %. Only when the effect has nothing but factors for this attribute.
+        /// </summary>
+            Multiplicate = 1,
+
+        /// <summary>
+        /// The value is added to the attribute, after the factors apply.
+        /// </summary>
+            AddFinal = 2,
+
+        /// <summary>
+        /// Only the highest value of this kind counts for the attribute (e.g. jewelry element resistance).
+        /// </summary>
+            Maximum = 3,
+    }
+
+    private readonly Memory<byte> _data;
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="MagicEffectStatusExtended"/> struct.
+    /// </summary>
+    /// <param name="data">The underlying data.</param>
+    public MagicEffectStatusExtended(Memory<byte> data)
+        : this(data, true)
+    {
+    }
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="MagicEffectStatusExtended"/> struct.
+    /// </summary>
+    /// <param name="data">The underlying data.</param>
+    /// <param name="initialize">If set to <c>true</c>, the header data is automatically initialized and written to the underlying span.</param>
+    private MagicEffectStatusExtended(Memory<byte> data, bool initialize)
+    {
+        this._data = data;
+        if (initialize)
+        {
+            var header = this.Header;
+            header.Type = HeaderType;
+            header.Code = Code;
+            header.Length = (byte)data.Length;
+        }
+    }
+
+    /// <summary>
+    /// Gets the header type of this data packet.
+    /// </summary>
+    public static byte HeaderType => 0xC1;
+
+    /// <summary>
+    /// Gets the operation code of this data packet.
+    /// </summary>
+    public static byte Code => 0x07;
+
+    /// <summary>
+    /// Gets the header of this packet.
+    /// </summary>
+    public C1Header Header => new (this._data);
+
+    /// <summary>
+    /// Gets or sets the is active.
+    /// </summary>
+    public bool IsActive
+    {
+        get => this._data.Span[3..].GetBoolean();
+        set => this._data.Span[3..].SetBoolean(value);
+    }
+
+    /// <summary>
+    /// Gets or sets the player id.
+    /// </summary>
+    public ushort PlayerId
+    {
+        get => ReadUInt16BigEndian(this._data.Span[4..]);
+        set => WriteUInt16BigEndian(this._data.Span[4..], value);
+    }
+
+    /// <summary>
+    /// Gets or sets the effect id.
+    /// </summary>
+    public byte EffectId
+    {
+        get => this._data.Span[6];
+        set => this._data.Span[6] = value;
+    }
+
+    /// <summary>
+    /// Gets or sets the seconds until the effect ends, rounded up; 0 if the effect's definition doesn't send its duration (SendDuration), so the client shows no time.
+    /// </summary>
+    public uint RemainingSeconds
+    {
+        get => ReadUInt32LittleEndian(this._data.Span[7..]);
+        set => WriteUInt32LittleEndian(this._data.Span[7..], value);
+    }
+
+    /// <summary>
+    /// Gets or sets the value count.
+    /// </summary>
+    public byte ValueCount
+    {
+        get => this._data.Span[11];
+        set => this._data.Span[11] = value;
+    }
+
+    /// <summary>
+    /// Gets the <see cref="EffectValue"/> of the specified index.
+    /// </summary>
+        public EffectValue this[int index] => new (this._data.Slice(12 + index * EffectValue.Length));
+
+    /// <summary>
+    /// Performs an implicit conversion from a Memory of bytes to a <see cref="MagicEffectStatusExtended"/>.
+    /// </summary>
+    /// <param name="packet">The packet as span.</param>
+    /// <returns>The packet as struct.</returns>
+    public static implicit operator MagicEffectStatusExtended(Memory<byte> packet) => new (packet, false);
+
+    /// <summary>
+    /// Performs an implicit conversion from <see cref="MagicEffectStatusExtended"/> to a Memory of bytes.
+    /// </summary>
+    /// <param name="packet">The packet as struct.</param>
+    /// <returns>The packet as byte span.</returns>
+    public static implicit operator Memory<byte>(MagicEffectStatusExtended packet) => packet._data; 
+
+    /// <summary>
+    /// Calculates the size of the packet for the specified count of <see cref="EffectValue"/>.
+    /// </summary>
+    /// <param name="valuesCount">The count of <see cref="EffectValue"/> from which the size will be calculated.</param>
+        
+    public static int GetRequiredSize(int valuesCount) => valuesCount * EffectValue.Length + 12;
+
+
+/// <summary>
+/// The finished value of a magic effect for one attribute..
+/// </summary>
+public readonly struct EffectValue
+{
+    private readonly Memory<byte> _data;
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="EffectValue"/> struct.
+    /// </summary>
+    /// <param name="data">The underlying data.</param>
+    public EffectValue(Memory<byte> data)
+    {
+        this._data = data;
+    }
+
+    /// <summary>
+    /// Gets the initial length of this data packet. When the size is dynamic, this value may be bigger than actually needed.
+    /// </summary>
+    public static int Length => 21;
+
+    /// <summary>
+    /// Gets or sets the id of the attribute which the value applies to (the Id of its AttributeDefinition), as the 16 bytes of the Guid in the order of its text form (big endian).
+    /// </summary>
+    public Span<byte> AttributeId
+    {
+        get => this._data.Slice(0, 16).Span;
+    }
+
+    /// <summary>
+    /// Gets or sets the kind.
+    /// </summary>
+    public MagicEffectStatusExtended.ValueKind Kind
+    {
+        get => (MagicEffectStatusExtended.ValueKind)this._data.Span[16];
+        set => this._data.Span[16] = (byte)value;
+    }
+
+    /// <summary>
+    /// Gets or sets the value.
+    /// </summary>
+    public float Value
+    {
+        get => ReadSingleLittleEndian(this._data.Span[17..]);
+        set => WriteSingleLittleEndian(this._data.Span[17..], value);
+    }
+}
+}
+
+
+/// <summary>
 /// Is sent by the server when: The weather on the current map has been changed or the player entered the map.
 /// Causes reaction on client side: The game client updates the weather effects.
 /// </summary>
@@ -31875,11 +32072,37 @@ public readonly struct QuestProgressExtended
 
 
 /// <summary>
-/// Is sent by the server when: The server acknowledges the completion of a quest.
-/// Causes reaction on client side: The client shows the success and possibly requests for the next available quests.
+/// Is sent by the server when: The server acknowledges the completion of a quest, or refuses it because the rewards don't fit.
+/// Causes reaction on client side: When the quest was completed, the client shows the success and possibly requests for the next available quests. When it was refused, the client shows a message and disables the button to complete the quest.
 /// </summary>
 public readonly struct QuestCompletionResponse
 {
+    /// <summary>
+    /// Defines the result of a quest completion request.
+    /// </summary>
+    public enum QuestCompletionResult
+    {
+        /// <summary>
+        /// The quest wasn't completed.
+        /// </summary>
+            NotCompleted = 0,
+
+        /// <summary>
+        /// The quest was completed.
+        /// </summary>
+            Completed = 1,
+
+        /// <summary>
+        /// The quest wasn't completed, because the money of the rewards would exceed the money limit of the inventory.
+        /// </summary>
+            ZenLimitReached = 2,
+
+        /// <summary>
+        /// The quest wasn't completed, because the item rewards don't fit into the inventory.
+        /// </summary>
+            InventoryFull = 3,
+    }
+
     private readonly Memory<byte> _data;
 
     /// <summary>
@@ -31954,12 +32177,12 @@ public readonly struct QuestCompletionResponse
     }
 
     /// <summary>
-    /// Gets or sets the is quest completed.
+    /// Gets or sets the result.
     /// </summary>
-    public bool IsQuestCompleted
+    public QuestCompletionResponse.QuestCompletionResult Result
     {
-        get => this._data.Span[8..].GetBoolean();
-        set => this._data.Span[8..].SetBoolean(value);
+        get => (QuestCompletionResult)this._data.Span[8];
+        set => this._data.Span[8] = (byte)value;
     }
 
     /// <summary>
@@ -35364,6 +35587,149 @@ public readonly struct WarpListEntry
     {
         get => this._data.Span.ExtractString(12, 32, System.Text.Encoding.UTF8);
         set => this._data.Slice(12, 32).Span.WriteString(value, System.Text.Encoding.UTF8);
+    }
+}
+}
+
+
+/// <summary>
+/// Is sent by the server when: Right after the WarpListExtended, when the client is the open source client and at least one warp of the list requires a minimum master level or a minimum number of resets. It contains only the warps which have such a requirement.
+/// Causes reaction on client side: The client remembers the minimums of these warps and shows a warp in its warp window as unavailable (greyed out) while the character doesn't reach them. Warps which aren't in this message have no such requirement. The server checks the requirements again when the character asks for the warp.
+/// </summary>
+public readonly struct WarpRequirementsExtended
+{
+    private readonly Memory<byte> _data;
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="WarpRequirementsExtended"/> struct.
+    /// </summary>
+    /// <param name="data">The underlying data.</param>
+    public WarpRequirementsExtended(Memory<byte> data)
+        : this(data, true)
+    {
+    }
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="WarpRequirementsExtended"/> struct.
+    /// </summary>
+    /// <param name="data">The underlying data.</param>
+    /// <param name="initialize">If set to <c>true</c>, the header data is automatically initialized and written to the underlying span.</param>
+    private WarpRequirementsExtended(Memory<byte> data, bool initialize)
+    {
+        this._data = data;
+        if (initialize)
+        {
+            var header = this.Header;
+            header.Type = HeaderType;
+            header.Code = Code;
+            header.Length = (ushort)data.Length;
+            header.SubCode = SubCode;
+        }
+    }
+
+    /// <summary>
+    /// Gets the header type of this data packet.
+    /// </summary>
+    public static byte HeaderType => 0xC2;
+
+    /// <summary>
+    /// Gets the operation code of this data packet.
+    /// </summary>
+    public static byte Code => 0xF5;
+
+    /// <summary>
+    /// Gets the operation sub-code of this data packet.
+    /// The <see cref="Code" /> is used as a grouping key.
+    /// </summary>
+    public static byte SubCode => 0x0B;
+
+    /// <summary>
+    /// Gets the header of this packet.
+    /// </summary>
+    public C2HeaderWithSubCode Header => new (this._data);
+
+    /// <summary>
+    /// Gets or sets the count.
+    /// </summary>
+    public byte Count
+    {
+        get => this._data.Span[5];
+        set => this._data.Span[5] = value;
+    }
+
+    /// <summary>
+    /// Gets the <see cref="WarpRequirementEntry"/> of the specified index.
+    /// </summary>
+        public WarpRequirementEntry this[int index] => new (this._data.Slice(6 + index * WarpRequirementEntry.Length));
+
+    /// <summary>
+    /// Performs an implicit conversion from a Memory of bytes to a <see cref="WarpRequirementsExtended"/>.
+    /// </summary>
+    /// <param name="packet">The packet as span.</param>
+    /// <returns>The packet as struct.</returns>
+    public static implicit operator WarpRequirementsExtended(Memory<byte> packet) => new (packet, false);
+
+    /// <summary>
+    /// Performs an implicit conversion from <see cref="WarpRequirementsExtended"/> to a Memory of bytes.
+    /// </summary>
+    /// <param name="packet">The packet as struct.</param>
+    /// <returns>The packet as byte span.</returns>
+    public static implicit operator Memory<byte>(WarpRequirementsExtended packet) => packet._data; 
+
+    /// <summary>
+    /// Calculates the size of the packet for the specified count of <see cref="WarpRequirementEntry"/>.
+    /// </summary>
+    /// <param name="requirementsCount">The count of <see cref="WarpRequirementEntry"/> from which the size will be calculated.</param>
+        
+    public static int GetRequiredSize(int requirementsCount) => requirementsCount * WarpRequirementEntry.Length + 6;
+
+
+/// <summary>
+/// The minimum master level and number of resets which a warp requires..
+/// </summary>
+public readonly struct WarpRequirementEntry
+{
+    private readonly Memory<byte> _data;
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="WarpRequirementEntry"/> struct.
+    /// </summary>
+    /// <param name="data">The underlying data.</param>
+    public WarpRequirementEntry(Memory<byte> data)
+    {
+        this._data = data;
+    }
+
+    /// <summary>
+    /// Gets the initial length of this data packet. When the size is dynamic, this value may be bigger than actually needed.
+    /// </summary>
+    public static int Length => 8;
+
+    /// <summary>
+    /// Gets or sets the index of the warp, as in the WarpListExtended.
+    /// </summary>
+    public ushort Index
+    {
+        get => ReadUInt16LittleEndian(this._data.Span);
+        set => WriteUInt16LittleEndian(this._data.Span, value);
+    }
+
+    /// <summary>
+    /// Gets or sets the minimum master level; 0 when the warp doesn't require one.
+    /// </summary>
+    public ushort MasterLevel
+    {
+        get => ReadUInt16LittleEndian(this._data.Span[2..]);
+        set => WriteUInt16LittleEndian(this._data.Span[2..], value);
+    }
+
+    /// <summary>
+    /// Gets or sets the minimum number of resets; 0 when the warp doesn't require one.
+    /// </summary>
+    public uint Resets
+    {
+        get => ReadUInt32LittleEndian(this._data.Span[4..]);
+        set => WriteUInt32LittleEndian(this._data.Span[4..], value);
     }
 }
 }
@@ -48132,9 +48498,9 @@ public readonly struct ActiveQuestListReady
             PoisonDarkGreen = 5,
 
         /// <summary>
-        /// Dark pink color.
+        /// Dark pink color, usually used by bleed damage.
         /// </summary>
-            DarkPink = 6,
+            BleedDarkPink = 6,
 
         /// <summary>
         /// White color.

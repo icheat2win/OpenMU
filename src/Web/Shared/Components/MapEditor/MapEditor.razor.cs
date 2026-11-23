@@ -113,11 +113,6 @@ public partial class MapEditor : IAsyncDisposable
     private int ZoomPercentage => this._zoomManager?.ZoomPercentage ?? 100;
 
     /// <summary>
-    /// Gets the effective pixel scale for the current zoom level.
-    /// </summary>
-    private float EffectiveScale => this._coordinateService.GetEffectiveScale(this._zoomManager?.ZoomLevel ?? MapZoomManager.DefaultZoom);
-
-    /// <summary>
     /// Gets or sets the currently selected map, rebuilding the terrain image when changed.
     /// </summary>
     private GameMapDefinition SelectedMap
@@ -190,7 +185,6 @@ public partial class MapEditor : IAsyncDisposable
         else
         {
             this._focusedObject = null;
-            _ = this._jsModule?.InvokeVoidAsync("setPanning", true);
         }
 
         _ = this.UpdateSelectValueAsync();
@@ -232,29 +226,16 @@ public partial class MapEditor : IAsyncDisposable
     }
 
     /// <summary>
-    /// Called from JavaScript when clicking empty space without dragging.
-    /// </summary>
-    [JSInvokable]
-    public async Task OnPointerClickAsync()
-    {
-        if (this._createMode || this._jsModule is null)
-        {
-            return;
-        }
-
-        this._focusedObject = null;
-        await this.UpdateSelectValueAsync().ConfigureAwait(true);
-        this.StateHasChanged();
-    }
-
-    /// <summary>
     /// Called from JavaScript when the zoom level changes.
     /// </summary>
     /// <param name="zoomLevel">The new zoom level.</param>
     [JSInvokable]
-    public void OnZoomChanged(float zoomLevel)
+    public async Task OnZoomChangedAsync(float zoomLevel)
     {
+        // The wheel zoom is handled completely in the browser. The server is only
+        // informed (debounced) after the user stopped zooming, to update the zoom label and buttons.
         this._zoomManager?.SyncZoomLevel(zoomLevel);
+        await this.InvokeAsync(this.StateHasChanged).ConfigureAwait(false);
     }
 
     /// <summary>
@@ -322,7 +303,8 @@ public partial class MapEditor : IAsyncDisposable
                 this._mapHostRef,
                 this._dotNetRef,
                 zoomLevel,
-                MapCoordinateService.BaseScale).ConfigureAwait(true);
+                MapCoordinateService.BaseScale,
+                true).ConfigureAwait(true);
 
             await jsModule.InvokeVoidAsync(
                 "setScroll", this._mapHostRef, 0, 0).ConfigureAwait(true);
@@ -339,7 +321,8 @@ public partial class MapEditor : IAsyncDisposable
                 this._mapHostRef,
                 this._dotNetRef,
                 zoomLevel,
-                MapCoordinateService.BaseScale).ConfigureAwait(true);
+                MapCoordinateService.BaseScale,
+                false).ConfigureAwait(true);
         }
         else
         {
@@ -447,9 +430,6 @@ public partial class MapEditor : IAsyncDisposable
     private string GetCssClass(object obj) =>
         this._styleService.GetCssClass(obj, this._focusedObject);
 
-    private string GetGridStyle() =>
-        this._coordinateService.GetGridStyle(this.EffectiveScale);
-
     private Dictionary<string, object> GetDataAttributes(object obj)
     {
         if (obj is IMapArea area)
@@ -467,7 +447,7 @@ public partial class MapEditor : IAsyncDisposable
     }
 
     private string GetSizeAndPositionStyle(object obj) =>
-        this._styleService.GetSizeAndPositionStyle(obj, this.EffectiveScale);
+        this._styleService.GetSizeAndPositionStyle(obj);
 
     private async Task OnObjectSelectedAsync(ChangeEventArgs args)
     {
@@ -503,16 +483,6 @@ public partial class MapEditor : IAsyncDisposable
                     MapCoordinateService.BaseScale).ConfigureAwait(true);
             }
         }
-    }
-
-    private async Task OnWheelAsync(WheelEventArgs args)
-    {
-        if (this._zoomManager is null)
-        {
-            return;
-        }
-
-        await this._zoomManager.HandleWheelAsync(args.DeltaY, args.ClientX, args.ClientY).ConfigureAwait(true);
     }
 
     private async Task ZoomInAsync()

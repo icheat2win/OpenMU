@@ -85,11 +85,7 @@
         @if (this._terrainImageDataUrl is { })
         {
             <div class="map-host-container">
-                <div class="map-host"
-                     @ref="_mapHostRef"
-                     @onwheel="@this.OnWheelAsync"
-                     @onwheel:preventDefault="true"
-                     @onwheel:stopPropagation="true">
+                <div class="map-host" @ref="_mapHostRef">
                     <div class="map-content">
                         <img src="@this._terrainImageDataUrl"
                              draggable="false"
@@ -118,17 +114,13 @@
 
                         @if (this._showGrid)
                         {
-                            <div class="coordinate-grid" style="@this.GetGridStyle()"></div>
+                            <div class="coordinate-grid"></div>
                         }
                     </div>
                 </div>
 
                 <div class="map-coordinates-overlay">
                     <span class="coord-label">X: @this._mouseMapX, Y: @this._mouseMapY</span>
-                </div>
-
-                <div class="map-zoom-display">
-                    <span class="zoom-label">@this.ZoomPercentage%</span>
                 </div>
             </div>
         }
@@ -202,9 +194,9 @@
                 </div>
                 <input class="small form-control"
                        type="search"
-                       autofocus
                        @bind="@this._filterService.SearchFilter"
                        @bind:event="oninput"
+                       onauxclick="event.preventDefault();"
                        placeholder="@Resources.Search ..." />
             </div>
             <div class="map-object-select">
